@@ -1,14 +1,13 @@
-FROM ubuntu:wily
+# Copyright (c) 2016 Accupara Inc. All rights reserved
+FROM accupara/ubuntu:15.10
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
-RUN apt-get update && apt-get install --no-install-recommends -y  \
+# Keep the update separate so that Docker build system can cache it.
+RUN sudo apt-get update
+RUN apt-get install --no-install-recommends -y  \
     build-essential     \
     git                 \
     glib2.0-dev         \
-    libglib2.0-dev      \
-    libfdt-dev          \
-    libpixman-1-dev     \
-    zlib1g-dev          \
     libaio-dev          \
     libbluetooth-dev    \
     libbrlapi-dev       \
@@ -16,11 +15,17 @@ RUN apt-get update && apt-get install --no-install-recommends -y  \
     libcap-dev          \
     libcap-ng-dev       \
     libcurl4-gnutls-dev \
-    libgtk-3-dev        \
     libibverbs-dev      \
+    libiscsi-dev        \
+    libfdt-dev          \
+    libglib2.0-dev      \
+    libgtk-3-dev        \
     libjpeg8-dev        \
+    liblzo2-dev         \
     libncurses5-dev     \
+    libnfs-dev          \
     libnuma-dev         \
+    libpixman-1-dev     \
     librbd-dev          \
     librdmacm-dev       \
     libsasl2-dev        \
@@ -32,9 +37,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y  \
     libvdeplug-dev      \
     libvte-2.91-dev     \
     libxen-dev          \
-    liblzo2-dev         \
     valgrind            \
     xfslibs-dev         \
-    libnfs-dev          \
-    libiscsi-dev        \
+    zlib1g-dev          \
     && rm -rf /var/lib/apt/lists/*

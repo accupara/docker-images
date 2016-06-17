@@ -2,6 +2,6 @@
 
 # DO NOT COMPILE bb10 automatically. It requires a UI to build..
 # SUBDIRS=ubuntu linuxkernel rsync qt bb10
-SUBDIRS=ubuntu linuxkernel rsync qt
+SUBDIRS=ubuntu linuxkernel rsync qt qemu
 
 include Makefile.subdirs

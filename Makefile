@@ -1,3 +1,7 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-SUBDIRS=ubuntu linuxkernel rsync qt bb10
+
+# DO NOT COMPILE bb10 automatically. It requires a UI to build..
+# SUBDIRS=ubuntu linuxkernel rsync qt bb10
+SUBDIRS=ubuntu linuxkernel rsync qt
+
 include Makefile.subdirs

@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-IMGTAG=uvatbc/bbndk
+IMGTAG=accupara/bbndk
 IMGVER=latest
 
 CONTAINER_NAME=savethis

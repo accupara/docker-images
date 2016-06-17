@@ -40,4 +40,4 @@ RUN sudo apt-get install --no-install-recommends -y  \
     valgrind            \
     xfslibs-dev         \
     zlib1g-dev          \
-    && sudo m -rf /var/lib/apt/lists/*
+    && sudo rm -rf /var/lib/apt/lists/*

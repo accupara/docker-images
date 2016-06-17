@@ -4,7 +4,7 @@ MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update
-RUN apt-get install --no-install-recommends -y  \
+RUN sudo apt-get install --no-install-recommends -y  \
     build-essential     \
     git                 \
     glib2.0-dev         \
@@ -40,4 +40,4 @@ RUN apt-get install --no-install-recommends -y  \
     valgrind            \
     xfslibs-dev         \
     zlib1g-dev          \
-    && rm -rf /var/lib/apt/lists/*
+    && sudo m -rf /var/lib/apt/lists/*

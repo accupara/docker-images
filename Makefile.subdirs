@@ -1,9 +1,11 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
+# This makefile should only be included by the real makefile that has to invoke makefiles in subdirs
+
 clean:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $i clean ; done
+	for i in ${SUBDIRS} ; do ${MAKE} -C $$i clean ; done
 
 build:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $i build ; done
+	for i in ${SUBDIRS} ; do ${MAKE} -C $$i build ; done
 
 push:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $i push ; done
+	for i in ${SUBDIRS} ; do ${MAKE} -C $$i push ; done

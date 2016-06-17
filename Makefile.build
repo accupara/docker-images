@@ -1,5 +1,7 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-all: clean
+# This template must only be included by the actualy image building makefile
+
+build: clean
 	docker build -t $(IMGTAG):$(IMGVER) .
 
 clean:

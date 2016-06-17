@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
 FROM ubuntu:15.10
 
 RUN apt-get update && \

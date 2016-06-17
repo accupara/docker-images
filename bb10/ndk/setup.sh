@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2016 Accupara Inc. All rights reserved
 
 set -x
 set -e

@@ -1,0 +1,5 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
+IMGTAG?=accupara/ubuntu
+IMGVER?=14.04
+
+include ../../../Makefile.build

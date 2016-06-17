@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
 IMGTAG=uvatbc/bbndk
 IMGVER=latest
 

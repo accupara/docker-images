@@ -1,3 +1,4 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
 FROM uvatbc/ubuntu:15.10
 
 # Keep the update separate so that Docker build system can cache it.

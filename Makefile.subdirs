@@ -1,0 +1,9 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
+clean:
+	for i in ${SUBDIRS} ; do ${MAKE} -C $i clean ; done
+
+build:
+	for i in ${SUBDIRS} ; do ${MAKE} -C $i build ; done
+
+push:
+	for i in ${SUBDIRS} ; do ${MAKE} -C $i push ; done

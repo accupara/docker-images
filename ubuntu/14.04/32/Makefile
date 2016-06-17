@@ -2,4 +2,4 @@
 IMGTAG?=accupara/ubuntu
 IMGVER?=14.04_32
 
-include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
+include $(shell git rev-parse --show-toplevel)/Makefile.build

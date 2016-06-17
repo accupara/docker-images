@@ -3,4 +3,4 @@ IMGTAG?=accupara/qt5_32
 IMGVER?=latest
 #IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 
-include ../../../Makefile.build
+include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

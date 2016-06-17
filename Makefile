@@ -4,4 +4,4 @@
 # SUBDIRS=ubuntu linuxkernel rsync qt bb10
 SUBDIRS=ubuntu linuxkernel rsync qt qemu
 
-include Makefile.subdirs
+include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

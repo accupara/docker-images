@@ -1,5 +1,6 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
 FROM ubuntu:16.04
+MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
 RUN apt-get update && \
     apt-get -y dist-upgrade && \

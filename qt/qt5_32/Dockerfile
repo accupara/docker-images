@@ -1,5 +1,6 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:14.04_32
+MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update

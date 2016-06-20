@@ -5,7 +5,7 @@ build:
 	docker build -t $(IMGTAG):$(IMGVER) .
 
 clean:
-	docker rm $$(docker ps -aq)
+	-docker rm $$(docker ps -aq)
 	docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }' | \
 		while read line ; do docker rmi $$line ; done
 	docker images | grep '<none>' | awk '{ print $$3 }' | \

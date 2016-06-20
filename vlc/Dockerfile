@@ -15,7 +15,9 @@ RUN sudo apt-get update && \
         build-essential \
         checkinstall \
         git \
+        wget \
         yasm
+
 RUN sudo apt-get install -y \
     liba52-0.7.4-dev \
     libaa1-dev \
@@ -130,7 +132,6 @@ RUN sudo apt-get -y install \
               --enable-nonfree \
               --enable-postproc \
               --enable-pthreads \
-              --enable-libfaac \
               --enable-libmp3lame \
               --enable-libopencore-amrnb \
               --enable-libopencore-amrwb \
@@ -144,4 +145,7 @@ RUN sudo apt-get -y install \
     make distclean && \
     rm -rf /tmp/vlc_build/ffmpeg-1.1.1
 
+# Removed from the configure script for ffmpeg
+#              --enable-libfaac \
+# Removed from the install deps for ffmpeg
 #    libfaac-dev \

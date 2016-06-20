@@ -2,8 +2,13 @@
 FROM accupara/ubuntu:16.04
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
-# Dependencies as mentioned in https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+# Enable the Ubuntu multiverse repository.
+RUN sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse" >> /etc/apt/source.list' && \
+    sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse">> /etc/apt/source.list' && \
+    sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list' && \
+    sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list'
 
+# Dependencies as mentioned in https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 RUN sudo apt-get update && \
     sudo apt-get install -y \
         autoconf \
@@ -26,6 +31,7 @@ RUN sudo apt-get update && \
 
 # These deps are on the same site, but are mentioned separately. Not sure why
 RUN sudo apt-get install -y \
+        libvpx-dev \
         libmp3lame-dev \
         libopus-dev \
         libx264-dev \

@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:15.10
+FROM accupara/ubuntu:16.04
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
 RUN sudo apt-get update && \

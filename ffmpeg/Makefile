@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-IMGTAG?=accupara/ffmpeg_static
+IMGTAG?=accupara/ffmpeg
 IMGVER?=latest
 #IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 

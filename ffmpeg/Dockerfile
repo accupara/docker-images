@@ -2,6 +2,8 @@
 FROM accupara/ubuntu:16.04
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
+# Dependencies as mentioned in https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+
 RUN sudo apt-get update && \
     sudo apt-get install -y \
         autoconf \
@@ -21,3 +23,10 @@ RUN sudo apt-get update && \
         pkg-config \
         texinfo \
         zlib1g-dev
+
+# These deps are on the same site, but are mentioned separately. Not sure why
+RUN sudo apt-get install -y \
+        libmp3lame-dev \
+        libopus-dev \
+        libx264-dev \
+        yasm

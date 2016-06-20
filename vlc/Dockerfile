@@ -2,6 +2,12 @@
 FROM accupara/qt4:latest
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
+# Enable the Ubuntu multiverse repository.
+RUN sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse" >> /etc/apt/source.list' && \
+    sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse">> /etc/apt/source.list' && \
+    sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list' && \
+sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list'
+
 RUN sudo apt-get update && \
     sudo apt-get install -y \
         autoconf \
@@ -21,7 +27,6 @@ RUN sudo apt-get install -y \
     libcddb2-dev \
     libcdio-dev \
     libdca-dev \
-    libdirac-dev \
     libdvbpsi-dev \
     libdvdnav-dev \
     libdvdread-dev \
@@ -66,7 +71,6 @@ RUN sudo apt-get install -y \
     libsmbclient-dev \
     libspeex-dev \
     libsqlite3-dev \
-    libsvga1-dev \
     libsysfs-dev \
     libtag1-dev \
     libtar-dev \
@@ -99,12 +103,13 @@ RUN sudo apt-get install -y \
     libspeexdsp-dev \
     libsamplerate0-dev 
 
+#    libdirac-dev \
 #    libhal-dev \
 #    libggi2-dev \
+#    libsvga1-dev \
 
 # Compile ffmpeg (cheating?)
 RUN sudo apt-get -y install \
-    libfaac-dev \
     libmp3lame-dev \
     libopencore-amrnb-dev \
     libopencore-amrwb-dev \
@@ -138,3 +143,5 @@ RUN sudo apt-get -y install \
     sudo make install-libs install-headers && \
     make distclean && \
     rm -rf /tmp/vlc_build/ffmpeg-1.1.1
+
+#    libfaac-dev \

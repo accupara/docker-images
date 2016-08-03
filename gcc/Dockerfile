@@ -6,7 +6,6 @@ RUN sudo apt-get update && \
     sudo apt-get install -y \
         autoconf \
         automake \
-        binutils \
         bzip2 \
         flex \
         gettext \

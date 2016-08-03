@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get -y dist-upgrade && \
     apt-get install -y \
         bash-completion \
+        binutils \
         build-essential \
         git \
         subversion \

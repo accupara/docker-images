@@ -2,15 +2,19 @@
 FROM ubuntu:15.10
 MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
 
+# Install the minimum tools
 RUN apt-get update && \
     apt-get -y dist-upgrade && \
     apt-get install -y \
         bash-completion \
+        binutils \
         build-essential \
+        debhelper \
+        dh-make \
         git \
         subversion \
-        vim \
-        sudo
+        sudo \
+        vim
 
 RUN echo ". /etc/bash_completion" >> /root/.bashrc
 

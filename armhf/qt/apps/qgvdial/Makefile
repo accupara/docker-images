@@ -1,5 +1,5 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-IMGTAG?=accupara/qgvdial_qt5_amd64
+IMGTAG?=accupara/qgvdial_qt4_armhf
 IMGVER?=latest
 #IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 

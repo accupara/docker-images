@@ -9,3 +9,6 @@ build:
 
 push:
 	for i in ${SUBDIRS} ; do ${MAKE} -C $$i push ; done
+
+pull:
+	for i in ${SUBDIRS} ; do ${MAKE} -C $$i pull ; done

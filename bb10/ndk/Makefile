@@ -58,10 +58,33 @@ run_ssh_bash:
 		-o StrictHostKeyChecking=no \
 		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}`
 
+# How to figure out what environment variables to add here:
+# Run the accupara/bbndk container and run:
+# for i in `grep export ~/bin/bbndk/bbndk-env_10_3_1_995.sh | sed -s 's/export //g'` ; do grep $i /tmp/op.txt ; done
+# The last run gave the following output:
+#
+# QNX_TARGET=/home/admin/bin/bbndk/target_10_3_1_995/qnx6
+# QNX_HOST=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86
+# QNX_CONFIGURATION=/home/admin/.rim/bbndk
+# MAKEFLAGS=-I/home/admin/bin/bbndk/target_10_3_1_995/qnx6/usr/include
+# LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib:
+# QML2_IMPORT_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/qml
+# LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib:
+# PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# QT_LIB_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/lib
+# QT_PLUGIN_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/plugins
+# QDE=/home/admin/bin/bbndk
+# CPUVARDIR=armle-v7
+# QT_PLUGIN_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/plugins
+# QT_LIB_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/lib
+# QML2_IMPORT_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/qml
+#
+# Pull out the unique values out of this and use it
 commit_container:
 	-docker rmi $$(docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }')
 	docker commit \
 		--change 'CMD ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]' \
+		--change 'ENV ["QNX_TARGET=/home/admin/bin/bbndk/target_10_3_1_995/qnx6", "QNX_HOST=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86", "QNX_CONFIGURATION=/home/admin/.rim/bbndk", "MAKEFLAGS=-I/home/admin/bin/bbndk/target_10_3_1_995/qnx6/usr/include", "LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib", "QML2_IMPORT_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/qml", "LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib:", "PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "QT_LIB_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/lib", "QT_PLUGIN_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/plugins", "QDE=/home/admin/bin/bbndk", "CPUVARDIR=armle-v7"]' \
 		${CONTAINER_NAME} \
 		$(IMGTAG):$(IMGVER)
 	-docker rm $$(docker ps -aq)

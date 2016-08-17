@@ -2,6 +2,7 @@
 IMGTAG=accupara/bbndk
 IMGVER=latest
 
+MOMENTICS_FILE=momentics-2.1.2-201503050937.linux.x86_64.run
 CONTAINER_NAME=savethis
 
 .PHONY: help clean run_sshd run_setup run_qt5_compile run_ssh_bash commit_container push pull it
@@ -11,7 +12,7 @@ help:
 	@echo 'In another terminal, run the following in order:'
 	@echo '"make copy_files"'
 	@echo '"make run_setup"'
-	@echo 'After run_setup ends, it might be necessart to "make run_ssh_bash" and run ~/bin/bbndk/qde'
+	@echo 'After run_setup ends, it might be necessary to "make run_ssh_bash" and run ~/bin/bbndk/qde'
 	@echo 'In the end, quit the "make run_sshd" using Ctrl+C. This will commit the container'
 
 clean:
@@ -23,7 +24,10 @@ run_sshd: clean
 	-docker run -it --name ${CONTAINER_NAME} uvatbc/sshd
 	${MAKE} commit_container
 
-copy_files:
+ensure_momentics_installer:
+	if [ ! -f $(MOMENTICS_FILE) ] ; then wget https://developer.blackberry.com/native/downloads/fetch/$(MOMENTICS_FILE) ; fi
+
+copy_files: ensure_momentics_installer
 	ssh-copy-id \
 		-o UserKnownHostsFile=/dev/null \
 		-o StrictHostKeyChecking=no \
@@ -31,7 +35,7 @@ copy_files:
 	scp \
 		-o UserKnownHostsFile=/dev/null \
 		-o StrictHostKeyChecking=no \
-		setup.sh \
+		setup.sh $(MOMENTICS_FILE) \
 		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}`:/tmp/
 
 run_setup:

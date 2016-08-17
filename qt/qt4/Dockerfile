@@ -7,5 +7,6 @@ RUN sudo apt-get update
 RUN sudo apt-get -y install \
         libphonon-dev \
         libqt4-dev \
+        libqtwebkit-dev \
         libssl-dev
 

@@ -20,10 +20,15 @@ sudo apt-get install -y \
 
 mkdir -p ~/bin/
 cd ~/bin/
-wget https://developer.blackberry.com/native/downloads/fetch/$FILE
-chmod +x $FILE
-echo y | ./$FILE
-rm ./$FILE
+
+if [ ! -f /tmp/$FILE ] ; then
+    # Download the file ONLY if it doesn't exist
+    wget https://developer.blackberry.com/native/downloads/fetch/$FILE
+fi
+
+chmod +x /tmp/$FILE
+echo y | /tmp/$FILE
+rm /tmp/$FILE
 
 # Begin the NDK install
 ~/bin/bbndk/qde

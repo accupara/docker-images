@@ -5,3 +5,6 @@
 SUBDIRS=ubuntu django-nginx linuxkernel rsync qt qemu lfs ffmpeg
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
+
+recreate:
+	$(MAKE) clean build push

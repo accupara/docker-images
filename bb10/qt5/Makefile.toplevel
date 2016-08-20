@@ -1,0 +1,12 @@
+all:
+	./configure \
+		-prefix ${PREFIX} \
+		-xplatform ${XPLATFORM} \
+		-opengl es2 \
+		-nomake examples \
+		-nomake tests \
+		-opensource \
+		-confirm-license \
+		-release
+	$(MAKE)
+	$(MAKE) install

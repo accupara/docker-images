@@ -15,6 +15,7 @@ sudo apt-get install -y \
     lib32ncurses5 \
     lib32stdc++6 \
     lib32z1 \
+    libwebkitgtk-1.0-0 \
     wget \
     zlib1g:i386
 
@@ -29,6 +30,8 @@ fi
 chmod +x /tmp/$FILE
 echo y | /tmp/$FILE
 rm /tmp/$FILE
+
+sudo apt-get clean
 
 # Begin the NDK install
 ~/bin/bbndk/qde

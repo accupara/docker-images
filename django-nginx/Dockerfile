@@ -32,4 +32,4 @@ COPY nginx.conf /etc/nginx/
 # Use supervisord to start django and nginx by default
 COPY apps.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor/
-CMD ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["sudo", "/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

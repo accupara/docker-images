@@ -2,7 +2,7 @@
 
 # DO NOT COMPILE bb10 automatically. It requires a UI to build..
 # SUBDIRS=ubuntu linuxkernel rsync qt bb10
-SUBDIRS=ubuntu django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemove android
+SUBDIRS=ubuntu centos django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemove android
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
 

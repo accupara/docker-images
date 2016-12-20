@@ -1,6 +1,8 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
 
-SUBDIRS=ubuntu centos django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemove mobile
+# DO NOT COMPILE bb10 automatically. It requires a UI to build..
+# SUBDIRS=bb10
+SUBDIRS=android
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
 

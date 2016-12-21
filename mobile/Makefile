@@ -2,7 +2,7 @@
 
 # DO NOT COMPILE bb10 automatically. It requires a UI to build..
 # SUBDIRS=bb10
-SUBDIRS=scratchbox maemo android
+SUBDIRS=scratchbox maemo harmattan android
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
 

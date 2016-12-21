@@ -1,5 +1,3 @@
-# How to use
-
 # Run the docker command in the directory that has your source code
 ```
 docker \

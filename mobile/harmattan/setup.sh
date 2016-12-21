@@ -25,3 +25,8 @@ echo "n" >> /tmp/selection
 echo "go" >> /tmp/selection
 
 cat /tmp/selection | sudo ./harmattan-sdk-setup.py admininstall
+
+echo "alias ll='ls -l'" >> /scratchbox/users/admin/home/admin/.bashrc
+echo "alias sb-start='sudo /scratchbox/sbin/sbox_ctl start'" >> ~/.bashrc
+echo "alias sb-switch-x86='sb-conf select HARMATTAN_X86'" >> ~/.bashrc
+echo "alias sb-switch-armel='sb-conf select HARMATTAN_ARMEL'" >> ~/.bashrc

@@ -18,9 +18,9 @@ cp /tmp/nokia.list /tmp/extras.list /scratchbox/users/admin/targets/FREMANTLE_X8
 cp /tmp/nokia.list /tmp/extras.list /scratchbox/users/admin/targets/FREMANTLE_ARMEL/etc/apt/sources.list.d/
 
 echo "alias ll='ls -l'" >> /scratchbox/users/admin/home/admin/.bashrc
-echo "alias sb-start='sudo /scratchbox/sbin/sbox_ctl start'" >> /scratchbox/users/admin/home/admin/.bashrc
-echo "alias sb-switch-x86='sb-conf select FREMANTLE_X86'" >> /scratchbox/users/admin/home/admin/.bashrc
-echo "alias sb-switch-armel='sb-conf select FREMANTLE_ARMEL'" >> /scratchbox/users/admin/home/admin/.bashrc
+echo "alias sb-start='sudo /scratchbox/sbin/sbox_ctl start'" >> ~/.bashrc
+echo "alias sb-switch-x86='sb-conf select FREMANTLE_X86'" >> ~/.bashrc
+echo "alias sb-switch-armel='sb-conf select FREMANTLE_ARMEL'" >> ~/.bashrc
 
 sb-conf se FREMANTLE_X86
 /scratchbox/login apt-get update

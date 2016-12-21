@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Accupara Inc. All rights reserved
-IMGTAG?=accupara/maemo
+IMGTAG?=accupara/harmattan
 IMGVER?=latest
-CONTAINER_NAME=maemo-build
+CONTAINER_NAME=harmattan-build
 #IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull
@@ -11,8 +11,6 @@ build:
 		--privileged -it \
 		--name $(CONTAINER_NAME) \
 		-v $$(readlink -f ./setup.sh):/tmp/setup.sh \
-		-v $$(readlink -f ./nokia.list):/tmp/nokia.list \
-		-v $$(readlink -f ./extras.list):/tmp/extras.list \
 		accupara/scratchbox \
 		/tmp/setup.sh
 	docker commit $(CONTAINER_NAME) $(IMGTAG):$(IMGVER)
@@ -23,6 +21,4 @@ try:
 		--privileged -it \
 		--name $(CONTAINER_NAME) \
 		-v $$(readlink -f ./setup.sh):/tmp/setup.sh \
-		-v $$(readlink -f ./nokia.list):/tmp/nokia.list \
-		-v $$(readlink -f ./extras.list):/tmp/extras.list \
 		accupara/scratchbox

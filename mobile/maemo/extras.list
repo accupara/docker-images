@@ -1,0 +1,9 @@
+#Maemo extras
+deb http://repository.maemo.org/extras/ fremantle-1.3 free non-free
+deb-src http://repository.maemo.org/extras/ fremantle-1.3 free
+
+deb http://repository.maemo.org/extras-testing/ fremantle free non-free
+deb-src http://repository.maemo.org/extras-testing/ fremantle free
+
+deb http://repository.maemo.org/extras-devel/ fremantle free non-free
+deb-src http://repository.maemo.org/extras-devel/ fremantle free

@@ -20,11 +20,13 @@ RUN sudo bash -c 'echo "deb http://scratchbox.org/debian/ hathor main" >> /etc/a
      scratchbox-toolchain-cs2007q3-glibc2.5-i486 \
      scratchbox-toolchain-host-gcc \
      wget \
-     xserver-xephyr && \
-    sudo /scratchbox/sbin/sbox_adduser admin && \
-    sudo newgrp sbox && sudo newgrp
+     xserver-xephyr
 
-#RUN sudo /scratchbox/sbin/sbox_ctl start && \
-#    wget http://repository.maemo.org/stable/5.0/maemo-sdk-install_5.0.sh && \
-#    sed -i -e 's/etch/squeeze/g' maemo-sdk-install_5.0.sh && \
-#    sh ./maemo-sdk-install_5.0.sh
+ENV USER=admin
+
+RUN sudo /scratchbox/sbin/sbox_adduser admin && \
+    sudo newgrp sbox && sudo newgrp && \
+    sudo mkdir -p /scratchbox/users/admin/home/admin && \
+    sudo chown -R admin.admin /scratchbox/users/admin/home/admin && \
+    sudo mkdir -p /scratchbox/users/admin/targets && \
+    sudo chown -R admin.admin /scratchbox/users/admin/targets

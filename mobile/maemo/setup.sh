@@ -8,8 +8,9 @@ sleep 1
 
 wget http://repository.maemo.org/stable/5.0/maemo-sdk-install_5.0.sh
 sed -i -e 's/etch/squeeze/g' maemo-sdk-install_5.0.sh
+sed -i -e 's/^license$/#license/g' maemo-sdk-install_5.0.sh
 
-echo "" | sh ./maemo-sdk-install_5.0.sh -d
+sh ./maemo-sdk-install_5.0.sh -d
 
 sudo mkdir -p /scratchbox/users/admin/targets/FREMANTLE_X86/etc/apt/sources.list.d
 sudo mkdir -p /scratchbox/users/admin/targets/FREMANTLE_ARMEL/etc/apt/sources.list.d

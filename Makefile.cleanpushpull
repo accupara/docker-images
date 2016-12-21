@@ -1,0 +1,18 @@
+# Copyright (c) 2016 Accupara Inc. All rights reserved
+# This template must only be included by the actual image building makefile
+
+clean:
+	-docker rm $$(docker ps -aq)
+	docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }' | \
+		while read line ; do docker rmi $$line ; done
+	docker images | grep '<none>' | awk '{ print $$3 }' | \
+		while read line ; do docker rmi $$line ; done
+
+push:
+	docker push $(IMGTAG):$(IMGVER)
+
+pull:
+	docker pull $(IMGTAG):$(IMGVER)
+
+it:
+	docker run --rm -it -v ~/code/:/tmp/code $(IMGTAG):$(IMGVER) /bin/bash

@@ -31,6 +31,6 @@ USER admin
 ENV HOME=/home/admin USER=admin
 WORKDIR /home/admin
 
-RUN sudo chown -R admin:admin /home/admin
-RUN echo ". /etc/bash_completion" >> /home/admin/.bashrc && \
+RUN sudo chown -R admin:admin /home/admin && \
+    echo ". /etc/bash_completion" >> /home/admin/.bashrc && \
     echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc

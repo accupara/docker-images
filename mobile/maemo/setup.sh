@@ -30,3 +30,6 @@ sb-conf se FREMANTLE_X86
 sb-conf se FREMANTLE_ARMEL
 /scratchbox/login apt-get update
 /scratchbox/login fakeroot apt-get -y --force-yes install nokia-binaries nokia-apps libqt4-dev libqt4-experimental-dev libtelepathy-qt4-dev
+
+# Cleanup these two files, they are unecessary baggage in this image
+rm -f /scratchbox/users/admin/home/admin/maemo-sdk-rootstrap*.tgz

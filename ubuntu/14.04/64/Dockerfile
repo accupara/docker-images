@@ -14,7 +14,9 @@ RUN apt-get update && \
         git \
         subversion \
         sudo \
-        vim
+        vim \
+ && apt-get clean \
+ && rm -f /var/lib/apt/lists/*_dists_*
 
 RUN echo ". /etc/bash_completion" >> /root/.bashrc
 
@@ -26,7 +28,7 @@ RUN useradd -ms /bin/bash admin && \
     echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER admin
-ENV HOME /home/admin
+ENV HOME=/home/admin USER=admin
 WORKDIR /home/admin
 
 RUN sudo chown -R admin:admin /home/admin

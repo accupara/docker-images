@@ -5,4 +5,4 @@ SUBDIRS=ubuntu centos django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemo
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
 
 recreate:
-	$(MAKE) clean build push
+	for i in ${SUBDIRS} ; do ${MAKE} -C $$i clean build push clean ; done

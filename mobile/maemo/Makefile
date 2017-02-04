@@ -7,6 +7,7 @@ CONTAINER_NAME=maemo-build
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull
 
 build:
+	-docker rm $(CONTAINER_NAME)
 	docker run \
 		--privileged -it \
 		--name $(CONTAINER_NAME) \

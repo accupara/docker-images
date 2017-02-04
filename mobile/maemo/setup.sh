@@ -4,6 +4,7 @@
 set -x
 
 sudo /scratchbox/sbin/sbox_ctl start
+sudo /scratchbox/sbin/sbox_sync
 sleep 1
 
 wget http://repository.maemo.org/stable/5.0/maemo-sdk-install_5.0.sh

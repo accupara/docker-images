@@ -3,9 +3,9 @@
 ## Why?
 Getting just the right dependencies to compile a project is a chore.   
 Why can't it just be available without the libraries stepping on each other and polluting your pristine development environment?   
-A Docker container can container the entire build environment into a easy to use package that will not pollute your dev box.  
+A Docker container can contain the entire build environment into an easy to use package that will not pollute your dev box.  
 Besides, you could even have multiple build environments without any environment interfering with the other.   
-Its like a Python virtualenv that works even for non-Python projects!   
+It is like a Python virtualenv that works even for non-Python projects!   
 ![alt text][pacha_justright]
 
 [pacha_justright]: https://i.imgflip.com/1ecipw.jpg

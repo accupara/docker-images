@@ -1,0 +1,846 @@
+#!/usr/bin/perl 
+#
+# dh_make - Script to prepare Debian packaging for an original source archive
+#
+use Getopt::Long;
+use File::Basename;
+use Cwd;
+use strict;
+
+#Getopt::Long::Configure ("bundling");  
+#Getopt::Long::Configure ("bundling_override");  
+
+# Turns off autoabbrev to avoid mistakes with cdbs and copyright options.
+$Getopt::Long::autoabbrev = 0;
+
+# Some important parameters
+our $DHLIB="/usr/share/debhelper/dh_make";
+our $POLICY_VERSION="3.9.2";
+our $DH_MAKE_VERSION="0.59";
+my %PACKAGE_TYPES = ( 's' => 'Single', 'l' => 'Library',
+   	'm' => 'Multi-Binary', 'k' => 'Kernel Module',
+   	'n' => 'Kernel Patch', 'i' => 'Independent' );
+my %RULES_FORMATS = ('dh7' => 'Debhelper v7+', 'old' => 'old debhelper',
+	'c' => 'cdbs');
+
+our $DASHLINE="";
+
+our $license="";
+our $username="";
+our $package_name="";
+our $cap_package_name="";
+our $version="";
+our $fullname = "";
+our $rules_format = "dh7";
+our $source_file="";
+our $debian_native = 0;
+our $create_orig_tar = 0;
+our $package_type="";
+our $CHANGELOG="";
+our $PRESERVE="";
+our $add_missing = 0;
+our $custom = "";
+our $no_defaults = 0;
+our $overlay = "";
+our $forced_package_name="";
+our @filenames;
+our $filename;
+our $SOURCE_EXTRADOCS="";
+our ($email, $date);
+
+sub process_file(@)
+{
+	my ($infile, $outfile) = @_;  
+	my $line;
+
+	if ( $main::overlay eq "" )
+	{
+		if ( $main::add_missing && -f $outfile)
+		{
+			print "File $outfile exists, skipping.\n";
+			return;
+		}
+	}
+
+	open IN, "<$infile" or die "Unable to open template file $infile for reading: $! \n";
+	open OUT, ">$outfile" or die "Unable to open file $outfile for writing: $! \n";
+	while (defined($line = <IN>))
+	{
+		$line =~ s/#PACKAGE#/$main::package_name/g;
+		$line =~ s/#UCPACKAGE#/$main::uc_package_name/g;
+		$line =~ s/#VERSION#/$main::version/g;
+		$line =~ s/#EMAIL#/$main::email/g;
+		$line =~ s/#DATE#/$main::date/g;
+		$line =~ s/#SHORTDATE#/$main::shortdate/g;
+		$line =~ s/#YEAR#/$main::year/g;
+		$line =~ s/#CHANGELOGS#/$main::CHANGELOG/g;
+		$line =~ s/#PRESERVE#/ $main::PRESERVE/g;
+		$line =~ s/#CONFIG_STATUS#/$main::CONFIG_STATUS/g;
+		$line =~ s/#CONFIGURE#/$main::CONFIGURE/g;
+		$line =~ s/#CONFIGURE_STAMP#/$main::CONFIGURE_STAMP/g;
+		$line =~ s/#DPKG_ARCH#/$main::DPKG_ARCH/g;
+		$line =~ s/#INSTALL#/$main::INSTALL/g;
+		$line =~ s/#MAKE#/$main::MAKE/g;
+		$line =~ s/#CLEAN#/$main::CLEAN/g;
+		$line =~ s/#USERNAME#/$main::username/g;
+		$line =~ s/#POLICY#/$main::POLICY_VERSION/g;
+		$line =~ s/#DASHLINE#/$main::DASHLINE/g;
+		$line =~ s/#PHONY_CONFIGURE#/$main::PHONY_CONFIGURE/g;
+		$line =~ s/#CDBS_CLASS#/$main::CDBS_CLASS/g;
+		$line =~ s/#PATCH_CLASS#/$main::PATCH_CLASS/g;
+		$line =~ s/#PATCH_CLEAN#/$main::PATCH_CLEAN/g;
+		$line =~ s/#PATCH_STAMP#/$main::PATCH_STAMP/g;
+		$line =~ s/#BUILD_DEPS#/$main::BUILD_DEPS/g;
+		$line =~ s/#SOURCE_FILE_BASE#/$main::source_file_base/g;
+		$line =~ s/#DH7_ADDON#/$main::DH7_ADDON/g;
+		$line =~ s/#SOURCE_EXTRADOCS#/$main::SOURCE_EXTRADOCS/g;
+		print OUT $line;
+	}
+	close IN;
+	close OUT;
+}
+
+sub output_source_format
+{
+	my $outfile = "source/format";
+
+	if ( $main::overlay eq "" )
+	{
+		if ( $main::add_missing && -f $outfile)
+		{
+			print "File $outfile exists, skipping.\n";
+			return;
+		}
+	}
+
+	if ( ! -d 'source' )
+	{
+		mkdir 'source', 0755 or die "Unable to make debian/source subdirectory: $! \n";
+	}
+
+	open OUT, ">$outfile" or die "Unable to open file $outfile for writing: $! \n";
+	if ($debian_native)
+   	{
+		print OUT "3.0 (native)\n";
+	} else {
+		print OUT "3.0 (quilt)\n";
+	}
+	close OUT;
+}
+
+
+sub show_version
+{
+	print "dh_make - prepare Debian packaging for an original source archive, version $main::DH_MAKE_VERSION\n\n";
+	print "Copyright (C) 1998-2011 Craig Small <csmall\@debian.org>\n";
+	print "This is free software; see the source for copying conditions.  There is NO\n";
+	print "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n";
+}
+
+sub show_help
+{
+	show_version();
+	print <<EOF
+  Usage: dh_make [options]
+  -c, --copyright <type>    use <type> of license in copyright file
+                            (apache|artistic|bsd|gpl|gpl2|gpl3|lgpl|lgpl2|
+                             lgpl3|x11)
+  -e, --email <address>     use <address> as the maintainer e-mail address
+  -n, --native              the program is Debian native, don\'t generate .orig
+  -f, --file <file>         specify file to use as the original source archive
+      --createorig          create orig.tar.gz file
+  -s, --single              set package class to single
+  -i, --indep               set package class to arch-independent
+  -m, --multi               set package class to multiple binary
+  -l, --library             set package class to library
+  -k, --kmod                set package class to kernel module
+      --kpatch              set package class to kernel patch
+  -a, --addmissing          reprocess package and add missing files
+  -t, --templates <dir>     apply customizing templates in <dir>
+  -d  --defaultless         skip the default debian and package class templates
+  -o, --overlay <dir>       reprocess package using template in <dir>
+  -p, --packagename <name>  force package name to be <name>
+  -r, --rulesformat <fmt>   Set the format of debian/rules file
+                            (old|dh7|cdbs)
+  -h, --help                display this help screen and exit
+  -v, --version             show the version and exit
+
+By Craig Small <csmall\@debian.org>
+Based on deb-make by Christoph Lameter <clameter\@debian.org>.
+Custom template support by Bruce Sass <bmsass\@shaw.ca>.
+EOF
+}
+
+sub parse_args
+{
+	my ($dohelp,$doversion, $single,$indep,$multi,$library,$kmod,$kpatch);
+	if (GetOptions(
+			'copyright|c=s' => \$main::license,
+			'email|e=s' => \$main::email,
+			'file|f=s' => \$main::source_file,
+			'createorig' => \$main::create_orig_tar,
+			'help|h' => \$dohelp,
+			'version|v' => \$doversion,
+			'native|n' => \$main::debian_native,
+			'single|s' => \$single,
+			'indep|i' => \$indep,
+			'multi|m' => \$multi,
+			'library|l' => \$library,
+			'kmod|k' => \$kmod,
+			'kpatch' => \$kpatch,
+			'addmissing|a' => \$main::add_missing,
+			'rulesformat|r=s' => \$main::rules_format,
+			'templates|t=s' => \$main::custom,
+			'defaultless|d' => \$main::no_defaults,
+			'overlay|o=s' => \$main::overlay,
+			'packagename|p=s' => \$main::forced_package_name
+		) == 0)
+	{
+		show_help();
+		exit;
+	}
+	# Check for extra options, should be none!
+	if ($#ARGV != -1) 
+	{
+		print "Extra parameters on command line\n";
+		show_help();
+		exit;
+  	}
+	if ($doversion)
+	{
+		show_version();
+		exit;
+	}
+	if ($dohelp)
+	{
+		show_help();
+		exit;
+	}
+	if ($single)
+	{
+		$main::package_type = 's';
+	}
+	if ($indep)
+	{
+		$main::package_type = 'i';
+	}
+	if ($multi)
+	{
+		$main::package_type = 'm';
+	}
+	if ($library)
+	{
+		$main::package_type = 'l';
+	}
+	if ($kmod)
+	{
+		$main::package_type = 'k';
+	}
+	if ($kpatch)
+	{
+		$main::package_type = 'n';
+	}
+	$main::license = lc $main::license;
+	if ($main::license ne "" && !($main::license =~ /^(gpl|gpl2|gpl3|lgpl|lgpl2|lgpl3|artistic|bsd|blank|apache|x11)$/))
+	{ 
+		print "Copyright type \"$main::license\" is not gpl, gpl2, gpl3, lgpl, lgpl2, lgpl3, apache, artistic, bsd, blank or x11.\n";
+		exit;
+	}
+	# Change the non-versioned into the latest version
+	$main::license = "gpl3" if ($main::license eq "gpl");
+	$main::license = "lgpl3" if ($main::license eq "lgpl");
+
+	# Verifuly ruletype
+	$main::rules_format = lc $main::rules_format;
+	if ($main::rules_format eq "")
+	{
+		$main::rules_format = "dh7";
+	} else {
+		if ($main::rules_format !~ /^(dh7|old|cdbs)$/)
+		{
+			print "Rules Format \"$main::rules_format\" is not dh7, old or cdbs.\n";
+			exit;
+		}
+	}
+}
+
+sub get_logname
+{
+	# lightdm in Ubuntu 11.10 does not set LOGNAME
+	# (https://bugs.launchpad.net/bugs/875705).  Work around this by trying
+	# USER instead.
+	if (exists $ENV{LOGNAME})
+	{
+		return $ENV{LOGNAME};
+	} elsif (exists $ENV{USER}) {
+		return $ENV{USER};
+	} else {
+		die "Cannot get username; neither LOGNAME nor USER is set in the environment!\n";
+	}
+}
+
+sub get_username
+{
+	my $tmpusername = '';
+
+	if (exists($ENV{'DEBFULLNAME'})) 
+	{
+		$tmpusername = $ENV{'DEBFULLNAME'};
+	}
+	return $tmpusername if ($tmpusername ne "");
+
+	my $logname = get_logname();
+	if (-x '/usr/bin/getent')
+	{
+		$tmpusername = qx(/usr/bin/getent passwd $logname|awk -F: '\{ print \$5; \}' | cut -f1 -d,);
+	}
+	chomp($tmpusername);
+	return $tmpusername if ($tmpusername ne "");
+
+	$tmpusername = qx(awk -F: -vUSER=$logname '\$1 == USER \{ print \$5; \}' /etc/passwd | cut -f1 -d,);
+	chomp($tmpusername);
+	return $tmpusername if ($tmpusername ne "");
+	
+	if (-x '/usr/bin/ypmatch')
+	{
+		$tmpusername = qx(ypmatch $logname passwd.byname|awk -F: '\{ print \$5; \}' | cut -f1 -d,);
+	}
+	chomp($tmpusername);
+	return $tmpusername if ($tmpusername ne "");
+
+	if (-x '/usr/bin/ldapsearch')
+	{
+		$tmpusername = [map {/^(?:gecos|cn): (.*)/} qx(ldapsearch -Q -LLL uid=$logname gecos cn)]->[0];
+	}
+	chomp($tmpusername);
+	return $tmpusername if ($tmpusername ne "");
+
+	return "unknown";
+}
+
+sub get_email() 
+{
+	return $ENV{DEBEMAIL} if ($ENV{DEBEMAIL} );
+	return $ENV{EMAIL} if ($ENV{EMAIL} );
+	my $logname = get_logname();
+	if (-x '/usr/bin/ldapsearch')
+	{
+		my $mail;
+		$mail = [map {/^mail: (.*)/ && $1} qx(ldapsearch -Q -LLL uid=$logname mail)]->[0];
+		return $mail if $mail;
+	}
+	if ($logname )
+	{
+		my $mailhost;
+		if ( -e '/etc/mailname')
+		{
+			$mailhost = qx(cat /etc/mailname);
+			chomp($mailhost);
+	 	} else {
+			$mailhost='unknown';
+	 	} 
+	 	return  ($logname . '@' . $mailhost);
+	}
+}
+
+sub get_package
+{
+	my $pwd = $ENV{PWD};
+	my $forced_package_version = "";
+	# May split the version out of the name
+	if ( ($main::forced_package_name) &&
+		($main::forced_package_name =~ /(.*)_([0-9][0-9a-zA-Z+.~-]*)$/))
+   	{
+		$main::forced_package_name = $1;
+		$forced_package_version = $2;
+	}
+	if ( ($forced_package_version)
+	   	|| (
+			($main::forced_package_name) && 
+			($pwd =~ /.*\/($main::forced_package_name)-([0-9][0-9a-zA-Z+.~-]*)$/)
+		) || (
+			($pwd =~ /.*\/(.*)-([0-9][0-9a-zA-Z+.~-]*)$/)
+		))
+	{
+		if ($main::forced_package_name)
+	   	{
+			$main::package_name = $main::forced_package_name;
+			
+		} else {
+			$main::package_name = $1;
+		}
+		$main::uc_package_name = uc $main::package_name;
+		if ($forced_package_version)
+	   	{
+			$main::fullname = $1 . "-"  . $forced_package_version;
+	  		$main::version = $forced_package_version;
+		} else {
+	  		# Fullname stays as the original dir
+			$main::fullname = $1 . "-"  . $2;
+			$main::version = $2;
+		}
+	} else {
+		print <<"EOF";
+For dh_make to find the package name and version, the current directory 
+needs to be in the format of <package>-<version>.  Alternatively use the
+-p flag using the format <name>_<version> to override it.
+I cannot understand the directory name or you have an invalid directory name!
+
+Your current directory is $pwd, perhaps you could try going to
+directory where the sources are?
+
+Please note that this change is necessary ONLY during the initial
+Debianization with dh_make.  When building the package, dpkg-source
+will gracefully handle almost any upstream tarball.
+
+EOF
+	 exit 1;
+	}
+	if (! ($main::package_name =~ /^[a-z0-9+.-]+$/))
+   	{
+		print <<"EOF";
+Package name "$main::package_name" is not in a valid format.
+Debian policy manual states:
+	"Package names must only consist of lower case letters, digits (0-9),
+	plus (+) or minus (-) signs, and periods (.)"
+EOF
+		exit 1;
+	}
+	if ( ($main::package_name =~ /^[a-z0-9+.-]$/))
+	{
+		print <<"EOF";
+Package name "$main::package_name" is not in a valid format.
+You cannot create single-letter package names.
+EOF
+		exit 1;
+	}
+}
+
+sub get_date
+{
+	my $tmpdate;
+	if (-x "/bin/date")
+	{
+		$tmpdate = qx(/bin/date -R);
+		chomp($tmpdate);
+		return $tmpdate;
+	} else {
+		die "Unable to find date program in /bin!\n";
+	}
+}
+
+sub print_confirmation
+{
+	# Print what we have found
+	print "Maintainer name  : $username\n";
+	print "Email-Address    : $email \n";
+	print "Date             : $date\n";
+	print "Package Name     : $package_name\n";
+	print "Version          : $version\n";
+	print "License          : $license";
+	print 'blank' if $license eq '';
+	print "\n";
+	print "Type of Package  : ";
+	if (exists $PACKAGE_TYPES{$package_type})
+	{
+		print $PACKAGE_TYPES{$package_type};
+	} else {
+		print 'unknown';
+	}
+	print "\nCustom template : $custom" if ( $custom ne "" );
+	print " (overlay)" if ( $overlay ne "" );
+	print "\nDefault debian and package class templates will not be applied." if ( $no_defaults );
+	print "\nHit <enter> to confirm: ";
+	my $dummy = <STDIN>;
+}
+$username = get_username();
+$email = get_email();
+$date = get_date();
+our $shortdate = qx(LC_ALL=C date '+%B %e, %Y');
+chomp $shortdate;
+our $year = qx(LC_ALL=C date '+%Y');
+chomp $year;
+parse_args();
+our $source_file_base=basename($source_file);
+if ( ! $overlay eq "" )
+{
+	#setup for overlay mode
+	$no_defaults = 1;
+	$add_missing = 1;
+	$custom = $overlay;
+}
+get_package();
+
+# Generate a line of dashes, which is as long as '#PACKAGE# for Debian'.
+for (my $i=0; $i<length("$main::package_name for Debian"); $i++)
+{
+	$DASHLINE = $DASHLINE . '-';
+}
+
+if ( ! $no_defaults )
+{
+	while ($package_type eq "")
+	{
+		print "\nType of package: single binary, indep binary, multiple binary, library, kernel module, kernel patch?\n [s/i/m/l/k/n] ";
+	 	my $type = <STDIN>;
+	 	chomp($type);
+	 	print "\n";
+	 	$type = lc($type);
+	 	$main::package_type = 's' if $type eq 's';
+	 	$main::package_type = 'i' if $type eq 'i';
+	 	$main::package_type = 'm' if $type eq 'm';
+	 	$main::package_type = 'l' if $type eq 'l';
+	 	$main::package_type = 'k' if $type eq 'k';
+	 	$main::package_type = 'n' if $type eq 'n';
+	}
+}
+
+# Debian native packages default to GPL v3, but it can be overwritten
+if ($debian_native && $main::license eq '')
+{
+	$main::license = 'gpl3';
+}
+
+print_confirmation;
+
+if (! $debian_native)
+{
+	if ( -f "../$package_name\_$version.orig.tar.gz")
+	{
+		print "Skipping creating ../$package_name\_$version.orig.tar.gz because it already exists\n";
+	} elsif ( -f "../$package_name\_$version.orig.tar.bz2") {
+		print "Skipping creating ../$package_name\_$version.orig.tar.bz2 because it already exists\n";
+	} elsif ( -f "../$package_name\_$version.orig.tar.lzma") {
+		print "Skipping creating ../$package_name\_$version.orig.tar.lzma because it already exists\n";
+	} else {
+		if ($source_file)
+		{
+			if (-f $source_file)
+			{
+				if ($source_file =~ /gz$/ ) 
+				{
+					system('cp', '-a', "$source_file", "../$package_name\_$version.orig.tar.gz");
+				} elsif ($source_file =~ /bz2$/ ) {
+					system('cp', '-a', "$source_file", "../$package_name\_$version.orig.tar.bz2");
+				} elsif ($source_file =~ /lzma$/ ) {
+					system('cp', '-a', "$source_file", "../$package_name\_$version.orig.tar.lzma");
+				}
+			} else {
+				print "Source archive you specified ( $source_file ) was not found!\n";
+				exit 1;
+			}
+		} else {
+			if ($create_orig_tar) {
+				system('tar', 'cfz', "../$package_name\_$version.orig.tar.gz", ".");
+			} else {
+				print "Could not find $package_name\_$version.orig.tar.gz\n";
+				print "Either specify an alternate file to use with -f,\n";
+				print "or add --createorig to create one.\n";
+				exit 1;
+		 	}
+		}
+	}
+}
+# Figure out where documentation is
+our @DOCS= split / |\n/, qx(ls -1 N[Ee][Ww][Ss] *[Ff][Aa][Qq]* *.[Tt][Xx][Tt] README* *.README [rR]eadme* *.[rR]eadme [Bb][Uu][Gg][Ss] *[tT][oO][dD][oO]* 2>/dev/null | egrep -v '^CMakeLists?.txt');
+# What are our info files
+our @INFOS= split / |\n/, qx(find . -regex '.*\\.info\\(-[0-9]+\\)?');
+# Figure out where is the first changelog, assign other similar files to docs
+my @changelogs= split / |\n/, qx(ls *[cC][hH][aA][nN][gG][eE][lL][oO][gG]* [cC][hH][aA][nN][gG][eE][sS]* 2>/dev/null);
+$CHANGELOG = $changelogs[0] if ($#changelogs != -1);
+shift @changelogs;
+@DOCS = (@DOCS,@changelogs);
+# Are there any .orig files in the upstream sources
+my @ORIG= split /[ \n]/, qx(find . -name '\*.orig');
+
+my $orig;
+foreach $orig (@ORIG)
+{
+	$PRESERVE="$PRESERVE --exclude $orig";
+}
+
+our ($CONFIG_STATUS, $CONFIGURE_STAMP, $PHONY_CONFIGURE, $CONFIGURE, $DPKG_ARCH, $INSTALL, $CLEAN, $MAKE, $CDBS_CLASS );
+our $BUILD_DEPS = 'debhelper (>= 8.0.0)';
+our $DH7_ADDON = '';
+if ($rules_format eq "cdbs") {
+	$BUILD_DEPS = 'cdbs, '.$BUILD_DEPS;
+}
+
+our ($PATCH_CLASS,$PATCH_STAMP,$PATCH_CLEAN);
+
+# Setup debian/rules
+if (-x "./configure" )
+{
+	$CDBS_CLASS="include /usr/share/cdbs/1/class/autotools.mk";
+	$CONFIG_STATUS="config.status";
+	$CONFIGURE_STAMP='';
+	$PHONY_CONFIGURE='';
+	$CONFIGURE="config.status: configure\n".
+		 "\tdh_testdir\n".
+		 "\t# Add here commands to configure the package.\n".
+		 "ifneq \"\$(wildcard /usr/share/misc/config.sub)\" \"\"\n".
+		 "\tcp -f /usr/share/misc/config.sub config.sub\n".
+		 "endif\n".
+		 "ifneq \"\$(wildcard /usr/share/misc/config.guess)\" \"\"\n".
+		 "\tcp -f /usr/share/misc/config.guess config.guess\n".
+		 "endif\n".
+		 "\t".'./configure $(CROSS) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"'."\n";
+	$DPKG_ARCH="# These are used for cross-compiling and for saving the configure script\n".
+			 "# from having to guess our platform (since we know it already)\n".
+			 'DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)'."\n".
+			 'DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)'."\n".
+			 'ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))'."\n".
+			 'CROSS= --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)'."\n".
+			 'else'."\n".
+			 'CROSS= --build $(DEB_BUILD_GNU_TYPE)'."\n".
+			 'endif'."\n";
+
+	$MAKE="\$(MAKE)";
+	# If it is automaked, use DESTDIR insteadof prefix
+	if ( -f 'Makefile.am' )
+	{
+		# If it is a library then install into tmp
+	 	if ( $package_type eq "l")
+	   	{
+			$INSTALL="\$(MAKE) DESTDIR=\$(CURDIR)/debian/tmp install";
+	 	} else {
+			$INSTALL="\$(MAKE) DESTDIR=\$(CURDIR)/debian/$package_name install";
+	 	}
+	} else {
+		if ( $package_type eq "l")
+		{
+			$INSTALL="\$(MAKE) prefix=\$(CURDIR)/debian/tmp/usr install";
+	 	} else {
+			$INSTALL="\$(MAKE) prefix=\$(CURDIR)/debian/$package_name/usr install";
+	 	}
+	}
+	$CLEAN="[ ! -f Makefile ] || \$(MAKE) distclean\n".
+			"\trm -f config.sub config.guess";
+	$BUILD_DEPS .= ', autotools-dev';
+} elsif (-f 'CMakeLists.txt') {
+	$CDBS_CLASS="include /usr/share/cdbs/1/class/cmake.mk";
+	$CONFIG_STATUS="builddir/Makefile";
+	$CONFIGURE_STAMP='';
+	$PHONY_CONFIGURE='';
+	$CONFIGURE="builddir/Makefile:\n".
+				 "\tdh_testdir\n".
+			 "\t# Add here commands to configure the package.\n".
+			 "\t".'mkdir -p builddir'."\n".
+			 "\t".'cd builddir && cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_C_FLAGS="$(CFLAGS)" -DCMAKE_LD_FLAGS="-Wl,-z,defs" -DCMAKE_CXX_FLAGS="$(CXXFLAGS)" -DCMAKE_SKIP_RPATH=ON -DCMAKE_VERBOSE_MAKEFILE=ON'."\n";
+	$MAKE="\$(MAKE) -C builddir";
+	# If it is a library then install into tmp
+	if ( $package_type eq "l")
+	{
+		$INSTALL="\$(MAKE) -C builddir DESTDIR=\$(CURDIR)/debian/tmp install";
+	} else {
+		$INSTALL="\$(MAKE) -C builddir DESTDIR=\$(CURDIR)/debian/$package_name install";
+	}
+	$CLEAN="rm -rf builddir\n";
+	$BUILD_DEPS .= ', cmake';
+
+} else {
+	if (! -f 'Makefile' && ! -f 'makefile' && ! -f 'GNUmakefile')
+	{
+	 print "Currently there is no top level Makefile. This may require additional tuning.\n";
+	}
+	$CDBS_CLASS="include /usr/share/cdbs/1/class/makefile.mk";
+	$CONFIGURE_STAMP='configure-stamp';
+	$CONFIG_STATUS='';
+	$CONFIGURE="configure: configure-stamp\n".
+				 "configure-stamp:\n". 
+			 "\tdh_testdir\n".
+			 "\t# Add here commands to configure the package.\n\n".
+			 "\ttouch configure-stamp\n";
+	$PHONY_CONFIGURE='configure';
+	$MAKE="\$(MAKE)";
+	$DPKG_ARCH='';
+	if ($package_type eq "l") {
+	 $INSTALL="\$(MAKE) DESTDIR=\$(CURDIR)/debian/tmp install";
+	} else {
+	 $INSTALL="\$(MAKE) DESTDIR=\$(CURDIR)/debian/$package_name install";
+	}
+	$CLEAN='$(MAKE) clean';
+}
+if ($package_type eq "k") {
+	$BUILD_DEPS .= ', bzip2';
+}
+
+if ($package_type eq "n") {
+	$BUILD_DEPS .= ', dh-kpatches';
+}
+
+# Customize files
+if ( $add_missing )
+{
+	if ( ! -d 'debian' )
+	{
+		die "--addmissing  or --overlay flag used but cannot find debian subdirectory\n";
+	}
+} else {
+	if ( ! -d 'debian')
+	{
+		mkdir 'debian', 0755 or die "Unable to make debian subdirectory: $! \n";
+	} else {
+		print "You already have a debian/ subdirectory in the source tree.\n";
+		print "dh_make will not try to overwrite anything.\n";
+		exit 1;
+	}
+}
+chdir 'debian' or die "Unable to chdir to debian subdirectory: $! \n";
+
+if ( ! -d $DHLIB )
+{
+	die "Unable to find dh_make's template directory: $! \n";
+}
+
+if ( ! $no_defaults )
+{
+	# Source format
+	output_source_format();
+
+	# General Files
+	@filenames= split / |\n/, qx{(cd $DHLIB/debian && ls)};
+	foreach $filename (@filenames)
+	{
+		process_file("$DHLIB/debian/$filename", $filename);
+	}
+
+	# Copyright file
+	if ($license eq '') 
+	{
+		process_file("$DHLIB/licenses/blank", "copyright");
+	} else {
+		if ( -r "$DHLIB/licenses/$license" )
+		{
+			process_file("$DHLIB/licenses/$license", "copyright");
+		} else {
+			die "Unable to find copyright template file $DHLIB/licenses/$license";
+	 	}
+	}
+	# Remove the  README if a kernel package, we use the specific one
+	if ( $package_type eq 'k')
+	{
+		unlink('README.Debian');
+	}
+
+	# Special Files
+	@filenames = split / |\n/, qx{(cd $DHLIB/debian$package_type && ls)};
+	foreach $filename (@filenames)
+	{
+		if ( $filename=~/^rules/ )
+		{
+			if ( $filename ne "rules.$rules_format")
+			{
+				next;
+			}
+		}
+		process_file("$DHLIB/debian$package_type/$filename", $filename);
+	}
+}
+
+# Custom template
+if ( $custom ne "" )
+{
+	if ( -d $custom )
+	{
+		@filenames = split /[\n]/, qx{(cd $custom && ls)};
+		foreach $filename (@filenames)
+		{
+			process_file("$custom/$filename", $filename);
+	 	}
+	} else {
+		print "Unable to find the customization directory, $custom\n";
+	}
+}
+
+if ( -f "rules")
+{
+	print "File rules already exists, skipping.\n";
+} else {
+	if ( ! -f "rules.$rules_format")
+	{
+		print "Cannot find rules file for rules format \"$rules_format\".\n";
+		exit;
+	}
+	system('mv', "rules.$rules_format", "rules");
+}
+
+# kernel-patch kpatch file name
+rename "kpatches", "$package_name.kpatches" if $package_type eq "n";
+
+if ( -f "docs" )
+{
+	print "File docs already exists, skipping.\n";
+} else {
+	my $doc;
+	open (DOCSFILE,">docs");
+	foreach $doc (@DOCS)
+	{
+		print DOCSFILE "$doc\n";
+	}
+	close (DOCSFILE);
+}
+
+if ( -f "info" )
+{
+	print "File info already exists, skipping.\n";
+} else {
+	if ($#INFOS > -1 )
+	{
+		my $info;
+		open (INFOFILE,">info");
+		foreach $info (@INFOS)
+	 	{
+			$info =~ s/^\.\///;
+			print INFOFILE "$info\n";
+	 	}
+	 	close (INFOFILE);
+	}
+}
+
+if ( ! $no_defaults )
+{
+	if ($debian_native)
+	{
+		@filenames = split / |\n/, qx{(cd $DHLIB/native && ls)};
+		foreach $filename (@filenames)
+		{
+	  		process_file("$DHLIB/native/$filename", $filename);
+		}
+	}
+}
+
+@filenames = split / |\n/, qx(ls package* 2>/dev/null);
+if ($#filenames != -1)
+{
+	foreach $filename (@filenames)
+	{
+		my $oldname = $filename;
+	 	$filename =~ s/^package/$package_name/;
+	 	if ( -f $filename)
+	 	{
+			print "File $filename already exists, skipping.\n";
+	 	} else {
+			system('mv', $oldname, $filename);
+	 	}
+	}
+}
+chmod 0755, 'rules';
+
+if ($CONFIG_STATUS ne "")
+{
+	print "Done. Please edit the files in the debian/ subdirectory now. $package_name\n";
+	print "uses a configure script, so you probably don't have to edit the Makefiles.\n";
+} else {
+	print "Done. Please edit the files in the debian/ subdirectory now. You should also\n";
+	print "check that the $package_name Makefiles install into \$DESTDIR and not in / .\n";
+}
+if ($package_type eq 'l')
+{
+	print "Make sure you change the package name from $package_name"."BROKEN to something\n".
+		  "else, such as $package_name"."1 in the debian/control file.\n";
+}
+
+
+exit 0;
+# vim:noet:sw=4:ts=4

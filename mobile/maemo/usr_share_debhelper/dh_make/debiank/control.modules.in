@@ -1,0 +1,20 @@
+Source: #PACKAGE#
+Section: unknown
+Priority: optional
+Maintainer: #USERNAME# <#EMAIL#>
+Build-Depends: debhelper (>= 7)
+Standards-Version: #POLICY#
+
+Package: #PACKAGE#-modules-_KVERS_
+Architecture: any
+Provides: #PACKAGE#-modules
+Description: #PACKAGE# modules for Linux (kernel _KVERS_).
+ This package contains the set of loadable kernel modules for the
+ <description>.
+ .
+ This package contains the compiled kernel modules for _KVERS_
+ .
+ If you have compiled your own kernel, you will most likely need to build
+ your own #PACKAGE#-modules. The #PACKAGE#-source package has been
+ provided for use with the Debian's module-assistant or kernel-package
+ utilities to produce a version of #PACKAGE#-modules for your kernel.

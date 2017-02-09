@@ -12,6 +12,8 @@ build:
 		--privileged -it \
 		--name $(CONTAINER_NAME) \
 		-v $$(readlink -f ./setup.sh):/tmp/setup.sh \
+		-v $$(readlink -f ./dh_make):/tmp/dh_make \
+		-v $$(readlink -f ./usr_share_debhelper):/tmp/usr_share_debhelper \
 		-v $$(readlink -f ./nokia.list):/tmp/nokia.list \
 		-v $$(readlink -f ./extras.list):/tmp/extras.list \
 		accupara/scratchbox \

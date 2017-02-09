@@ -31,4 +31,13 @@ echo "alias sb-start='sudo /scratchbox/sbin/sbox_ctl start'" >> ~/.bashrc
 echo "alias sb-switch-x86='sb-conf select HARMATTAN_X86'" >> ~/.bashrc
 echo "alias sb-switch-armel='sb-conf select HARMATTAN_ARMEL'" >> ~/.bashrc
 
+sudo /scratchbox/sbin/sbox_ctl start
+sudo /scratchbox/sbin/sbox_sync
+
+sb-conf select HARMATTAN_X86
+/scratchbox/login 'fakeroot apt-get -y --force-yes install applauncherd-dev'
+
+sb-conf select HARMATTAN_ARMEL
+/scratchbox/login 'fakeroot apt-get -y --force-yes install applauncherd-dev'
+
 sudo rm -f /tmp/*tgz

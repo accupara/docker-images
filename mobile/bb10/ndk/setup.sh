@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 
 set -x
 set -e

@@ -1,6 +1,6 @@
-# Copyright (c) 2016 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 FROM ubuntu:15.10
-MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
+MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Install the minimum tools
 RUN apt-get update && \

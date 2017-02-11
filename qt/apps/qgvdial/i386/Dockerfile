@@ -1,6 +1,6 @@
-# Copyright (c) 2016 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 FROM accupara/qt5_32:latest
-MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
+MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update

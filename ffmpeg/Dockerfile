@@ -1,6 +1,6 @@
-# Copyright (c) 2016 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:16.04
-MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
+MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Enable the Ubuntu multiverse repository.
 RUN sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse" >> /etc/apt/source.list' && \

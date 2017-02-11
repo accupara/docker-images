@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 
 ## run first time only.
 # docker build -t bmu-lfs .

@@ -1,6 +1,6 @@
-# Copyright (c) 2016 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:14.04
-MAINTAINER Yuvraaj Kelkar "uv@accupara.com"
+MAINTAINER Accupara Inc. "contact@accupara.com"
 
 RUN sudo bash -c 'echo "deb http://scratchbox.org/debian/ hathor main" >> /etc/apt/sources.list' && \
     sudo apt-get update && \

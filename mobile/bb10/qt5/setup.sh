@@ -62,10 +62,14 @@ function run_outside() {
     SCRIPTPATH=$(readlink -f $0)
 
     docker run \
-        --rm -it \
+        -it \
+        -name $BUILD_CONTAINER \
         -v $SCRIPTPATH:/tmp/setup.sh \
         accupara/bbndk \
         /tmp/setup.sh inside
+
+    docker commit $BUILD_CONTAINER $IMGNAME
+    docker push $BUILD_CONTAINER
 }
 
 function run_help() {
@@ -79,15 +83,12 @@ function run_it() {
     SCRIPTPATH=$(readlink -f $0)
 
     docker run \
-        -it \
+        --rm -it \
         -name $BUILD_CONTAINER \
         -v $SCRIPTPATH:/tmp/setup.sh \
         -v /mnt/src-20170212:/tmp/src \
         accupara/bbndk \
         /bin/bash
-
-    docker commit $BUILD_CONTAINER $IMGNAME
-    docker push $BUILD_CONTAINER
 }
 
 function main() {

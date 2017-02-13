@@ -63,13 +63,16 @@ function run_outside() {
 
     docker run \
         -it \
-        -name $BUILD_CONTAINER \
+        --name $BUILD_CONTAINER \
         -v $SCRIPTPATH:/tmp/setup.sh \
         accupara/bbndk \
         /tmp/setup.sh inside
 
     docker commit $BUILD_CONTAINER $IMGNAME
     docker push $BUILD_CONTAINER
+
+    # Cleanup all Exited containers
+    docker ps -a | grep Exited | awk '{print $1}' | while read line ; do docker rm $line ; done
 }
 
 function run_help() {

@@ -69,7 +69,7 @@ function run_outside() {
         /tmp/setup.sh inside
 
     docker commit $BUILD_CONTAINER $IMGNAME
-    docker push $BUILD_CONTAINER
+    docker push $IMGNAME
 
     # Cleanup all Exited containers
     docker ps -a | grep Exited | awk '{print $1}' | while read line ; do docker rm $line ; done

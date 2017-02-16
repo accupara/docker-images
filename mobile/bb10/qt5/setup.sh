@@ -32,7 +32,14 @@ function run_inside() {
     set -e
 
     # Install the pre-requisites
-    sudo apt-get install -y flex bison gperf libicu-dev libxslt-dev ruby
+    sudo apt-get install -y \
+        bison \
+        flex \
+        gperf \
+        libicu-dev \
+        libqt4-dev-bin \
+        libxslt-dev \
+        ruby
 
     # Make a place for the code
     mkdir -p /tmp/src
@@ -70,12 +77,12 @@ function run_outside() {
 
     # Create two images: one for arm, one for x86
     docker commit \
-        --change 'ENV PATH /home/admin/bin/qt5/armle/bin:home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+        --change 'ENV PATH /home/admin/bin/qt5/armle/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
         $BUILD_CONTAINER \
         $IMGNAME:arm
 
     docker commit \
-        --change 'ENV PATH /home/admin/bin/qt5/x86/bin:home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+        --change 'ENV PATH /home/admin/bin/qt5/x86/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
         $BUILD_CONTAINER \
         $IMGNAME:x86
 

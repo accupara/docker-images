@@ -68,8 +68,20 @@ function run_outside() {
         accupara/bbndk \
         /tmp/setup.sh inside
 
-    docker commit $BUILD_CONTAINER $IMGNAME
-    docker push $IMGNAME
+    # Create two images: one for arm, one for x86
+    docker commit \
+        --change 'ENV PATH /home/admin/bin/qt5/armle/bin:home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+        $BUILD_CONTAINER \
+        $IMGNAME:arm
+
+    docker commit \
+        --change 'ENV PATH /home/admin/bin/qt5/x86/bin:home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' \
+        $BUILD_CONTAINER \
+        $IMGNAME:x86
+
+    # Push them both
+    docker push $IMGNAME:arm
+    docker push $IMGNAME:x86
 
     # Cleanup all Exited containers
     docker ps -a | grep Exited | awk '{print $1}' | while read line ; do docker rm $line ; done

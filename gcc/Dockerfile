@@ -4,6 +4,7 @@ MAINTAINER Accupara Inc. "contact@accupara.com"
 
 RUN sudo apt-get update && \
     sudo apt-get install -y \
+        gawk \
         autoconf \
         automake \
         bzip2 \

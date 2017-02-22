@@ -15,4 +15,4 @@ pull:
 	docker pull $(IMGTAG):$(IMGVER)
 
 it:
-	docker run --rm -it -v ~/code/:/tmp/code $(IMGTAG):$(IMGVER) /bin/bash
+	docker run --rm -it -v ~/:/tmp/home $(IMGTAG):$(IMGVER) /bin/bash

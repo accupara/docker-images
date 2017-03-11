@@ -108,8 +108,10 @@ def ensure_valid_config_file(args):
     # end if
 
     if 'cmds' not in config:
+        config['cmds'] = []
         if args.cmds:
-            config['cmds'] = args.cmds
+            for cmd in args.cmds:
+                config['cmds'].append(cmd.split())
         else:
             cmd = input('Enter command to run: ')
             config['cmds'] = [ cmd.split() ]
@@ -148,10 +150,12 @@ def main():
 
     # Pull out the commands and run each one
     for cmd in config['cmds']:
+        cmd = ('cd %s ; ' % config['mountPath']) + ' '.join(cmd)
         dcmd = ['docker', 'run', '--rm', '-it',
             '-v', '%s:%s' % (args.changeDir, config['mountPath']),
-            config['imageUrl'], ]
-        list.extend(dcmd, cmd)
+            config['imageUrl'],
+            '/bin/bash', '-c', cmd,
+            ]
         printf('Run command: %s\n', dcmd)
         subprocess.Popen(dcmd).communicate()
 

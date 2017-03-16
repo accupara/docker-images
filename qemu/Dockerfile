@@ -4,8 +4,9 @@ MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update
-RUN sudo apt-get install --no-install-recommends -y  \
+RUN sudo apt-get install -y  \
     build-essential     \
+    clang               \
     git                 \
     glib2.0-dev         \
     libaio-dev          \

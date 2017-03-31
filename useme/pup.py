@@ -72,7 +72,7 @@ def get_images():
 def ensure_valid_config_file(args):
     config = {}
 
-    cfgFile = os.path.join(args.changeDir, 'sire.cfg')
+    cfgFile = os.path.join(args.changeDir, 'pup.cfg')
     if os.path.exists(cfgFile):
         try:
             fp = open(cfgFile, 'r')

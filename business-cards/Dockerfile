@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+# Copyright (c) 2017 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:16.10
 
 # Install tex, xetex

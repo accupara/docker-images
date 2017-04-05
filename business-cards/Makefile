@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+# Copyright (c) 2017 Accupara Inc. All rights reserved
 IMGTAG?=accupara/business-cards
 IMGVER?=latest
 

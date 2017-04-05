@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-SUBDIRS=14.04 15.10 16.04
+SUBDIRS=14.04 15.10 16.04 16.10
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

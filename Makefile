@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 
-SUBDIRS=ubuntu centos django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemove mobile
+SUBDIRS=ubuntu centos business-cards django-nginx linuxkernel rsync qt qemu lfs ffmpeg duperemove mobile
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

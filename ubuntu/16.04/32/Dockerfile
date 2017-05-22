@@ -3,9 +3,21 @@ FROM 32bit/ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Install the minimum tools
-RUN apt-get update && \
-    apt-get -y dist-upgrade && \
-    apt-get install -y \
+RUN apt-get update \
+    && echo "console-setup   console-setup/codeset47 select  # Latin1 and Latin5 - western Europe and Turkic languages" | debconf-set-selections \
+    && echo "console-setup   console-setup/fontface47        select  Fixed" | debconf-set-selections \
+    && echo "console-setup   console-setup/fontsize-text47   select  16" | debconf-set-selections \
+    && echo "console-setup   console-setup/charmap47 select  UTF-8" | debconf-set-selections \
+    && echo "keyboard-configuration  console-setup/detect    detect-keyboard" | debconf-set-selections \
+    && echo "keyboard-configuration  console-setup/detected  note" | debconf-set-selections \
+    && echo "console-setup   console-setup/codesetcode       string  Lat15" | debconf-set-selections \
+    && echo "keyboard-configuration  console-setup/ask_detect        boolean false" | debconf-set-selections \
+    && echo "console-setup   console-setup/store_defaults_in_debconf_db      boolean true" | debconf-set-selections \
+    && echo "console-setup   console-setup/fontsize-fb47     select  16" | debconf-set-selections \
+    && echo "console-setup   console-setup/fontsize  string  16" | debconf-set-selections \
+    && echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections \
+    && apt-get -y dist-upgrade \
+    && apt-get install -y \
         bash-completion \
         binutils \
         build-essential \

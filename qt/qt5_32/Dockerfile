@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:14.04_32
+FROM accupara/ubuntu:16.04_32
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.

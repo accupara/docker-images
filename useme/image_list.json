@@ -11,6 +11,10 @@
         {
             "imageUrl": "accupara/qemu",
             "summary": "Qemu build for x86_64"
+        },
+        {
+            "imageUrl": "accupara/qtbuild",
+            "summary": "Qt build for x86_64"
         }
     ]
 }

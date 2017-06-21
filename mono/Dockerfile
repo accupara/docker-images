@@ -2,6 +2,8 @@
 FROM accupara/ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
+# Follow the steps laid out at http://www.mono-project.com/docs/compiling-mono/linux/
+
 RUN sudo apt-get update && \
     sudo apt-get install -y \
          autoconf \

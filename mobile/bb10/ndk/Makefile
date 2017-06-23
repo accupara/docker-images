@@ -1,33 +1,41 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-IMGTAG=accupara/bbndk
-IMGVER=latest
+IMGTAG?=accupara/bbndk
+IMGVER?=latest
 
-MOMENTICS_FILE=momentics-2.1.2-201503050937.linux.x86_64.run
-CONTAINER_NAME=savethis
+MOMENTICS_FILE?=momentics-2.1.2-201503050937.linux.x86_64.run
+STARTING_CTR?=accupara/xpra
+CONTAINER_NAME?=savethis
 
-.PHONY: help clean run_sshd run_setup run_qt5_compile run_ssh_bash commit_container push pull it
+.PHONY: help clean build commit_container push pull it
 
 help:
-	@echo 'Start off with "make run_sshd" first.'
-	@echo 'In another terminal, run the following in order:'
-	@echo '"make copy_files"'
-	@echo '"make run_setup"'
-	@echo 'After run_setup ends, it might be necessary to "make run_ssh_bash" and run ~/bin/bbndk/qde'
-	@echo 'In the end, quit the "make run_sshd" using Ctrl+C. This will commit the container'
+	@echo 'Start off with "make build".'
+	@echo 'It will copy the setup files, start it in xpra and then attach to that xpra session'
+	@echo 'After everything is installed, disconnect from the xpra session.'
+	@echo 'The container will be commited into an image.'
 
 clean:
+	-docker kill $(CONTAINER_NAME)
 	-docker rmi $$(docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }')
 	-docker rm $$(docker ps -aq)
 	rm -rf /tmp/bbndk
 
-run_sshd: clean
-	-docker run -it --name ${CONTAINER_NAME} uvatbc/sshd
-	${MAKE} commit_container
-
 ensure_momentics_installer:
 	if [ ! -f $(MOMENTICS_FILE) ] ; then wget https://developer.blackberry.com/native/downloads/fetch/$(MOMENTICS_FILE) ; fi
 
-copy_files: ensure_momentics_installer
+build: clean ensure_momentics_installer
+	docker run -d -p 2022:22 --name $(CONTAINER_NAME) $(STARTING_CTR)
+	docker cp ~/.ssh/id_rsa.pub $(CONTAINER_NAME):/tmp/useme
+	docker exec $(CONTAINER_NAME) bash -c "cat /tmp/useme >> ~/.ssh/authorized_keys"
+	docker cp setup.sh $(CONTAINER_NAME):/tmp/
+	docker cp $(MOMENTICS_FILE) $(CONTAINER_NAME):/tmp/
+	docker exec $(CONTAINER_NAME) /tmp/setup.sh
+	xpra \
+		--ssh="ssh -o 'UserKnownHostsFile /dev/null' -o 'StrictHostKeyChecking no' -p 2022" \
+		attach ssh:admin@localhost:100
+	$(MAKE) commit_container
+
+dont_use_copy_files: ensure_momentics_installer
 	ssh-copy-id \
 		-o UserKnownHostsFile=/dev/null \
 		-o StrictHostKeyChecking=no \
@@ -37,26 +45,6 @@ copy_files: ensure_momentics_installer
 		-o StrictHostKeyChecking=no \
 		setup.sh $(MOMENTICS_FILE) \
 		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}`:/tmp/
-
-run_setup:
-	ssh -C -Y \
-		-o UserKnownHostsFile=/dev/null \
-		-o StrictHostKeyChecking=no \
-		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}` \
-		'/tmp/setup.sh'
-
-run_qt5_compile:
-	ssh -C -Y \
-		-o UserKnownHostsFile=/dev/null \
-		-o StrictHostKeyChecking=no \
-		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}` \
-		'cd ~/code/qt5/ ; ./bb10_build_qt5.sh'
-
-run_ssh_bash:
-	ssh -C -Y \
-		-o UserKnownHostsFile=/dev/null \
-		-o StrictHostKeyChecking=no \
-		admin@`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${CONTAINER_NAME}`
 
 # How to figure out what environment variables to add here:
 # Run the accupara/bbndk container and run:
@@ -82,10 +70,11 @@ run_ssh_bash:
 # Pull out the unique values out of this and use it
 commit_container:
 	-docker rmi $$(docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }')
+	-docker kill $(CONTAINER_NAME)
 	docker commit \
 		--change 'CMD ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]' \
 		--change 'ENV QNX_TARGET=/home/admin/bin/bbndk/target_10_3_1_995/qnx6 QNX_HOST=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86 QNX_CONFIGURATION=/home/admin/.rim/bbndk MAKEFLAGS=-I/home/admin/bin/bbndk/target_10_3_1_995/qnx6/usr/include LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib QML2_IMPORT_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/qml LD_LIBRARY_PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/lib:/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt4/lib: PATH=/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/bin:/home/admin/.rim/bbndk/bin:/home/admin/bin/bbndk/features/com.qnx.tools.jre.linux.x86_64_1.7.0.51/jre/bin:/home/admin/bin/bbndk/host_10_3_1_12/linux/x86/usr/python32/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin QT_LIB_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/lib QT_PLUGIN_PATH=/home/admin/bin/bbndk/target_10_3_1_995/qnx6/../linux/x86/usr/lib/qt5/plugins QDE=/home/admin/bin/bbndk CPUVARDIR=armle-v7' \
-		${CONTAINER_NAME} \
+		$(CONTAINER_NAME) \
 		$(IMGTAG):$(IMGVER)
 	-docker rm $$(docker ps -aq)
 
@@ -96,4 +85,4 @@ pull:
 	docker pull $(IMGTAG):$(IMGVER)
 
 it:
-	-docker run --rm -it -v ~/code:/tmp/code $(IMGTAG):$(IMGVER) /bin/bash
+	-docker run --rm -it -v ~/:/tmp/home $(IMGTAG):$(IMGVER) /bin/bash

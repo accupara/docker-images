@@ -27,13 +27,10 @@ if [ ! -f /tmp/$FILE ] ; then
     wget https://developer.blackberry.com/native/downloads/fetch/$FILE
 fi
 
-chmod +x /tmp/$FILE
+sudo chmod +x /tmp/$FILE
 echo y | /tmp/$FILE
-rm /tmp/$FILE
+sudo rm /tmp/$FILE
+
+xpra control :100 start ~/bin/bbndk/qde
 
 sudo apt-get clean
-
-# Begin the NDK install
-~/bin/bbndk/qde
-# Continue the NDK install
-~/bin/bbndk/qde

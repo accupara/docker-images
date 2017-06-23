@@ -68,6 +68,8 @@ function run_outside() {
 
     SCRIPTPATH=$(readlink -f $0)
 
+    docker pull accupara/bbndk
+
     docker run \
         -it \
         --name $BUILD_CONTAINER \

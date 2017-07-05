@@ -5,6 +5,12 @@ MAINTAINER Accupara Inc. "contact@accupara.com"
 COPY installqt.qs /tmp/installqt.qs
 
 RUN sudo apt-get update
+
+# Links information
+# 1. Android Studio download page: https://developer.android.com/studio/index.html#downloads
+#    "Just get the nd line tools"
+# 2. Android NDK Download page: https://developer.android.com/ndk/downloads/index.html
+# 3. Download the last version of Qt that works for Android (5.8.0) from here: https://www.qt.io/download-open-source/#section-2
 RUN sudo apt-get install -y \
     libdbus-1-3 \
     libfontconfig1 \

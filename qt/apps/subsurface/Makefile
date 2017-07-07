@@ -1,6 +1,3 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-IMGTAG?=accupara/subsurface
-IMGVER?=linux
-#IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
-
-include $(shell git rev-parse --show-toplevel)/Makefile.build
+SUBDIRS=linux android
+include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

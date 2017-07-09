@@ -16,5 +16,5 @@ RUN sudo apt-get install -y \
     pkgconf
 
 ENV ANDROID_NDK_ROOT=/opt/android-tools/android-ndk-r15b \
-    ANDROID_SDK_ROOT=/opt/android-tools/Tools \
+    ANDROID_SDK_ROOT=/opt/android-tools/tools \
     QT5_ANDROID=/opt/android-tools/Qt/5.8

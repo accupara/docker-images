@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-SUBDIRS=qt4 qt5 qtbuild apps
+SUBDIRS=linux linux32
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/android:5.9
+FROM accupara/android_qt:5.9
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.

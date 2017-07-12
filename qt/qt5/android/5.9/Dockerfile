@@ -6,8 +6,7 @@ COPY installqt.qs /tmp/installqt.qs
 
 RUN sudo apt-get update
 
-# Links information
-# 1. Download the last version of Qt that works for Android (5.9.1) from here: https://www.qt.io/download-open-source/#section-2
+# Download the last version of Qt that works for Android (5.9.1) from here: https://www.qt.io/download-open-source/#section-2
 RUN sudo apt-get install -y \
     wget \
     unzip \

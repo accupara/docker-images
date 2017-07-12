@@ -16,17 +16,18 @@ RUN sudo apt-get install -y \
     openjdk-8-jdk \
     wget \
     unzip \
- && wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip \
-         https://dl.google.com/android/repository/android-ndk-r15b-linux-x86_64.zip \
- && unzip sdk-tools-linux-3859397.zip \
- && unzip android-ndk-r15b-linux-x86_64.zip \
- && rm sdk-tools-linux-3859397.zip android-ndk-r15b-linux-x86_64.zip \
- && sudo mkdir -p /opt/android-tools/licenses \
- && sudo mv android-ndk-r15b tools /opt/android-tools/ \
+ && sudo mkdir -p /opt/android-tools/licenses /root/.android ~/.android \
+ && sudo chown admin.admin ~/.android \
  && sudo bash -c "echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /opt/android-tools/licenses/android-sdk-license" \
- && sudo bash -c "echo 84831b9409646a918e30573bab4c9c91346d8abd > /opt/android-tools/licenses/android-sdk-preview-license"
+ && sudo bash -c "echo 84831b9409646a918e30573bab4c9c91346d8abd > /opt/android-tools/licenses/android-sdk-preview-license" \
+ && wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip \
+         https://dl.google.com/android/repository/android-ndk-r14b-linux-x86_64.zip \
+ && unzip sdk-tools-linux-3859397.zip \
+ && unzip android-ndk-r14b-linux-x86_64.zip \
+ && rm sdk-tools-linux-3859397.zip android-ndk-r14b-linux-x86_64.zip \
+ && sudo mv android-ndk-r14b tools /opt/android-tools/
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r15b
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r14b
 
 RUN sudo /opt/android-tools/tools/bin/sdkmanager "platform-tools" \
  && sudo /opt/android-tools/tools/bin/sdkmanager "platforms;android-26" \

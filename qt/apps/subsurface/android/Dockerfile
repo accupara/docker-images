@@ -13,8 +13,13 @@ RUN sudo apt-get install -y \
     g++ \
     git \
     make \
-    pkgconf
+    pkgconf \
+ && sudo sed -i \
+    's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' \
+    /opt/android-tools/Qt/5.9.1/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 ENV ANDROID_NDK_ROOT=/opt/android-tools/android-ndk-r15b \
     ANDROID_SDK_ROOT=/opt/android-tools/tools \
-    QT5_ANDROID=/opt/android-tools/Qt/5.9.1
+    QT5_ANDROID=/opt/android-tools/Qt/5.9.1 \
+    ANDROID_NDK=android-ndk-r15b \
+    ANDROID_SDK=android-sdk-linux

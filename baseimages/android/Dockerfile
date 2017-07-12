@@ -23,12 +23,12 @@ RUN sudo apt-get install -y \
  && rm sdk-tools-linux-3859397.zip android-ndk-r15b-linux-x86_64.zip \
  && sudo mkdir -p /opt/android-tools/licenses \
  && sudo mv android-ndk-r15b tools /opt/android-tools/ \
- && sudo bash -c "echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /opt/android-tools/licenses/android-sdk-license"
+ && sudo bash -c "echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /opt/android-tools/licenses/android-sdk-license" \
+ && sudo bash -c "echo 84831b9409646a918e30573bab4c9c91346d8abd > /opt/android-tools/licenses/android-sdk-preview-license"
 
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r15b
 
-RUN sudo bash -c "echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /opt/android-tools/licenses/android-sdk-license" \
- && sudo /opt/android-tools/tools/bin/sdkmanager "platform-tools" \
+RUN sudo /opt/android-tools/tools/bin/sdkmanager "platform-tools" \
  && sudo /opt/android-tools/tools/bin/sdkmanager "platforms;android-26" \
  && sudo /opt/android-tools/tools/bin/sdkmanager "platforms;android-25" \
  && sudo /opt/android-tools/tools/bin/sdkmanager "platforms;android-24" \

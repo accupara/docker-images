@@ -72,5 +72,3 @@ RUN sdkmanager "platform-tools" \
  && sdkmanager "add-ons;addon-google_apis-google-22" \
  && sdkmanager "add-ons;addon-google_apis-google-21" \
  && echo "Add-ons installed"
-
-RUN android update sdk --no-ui

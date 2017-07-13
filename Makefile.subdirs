@@ -4,16 +4,16 @@
 .PHONY: clean build push pull recreate
 
 clean:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $$i clean ; done
+	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i clean ; done
 
 build:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $$i build ; done
+	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i build ; done
 
 push:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $$i push ; done
+	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i push ; done
 
 pull:
-	for i in ${SUBDIRS} ; do ${MAKE} -C $$i pull ; done
+	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i pull ; done
 
 recreate:
 	for i in ${SUBDIRS} ; do \

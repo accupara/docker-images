@@ -17,7 +17,8 @@ RUN sudo apt-get install -y \
     wget \
     unzip \
  && sudo mkdir -p /opt/android-tools/licenses ~/.android \
- && sudo chown admin.admin ~/.android /opt/android-tools/ \
+ && sudo chown -R admin.admin ~/.android /opt/android-tools/ \
+ && touch ~/.android/repositories.cfg \
  && echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /opt/android-tools/licenses/android-sdk-license \
  && echo 84831b9409646a918e30573bab4c9c91346d8abd > /opt/android-tools/licenses/android-sdk-preview-license \
  && wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip \
@@ -27,7 +28,8 @@ RUN sudo apt-get install -y \
  && rm sdk-tools-linux-3859397.zip android-ndk-r14b-linux-x86_64.zip \
  && mv android-ndk-r14b tools /opt/android-tools/
 
-ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r14b
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r14b \
+    ANDROID_HOME=/opt/android-tools
 
 RUN sdkmanager "platform-tools" \
  && sdkmanager "platforms;android-26" \
@@ -40,6 +42,7 @@ RUN sdkmanager "platform-tools" \
  && sdkmanager "platforms;android-17" \
  && sdkmanager "platforms;android-15" \
  && sdkmanager "platforms;android-10" \
+ && echo "Platforms installed" \
  && sdkmanager "build-tools;26.0.0" \
  && sdkmanager "build-tools;25.0.3" \
  && sdkmanager "build-tools;25.0.2" \
@@ -50,6 +53,7 @@ RUN sdkmanager "platform-tools" \
  && sdkmanager "build-tools;20.0.0" \
  && sdkmanager "build-tools;19.1.0" \
  && sdkmanager "build-tools;17.0.0" \
+ && echo "Build tools installed" \
  && sdkmanager "system-images;android-25;google_apis;armeabi-v7a" \
  && sdkmanager "system-images;android-24;default;armeabi-v7a" \
  && sdkmanager "system-images;android-22;default;armeabi-v7a" \
@@ -57,12 +61,16 @@ RUN sdkmanager "platform-tools" \
  && sdkmanager "system-images;android-19;default;armeabi-v7a" \
  && sdkmanager "system-images;android-17;default;armeabi-v7a" \
  && sdkmanager "system-images;android-15;default;armeabi-v7a" \
+ && echo "System images installed" \
  && sdkmanager "extras;android;m2repository" \
  && sdkmanager "extras;google;m2repository" \
  && sdkmanager "extras;google;google_play_services" \
  && sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
  && sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
+ && echo "Extras installed" \
  && sdkmanager "add-ons;addon-google_apis-google-23" \
  && sdkmanager "add-ons;addon-google_apis-google-22" \
  && sdkmanager "add-ons;addon-google_apis-google-21" \
- && android update sdk --no-ui
+ && echo "Add-ons installed"
+
+RUN android update sdk --no-ui

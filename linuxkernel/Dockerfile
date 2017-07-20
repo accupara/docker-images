@@ -12,4 +12,5 @@ RUN sudo apt-get install -y \
         libncurses5-dev \
         libssl-dev \
         openssl \
-        perl
+        perl \
+        libelf-dev

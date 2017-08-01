@@ -1,11 +1,12 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/armhf_ubuntu:16.04
+FROM accupara/ubuntu:16.04_arm32v7
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-RUN sudo apt-get install -y software-properties-common && \
-    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
-    sudo apt-get update
-RUN sudo apt-get -y install \
+RUN sudo apt-get update \
+ && sudo apt-get install -y software-properties-common \
+ && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+ && sudo apt-get update \
+ && sudo apt-get -y install \
         bison \
         firebird-dev \
         flex \
@@ -38,5 +39,4 @@ RUN sudo apt-get -y install \
         perl \
         python \
         subversion \
-        ruby && \
-    sudo apt-get build-dep -y qt5-default
+        ruby

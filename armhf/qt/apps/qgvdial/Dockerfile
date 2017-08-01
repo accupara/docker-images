@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/armhf_qt4:latest
+FROM accupara/qt4:arm32v7
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.

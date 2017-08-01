@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM armhf/ubuntu:16.04
+FROM arm32v7/ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 RUN apt-get update && \

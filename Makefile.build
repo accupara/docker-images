@@ -2,6 +2,16 @@
 # This template must only be included by the actual image building makefile
 
 build:
-	docker build -t $(IMGTAG):$(IMGVER) .
+ifdef dockerfile_git
+	docker build \
+		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+		--build-arg VCS_REF=$(dockerfile_git) \
+		-t $(IMGTAG):$(IMGVER) \
+		.
+else
+	docker build \
+		-t $(IMGTAG):$(IMGVER) \
+		.
+endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

@@ -3,9 +3,12 @@
 
 clean:
 	-docker rm $$(docker ps -aq)
-	docker images | awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }' | \
+	docker images | \
+		awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }' | \
 		while read line ; do docker rmi $$line ; done
-	docker images | grep '<none>' | awk '{ print $$3 }' | \
+	docker images | \
+		grep '<none>' | \
+		awk '{ print $$3 }' | \
 		while read line ; do docker rmi $$line ; done
 
 push:
@@ -15,4 +18,8 @@ pull:
 	docker pull $(IMGTAG):$(IMGVER)
 
 it:
-	docker run --rm -it -v ~/:/tmp/home $(IMGTAG):$(IMGVER) /bin/bash
+	docker run \
+		--rm -it \
+		-v ~/:/tmp/home \
+		$(IMGTAG):$(IMGVER) \
+		/bin/bash

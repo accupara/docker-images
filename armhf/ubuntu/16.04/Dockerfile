@@ -2,16 +2,19 @@
 FROM arm32v7/ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
+# Install the minimum tools
 RUN apt-get update && \
     apt-get -y dist-upgrade && \
     apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
+        debhelper \
+        dh-make \
         git \
         subversion \
-        vim \
         sudo \
+        vim \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_*
 

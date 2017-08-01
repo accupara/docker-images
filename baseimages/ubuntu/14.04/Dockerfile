@@ -16,20 +16,17 @@ RUN apt-get update && \
         sudo \
         vim \
  && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
-
-RUN echo ". /etc/bash_completion" >> /root/.bashrc
-
-CMD /bin/bash
-
-RUN useradd -ms /bin/bash admin && \
-    echo "admin:admin" | chpasswd && \
-    adduser admin sudo && \
-    echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ && rm -f /var/lib/apt/lists/*_dists_* \
+ && echo ". /etc/bash_completion" >> /root/.bashrc \
+ && useradd -ms /bin/bash admin \
+ && echo "admin:admin" | chpasswd \
+ && adduser admin sudo \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER admin
 ENV HOME=/home/admin USER=admin
 WORKDIR /home/admin
+CMD /bin/bash
 
 RUN sudo chown -R admin:admin /home/admin && \
     echo ". /etc/bash_completion" >> /home/admin/.bashrc && \

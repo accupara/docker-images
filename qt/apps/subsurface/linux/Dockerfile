@@ -40,3 +40,13 @@ RUN sudo apt-get install -y \
     qttools5-dev-tools \
  && sudo apt-get install -y \
     libgit2-dev
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Subsurface for Linux" \
+      org.label-schema.description="Build environment for compiling Subsurface for Linux AMD64" \
+      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url=$VCS_REF \
+      org.label-schema.vendor="Accupara Inc."

@@ -23,3 +23,13 @@ ENV ANDROID_NDK_ROOT=/opt/android-tools/android-ndk-r14b \
     QT5_ANDROID=/opt/android-tools/Qt/5.9.1 \
     ANDROID_NDK=android-ndk-r14b \
     ANDROID_SDK=android-sdk-linux
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Subsurface for Android" \
+      org.label-schema.description="Build environment for compiling Subsurface for Android" \
+      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url=$VCS_REF \
+      org.label-schema.vendor="Accupara Inc."

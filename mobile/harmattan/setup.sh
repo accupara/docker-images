@@ -35,9 +35,19 @@ sudo /scratchbox/sbin/sbox_ctl start
 sudo /scratchbox/sbin/sbox_sync
 
 sb-conf select HARMATTAN_X86
-/scratchbox/login 'fakeroot apt-get -y --force-yes install applauncherd-dev'
+/scratchbox/login fakeroot apt-get -y --force-yes install \
+    applauncherd-dev \
+    libmeegocontrol-dev \
+    libmeegotouchevents-dev \
+    libmeegotouchhome-dev \
+    meegotouch-qt-style-dev
 
 sb-conf select HARMATTAN_ARMEL
-/scratchbox/login 'fakeroot apt-get -y --force-yes install applauncherd-dev'
+/scratchbox/login fakeroot apt-get -y --force-yes install \
+    applauncherd-dev \
+    libmeegocontrol-dev \
+    libmeegotouchevents-dev \
+    libmeegotouchhome-dev \
+    meegotouch-qt-style-dev
 
 sudo rm -f /tmp/*tgz

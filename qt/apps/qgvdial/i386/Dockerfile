@@ -5,6 +5,7 @@ MAINTAINER Accupara Inc. "contact@accupara.com"
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update
 RUN sudo apt-get install -y \
+        libc6-amd64 \
         libtelepathy-qt5-dev \
         perl \
         qt5-default

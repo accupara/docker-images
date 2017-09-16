@@ -14,7 +14,7 @@ RUN apt-get update && \
         git \
         subversion \
         sudo \
-        vim \
+        vim-nox \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

@@ -17,5 +17,5 @@ RUN sudo apt-get install -y \
 
 RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
  && mkdir -p targets/powerpc-softfloat && cd targets/powerpc-softfloat && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/powerpc-softfloat/* && cd ../../ \
- && sudo ./install.sh -s gmae -r - powerpc-softfloat \
+ && sudo ./install.sh -s toolchain -r - powerpc-softfloat \
  && rm -rf targets

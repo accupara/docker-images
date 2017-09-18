@@ -17,5 +17,5 @@ RUN sudo apt-get install -y \
 
 RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
  && mkdir -p targets/m53evk && cd targets/m53evk && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/m53evk/* && cd ../../ \
- && sudo ./install.sh -s gmae -r - m53evk \
+ && sudo ./install.sh -s toolchain -r - m53evk \
  && rm -rf targets

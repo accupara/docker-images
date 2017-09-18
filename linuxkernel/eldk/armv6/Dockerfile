@@ -17,5 +17,5 @@ RUN sudo apt-get install -y \
 
 RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
  && mkdir -p targets/armv6 && cd targets/armv6 && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/armv6/* && cd ../../ \
- && sudo ./install.sh -s gmae -r - armv6 \
+ && sudo ./install.sh -s toolchain -r - armv6 \
  && rm -rf targets

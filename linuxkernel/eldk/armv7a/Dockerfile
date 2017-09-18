@@ -17,5 +17,5 @@ RUN sudo apt-get install -y \
 
 RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
  && mkdir -p targets/armv7a && cd targets/armv7a && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/armv7a/* && cd ../../ \
- && sudo ./install.sh -s gmae -r - armv7a \
+ && sudo ./install.sh -s toolchain -r - armv7a \
  && rm -rf targets

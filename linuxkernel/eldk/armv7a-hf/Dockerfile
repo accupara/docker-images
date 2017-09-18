@@ -1,0 +1,21 @@
+# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+FROM accupara/ubuntu:16.04
+MAINTAINER Accupara Inc. "contact@accupara.com"
+
+# Keep the update separate so that Docker build system can cache it.
+RUN sudo apt-get update
+RUN sudo apt-get install -y \
+        autoconf \
+        automake \
+        bc \
+        libelf-dev \
+        libncurses5-dev \
+        libssl-dev \
+        openssl \
+        perl \
+        wget
+
+RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
+ && mkdir -p targets/armv7a-hf && cd targets/armv7a-hf && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/armv7a-hf/* && cd ../../ \
+ && sudo ./install.sh -s gmae -r - armv7a-hf \
+ && rm -rf targets

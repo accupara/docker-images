@@ -15,7 +15,7 @@ RUN sudo apt-get install -y \
         perl \
         wget
 
-RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
- && mkdir -p targets/mips && cd targets/mips && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/mips/* && cd ../../ \
+RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
+ && mkdir -p targets/mips && cd targets/mips && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/mips/* && cd ../../ \
  && sudo ./install.sh -s gmae -r - mips \
  && rm -rf targets

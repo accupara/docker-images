@@ -15,7 +15,7 @@ RUN sudo apt-get install -y \
         perl \
         wget
 
-RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
- && mkdir -p targets/armv5te && cd targets/armv5te && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/armv5te/* && cd ../../ \
+RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
+ && mkdir -p targets/armv5te && cd targets/armv5te && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/armv5te/* && cd ../../ \
  && sudo ./install.sh -s gmae -r - armv5te \
  && rm -rf targets

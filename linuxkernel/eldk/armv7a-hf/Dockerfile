@@ -15,7 +15,7 @@ RUN sudo apt-get install -y \
         perl \
         wget
 
-RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
- && mkdir -p targets/armv7a-hf && cd targets/armv7a-hf && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/armv7a-hf/* && cd ../../ \
+RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
+ && mkdir -p targets/armv7a-hf && cd targets/armv7a-hf && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/armv7a-hf/* && cd ../../ \
  && sudo ./install.sh -s gmae -r - armv7a-hf \
  && rm -rf targets

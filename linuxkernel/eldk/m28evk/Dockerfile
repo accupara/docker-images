@@ -15,7 +15,7 @@ RUN sudo apt-get install -y \
         perl \
         wget
 
-RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
- && mkdir -p targets/m28evk && cd targets/m28evk && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/m28evk/* && cd ../../ \
+RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
+ && mkdir -p targets/m28evk && cd targets/m28evk && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/m28evk/* && cd ../../ \
  && sudo ./install.sh -s gmae -r - m28evk \
  && rm -rf targets

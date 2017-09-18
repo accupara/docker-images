@@ -15,7 +15,7 @@ RUN sudo apt-get install -y \
         perl \
         wget
 
-RUN wget ftp://ftp.denx.de/pub/eldk/5.5.3/install.sh && chmod +x install.sh \
- && mkdir -p targets/powerpc-e500v2 && cd targets/powerpc-e500v2 && wget -nv ftp://ftp.denx.de/pub/eldk/5.5.3/targets/powerpc-e500v2/* && cd ../../ \
+RUN wget ftp://ftp.denx.de/pub/eldk/5.6/install.sh && chmod +x install.sh \
+ && mkdir -p targets/powerpc-e500v2 && cd targets/powerpc-e500v2 && wget -nv ftp://ftp.denx.de/pub/eldk/5.6/targets/powerpc-e500v2/* && cd ../../ \
  && sudo ./install.sh -s gmae -r - powerpc-e500v2 \
  && rm -rf targets

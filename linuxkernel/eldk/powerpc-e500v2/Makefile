@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 IMGTAG?=accupara/eldk
-IMGVER?=powerpc-e500v2_gmae
+IMGVER?=powerpc-e500v2
 #IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

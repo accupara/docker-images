@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 IMGTAG?=accupara/subsurface
-IMGVER?=linux
+IMGVER?=ubuntu
 
 GITROOT := $(shell git rev-parse --show-toplevel)
 GIT_URL=$(shell git remote -v | grep fetch | awk '{print $$2}' | sed -s 's/git@github.com:/https:\/\/github.com\//g' | sed -s 's/.git$$//')

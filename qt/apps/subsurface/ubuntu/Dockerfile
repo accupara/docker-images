@@ -44,8 +44,8 @@ RUN sudo apt-get install -y \
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="Subsurface for Linux" \
-      org.label-schema.description="Build environment for compiling Subsurface for Linux AMD64" \
+      org.label-schema.name="Subsurface for Ubuntu Linux" \
+      org.label-schema.description="Build environment for compiling Subsurface for Ubuntu Linux AMD64" \
       org.label-schema.url="https://www.accupara.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_REF \

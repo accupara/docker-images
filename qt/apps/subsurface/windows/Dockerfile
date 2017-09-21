@@ -1,3 +1,4 @@
+# Copyright (c) 2017 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:16.04
 
 RUN buildDeps=' \
@@ -42,3 +43,13 @@ RUN buildDeps=' \
 
 COPY settings.mk /home/admin/src/mxe
 RUN cd /home/admin/src/mxe && make --jobs=18 libxml2 libxslt libusb1 libzip qt5 nsis curl
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Subsurface for Windows" \
+      org.label-schema.description="Build environment for cross-compiling Subsurface for Windows" \
+      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url=$VCS_REF \
+      org.label-schema.vendor="Accupara Inc."

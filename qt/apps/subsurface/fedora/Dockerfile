@@ -1,8 +1,8 @@
 # Copyright (c) 2017 Accupara Inc. All rights reserved
-FROM fedora:latest
+FROM accupara/fedora:26
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-RUN dnf -y install \
+RUN sudo dnf -y install \
     git \
     gcc-c++ \
     make \
@@ -50,8 +50,8 @@ RUN dnf -y install \
     unzip \
     wget \
     xz \
-    && dnf -y install @development-tools \
-    && dnf -y group install "C Development Tools and Libraries"
+    && sudo dnf -y install @development-tools \
+    && sudo dnf -y group install "C Development Tools and Libraries"
 
 ARG BUILD_DATE
 ARG VCS_REF

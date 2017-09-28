@@ -1,4 +1,4 @@
-FROM accupara/ubuntu:17.04
+FROM accupara/ubuntu:17.10
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update

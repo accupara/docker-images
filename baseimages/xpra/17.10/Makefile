@@ -1,5 +1,5 @@
 IMGTAG?=accupara/xpra
-IMGVER?=17.04
+IMGVER?=17.10
 
 CTR_NAME?=xpra
 

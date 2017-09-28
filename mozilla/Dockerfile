@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 # From the deps specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
-FROM accupara/ubuntu:17.04
+FROM accupara/ubuntu:17.10
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Keep the update separate so that Docker build system can cache it.

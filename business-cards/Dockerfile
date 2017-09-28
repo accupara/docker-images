@@ -1,5 +1,5 @@
 # Copyright (c) 2017 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:17.04
+FROM accupara/ubuntu:17.10
 
 # Install tex, xetex
 # Install font-awesome

@@ -3,7 +3,7 @@ IMGTAG?=accupara/bbndk
 IMGVER?=latest
 
 MOMENTICS_FILE?=momentics-2.1.2-201503050937.linux.x86_64.run
-STARTING_CTR?=accupara/xpra:17.04
+STARTING_CTR?=accupara/xpra:17.10
 CONTAINER_NAME?=savethis
 
 .PHONY: help clean build commit_container push pull it

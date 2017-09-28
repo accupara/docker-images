@@ -17,9 +17,10 @@ RUN sudo apt-get -y install \
         sqlite3 \
         ssh-client \
         sshpass \
-        supervisor
-
-RUN sudo pip install --upgrade \
+        supervisor \
+ && sudo pip install --upgrade \
+        pip \
+ && sudo pip install --upgrade \
         django \
         uwsgi
 

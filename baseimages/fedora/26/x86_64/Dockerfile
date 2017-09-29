@@ -15,15 +15,15 @@ RUN dnf -y install \
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
- && useradd -ms /bin/bash dcuser \
- && echo "dcuser:dcuser" | chpasswd \
- && usermod -a -G wheel dcuser \
- && echo "dcuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ && useradd -ms /bin/bash admin \
+ && echo "admin:admin" | chpasswd \
+ && usermod -a -G wheel admin \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-USER dcuser
-ENV HOME=/home/dcuser USER=dcuser
-WORKDIR /home/dcuser
+USER admin
+ENV HOME=/home/admin USER=admin
+WORKDIR /home/admin
 CMD /bin/bash
 
-RUN sudo chown -R dcuser:dcuser /home/dcuser \
- && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/dcuser/.bashrc
+RUN sudo chown -R admin:admin /home/admin \
+ && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc

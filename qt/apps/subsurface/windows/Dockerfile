@@ -38,11 +38,12 @@ RUN buildDeps=' \
     ' \
     && sudo apt-get -y update && sudo apt-get install -y --no-install-recommends $buildDeps \
     && sudo rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /home/admin/src \
-    && cd /home/admin/src && git clone https://github.com/mxe/mxe
+    && cd /opt && sudo git clone https://github.com/mxe/mxe
 
-COPY settings.mk /home/admin/src/mxe
-RUN cd /home/admin/src/mxe && make --jobs=18 libxml2 libxslt libusb1 libzip qt5 nsis curl
+COPY settings.mk /opt/mxe/
+RUN sudo chown -R admin.admin /opt/mxe \
+    && cd /opt/mxe && make --jobs=18 libxml2 libxslt libusb1 libzip qt5 nsis curl
+
 
 ARG BUILD_DATE
 ARG VCS_REF

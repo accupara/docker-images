@@ -35,14 +35,15 @@ RUN buildDeps=' \
       xz-utils \
       g++-multilib \
       libc6-dev-i386 \
+      xutils-dev \
     ' \
     && sudo apt-get -y update && sudo apt-get install -y --no-install-recommends $buildDeps \
     && sudo rm -rf /var/lib/apt/lists/* \
-    && cd /opt && sudo git clone https://github.com/mxe/mxe
+    && cd /opt && sudo git clone https://github.com/mxe/mxe \
+    && sudo chown -R admin.admin /opt/mxe
 
 COPY settings.mk /opt/mxe/
-RUN sudo chown -R admin.admin /opt/mxe \
-    && cd /opt/mxe && make --jobs=18 libxml2 libxslt libusb1 libzip qt5 nsis curl
+RUN cd /opt/mxe && make --jobs=4 libxml2 libxslt libusb1 libzip qt5 nsis curl
 
 
 ARG BUILD_DATE

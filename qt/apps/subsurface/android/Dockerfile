@@ -2,18 +2,19 @@
 FROM accupara/android_qt:5.9
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-# Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
-
 # libgit2-dev has to be installed after the rest
-RUN sudo apt-get install -y \
+RUN sudo apt-get update && sudo apt-get install -y \
     autoconf \
     automake \
     cmake \
+    extra-cmake-modules \
     g++ \
     git \
     make \
     pkgconf \
+    libtool-bin \
+    libtool \
+ && sudo apt-get -y install libgit2-dev \
  && sudo sed -i \
     's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' \
     /opt/android-tools/Qt/5.9.1/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake

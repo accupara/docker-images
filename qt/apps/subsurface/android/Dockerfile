@@ -68,7 +68,7 @@ RUN sudo apt-get update \
     unzip \
     xutils-dev \
     python \
- && sudo apt-get -s clean \
+ && sudo apt-get clean \
  && wget -q ${QT_DOWNLOAD_URL} \
  && chmod +x ${QT_BINARIES} \
  && sudo ./${QT_BINARIES} --script /tmp/installqt.qs --platform minimal \

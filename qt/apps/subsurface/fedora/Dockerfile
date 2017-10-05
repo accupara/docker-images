@@ -51,7 +51,8 @@ RUN sudo dnf -y install \
     wget \
     xz \
     && sudo dnf -y install @development-tools \
-    && sudo dnf -y group install "C Development Tools and Libraries"
+    && sudo dnf -y group install "C Development Tools and Libraries" \
+    && sudo dnf clean all
 
 ARG BUILD_DATE
 ARG VCS_REF

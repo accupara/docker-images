@@ -86,8 +86,19 @@ RUN sudo apt-get update \
  && unzip -q ../${SDK_TOOLS} \
  && mkdir -p licenses \
  && echo "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "licenses/android-sdk-license" \
+ && echo "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "licenses/android-sdk-license" \
  && echo "\n84831b9409646a918e30573bab4c9c91346d8abd" > "licenses/android-sdk-preview-license" \
  && (while sleep 3; do echo "y"; done) | tools/android update sdk --no-ui --filter tools,platform-tools,build-tools-${SDK_VERSION},android-${API_VERSION} \
  && cd .. \
  && sudo mv ${ANDROID_SDK} /opt/ \
  && rm ${SDK_TOOLS}
+
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="Subsurface for Android" \
+      org.label-schema.description="Build environment for compiling Subsurface for Android" \
+      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url=$VCS_REF \
+      org.label-schema.vendor="Accupara Inc."

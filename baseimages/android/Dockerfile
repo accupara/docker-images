@@ -45,7 +45,6 @@ RUN sdkmanager "platform-tools" \
  && sdkmanager "platforms;android-10" \
  && echo "Platforms installed" \
  && sdkmanager "build-tools;26.0.0" \
- && sdkmanager "build-tools;25.2.3" \
  && sdkmanager "build-tools;25.0.3" \
  && sdkmanager "build-tools;25.0.2" \
  && sdkmanager "build-tools;24.0.3" \

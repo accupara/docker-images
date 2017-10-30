@@ -2,7 +2,6 @@
 IMGTAG?=accupara/maemo
 IMGVER?=latest
 CONTAINER_NAME=maemo-build
-#IMGVER?=$(shell /bin/date "+%Y%m%d.%H%M%S")
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull
 

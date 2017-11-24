@@ -2,7 +2,7 @@
 IMGTAG?=accupara/yocto
 IMGVER?=ubuntu_1404
 
-CONTEXT_DIR=../..
-DOCKERFILE=$(shell $(readlink -f Dockerfile))
+CONTEXT_DIR=$(shell readlink -f ../..)
+DOCKERFILE=$(shell readlink -f ./Dockerfile)
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

@@ -1,17 +1,20 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 # This template must only be included by the actual image building makefile
 
+CONTEXT_DIR?=.
+DOCKERFILE?=$(CONTEXT_DIR/Dockerfile)
+
 build:
 ifdef dockerfile_git
 	docker build \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
 		-t $(IMGTAG):$(IMGVER) \
-		.
+		$(CONTEXT_DIR)
 else
 	docker build \
 		-t $(IMGTAG):$(IMGVER) \
-		.
+		$(CONTEXT_DIR)
 endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

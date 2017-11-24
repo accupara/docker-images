@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:14.04
+FROM accupara/ubuntu:17.10
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 COPY build-install-dumb-init.sh /tmp/

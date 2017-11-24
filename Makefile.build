@@ -2,17 +2,19 @@
 # This template must only be included by the actual image building makefile
 
 CONTEXT_DIR?=.
-DOCKERFILE?=$(CONTEXT_DIR/Dockerfile)
+DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
 build:
 ifdef dockerfile_git
 	docker build \
+		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 else
 	docker build \
+		-f $(DOCKERFILE) \
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 endif

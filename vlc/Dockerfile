@@ -1,22 +1,33 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/qt4:latest
+FROM accupara/ubuntu:17.10
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Enable the Ubuntu multiverse repository.
-RUN sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse" >> /etc/apt/source.list' && \
-    sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse">> /etc/apt/source.list' && \
-    sudo bash -c 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list' && \
-sudo bash -c 'echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse" >> /etc/apt/source.list'
-
-RUN sudo apt-get update && \
-    sudo apt-get install -y \
-        autoconf \
-        automake \
+RUN sudo apt-get update \
+ && sudo apt-get install -y \
         build-essential \
-        checkinstall \
-        git \
-        wget \
-        yasm
+        ca-certificates \
+        dh-buildinfo \
+        git-core \
+        lftp \
+        libavcodec-dev \
+        libavformat-dev \
+        libdirectfb-dev \
+        liblircclient-dev \
+        libmodplug-dev \
+        libpostproc-dev \
+        libqt5svg5-dev \
+        libswscale-dev \
+        locales \
+        make \
+        openjdk-8-jdk \
+        openssh-server \
+        qtbase5-private-dev \
+        snapcraft \
+        wayland-protocols \
+ && sudo apt-get build-dep -y vlc \
+ && sudo apt-get clean -y \
+ && sudo rm -rf /var/lib/apt/lists/*
 
 RUN sudo apt-get install -y \
     liba52-0.7.4-dev \

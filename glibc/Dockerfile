@@ -2,8 +2,8 @@
 FROM accupara/ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-RUN sudo apt-get update && \
-    sudo apt-get install -y \
+RUN sudo apt-get update \
+ && sudo apt-get install -y \
         gawk \
         autoconf \
         automake \
@@ -16,8 +16,8 @@ RUN sudo apt-get update && \
         libisl-dev \
         libmpc-dev \
         libmpfr-dev \
-        zip && \
-    sudo apt-get build-dep -y gcc
+        zip \
+ && sudo apt-get build-dep -y gcc
 
 # Use bash explicitely instead of the ubuntu default of dash
 # Required for libtool to function properly

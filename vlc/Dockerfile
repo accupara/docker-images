@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:17.10
+FROM accupara/debian:9
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Enable the Ubuntu multiverse repository.
@@ -23,7 +23,7 @@ RUN sudo apt-get update \
         openjdk-8-jdk \
         openssh-server \
         qtbase5-private-dev \
-        snapcraft \
+        snapd \
         wayland-protocols \
  && sudo apt-get build-dep -y vlc \
  && sudo apt-get clean -y \

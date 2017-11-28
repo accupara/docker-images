@@ -12,7 +12,6 @@ RUN sudo apt-get update \
         libkrb5-dev \
         libossp-uuid-dev \
         libpam0g-dev \
-        libperl5.18 \
         libperl-dev \
         libreadline6-dev \
         libssl-dev \

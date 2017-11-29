@@ -3,14 +3,16 @@ FROM fedora:26
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Install the minimum set of tools
-RUN dnf -y install \
+RUN dnf update -y \
+ && dnf -y install \
+    bash-completion \
+    file \
     git \
     gcc-c++ \
     make \
-    sudo \
-    file \
+    redhat-lsb-core \
     subversion \
-    bash-completion \
+    sudo \
     vim-enhanced \
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \

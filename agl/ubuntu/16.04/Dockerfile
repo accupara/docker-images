@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017 Accupara Inc. All rights reserved
-FROM accupara/yocto:latest
+FROM accupara/yocto:ubuntu_1604
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 RUN sudo apt-get update \

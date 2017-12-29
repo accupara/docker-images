@@ -17,6 +17,7 @@ RUN sudo apt-get update \
         locales \
         python \
         python3 \
+        python3-pip \
         socat \
         sysstat \
         texinfo \
@@ -24,6 +25,7 @@ RUN sudo apt-get update \
         wget \
         xterm \
         xz-utils \
+ && sudo pip3 install --upgrade pip \
  && sudo locale-gen en_US.UTF-8 \
  && echo "export LANG=en_US.UTF-8" > /tmp/add_locale \
  && echo "export LANGUAGE=en_US:en" >> /tmp/add_locale \

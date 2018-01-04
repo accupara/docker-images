@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 
 IMGNAME=accupara/bb10_qt5
 BUILD_CONTAINER=bb10_qt5

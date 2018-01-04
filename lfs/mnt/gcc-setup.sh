@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 
 for file in \
     $(find gcc/config -name linux64.h -o -name linux.h -o -name sysv4.h)

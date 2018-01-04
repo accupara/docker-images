@@ -1,3 +1,5 @@
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+
 # This variable controls the number of compilation processes
 # within one package ("intra-package parallelism").
 # Set to higher value if you have a powerful machine.

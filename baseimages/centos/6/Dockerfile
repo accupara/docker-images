@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 FROM centos:6
 MAINTAINER Accupara Inc. "contact@accupara.com"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
 # This script is a simplification of https://github.com/crops/yocto-dockerfiles/blob/master/build-install-dumb-init.sh
 
 set -xe

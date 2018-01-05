@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:17.10
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
@@ -32,44 +32,50 @@ RUN sudo apt-get install -y \
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r14b \
     ANDROID_HOME=/opt/android-tools
 
-RUN sdkmanager "platform-tools" \
- && sdkmanager "platforms;android-26" \
- && sdkmanager "platforms;android-25" \
- && sdkmanager "platforms;android-24" \
- && sdkmanager "platforms;android-23" \
- && sdkmanager "platforms;android-21" \
- && sdkmanager "platforms;android-20" \
- && sdkmanager "platforms;android-19" \
- && sdkmanager "platforms;android-17" \
- && sdkmanager "platforms;android-15" \
- && sdkmanager "platforms;android-10" \
+RUN yes | sdkmanager \
+ "platform-tools" \
+ "platforms;android-27" \
+ "platforms;android-26" \
+ "platforms;android-25" \
+ "platforms;android-24" \
+ "platforms;android-23" \
+ "platforms;android-21" \
+ "platforms;android-20" \
+ "platforms;android-19" \
+ "platforms;android-17" \
+ "platforms;android-15" \
+ "platforms;android-10" \
  && echo "Platforms installed" \
- && sdkmanager "build-tools;26.0.0" \
- && sdkmanager "build-tools;25.0.3" \
- && sdkmanager "build-tools;25.0.2" \
- && sdkmanager "build-tools;24.0.3" \
- && sdkmanager "build-tools;23.0.3" \
- && sdkmanager "build-tools;22.0.1" \
- && sdkmanager "build-tools;21.1.2" \
- && sdkmanager "build-tools;20.0.0" \
- && sdkmanager "build-tools;19.1.0" \
- && sdkmanager "build-tools;17.0.0" \
+ && sdkmanager \
+ "build-tools;27.0.3" \
+ "build-tools;26.0.2" \
+ "build-tools;25.0.3" \
+ "build-tools;24.0.3" \
+ "build-tools;23.0.3" \
+ "build-tools;22.0.1" \
+ "build-tools;21.1.2" \
+ "build-tools;19.1.0" \
+ "build-tools;17.0.0" \
  && echo "Build tools installed" \
- && sdkmanager "system-images;android-25;google_apis;armeabi-v7a" \
- && sdkmanager "system-images;android-24;default;armeabi-v7a" \
- && sdkmanager "system-images;android-22;default;armeabi-v7a" \
- && sdkmanager "system-images;android-21;default;armeabi-v7a" \
- && sdkmanager "system-images;android-19;default;armeabi-v7a" \
- && sdkmanager "system-images;android-17;default;armeabi-v7a" \
- && sdkmanager "system-images;android-15;default;armeabi-v7a" \
+ && sdkmanager \
+ "system-images;android-26;google_apis;x86" \
+ "system-images;android-25;google_apis;armeabi-v7a" \
+ "system-images;android-24;default;armeabi-v7a" \
+ "system-images;android-22;default;armeabi-v7a" \
+ "system-images;android-21;default;armeabi-v7a" \
+ "system-images;android-19;default;armeabi-v7a" \
+ "system-images;android-17;default;armeabi-v7a" \
+ "system-images;android-15;default;armeabi-v7a" \
  && echo "System images installed" \
- && sdkmanager "extras;android;m2repository" \
- && sdkmanager "extras;google;m2repository" \
- && sdkmanager "extras;google;google_play_services" \
- && sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
- && sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
+ && sdkmanager \
+ "extras;android;m2repository" \
+ "extras;google;m2repository" \
+ "extras;google;google_play_services" \
+ "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
+ "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
  && echo "Extras installed" \
- && sdkmanager "add-ons;addon-google_apis-google-23" \
- && sdkmanager "add-ons;addon-google_apis-google-22" \
- && sdkmanager "add-ons;addon-google_apis-google-21" \
+ && sdkmanager \
+ "add-ons;addon-google_apis-google-23" \
+ "add-ons;addon-google_apis-google-22" \
+ "add-ons;addon-google_apis-google-21" \
  && echo "Add-ons installed"

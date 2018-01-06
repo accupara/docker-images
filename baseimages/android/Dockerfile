@@ -32,8 +32,14 @@ RUN sudo apt-get install -y \
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android-tools/tools:/opt/android-tools/tools/bin:/opt/android-tools/android-ndk-r14b \
     ANDROID_HOME=/opt/android-tools
 
-RUN yes | sdkmanager \
+RUN yes | sdkmanager --licenses \
+ && echo "Licenses accepted" \
+ && yes | sdkmanager \
+ "emulator" \
+ "tools" \
  "platform-tools" \
+ && echo "Platform tools installed" \
+ && yes | sdkmanager \
  "platforms;android-27" \
  "platforms;android-26" \
  "platforms;android-25" \
@@ -46,8 +52,9 @@ RUN yes | sdkmanager \
  "platforms;android-15" \
  "platforms;android-10" \
  && echo "Platforms installed" \
- && sdkmanager \
+ && yes | sdkmanager \
  "build-tools;27.0.3" \
+ "build-tools;27.0.1" \
  "build-tools;26.0.2" \
  "build-tools;25.0.3" \
  "build-tools;24.0.3" \
@@ -57,7 +64,7 @@ RUN yes | sdkmanager \
  "build-tools;19.1.0" \
  "build-tools;17.0.0" \
  && echo "Build tools installed" \
- && sdkmanager \
+ && yes | sdkmanager \
  "system-images;android-26;google_apis;x86" \
  "system-images;android-25;google_apis;armeabi-v7a" \
  "system-images;android-24;default;armeabi-v7a" \
@@ -67,15 +74,19 @@ RUN yes | sdkmanager \
  "system-images;android-17;default;armeabi-v7a" \
  "system-images;android-15;default;armeabi-v7a" \
  && echo "System images installed" \
- && sdkmanager \
+ && yes | sdkmanager \
  "extras;android;m2repository" \
  "extras;google;m2repository" \
  "extras;google;google_play_services" \
  "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
  "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
  && echo "Extras installed" \
- && sdkmanager \
+ && yes | sdkmanager \
  "add-ons;addon-google_apis-google-23" \
  "add-ons;addon-google_apis-google-22" \
  "add-ons;addon-google_apis-google-21" \
  && echo "Add-ons installed"
+
+RUN sudo apt-get -y install \
+ gradle \
+ maven

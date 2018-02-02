@@ -8,6 +8,7 @@ RUN sudo apt-get install -y \
         autoconf \
         automake \
         bc \
+        bison \
         libelf-dev \
         libncurses5-dev \
         libssl-dev \

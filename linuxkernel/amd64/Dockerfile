@@ -9,6 +9,7 @@ RUN sudo apt-get install -y \
         automake \
         bc \
         bison \
+        flex \
         libelf-dev \
         libncurses5-dev \
         libssl-dev \

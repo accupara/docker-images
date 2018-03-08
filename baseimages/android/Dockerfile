@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2018 Accupara Inc. All rights reserved
-FROM accupara/ubuntu:17.10
+FROM accupara/ubuntu:18.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 RUN sudo apt-get update

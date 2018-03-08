@@ -1,0 +1,30 @@
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+FROM accupara/ubuntu:18.04
+MAINTAINER Accupara Inc. "contact@accupara.com"
+
+RUN sudo apt-get update \
+ && sudo apt-get install -y \
+        bison \
+        build-essential \
+        flex \
+        gettext \
+        libgettextpo0 \
+        libkrb5-dev \
+        libossp-uuid-dev \
+        libpam0g-dev \
+        libperl-dev \
+        libreadline6-dev \
+        libssl-dev \
+        libtcl8.6 \
+        libxml2-dev \
+        libxslt1-dev \
+        perl-modules \
+        python \
+        python-dev \
+        python3-dev \
+        python3 \
+        readline-common \
+        tcl \
+        tcl-dev \
+        zlib1g-dev \
+ && sudo apt-get clean

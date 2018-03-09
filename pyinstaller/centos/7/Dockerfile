@@ -26,9 +26,13 @@ RUN sudo yum -y update \
  && sudo make altinstall \
  && sudo /usr/local/bin/pip3.5 install \
     giturlparse.py \
+    pick \
     pyinstaller \
+    python-dateutil \
     requests \
     tabulate \
     termcolor \
+    tzdata \
+    tzlocal \
     websocket-client \
  && cd .. ; sudo rm -rf Python-3.5.4*

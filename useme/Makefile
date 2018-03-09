@@ -1,5 +1,7 @@
 # Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 
+IMAGE=accupara/pyinstaller:ubuntu_1604
+
 build: dist/build
 
 dist/build: build.spec build.py
@@ -11,8 +13,12 @@ build.spec:
 clean:
 	rm -rf build dist __pycache__
 
+rebuild:
+	$(MAKE) clean
+	$(MAKE) build
+
 in_docker:
 	docker run --rm -it \
 		-v `pwd`:/tmp/src \
-		accupara/pyinstaller:centos_6 \
+		$(IMAGE) \
 		make -C /tmp/src $(TARGET)

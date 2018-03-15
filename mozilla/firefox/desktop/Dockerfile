@@ -34,6 +34,7 @@ RUN sudo apt-get update \
     zip \
  && cd /tmp/ ; wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
+ && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
  && echo 2 | python bootstrap.py --no-interactive \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

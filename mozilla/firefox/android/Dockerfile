@@ -36,6 +36,7 @@ RUN sudo apt-get update \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
  && echo 4 | python bootstrap.py --no-interactive \
+ && /home/admin/.cargo/bin/rustup target add armv7-linux-androideabi \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
 

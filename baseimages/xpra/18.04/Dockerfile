@@ -2,9 +2,10 @@
 FROM accupara/ubuntu:18.04
 
 # Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
 COPY kb-config.exp startcmd.sh /tmp/
-RUN sudo apt-get install -y \
+
+RUN sudo apt-get update \
+ && sudo apt-get install -y \
         binutils \
         expect \
         openssh-server \

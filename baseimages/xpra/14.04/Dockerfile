@@ -11,8 +11,8 @@ RUN sudo apt-get update \
         xpra \
  && mkdir -p ~/.ssh/ \
  && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc \
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 CMD /tmp/startcmd.sh
 EXPOSE 22

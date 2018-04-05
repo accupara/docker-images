@@ -16,8 +16,8 @@ RUN sudo apt-get update \
  && echo "start-new-commands = yes" >> /tmp/xpra.conf \
  && sudo mv /tmp/xpra.conf /etc/xpra/xpra.conf \
  && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc \
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 CMD /tmp/startcmd.sh
 EXPOSE 22

@@ -1,7 +1,6 @@
 # Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 FROM accupara/ubuntu:18.04
 
-# Keep the update separate so that Docker build system can cache it.
 COPY kb-config.exp startcmd.sh /tmp/
 
 RUN sudo apt-get update \
@@ -16,7 +15,9 @@ RUN sudo apt-get update \
  && grep -v start-new-commands /etc/xpra/xpra.conf > /tmp/xpra.conf \
  && echo "start-new-commands = yes" >> /tmp/xpra.conf \
  && sudo mv /tmp/xpra.conf /etc/xpra/xpra.conf \
- && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc
+ && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc \
+ && apt-get clean \
+ && rm -f /var/lib/apt/lists/*_dists_*
 
 CMD /tmp/startcmd.sh
 EXPOSE 22

@@ -10,7 +10,7 @@ RUN cd /wssh && \
   pip install gevent && \
   pip install gevent-websocket && \
   pip install paramiko && \
-  pip install flask &&
+  pip install flask && \
   pip install websocket-client
 
 EXPOSE 5000

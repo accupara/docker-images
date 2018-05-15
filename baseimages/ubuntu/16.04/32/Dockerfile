@@ -25,6 +25,7 @@ RUN apt-get update \
         dh-make \
         git \
         lsb-release \
+        openssh-server \
         subversion \
         sudo \
         vim-nox \

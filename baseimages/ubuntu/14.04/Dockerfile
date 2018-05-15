@@ -12,6 +12,7 @@ RUN apt-get update && \
         debhelper \
         dh-make \
         git \
+        openssh-server \
         subversion \
         sudo \
         vim-nox \

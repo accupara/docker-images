@@ -13,10 +13,10 @@ RUN apt-get update && \
         dh-make \
         git \
         lsb-release \
+        openssh-server \
         subversion \
         sudo \
         vim-nox \
-        openssh-server \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

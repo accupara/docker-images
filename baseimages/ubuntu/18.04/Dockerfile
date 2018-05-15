@@ -14,6 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         dh-make \
         git \
         lsb-release \
+        openssh-server \
         subversion \
         sudo \
         vim-nox \

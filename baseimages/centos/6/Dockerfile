@@ -10,8 +10,9 @@ RUN yum install -y \
         gcc gcc-c++ \
         gettext \
         git \
-        redhat-lsb \
         make \
+        openssh-server \
+        redhat-lsb \
         rpm-build \
         subversion \
         sudo \
@@ -21,13 +22,18 @@ RUN yum install -y \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && mkdir -p /var/run/sshd
 
 USER admin
-ENV HOME /home/admin
+ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin
 
 RUN chown -R admin:admin /home/admin \
- && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc
+ && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
+ && mkdir /home/admin/.ssh \
+ && chmod 700 /home/admin/.ssh \
+ && touch /home/admin/.ssh/authorized_keys
 
+EXPOSE 22
 CMD /bin/bash

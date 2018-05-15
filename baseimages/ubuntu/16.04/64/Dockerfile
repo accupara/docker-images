@@ -2,7 +2,6 @@
 FROM ubuntu:16.04
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-ENV TERM xterm
 # Install the minimum tools
 RUN apt-get update && \
     apt-get -y dist-upgrade && \
@@ -30,7 +29,7 @@ RUN apt-get update && \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin
+ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin
 CMD /bin/bash
 

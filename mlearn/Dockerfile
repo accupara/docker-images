@@ -29,9 +29,5 @@ RUN sudo apt-get update && sudo apt-get install -y libgtk2.0-dev python3-pip && 
    sudo /opt/conda/bin/conda install jupyter -y && \
    sudo /opt/conda/bin/conda install -c menpo opencv3 -y && \
    sudo /opt/conda/bin/conda install numpy pandas scikit-learn matplotlib seaborn pyyaml h5py -y && \
+   sudo /opt/conda/bin/conda install tensorflow keras -y && \
    sudo /opt/conda/bin/conda upgrade dask
-
-RUN sudo pip3 install gym keras tensorflow
-
-ENTRYPOINT [ "/usr/bin/tini", "--" ]
-CMD [ "/bin/bash" ]

@@ -1,1 +1,1 @@
-wssh --host localhost --port 32769 --key ~/Projects/work/combined/buildmeup/infrastructure/build/ctr_ssh/id_rsa --ssh-port 22 dcuser@acp-dev.accupara.com
+chisel client https://acp-dev.accupara.com:443/sshd/ 4001:10.240.0.20:32803

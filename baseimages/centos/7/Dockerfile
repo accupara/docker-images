@@ -23,7 +23,8 @@ RUN yum install -y \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
- && mkdir -p /var/run/sshd
+ && mkdir -p /var/run/sshd \
+ && ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key
 
 COPY sshd_config /etc/ssh/sshd_config
 

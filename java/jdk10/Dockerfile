@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2018 Accupara Inc. All rights reserved
-FROM openjdk:10-jre
+FROM openjdk:10-jdk
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
 # Install the minimum tools

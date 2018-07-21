@@ -14,7 +14,7 @@ RUN sudo mkdir $SRC \
  && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"      | sudo tee --append /etc/apt/sources.list \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"  | sudo tee --append /etc/apt/sources.list \
  && sudo locale-gen "en_US.UTF-8" \
- && sudo dpkg-reconfigure locales
+ && sudo dpkg-reconfigure locales \
  && sudo apt-get update \
  && sudo apt-get -yq install \
     aptitude \

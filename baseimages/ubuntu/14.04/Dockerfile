@@ -13,6 +13,7 @@ RUN apt-get update && \
         dh-make \
         git \
         openssh-server \
+        rsync \
         subversion \
         sudo \
         vim-nox \

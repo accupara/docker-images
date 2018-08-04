@@ -15,10 +15,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         lsb-release \
         openssh-server \
+        rsync \
         subversion \
         sudo \
         vim-nox \
-        rsync \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

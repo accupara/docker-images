@@ -26,6 +26,7 @@ RUN apt-get update \
         git \
         lsb-release \
         openssh-server \
+        rsync \
         subversion \
         sudo \
         vim-nox \

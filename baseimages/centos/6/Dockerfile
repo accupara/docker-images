@@ -5,7 +5,8 @@ MAINTAINER Accupara Inc. "contact@accupara.com"
 COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
-RUN yum install -y \
+RUN yum update -y \
+ && yum install -y \
         autoconf \
         automake \
         binutils \
@@ -20,6 +21,9 @@ RUN yum install -y \
         sudo \
         vim \
         wget \
+ && wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -O /tmp/epel-release-6-8.noarch.rpm \
+ && rpm -ivh /tmp/epel-release-6-8.noarch.rpm \
+ && yum update -y \
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

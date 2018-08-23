@@ -22,11 +22,15 @@ RUN set -x \
  && sudo mkdir -p /opt/vendor_internal ; sudo chown admin:admin /opt/vendor_internal \
  && cd vendor ; mv cloud.google.com github.com golang.org google.golang.org gopkg.in /opt/vendor_internal/
 
+ COPY entrypoint.sh /tmp/
+ ENTRYPOINT ["/tmp/entrypoint.sh"]
+
  # To use this container:
  # 1. Mount the vitess sources into /tmp/src/vitess.io/vitess inside the container:
  #    docker run --rm -it \
  #        -v `pwd`:/tmp/src/vitess.io/vitess \
  #        -w /tmp/src/vitess.io/vitess \
+ #        accupara/vitess \
  #        bash
  # 2. Inside the container:
  #    1. Create the following symbolic links

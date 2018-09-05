@@ -2,7 +2,8 @@
 FROM accupara/centos:6
 MAINTAINER Accupara Inc. "contact@accupara.com"
 
-RUN sudo yum -y update \
+RUN set -x \
+ && sudo yum -y update \
  && sudo yum groupinstall -y "development tools" \
  && sudo yum install -y \
     bzip2-devel \
@@ -18,9 +19,10 @@ RUN sudo yum -y update \
     wget \
     xz-devel \
     zlib-devel \
- && wget http://python.org/ftp/python/3.5.4/Python-3.5.4.tar.xz \
- && tar xf Python-3.5.4.tar.xz \
- && cd Python-3.5.4 \
+ && export PYTHON_VER=3.5.6 \
+ && wget http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
+ && tar xf Python-${PYTHON_VER}.tar.xz \
+ && cd Python-${PYTHON_VER} \
  && ./configure --prefix=/usr/local --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j4 \
  && sudo make altinstall \
@@ -35,4 +37,4 @@ RUN sudo yum -y update \
     tzdata \
     tzlocal \
     websocket-client \
- && cd .. ; sudo rm -rf Python-3.5.4*
+ && cd .. ; sudo rm -rf Python-${PYTHON_VER}*

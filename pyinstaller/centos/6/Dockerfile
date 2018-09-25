@@ -19,14 +19,14 @@ RUN set -x \
     wget \
     xz-devel \
     zlib-devel \
- && export PYTHON_VER=3.5.6 \
+ && export PYTHON_VER=3.6.6 \
  && wget http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
  && cd Python-${PYTHON_VER} \
  && ./configure --prefix=/usr/local --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j4 \
  && sudo make altinstall \
- && sudo /usr/local/bin/pip3.5 install \
+ && sudo /usr/local/bin/pip3.6 install \
     giturlparse.py \
     pick \
     pyinstaller \

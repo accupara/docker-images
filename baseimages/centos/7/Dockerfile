@@ -47,9 +47,9 @@ RUN chown -R admin:admin /home/admin \
 # Helpful aliases
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
 # Let the vimrc have sane defaults
- && echo ":color desert" >> /home/admin/.vimrc
- && echo "set softtabstop=4 shiftwidth=4 tabstop=4 expandtab" >> /home/admin/.vimrc
- && echo "set number" >> /home/admin/.vimrc
+ && echo ":color desert" >> /home/admin/.vimrc \
+ && echo "set softtabstop=4 shiftwidth=4 tabstop=4 expandtab" >> /home/admin/.vimrc \
+ && echo "set number" >> /home/admin/.vimrc \
 # User ssh directory
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \

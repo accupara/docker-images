@@ -1,3 +1,4 @@
+# Copyright (c) 2018 Accupara Inc. All rights reserved
 FROM microsoft/windowsservercore:1803
 
 # $ProgressPreference: https://github.com/PowerShell/PowerShell/issues/2138#issuecomment-251261324

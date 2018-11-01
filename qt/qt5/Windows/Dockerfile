@@ -6,4 +6,4 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) ; \
     choco install -y git --params "/GitAndUnixToolsOnPath /NoAutoCrlf"; \
     choco install -y microsoft-build-tools; \
-    choco install -y ruby winflexbison python perl;
+    choco install -y ruby winflexbison python strawberryperl;

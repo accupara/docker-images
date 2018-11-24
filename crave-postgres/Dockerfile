@@ -1,3 +1,4 @@
+# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
 FROM timescale/timescaledb:1.0.0-pg9.6
 
 RUN set -ex \

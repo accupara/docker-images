@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2018 Accupara Inc. All rights reserved
-SUBDIRS=k8s vitess envoy
+SUBDIRS=k8s envoy linkerd vitess
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -47,6 +47,8 @@ RUN set -x \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
+# Create some default directories:
+ && sudo mkdir -p $GOPATH/src/github.com \
 # change the ownership on the $GOPATH
  && sudo chown -R admin:admin $GOPATH
 

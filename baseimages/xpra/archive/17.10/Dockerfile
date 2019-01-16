@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:17.10
 
 # Keep the update separate so that Docker build system can cache it.

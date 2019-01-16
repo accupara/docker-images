@@ -1,6 +1,6 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/android
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY installqt.qs /tmp/installqt.qs
 

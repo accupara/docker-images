@@ -1,6 +1,6 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:14.04
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md
 

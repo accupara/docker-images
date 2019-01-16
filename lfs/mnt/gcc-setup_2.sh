@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include-fixed/limits.h
 

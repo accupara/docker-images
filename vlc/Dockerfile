@@ -1,6 +1,6 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Enable the Ubuntu multiverse repository.
 RUN sudo bash -c 'echo "deb-src http://security.debian.org stretch/updates main" >> /etc/apt/sources.list' \

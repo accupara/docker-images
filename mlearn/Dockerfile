@@ -1,6 +1,6 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:16.04
 
 RUN buildDeps=' \
@@ -54,4 +54,4 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.url="https://www.accupara.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_REF \
-      org.label-schema.vendor="Accupara Inc."
+      org.label-schema.vendor="Crave.io Inc."

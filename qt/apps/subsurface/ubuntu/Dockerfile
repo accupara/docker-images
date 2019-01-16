@@ -1,6 +1,6 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM accupara/qt5:linux
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update
@@ -49,4 +49,4 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.url="https://www.accupara.com/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_REF \
-      org.label-schema.vendor="Accupara Inc."
+      org.label-schema.vendor="Crave.io Inc."

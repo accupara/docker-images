@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 
 ## run first time only.
 # docker build -t bmu-lfs .

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 
 SUBDIRS=baseimages business-cards django-nginx linuxkernel rsync qt qemu duperemove mozilla mobile circleci pyinstaller chromium java jobserver stress certbot cncf libdeploy
 # incomplete or untested: ffmpeg vlc yocto dpdk gcc glibc

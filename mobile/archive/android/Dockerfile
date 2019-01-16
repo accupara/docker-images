@@ -1,5 +1,5 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 FROM bitriseio/docker-android:latest
-MAINTAINER Accupara Inc. "contact@accupara.com"
+MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.0 | grep 'package installed'

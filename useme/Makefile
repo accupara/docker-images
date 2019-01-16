@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Accupara Inc. All rights reserved
+# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
 
 IMAGE=accupara/pyinstaller:ubuntu_1604
 

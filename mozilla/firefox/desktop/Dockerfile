@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 # From the deps specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"

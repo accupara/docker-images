@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/libdeploy
 IMGVER?=python-3.7.1-stretch
 

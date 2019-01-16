@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2018 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 
 # DO NOT COMPILE bb10 automatically. It requires a UI to build..
 # SUBDIRS=bb10 android

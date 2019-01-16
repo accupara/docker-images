@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2017 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/maemo
 IMGVER?=latest
 CONTAINER_NAME=maemo-build

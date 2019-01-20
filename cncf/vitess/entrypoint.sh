@@ -1,7 +1,7 @@
 #!/bin/bash
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 
-SRC_MOUNT=/tmp/src/vitess.io/vitess
+SRC_MOUNT=/go/src/vitess.io/vitess
 
 if [ -d $SRC_MOUNT ] ; then
     pushd $SRC_MOUNT

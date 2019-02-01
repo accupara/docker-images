@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
-FROM i386/ubuntu:16.04
+FROM i386/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum tools

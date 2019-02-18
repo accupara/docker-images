@@ -1,3 +1,4 @@
+# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
 
 RUN sudo apt-get update \

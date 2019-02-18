@@ -1,6 +1,10 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 
-SUBDIRS=baseimages business-cards django-nginx linuxkernel rsync qt qemu duperemove mozilla mobile circleci pyinstaller chromium java jobserver stress certbot cncf libdeploy
+SUBDIRS=\
+	baseimages \
+	business-cards django-nginx qemu duperemove mozilla chromium sonic \
+	mobile pyinstaller java cncf circleci \
+	jobserver stress certbot libdeploy
 # incomplete or untested: ffmpeg vlc yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -1,26 +1,23 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:16.04
+FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
-RUN sudo apt-get -y install \
-        build-essential \
-        git \
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && sudo apt-get update \
+ && sudo apt-get -y install \
         libpq-dev \
         nginx \
-        python-dev \
-        python-django \
-        python-pip \
-        python-setuptools \
-        python-software-properties \
+        python3-dev \
+        python3-pip \
+        python3-software-properties \
         sqlite3 \
-        ssh-client \
         sshpass \
         supervisor \
- && sudo pip install --upgrade \
-        pip \
- && sudo pip install --upgrade \
+ && sudo pip3 install --upgrade \
+        pip==18.1 \
+        setuptools \
+ && sudo pip3 install --upgrade \
         django \
         uwsgi
 
@@ -33,4 +30,4 @@ COPY nginx.conf /etc/nginx/
 # Use supervisord to start django and nginx by default
 COPY apps.conf /etc/supervisor/conf.d/
 COPY supervisord.conf /etc/supervisor/
-CMD ["sudo", "/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["sudo", "/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

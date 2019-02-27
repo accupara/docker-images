@@ -7,6 +7,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo apt-get -y install \
         libpq-dev \
+        multitail \
         nginx \
         python3-dev \
         python3-pip \
@@ -21,11 +22,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         django \
         uwsgi
 
-RUN sudo rm /etc/nginx/sites-enabled/* ; \
-    sudo ln -s /app/nginx-site.conf /etc/nginx/sites-enabled/nginx-site.conf
+RUN sudo rm /etc/nginx/sites-enabled/*
 
 # nginx conf file
 COPY nginx.conf /etc/nginx/
+COPY nginx-site.conf /etc/nginx/sites-enabled/
 
 # Use supervisord to start django and nginx by default
 COPY apps.conf /etc/supervisor/conf.d/

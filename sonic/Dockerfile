@@ -1,13 +1,13 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
-FROM accupara/debian:8
+FROM accupara/debian:9
 
-RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contrib non-free"                      | sudo tee -a /etc/apt/sources.list \
- && echo "deb-src http://debian-archive.trafficmanager.net/debian/ jessie main contrib non-free"                  | sudo tee -a /etc/apt/sources.list \
- && echo "deb http://debian-archive.trafficmanager.net/debian-security/ jessie/updates main contrib non-free"     | sudo tee -a /etc/apt/sources.list \
- && echo "deb-src http://debian-archive.trafficmanager.net/debian-security/ jessie/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list \
- && echo "deb http://debian-archive.trafficmanager.net/debian/ jessie-backports main contrib non-free"            | sudo tee -a /etc/apt/sources.list \
+RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free"                      | sudo tee -a /etc/apt/sources.list \
+ && echo "deb-src http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free"                  | sudo tee -a /etc/apt/sources.list \
+ && echo "deb http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free"     | sudo tee -a /etc/apt/sources.list \
+ && echo "deb-src http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list \
+ && echo "deb http://debian-archive.trafficmanager.net/debian/ stretch-backports main contrib non-free"            | sudo tee -a /etc/apt/sources.list \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update \
+ && sudo apt-get update -o Acquire::Check-Valid-Until=false \
  && sudo apt-get install -y debconf-utils \
  && echo "console-setup   console-setup/charmap47 select  ISO-8859-1"                   | sudo debconf-set-selections \
  && echo "keyboard-configuration  keyboard-configuration/variant  select  English (US)" | sudo debconf-set-selections \
@@ -28,8 +28,8 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     dh-make \
     dh-exec \
     kmod \
-    libtinyxml2-2 \
-    libboost-program-options1.55-dev \
+    libtinyxml2-4 \
+    libboost-program-options1.62-dev \
     libtinyxml2-dev \
     python \
     python-pip \
@@ -59,13 +59,11 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     chrpath \
 # For frr build
     libc-ares-dev \
-    hardening-wrapper \
     libsnmp-dev \
-    libjson0 \
-    libjson0-dev \
+    libjson-c3 \
+    libjson-c-dev \
     libsystemd-dev \
     python-ipaddr \
-    install-info \
 # For libnl3 (local) build
     cdbs \
 # For SAI meta build
@@ -89,10 +87,9 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     libqt4-dev \
     python-all-dev \
     python-twisted \
-    php5-dev \
     phpunit \
     libbit-vector-perl \
-    openjdk-7-jdk \
+    openjdk-8-jdk \
     javahelper \
     maven-debian-helper \
     ant \
@@ -117,18 +114,13 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
 # For mellanox sai build
     libtool-bin \
     libxml2-dev \
-# For BFN sdk build
-    libusb-1.0-0-dev \
-    libcurl3-nss-dev \
-    libunwind8-dev \
-    telnet \
 # For build image
     cpio \
     squashfs-tools \
     zip \
 # For broadcom sdk build
-    linux-compiler-gcc-4.8-x86 \
-    linux-kbuild-3.16 \
+    linux-compiler-gcc-6-x86 \
+    linux-kbuild-4.9 \
 # teamd build
     libdaemon-dev \
     libdbus-1-dev \
@@ -172,15 +164,13 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     cppcheck \
     clang \
     pylint \
+    python-pytest \
     gcovr \
-    python-pytest=2.6.3* \
-    python3-pytest=2.6.3* \
     python-pytest-cov \
-    python3-pytest-cov \
     python-parse \
 # For snmpd
-    libmysqlclient-dev \
-    libmysqld-dev \
+    default-libmysqlclient-dev \
+    libssl1.0-dev \
     libperl-dev \
     libpci-dev \
     libpci3 \
@@ -192,15 +182,20 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     libjs-sphinxdoc \
     libjs-underscore \
     python-docutils \
+    python-jinja2 \
     python-markupsafe \
     python-pygments \
     python-roman \
+    python-sphinx \
     sphinx-common \
+    python3-sphinx \
 # For sonic config engine testing
     python-lxml \
+    python-jinja2 \
     python-netaddr \
     python-ipaddr \
     python-yaml \
+    python3-yaml \
 # For lockfile
     procmail \
 # For gtest
@@ -208,18 +203,6 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     cmake \
 # For pam_tacplus build
     autoconf-archive \
-# For python-based swsscommon
-    swig3.0 \
-# For iproute2
-    cm-super-minimal \
-    libatm1-dev \
-    libelf-dev \
-    libmnl-dev \
-    libselinux1-dev \
-    linuxdoc-tools \
-    lynx \
-    texlive-latex-extra \
-    texlive-latex-recommended \
 # For python-click build
     python-sphinx \
     python-docutils \
@@ -230,14 +213,8 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     python3-requests \
     python3-pytest \
     python3-colorama \
-# For bash
-    texi2html \
 # For initramfs
     bash-completion \
-# For sonic vs image build
-    dosfstools \
-    qemu-kvm \
-    libvirt-bin \
 # For linux build
  && sudo apt-get -y build-dep linux \
 # For gobgp and telemetry build
@@ -264,12 +241,24 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ jessie main contr
     click-default-group click natsort tabulate netifaces==0.10.7 fastentrypoints \
 # For supervisor build
     meld3 mock \
-# For vs image build
-    pexpect==4.6.0 \
 # Install dependencies for isc-dhcp-relay build
  && sudo apt-get -y build-dep isc-dhcp \
-# Install rsyslog
- && sudo  apt-get install -y rsyslog \
+# Install docker-ce
+ && sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg2 \
+    software-properties-common \
+ && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
+ && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+ && sudo apt-get update -o Acquire::Check-Valid-Until=false \
+ && sudo apt-get -y install -y docker-ce-cli \
+ && sudo mv /usr/bin/docker /usr/bin/docker-bin \
+ && echo "#!/bin/bash" | sudo tee -a /usr/bin/docker \
+ && echo "sudo /usr/bin/docker-bin $*" | sudo tee -a /usr/bin/docker \
+ && sudo chmod +x /usr/bin/docker \
+# Clean up
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_* \
  && cd /usr/src/gtest && sudo cmake . && sudo make \

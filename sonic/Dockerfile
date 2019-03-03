@@ -7,7 +7,8 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
  && echo "deb-src http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list \
  && echo "deb http://debian-archive.trafficmanager.net/debian/ stretch-backports main contrib non-free"            | sudo tee -a /etc/apt/sources.list \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update -o Acquire::Check-Valid-Until=false \
+# && sudo apt-get update -o Acquire::Check-Valid-Until=false \
+ && sudo apt-get update \
  && sudo apt-get install -y debconf-utils \
  && echo "console-setup   console-setup/charmap47 select  ISO-8859-1"                   | sudo debconf-set-selections \
  && echo "keyboard-configuration  keyboard-configuration/variant  select  English (US)" | sudo debconf-set-selections \
@@ -217,6 +218,8 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
     bash-completion \
 # For linux build
  && sudo apt-get -y build-dep linux \
+# BASH dependencies
+ && sudo apt-get install -y texi2html \
 # For gobgp and telemetry build
  && export VERSION=1.11.5 \
  && cd /tmp/ \
@@ -252,7 +255,8 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
     software-properties-common \
  && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
  && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
- && sudo apt-get update -o Acquire::Check-Valid-Until=false \
+# && sudo apt-get update -o Acquire::Check-Valid-Until=false \
+ && sudo apt-get update \
  && sudo apt-get -y install -y docker-ce-cli \
  && sudo mv /usr/bin/docker /usr/bin/docker-bin \
  && echo "#!/bin/bash" | sudo tee -a /usr/bin/docker \

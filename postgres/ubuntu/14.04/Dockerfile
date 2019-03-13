@@ -27,4 +27,6 @@ RUN sudo apt-get update \
         tcl \
         tcl-dev \
         zlib1g-dev \
+        libxml2-utils \
+        xsltproc \
  && sudo apt-get clean

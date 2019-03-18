@@ -20,4 +20,6 @@ RUN sudo dnf update -y \
         readline-devel \
         tcl-devel \
         uuid-devel \
-        zlib-devel
+        zlib-devel \
+        libxml2 \
+        libxslt

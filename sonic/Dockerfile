@@ -14,6 +14,7 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
  && echo "keyboard-configuration  keyboard-configuration/variant  select  English (US)" | sudo debconf-set-selections \
  && echo "console-setup   console-setup/codesetcode       string  Lat15"                | sudo debconf-set-selections \
  && echo "console-setup   console-setup/codeset47 select"                               | sudo debconf-set-selections \
+ && sudo apt-get dist-upgrade -y \
  && sudo apt-get install -y \
     apt-utils \
     default-jre-headless \
@@ -253,6 +254,9 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
     curl \
     gnupg2 \
     software-properties-common \
+# Needed to install Debian/Debhelper/Sequence/phpcomposer.pm
+ && sudo apt-get install -y pkg-php-tools \
+# Install new docker
  && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
  && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
 # && sudo apt-get update -o Acquire::Check-Valid-Until=false \

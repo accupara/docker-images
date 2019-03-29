@@ -43,3 +43,4 @@ RUN sudo apt-get install -y \
  # clang-format-7 does not create link to clang-format and that causes failure in bootstrap script of timescaledb
  && sudo ln -s /usr/bin/clang-format-7 /usr/bin/clang-format \
  && sudo apt-get clean
+ 

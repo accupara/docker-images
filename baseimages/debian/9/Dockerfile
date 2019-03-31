@@ -38,6 +38,7 @@ RUN sudo chown -R admin:admin /home/admin \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys
+ && touch /home/admin/.ssh/authorized_keys \
+ && sudo chmod 0600 /etc/ssh/*
 
 EXPOSE 22

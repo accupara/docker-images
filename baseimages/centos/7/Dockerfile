@@ -37,6 +37,7 @@ RUN yum update -y \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/sshd \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/login \
  && mv /tmp/sshd_config /etc/ssh/ \
+ && chmod 0600 /etc/ssh/* \
  && mv /tmp/limits.conf /etc/security/
 
 USER admin

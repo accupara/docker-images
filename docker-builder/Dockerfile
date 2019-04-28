@@ -25,3 +25,5 @@ RUN sudo apt-get update \
          containerd.io \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/*
+
+RUN sudo addgroup admin docker

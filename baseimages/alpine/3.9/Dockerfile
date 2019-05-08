@@ -53,6 +53,9 @@ RUN addgroup -g 1000 -S admin \
 
 COPY sshd_config /etc/ssh/sshd_config
 
+# Fix for not having sshd host keys.
+RUN /usr/bin/ssh-keygen -A
+
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin

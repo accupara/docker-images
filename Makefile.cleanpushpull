@@ -17,6 +17,9 @@ push:
 pull:
 	docker pull $(IMGTAG):$(IMGVER)
 
+tag-latest:
+	docker tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest
+
 it:
 	docker run \
 		--rm -it \

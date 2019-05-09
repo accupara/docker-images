@@ -1,0 +1,34 @@
+#!/bin/sh
+# Copyright (c) 2019 crave.io Inc. All rights reserved
+
+set -e
+
+if [ -f /run/secrets/DEBUG ]; then
+	export DEBUG=$(cat $i)
+fi
+
+if [ "$DEBUG" = "1" ]; then
+	set -x
+fi
+
+# Load env vars
+for i in $(env|grep '/run/secrets')
+do
+	varName=$(echo $i|awk -F '[=]' '{print $1}'|sed 's/_FILE//')
+	varFile=$(echo $i|awk -F '[=]' '{print $2}')
+	eval "export $varName=$(cat $varFile)"
+done
+
+# If crave config variable is declared, lets write the crave config and use it
+if [ "${CRAVE_CONFIG}" != "" ]; then
+	# Lets create crave config at the root so it is accessed by crave from any workdir
+	echo "$CRAVE_CONFIG" > /crave.conf
+fi
+
+# Lets set crave as cmd if first argument is not a command
+if [ "$(which $1 2>/dev/null)" == "" ]; then
+	cmd=crave
+fi
+
+# Run crave with all given params to this entrypoint script
+exec $cmd $@

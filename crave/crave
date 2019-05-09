@@ -1,6 +1,8 @@
 #!/bin/bash
 # Copyright (c) 2019 crave.io Inc. All rights reserved
 
+set -e -o pipefail
+
 if [[ -f /run/secrets/DEBUG ]]; then
 	export DEBUG=$(cat $i)
 fi

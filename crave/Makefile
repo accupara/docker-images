@@ -28,13 +28,14 @@ crave-tag-latest:
 
 doitall:
 	${MAKE} crave-build
+	${MAKE} testitall
 	${MAKE} crave-push
 	${MAKE} crave-tag-latest
 
-testruncmd:
+test_template:
 	docker run --rm -it -e CRAVE_CONFIG="$$(cat /home/uv/code/crave.internal.crave.conf)" accupara/crave:latest ${CMD}
 
 testitall:
-	${MAKE} testruncmd CMD="ls"
-	${MAKE} testruncmd CMD="list"
-	${MAKE} testruncmd CMD="crave list"
+	${MAKE} test_template CMD="ls"
+	${MAKE} test_template CMD="list"
+	${MAKE} test_template CMD="crave list"

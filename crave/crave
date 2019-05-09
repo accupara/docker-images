@@ -27,7 +27,7 @@ fi
 
 # Lets set crave as cmd if first argument is not a command
 inputCmd="$(echo $1|awk '{print $1}')"
-inputCmd="$(which $inputCmd 2>/dev/null)"
+inputCmd="$(which $inputCmd 2>/dev/null || true)"
 if [[ ! -f $inputCmd ]]; then
 	cmd="/crave-bin $@"
 else

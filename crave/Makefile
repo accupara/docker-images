@@ -30,3 +30,11 @@ doitall:
 	${MAKE} crave-build
 	${MAKE} crave-push
 	${MAKE} crave-tag-latest
+
+testruncmd:
+	docker run --rm -it -e CRAVE_CONFIG="$$(cat /home/uv/code/crave.internal.crave.conf)" accupara/crave:latest ${CMD}
+
+testitall:
+	${MAKE} testruncmd CMD="ls"
+	${MAKE} testruncmd CMD="list"
+	${MAKE} testruncmd CMD="crave list"

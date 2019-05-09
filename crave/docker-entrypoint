@@ -1,13 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright (c) 2019 crave.io Inc. All rights reserved
 
-set -e
-
-if [ -f /run/secrets/DEBUG ]; then
+if [[ -f /run/secrets/DEBUG ]]; then
 	export DEBUG=$(cat $i)
 fi
 
-if [ "$DEBUG" = "1" ]; then
+if [[ "$DEBUG" = "1" ]]; then
 	set -x
 fi
 
@@ -20,15 +18,23 @@ do
 done
 
 # If crave config variable is declared, lets write the crave config and use it
-if [ "${CRAVE_CONFIG}" != "" ]; then
+if [[ "${CRAVE_CONFIG}" != "" ]]; then
 	# Lets create crave config at the root so it is accessed by crave from any workdir
 	echo "$CRAVE_CONFIG" > /crave.conf
 fi
 
 # Lets set crave as cmd if first argument is not a command
-if [ "$(which $1 2>/dev/null)" == "" ]; then
-	cmd=crave
+inputCmd="$(echo $1|awk '{print $1}')"
+inputCmd="$(which $inputCmd 2>/dev/null)"
+if [[ ! -f $inputCmd ]]; then
+	cmd="/crave-bin $@"
+else
+	params=$(echo "$@"|awk '{$1=""; print $0}')
+	cmd="${inputCmd}${params}"
 fi
 
 # Run crave with all given params to this entrypoint script
-exec $cmd $@
+if [[ "$DEBUG" = "1" ]]; then
+	echo "CMD: eval $cmd"
+fi
+eval "$cmd"

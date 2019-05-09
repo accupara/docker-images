@@ -2,8 +2,8 @@
 FROM centos:6
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY bin/crave /usr/local/bin
-COPY docker-entrypoint /
+COPY bin/crave /crave-bin
+COPY crave /usr/local/bin
 
-ENTRYPOINT [ "/docker-entrypoint" ]
-CMD [ "/bin/sh" ]
+ENTRYPOINT [ "/crave" ]
+CMD [ "crave" ]

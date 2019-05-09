@@ -25,3 +25,8 @@ crave-push:
 crave-tag-latest:
 	${MAKE} tag-latest IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
 	${MAKE} push IMGVER=latest
+
+doitall:
+	${MAKE} crave-build
+	${MAKE} crave-push
+	${MAKE} crave-tag-latest

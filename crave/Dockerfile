@@ -5,5 +5,5 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 COPY bin/crave /crave-bin
 COPY crave /usr/local/bin
 
-ENTRYPOINT [ "crave" ]
+ENTRYPOINT [ "/usr/local/bin/crave" ]
 CMD [ "crave" ]

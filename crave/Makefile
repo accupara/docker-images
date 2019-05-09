@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/crave
-IMGVER?=centos_6
+IMGVER?=latest
 GITROOT=$(shell git rev-parse --show-toplevel)
 GITBR=$(shell git rev-parse --abbrev-ref HEAD)
 

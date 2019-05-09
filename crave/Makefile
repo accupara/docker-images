@@ -13,6 +13,7 @@ include ${GITROOT}/Makefile.build
 # These targets are customized for crave as Image tag is mapped to crave version
 crave-build:
 	-rm -f bin/crave
+	mkdir -p bin
 	curl -L -s -k -4 -f -o 'bin/crave' '${CRAVE_DOWNLOAD_URL}'
 	chmod +x bin/crave
 	${MAKE} clean IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64

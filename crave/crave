@@ -36,7 +36,6 @@ if [[ ! -f $inputCmd ]]; then
 	    cmd+=" -v"
     fi
 	cmd+=" $@"
-    echo "$cmd"
 else
 	params=$(echo "$@"|awk '{$1=""; print $0}')
 	cmd="${inputCmd}${params}"

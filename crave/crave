@@ -22,14 +22,21 @@ done
 # If crave config variable is declared, lets write the crave config and use it
 if [[ "${CRAVE_CONFIG}" != "" ]]; then
 	# Lets create crave config at the root so it is accessed by crave from any workdir
-	echo "$CRAVE_CONFIG" > /crave.conf
+	echo "$CRAVE_CONFIG" | sudo tee /crave.conf 1>/dev/null 2>&1
+    sudo chown admin:admin /crave.conf
+    sudo chmod 444 /crave.conf
 fi
 
 # Lets set crave as cmd if first argument is not a command
 inputCmd="$(echo $1|awk '{print $1}')"
 inputCmd="$(which $inputCmd 2>/dev/null || true)"
 if [[ ! -f $inputCmd ]]; then
-	cmd="/crave-bin $@"
+	cmd="/crave-bin"
+    if [[ "$DEBUG" = "1" ]]; then
+	    cmd+=" -v"
+    fi
+	cmd+=" $@"
+    echo "$cmd"
 else
 	params=$(echo "$@"|awk '{$1=""; print $0}')
 	cmd="${inputCmd}${params}"

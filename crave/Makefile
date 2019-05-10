@@ -18,19 +18,18 @@ crave-build:
 	chmod +x bin/crave
 	${MAKE} clean IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
 	${MAKE} build IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
+	${MAKE} tag-latest IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
 
 crave-push:
 	${MAKE} push IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
+	${MAKE} push IMGVER=latest
 
 crave-tag-latest:
-	${MAKE} tag-latest IMGVER=${CRAVE_LATEST_VERSION}-Linux-amd64
-	${MAKE} push IMGVER=latest
 
 doitall:
 	${MAKE} crave-build
 	${MAKE} testitall
 	${MAKE} crave-push
-	${MAKE} crave-tag-latest
 
 test_template:
 	docker run --rm -it -e CRAVE_CONFIG="$$(cat /home/uv/code/crave.internal.crave.conf)" accupara/crave:latest ${CMD}

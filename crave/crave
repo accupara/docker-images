@@ -31,7 +31,7 @@ fi
 inputCmd="$(echo $1|awk '{print $1}')"
 inputCmd="$(which $inputCmd 2>/dev/null || true)"
 if [[ ! -f $inputCmd ]]; then
-	cmd="/crave-bin"
+	cmd="/crave"
     if [[ "$DEBUG" = "1" ]]; then
 	    cmd+=" -v"
     fi

@@ -68,21 +68,37 @@ def parse_argv():
 # end def
 
 
+def getAllIgnoredDirs(args):
+    # Let's find all the .ignoreDir files
+    ignoreDirFiles = glob.glob(os.path.join(
+        args.changeDir, '**/.ignoreDir'), recursive=True)
+    ignoreDirs = []
+    for i in ignoreDirFiles:
+        ignoreDirs.append(os.path.dirname(i))
+    return ignoreDirs
+
 def getAllDockerFiles(args):
+    ignoreDirs = getAllIgnoredDirs(args)
     # Let's find every Dockerfile in this path and all subpaths
     allRelPaths = glob.glob(os.path.join(
         args.changeDir, '**/Dockerfile'), recursive=True)
     fullPaths = []
     for relPath in allRelPaths:
         fullPath = os.path.abspath(relPath)
-        if 'archive' in fullPath:
+
+        ignoreThisOne = False
+        for i in ignoreDirs:
+            if i in fullPath:
+                ignoreThisOne = True
+                break
+        # end for
+        if ignoreThisOne:
             continue
         # end if
-        if 'armhf' in fullPath:
-            continue
-        # end if
+
         fullPaths.append(fullPath)
     # end for
+
     return fullPaths
 # end def
 

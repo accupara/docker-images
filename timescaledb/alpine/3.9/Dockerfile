@@ -7,30 +7,33 @@ FROM postgres:alpine
 FROM accupara/alpine:3.9
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
+COPY sshd_config /etc/ssh/sshd_config
+
 # Install dependancies for timescaledb
 RUN sudo apk update \
-    && sudo apk add --no-cache --virtual .build-deps \
+ && sudo apk add --no-cache --virtual .build-deps \
+       bison \
+       cmake \
        coreutils \
+       curl \
+       diffutils \
        dpkg-dev \
        findutils \
-       gcc \
-       libc-dev \
-       make \
-       util-linux-dev \
-       diffutils \
-       cmake \
-       bison \
        flex \
-       curl \
+       gcc \
        git \
+       libc-dev \
        openssl-dev \
        postgresql-dev \
+       make \
+       util-linux-dev \
        # below clang installs version 5, but we need 7. To be fixed in future
        clang \
-    && sudo mkdir -p /build/debug /build/debug-nossl
-
+ && sudo mkdir -p /build/debug /build/debug-nossl \
 # Install lcov from alpine edge repo
-RUN sudo apk add --no-cache --virtual --update-cache \
+ && sudo apk add --no-cache --virtual --update-cache \
     --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ \
     --allow-untrusted \
-       lcov
+       lcov \
+# Fix for not having sshd host keys.
+ && sudo /usr/bin/ssh-keygen -A

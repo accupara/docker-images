@@ -1,10 +1,11 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.11-stretch
+FROM accupara/golang:1.12-stretch
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
+        ant \
         golang \
         govendor \
         git \

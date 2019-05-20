@@ -1,12 +1,9 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
 
-RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free"                      | sudo tee -a /etc/apt/sources.list \
- && echo "deb-src http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free"                  | sudo tee -a /etc/apt/sources.list \
- && echo "deb http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free"     | sudo tee -a /etc/apt/sources.list \
- && echo "deb-src http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free" | sudo tee -a /etc/apt/sources.list \
- && echo "deb http://debian-archive.trafficmanager.net/debian/ stretch-backports main contrib non-free"            | sudo tee -a /etc/apt/sources.list \
- && export DEBIAN_FRONTEND=noninteractive \
+COPY sources.list /etc/apt/sources.list
+
+RUN export DEBIAN_FRONTEND=noninteractive \
 # && sudo apt-get update -o Acquire::Check-Valid-Until=false \
  && sudo apt-get update \
  && sudo apt-get install -y debconf-utils \
@@ -240,7 +237,7 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
 # Note: force upgrade debian packaged jinja2, if installed
  && sudo pip install --force-reinstall --upgrade jinja2>=2.10 \
 # For templating (requiring jinja2)
- && sudo  pip install j2cli \
+ && sudo pip install j2cli \
 # For sonic utilities testing
     click-default-group click natsort tabulate netifaces==0.10.7 fastentrypoints \
 # For supervisor build
@@ -266,6 +263,13 @@ RUN echo "deb http://debian-archive.trafficmanager.net/debian/ stretch main cont
  && echo "#!/bin/bash" | sudo tee -a /usr/bin/docker \
  && echo "sudo /usr/bin/docker-bin $*" | sudo tee -a /usr/bin/docker \
  && sudo chmod +x /usr/bin/docker \
+# Added dependencies based on compilation failures
+ && sudo apt-get install -y \
+    automake1.11 \
+    check \
+    debhelper \
+    librrd-dev \
+    libselinux1-dev \
 # Clean up
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_* \

@@ -1,8 +1,0 @@
-## Debian mirror on Microsoft Azure
-## Ref: http://debian-archive.trafficmanager.net/
-
-deb http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free
-deb-src http://debian-archive.trafficmanager.net/debian/ stretch main contrib non-free
-deb http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free
-deb-src http://debian-archive.trafficmanager.net/debian-security/ stretch/updates main contrib non-free
-deb http://debian-archive.trafficmanager.net/debian/ stretch-backports main contrib non-free

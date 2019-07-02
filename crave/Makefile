@@ -44,7 +44,6 @@ test_template:
 
 testitall:
 	${MAKE} test_template CMD="ls"
-	${MAKE} test_template CMD="list"
 	${MAKE} test_template CMD="crave list"
 
 ensure_crave_version:

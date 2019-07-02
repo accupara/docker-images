@@ -9,6 +9,7 @@ RUN sudo apt-get install -y \
         automake \
         bc \
         bison \
+        clang-6.0 \
         flex \
         libelf-dev \
         libncurses5-dev \

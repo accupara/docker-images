@@ -10,11 +10,13 @@ ifdef dockerfile_git
 		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
+		${DOCKER_EXTRA_ARGS} \
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 else
 	docker build \
 		-f $(DOCKERFILE) \
+		${DOCKER_EXTRA_ARGS} \
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 endif

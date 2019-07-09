@@ -3,8 +3,8 @@
 FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-# Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
     autoconf2.13 \
     binutils-avr \
@@ -32,10 +32,20 @@ RUN sudo apt-get update \
     wget \
     yasm \
     zip \
+# Run the bootstrap script
  && cd /tmp/ ; wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
- && echo 2 | python bootstrap.py --no-interactive \
+ && echo 2 | python bootstrap.py --no-interactive || true \
+# Mercurial must be at the latest version
+ && sudo apt-get purge -y mercurial mercurial-common \
+ && cd /tmp/ \
+ && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_4.8.2-1ubuntu3_all.deb \
+ && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_4.8.2-1ubuntu3_amd64.deb \
+ && sudo dpkg -i /tmp/mercurial-common_4.8.2-1ubuntu3_all.deb \
+ && sudo dpkg -i /tmp/mercurial_4.8.2-1ubuntu3_amd64.deb \
+ && rm /tmp/mercurial-common_4.8.2-1ubuntu3_all.deb /tmp/mercurial_4.8.2-1ubuntu3_amd64.deb \
+# Cleanup
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
 

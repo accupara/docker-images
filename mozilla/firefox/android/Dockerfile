@@ -4,7 +4,11 @@ FROM accupara/firefox:desktop
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN cd /tmp/ \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    openjdk-8-jdk-headless \
+ && cd /tmp/ \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && echo 4 | python bootstrap.py --no-interactive \
  && /home/admin/.cargo/bin/rustup target add armv7-linux-androideabi \

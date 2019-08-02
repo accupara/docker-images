@@ -3,6 +3,9 @@ FROM accupara/lkbuild:amd64
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
-        gcc-arm-linux-gnueabi
+        gcc-arm-linux-gnueabi \
+ && sudo apt-get clean -y \
+ && sudo rm -rf /var/lib/apt/lists/*

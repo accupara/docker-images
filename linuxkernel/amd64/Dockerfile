@@ -3,17 +3,20 @@ FROM accupara/ubuntu:16.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
-RUN sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
         autoconf \
         automake \
         bc \
         bison \
         clang-6.0 \
+        cpio \
         flex \
         libelf-dev \
         libncurses5-dev \
         libssl-dev \
         openssl \
         perl \
-        cpio
+ && sudo apt-get clean -y \
+ && sudo rm -rf /var/lib/apt/lists/*

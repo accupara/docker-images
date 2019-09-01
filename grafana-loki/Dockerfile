@@ -40,7 +40,9 @@ RUN sudo chown -R admin:admin /home/admin \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys
+ && touch /home/admin/.ssh/authorized_keys \
+ # Golang deps
+ && curl -L -s https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 -o /tmp/dep && chmod +x /tmp/dep && sudo mv /tmp/dep /go/bin/
 
 EXPOSE 22
 

@@ -21,3 +21,6 @@ RUN set -x \
 # Cleanup apt cache
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*
+
+ ENV PATH=/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+     LD_LIBRARY_PATH=/usr/local/cuda-10.1/lib64

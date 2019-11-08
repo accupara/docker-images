@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
-FROM grafana/loki-build-image:0.5.0
+FROM grafana/loki-build-image:0.7.4
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum tools

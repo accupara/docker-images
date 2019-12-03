@@ -2,7 +2,7 @@
 FROM centos:6
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
 RUN yum update -y \
@@ -21,6 +21,8 @@ RUN yum update -y \
         sudo \
         vim \
         wget \
+# Add the github-lgggfs    repo so that we have the latest git client
+ && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Add the EPEL 6 repo
  && wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -O /tmp/epel-release-6-8.noarch.rpm \
  && rpm -ivh /tmp/epel-release-6-8.noarch.rpm \

@@ -38,7 +38,9 @@ RUN yum update -y \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/login \
  && mv /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
- && mv /tmp/limits.conf /etc/security/
+ && mv /tmp/limits.conf /etc/security/ \
+# Let's get the latest git client
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash
 
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm

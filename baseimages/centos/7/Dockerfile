@@ -12,7 +12,6 @@ RUN yum update -y \
         binutils \
         gcc gcc-c++ \
         gettext \
-        git \
         make \
         openssh-server \
         redhat-lsb \
@@ -22,9 +21,13 @@ RUN yum update -y \
         vim \
         wget \
 # Add the EPEL 7 repo
- && wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm \
- && rpm -ivh /tmp/epel-release-latest-7.noarch.rpm \
- && yum update -y \
+# && wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm \
+# && rpm -ivh /tmp/epel-release-latest-7.noarch.rpm \
+# && yum update -y \
+# Add the ius community repo to allow the latest version of git. Also remove any existing git
+ && yum -y install  https://centos7.iuscommunity.org/ius-release.rpm \
+ && yum remove -y git* \
+ && yum -y install  git2u-all \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

@@ -16,6 +16,7 @@ RUN yum update -y \
         openssh-server \
         redhat-lsb \
         rpm-build \
+        rsync \
         subversion \
         sudo \
         vim \

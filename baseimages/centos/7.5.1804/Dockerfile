@@ -16,6 +16,7 @@ RUN set -x \
         openssh-server \
         redhat-lsb \
         rpm-build \
+        rsync \
         subversion \
         sudo \
         vim \

@@ -4,9 +4,16 @@
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
+ifdef NOCACHE
+	CACHE_FLAG=--no-cache
+else
+	CACHE_FLAG=
+endif
+
 build:
 ifdef dockerfile_git
 	docker build \
+		${CACHE_FLAG} \
 		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
@@ -15,6 +22,7 @@ ifdef dockerfile_git
 		$(CONTEXT_DIR)
 else
 	docker build \
+		${CACHE_FLAG} \
 		-f $(DOCKERFILE) \
 		${DOCKER_EXTRA_ARGS} \
 		-t $(IMGTAG):$(IMGVER) \

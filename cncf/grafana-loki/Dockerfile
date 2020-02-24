@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
 FROM grafana/loki-build-image:0.7.4
 MAINTAINER Crave.io Inc. "contact@crave.io"
 

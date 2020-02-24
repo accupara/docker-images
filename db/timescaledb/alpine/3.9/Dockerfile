@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Crave.io Inc. All rights reserved
+# Copyright (c) 2019-2020 Crave.io Inc. All rights reserved
 
 # Take base of postgres
 FROM postgres:alpine

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
 FROM ubuntu:15.10
 MAINTAINER Crave.io Inc. "contact@crave.io"
 

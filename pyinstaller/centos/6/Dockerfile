@@ -19,11 +19,22 @@ RUN set -x \
     wget \
     xz-devel \
     zlib-devel \
- && export PYTHON_VER=3.8.2 \
+ && export PYTHON_VER=3.6.6 \
  && wget http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
  && cd Python-${PYTHON_VER} \
  && ./configure --prefix=/usr/local --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j4 \
  && sudo make altinstall \
+ && sudo /usr/local/bin/pip3.6 install \
+    giturlparse.py \
+    pick \
+    pyinstaller \
+    python-dateutil \
+    requests \
+    tabulate \
+    termcolor \
+    tzdata \
+    tzlocal \
+    websocket-client \
  && cd .. ; sudo rm -rf Python-${PYTHON_VER}*

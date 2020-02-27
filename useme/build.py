@@ -462,7 +462,7 @@ def rebuildImage(args, image):
 
         # Then start a rebuild in the correct directory
         rv = subprocess.call(
-            ['make', '-C', os.path.dirname(image.Makefile), 'build', 'push'])
+            ['make', '-C', os.path.dirname(image.Makefile), 'build', 'push', 'NOCACHE=yes'])
         if rv != 0:
             return rv
         # end if

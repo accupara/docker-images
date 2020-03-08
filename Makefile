@@ -4,7 +4,7 @@ SUBDIRS=\
 	baseimages \
 	business-cards django-nginx qemu duperemove mozilla chromium sonic rustlang \
 	mobile pyinstaller java cncf circleci db \
-	jobserver stress certbot libdeploy gitstatic
+	jobserver stress certbot libdeploy gitstatic coreboot
 # incomplete or untested: ffmpeg vlc yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

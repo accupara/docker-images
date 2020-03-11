@@ -36,4 +36,11 @@ RUN sudo yum -y update \
     tzdata \
     tzlocal \
     websocket-client \
+# Set up links
+ && cd /usr/bin/ \
+ && sudo ln -s /usr/local/bin/python3.6 \
+ && sudo ln -s python3.6 python3 \
+ && sudo ln -s /usr/local/bin/pip3.6 \
+ && sudo ln -s pip3.6 pip3 \
+# Cleanup the sources
  && cd .. ; sudo rm -rf Python-${PYTHON_VER}*

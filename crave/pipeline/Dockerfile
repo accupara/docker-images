@@ -8,6 +8,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get install -y \
     git \
     rsync \
-    pigz
+    pigz \
+    make
 
 COPY bin/crave /usr/local/bin

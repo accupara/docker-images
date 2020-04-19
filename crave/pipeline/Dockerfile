@@ -10,6 +10,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     rsync \
     pigz \
     make \
-    jq
+    jq \
+    curl \
+    wget
 
 COPY bin/crave /usr/local/bin

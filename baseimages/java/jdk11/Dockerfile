@@ -18,6 +18,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         subversion \
         sudo \
         vim-nox \
+# ANT needs these directories
+ && mkdir -p /home/admin/.ant/lib \
+# Cleanup apt cache
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

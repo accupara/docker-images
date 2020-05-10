@@ -36,6 +36,8 @@ RUN set -x \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \
+# Please stop asking what colors I want
+ && git config --global color.ui false \
 # Final cleanups
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

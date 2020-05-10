@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM openjdk:8-jdk
+FROM openjdk:11-jdk
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum tools

@@ -7,6 +7,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
+        ant \
         bash-completion \
         binutils \
         build-essential \

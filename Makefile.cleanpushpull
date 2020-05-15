@@ -26,3 +26,8 @@ it:
 		-v ~/:/tmp/home \
 		$(IMGTAG):$(IMGVER) \
 		/bin/bash
+
+help:
+	@echo "Usage"
+	@echo "make [clean|push|pull|tag-latest|it]"
+	@echo "make build [NOCACHE=y]"

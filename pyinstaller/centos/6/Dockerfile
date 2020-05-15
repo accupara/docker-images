@@ -44,4 +44,4 @@ RUN set -x \
  && sudo ln -s /usr/local/bin/pip3.6 \
  && sudo ln -s pip3.6 pip3 \
 # Cleanup the sources
- && cd .. ; sudo rm -rf Python-${PYTHON_VER}*
+ && cd .. && sudo rm -rf Python-${PYTHON_VER}*

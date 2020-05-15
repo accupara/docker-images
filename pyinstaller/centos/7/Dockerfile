@@ -2,8 +2,9 @@
 FROM accupara/centos:7
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-RUN sudo yum -y update \
- && sudo yum groupinstall -y "development tools" \
+RUN set -x \
+ && sudo yum -y update \
+ #&& sudo yum groupinstall -y "development tools" \
  && sudo yum install -y \
     bzip2-devel \
     db4-devel \
@@ -43,4 +44,4 @@ RUN sudo yum -y update \
  && sudo ln -s /usr/local/bin/pip3.6 \
  && sudo ln -s pip3.6 pip3 \
 # Cleanup the sources
- && cd .. ; sudo rm -rf Python-${PYTHON_VER}*
+ && cd .. && sudo rm -rf Python-${PYTHON_VER}*

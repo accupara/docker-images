@@ -5,6 +5,15 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 RUN set -x \
  && sudo yum -y update \
  && sudo yum install -y \
-    yum-utils \
- && sudo yum-builddep \
-    python3
+    bzip2-devel \
+    db4-devel \
+    gdbm-devel \
+    libffi-devel \
+    libzip-devel \
+    ncurses-devel \
+    openssl-devel \
+    readline-devel \
+    sqlite-devel \
+    tk-devel \
+    uuid-devel \
+    xz-devel

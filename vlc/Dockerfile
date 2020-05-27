@@ -47,6 +47,7 @@ RUN set -x \
         qt513quickcontrols \
         qt513quickcontrols2 \
         qt513svg \
+        qt513x11extras \
         snapd \
         subversion \
         wayland-protocols \

@@ -1,13 +1,11 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/debian:9
+FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-# Enable the Ubuntu multiverse repository.
-RUN sudo bash -c 'echo "deb-src http://security.debian.org stretch/updates main" >> /etc/apt/sources.list' \
- && sudo bash -c 'echo "deb http://ftp.debian.org/debian/ stretch main" >> /etc/apt/sources.list' \
- && sudo bash -c 'echo "deb-src http://ftp.debian.org/debian/ stretch main" >> /etc/apt/sources.list' \
- && sudo bash -c 'echo "deb http://ftp.debian.org/debian stretch-updates main" >> /etc/apt/sources.list' \
- && sudo bash -c 'echo "deb-src http://ftp.debian.org/debian stretch-updates main" >> /etc/apt/sources.list' \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y software-properties-common \
+ && sudo add-apt-repository -y ppa:beineri/opt-qt-5.13.2-bionic \
  && sudo apt-get update \
  && sudo apt-get install -y \
         autoconf \
@@ -24,28 +22,36 @@ RUN sudo bash -c 'echo "deb-src http://security.debian.org stretch/updates main"
         gettext \
         git-core \
         lftp \
+        liba52-0.7.4-dev \
+        libasound2-dev \
         libavcodec-dev \
         libavformat-dev \
         libdirectfb-dev \
         liblircclient-dev \
+        liblua5.2-dev \
         libmodplug-dev \
         libpostproc-dev \
-        libqt5svg5-dev \
         libswscale-dev \
+        libxcb-composite0-dev \
+        libxcb-shm0-dev \
+        libxcb-xkb-dev \
         libtool \
         locales \
+        lua5.2 \
         make \
         openjdk-8-jdk \
         openssh-server \
         p7zip-full \
         pkg-config \
-        qtbase5-private-dev \
+        qt513-meta-minimal \
+        qt513quickcontrols \
+        qt513quickcontrols2 \
+        qt513svg \
         snapd \
         subversion \
         wayland-protocols \
         wget \
         zip \
- && sudo apt-get build-dep -y vlc \
  && sudo apt-get autoremove -y \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/* \

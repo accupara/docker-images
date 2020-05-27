@@ -9,7 +9,7 @@ RUN set -x \
  && sudo apt-get install -y apt-transport-https ca-certificates wget \
  && echo "deb https://download.mono-project.com/repo/ubuntu jessie main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list \
 # Prep for openJDK 8 in Jessie
- && echo "deb http://http.debian.net/debian stretch-backports main" | sudo tee /etc/apt/sources.list.d/openjdk8.list \
+ && echo "deb http://http.debian.net/debian stretch-backports main" | sudo tee /etc/apt/sources.list.d/stretch-backports.list \
 # Latest version of cmake required for compilation
  && wget -O /tmp/cmake-3.15.3-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.15.3/cmake-3.15.3-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-3.15.3-Linux-x86_64.sh \
@@ -19,7 +19,7 @@ RUN set -x \
  && sudo apt-get install -y \
     libc++-dev \
     mono-devel \
-    openjdk-8-jre-dcevm \
+    openjdk-11-jre \
     software-properties-common \
 # Download boost, but don't compile it
  && wget -O /tmp/boost_1_67_0.tar.gz https://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_1_67_0.tar.gz >/dev/null \

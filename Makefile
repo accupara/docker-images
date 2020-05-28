@@ -4,7 +4,7 @@ SUBDIRS=\
 	baseimages \
 	business-cards django-nginx qemu duperemove mozilla chromium sonic rustlang \
 	mobile cpython pyinstaller java cncf circleci db \
-	jobserver stress certbot libdeploy gitstatic coreboot tensorflow
+	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

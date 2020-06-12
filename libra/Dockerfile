@@ -13,14 +13,8 @@ RUN set -x \
       libssl-dev \
       llvm \
       pkg-config \
-# Required to have a working rust toolchain
- && rustup toolchain remove nightly \
- && rustup toolchain install nightly \
-# From the libra circleci yaml
- && rustup component add clippy rustfmt \
- && cargo install --force grcov \
-# This is what the current libra code does at the very beginning
- && rustup install 1.43.1-x86_64-unknown-linux-gnu \
+## Libra code needs this toolchain
+ && rustup toolchain install 1.43.1 \
 # Cleanup
  && sudo apt-get autoremove -y \
  && sudo apt-get clean -y \

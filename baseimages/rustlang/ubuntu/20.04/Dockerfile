@@ -2,9 +2,9 @@
 FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
+ENV RUSTUP_HOME=/opt/rustup \
+    CARGO_HOME=/opt/cargo \
+    PATH=/opt/cargo/bin:$PATH
 
 # Install the minimum tools
 RUN set -x \
@@ -13,15 +13,17 @@ RUN set -x \
  && sudo apt-get -y dist-upgrade \
  && sudo apt-get install -y \
     wget \
+ && sudo mkdir -p $RUSTUP_HOME $CARGO_HOME \
+ && sudo chown admin:admin $RUSTUP_HOME $CARGO_HOME \
  && cd /tmp \
- && url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init" \
- && wget "$url" \
+ && wget "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init" \
  && chmod +x rustup-init \
- && sudo mkdir -p /usr/local/rustup /usr/local/cargo \
- && sudo chown admin:admin /usr/local/rustup /usr/local/cargo \
  && ./rustup-init -y --no-modify-path --default-toolchain nightly \
- && rm rustup-init \
  && sudo chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
  && rustup --version \
  && cargo --version \
- && rustc --version
+ && rustc --version \
+# Cleanup
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_* \
+ && rm /tmp/rustup-init

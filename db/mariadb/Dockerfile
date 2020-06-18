@@ -4,6 +4,9 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \
+ && sudo apt-get install -y software-properties-common \
+ && sudo add-apt-repository ppa:maria-captains/travis-ci-helper-repo \
+ && sudo apt-get update \
  && sudo apt-get install -y \
     bison \
     chrpath \
@@ -13,6 +16,7 @@ RUN set -x \
     dh-apparmor \
     dh-exec \
     dh-systemd \
+    galera-4 \
     gdb \
     gnutls-dev \
     libaio-dev \
@@ -24,8 +28,10 @@ RUN set -x \
     libkrb5-dev \
     libncurses5-dev \
     libpam0g-dev \
+    libpcre2-dev \
     libpcre3-dev \
     libreadline-gplv2-dev \
+    libssl-dev \
     libsystemd-dev \
     libxml2-dev \
     lsb-release \
@@ -37,3 +43,5 @@ RUN set -x \
     zlib1g-dev \
 # Cleanup apt cache
  && sudo apt-get clean
+
+ENV WSREP_PROVIDER="/usr/lib/galera/libgalera_smm.so test"

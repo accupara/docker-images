@@ -15,6 +15,7 @@ RUN set -x \
       pkg-config \
 ## Libra code needs this toolchain
  && rustup toolchain install 1.44.0 \
+ && rustup toolchain install 1.44.1 \
 # Cleanup
  && sudo apt-get autoremove -y \
  && sudo apt-get clean -y \

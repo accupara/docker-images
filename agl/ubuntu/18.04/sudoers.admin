@@ -1,0 +1,4 @@
+admin ALL=NOPASSWD: /usr/bin/restrict_groupadd.sh
+admin ALL=NOPASSWD: /usr/bin/restrict_useradd.sh
+admin ALL = (admin) NOPASSWD:SETENV: /usr/bin/poky-launch.sh
+Defaults:admin !secure_path

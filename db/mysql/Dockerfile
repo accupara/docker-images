@@ -19,6 +19,7 @@ RUN set -x \
     galera-4 \
     gdb \
     gnutls-dev \
+    icu-devtools \
     libaio-dev \
     libarchive-dev \
     libcrack2-dev \
@@ -28,6 +29,7 @@ RUN set -x \
     libncurses5-dev \
     libpam0g-dev \
     libpcre2-dev \
+    libprotobuf-dev \
     libreadline-gplv2-dev \
     libssl-dev \
     libsystemd-dev \

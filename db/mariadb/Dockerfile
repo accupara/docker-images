@@ -29,7 +29,6 @@ RUN set -x \
     libncurses5-dev \
     libpam0g-dev \
     libpcre2-dev \
-    libpcre3-dev \
     libreadline-gplv2-dev \
     libssl-dev \
     libsystemd-dev \
@@ -44,4 +43,4 @@ RUN set -x \
 # Cleanup apt cache
  && sudo apt-get clean
 
-ENV WSREP_PROVIDER="/usr/lib/galera/libgalera_smm.so test"
+ENV WSREP_PROVIDER="/usr/lib/galera/libgalera_smm.so"

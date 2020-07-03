@@ -59,10 +59,10 @@ RUN sudo locale-gen en_US.UTF-8 \
  && git config --global user.email aosp@crave.io \
  && git config --global color.ui false
 USER root
-ADD https://raw.githubusercontent.com/crops/extsdk-container/master/restrict_useradd.sh  \
-        https://raw.githubusercontent.com/crops/extsdk-container/master/restrict_groupadd.sh \
-        https://raw.githubusercontent.com/crops/extsdk-container/master/usersetup.py \
-        /usr/bin/
+ADD restrict_useradd.sh  \
+    restrict_groupadd.sh \
+    usersetup.py \
+    /usr/bin/
 COPY poky-entry.py poky-launch.sh /usr/bin/
 COPY sudoers.admin /etc/
 RUN cp -af /etc/skel/ /etc/vncskel/ && \
@@ -84,4 +84,4 @@ USER admin
 
 CMD /bin/bash
 ENV LANG=en_US.UTF-8
-ENTRYPOINT ["/usr/bin/dumb-init", "--", "/usr/bin/poky-entry.py"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/usr/bin/poky-entry.py", "--id", "1000:1000"]

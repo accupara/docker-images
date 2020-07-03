@@ -23,7 +23,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--workdir', default='/home/admin',
+parser.add_argument('--workdir', default='/tmp',
                     help='The active directory once the container is running. '
                          'In the abscence of the "id" argument, the uid and '
                          'gid of the workdir will also be used for the user '
@@ -48,11 +48,6 @@ idargs = ""
 if args.id:
     uid, gid = args.id.split(":")
     idargs = "--uid={} --gid={}".format(uid, gid)
-
-elif args.workdir == '/home/admin':
-    # If the workdir wasn't specified pick a default uid and gid since
-    # usersetup won't be able to calculate it from the non-existent workdir
-    idargs = "--uid=1000 --gid=1000"
 
 cmd = """usersetup.py --username=pokyuser --workdir={wd}
          {idargs} poky-launch.sh {wd}""" \

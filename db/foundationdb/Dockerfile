@@ -1,6 +1,10 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
+FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
+
+ENV BOOST_ROOT=/opt/boost_1_73_0 \
+    BOOST_VER=1_73_0 \
+    CMAKE_VER=3.17.3
 
 RUN set -x \
  && sudo apt-get update \
@@ -9,22 +13,21 @@ RUN set -x \
  && sudo apt-get install -y apt-transport-https ca-certificates \
  && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list \
 # Latest version of cmake required for compilation
- && wget -O /tmp/cmake-3.15.3-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v3.15.3/cmake-3.15.3-Linux-x86_64.sh \
- && chmod +x /tmp/cmake-3.15.3-Linux-x86_64.sh \
- && sudo /tmp/cmake-3.15.3-Linux-x86_64.sh --skip-license --prefix=/usr \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Now for the rest of the deps
  && sudo apt update \
  && sudo apt-get install -y \
     libc++-dev \
+    libssl-dev \
     mono-devel \
-    openjdk-8-jdk \
+    openjdk-11-jdk \
     software-properties-common \
 # Download boost, but don't compile it
- && wget -O /tmp/boost_1_67_0.tar.gz https://downloads.sourceforge.net/project/boost/boost/1.67.0/boost_1_67_0.tar.gz >/dev/null \
- && sudo tar -C /opt -xf /tmp/boost_1_67_0.tar.gz \
- && rm /tmp/boost_1_67_0.tar.gz \
- && sudo chown -R admin:admin /opt/boost_1_67_0 \
+ && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
+ && sudo tar -C /opt -xf /tmp/boost_${BOOST_VER}.tar.gz \
+ && rm /tmp/boost_${BOOST_VER}.tar.gz \
+ && sudo chown -R admin:admin /opt/boost_${BOOST_VER} \
 # Cleanup apt cache
  && sudo apt-get clean
-
-ENV BOOST_ROOT=/opt/boost_1_67_0

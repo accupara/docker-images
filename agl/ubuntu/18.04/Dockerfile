@@ -37,6 +37,7 @@ RUN set -x \
     python3-pexpect \
     screen \
     socat \
+    strace \
     subversion \
     texinfo \
     tightvncserver \
@@ -57,6 +58,3 @@ RUN set -x \
  && git config --global color.ui false
 
 ENV LANG=en_US.UTF-8
-
-RUN set -x \
- && sudo apt-get install -y strace

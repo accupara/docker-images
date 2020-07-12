@@ -6,46 +6,45 @@ RUN set -x \
  && sudo apt-get update \
  && sudo apt-get -y dist-upgrade \
  && sudo apt-get -y install \
-    curl \
     autoconf \
     automake \
-    gettext \
-    libboost-dev \
-    libz-dev \
-    g++ \
-    gawk \
-    wget \
-    git-core \
-    diffstat \
-    unzip \
-    texinfo \
-    gcc-multilib \
     build-essential \
     chrpath \
-    socat \
     cpio \ 
-    python \
-    python3 \
-    python3-pip \
-    python3-pexpect \
-    xz-utils \
+    curl \
     debianutils \
+    diffstat \
+    fluxbox \
+    g++ \
+    gawk \
+    g++-multilib \
+    gcc-multilib \
+    gettext \
+    git-core \
+    iproute2 \
     iputils-ping \
-    python3-git \
-    python3-jinja2 \ 
+    libboost-dev \
     libegl1-mesa \
     libsdl1.2-dev \
-    pylint3 \
-    xterm \
+    libz-dev \
     locales \
-    g++-multilib \
-    subversion \
+    pylint3 \
+    python \
+    python3 \
+    python3-git \
+    python3-jinja2 \ 
+    python3-pip \
+    python3-pexpect \
     screen \
-    tmux \
-    iputils-ping \
-    iproute2 \
-    fluxbox \
+    socat \
+    subversion \
+    texinfo \
     tightvncserver \
+    tmux \
+    wget \
+    unzip \
+    xterm \
+    xz-utils \
  && sudo locale-gen en_US.UTF-8 \
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir /opt/aosp \

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM k8s.gcr.io/kube-cross:v1.13.4-1
+FROM us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.14.5-1
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum tools
@@ -31,7 +31,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm
 WORKDIR /home/admin
 CMD /bin/bash
 

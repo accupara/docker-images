@@ -2,12 +2,15 @@
 FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
+# Downloaded from https://software-dl.ti.com/ccs/esd/documents/ccs_downloads.html#code-composer-studio-version-10-downloads
+# wget https://software-dl.ti.com/ccs/esd/CCSv10/CCS_10_1_0/exports/CCS10.1.0.00010_linux-x64.tar.gz
 COPY CCS10.1.0.00010_linux-x64.tar.gz /tmp/
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo -E apt-get install -y \
+# Deps info from: https://software-dl.ti.com/ccs/esd/documents/ccsv10_linux_host_support.html
        libc6-i386 \
        libgconf-2-4 \
        libncurses5 \

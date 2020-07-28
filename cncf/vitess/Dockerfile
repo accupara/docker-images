@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.12-stretch
+FROM accupara/golang:1.14-stretch
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \

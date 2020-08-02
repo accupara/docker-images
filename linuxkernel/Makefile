@@ -1,3 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-SUBDIRS=amd64 crosscompile
-include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
+IMGTAG?=accupara/lkbuild
+IMGVER?=latest
+
+include $(shell git rev-parse --show-toplevel)/Makefile.build

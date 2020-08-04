@@ -3,7 +3,7 @@
 SUBDIRS=\
 	baseimages \
 	business-cards django-nginx qemu duperemove mozilla chromium sonic rustlang \
-	mobile cpython pyinstaller java cncf circleci db \
+	mobile cpython pyinstaller java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc

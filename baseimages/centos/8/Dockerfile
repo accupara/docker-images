@@ -22,10 +22,6 @@ RUN yum update -y \
         sudo \
         vim \
         wget \
-# Add the EPEL 7 repo
-# && wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm \
-# && rpm -ivh /tmp/epel-release-latest-7.noarch.rpm \
-# && yum update -y \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

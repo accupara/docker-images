@@ -5,7 +5,8 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
-RUN yum update -y \
+RUN set -x \
+ && yum update -y \
  && yum install -y \
         autoconf \
         automake \
@@ -22,11 +23,10 @@ RUN yum update -y \
         sudo \
         vim \
         wget \
-# Add the github-lgggfs    repo so that we have the latest git client
+# Add the github-lfs repo so that we have the latest git client
  && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Add the EPEL 6 repo
- && wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm -O /tmp/epel-release-6-8.noarch.rpm \
- && rpm -ivh /tmp/epel-release-6-8.noarch.rpm \
+ && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
  && yum update -y \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \

@@ -5,7 +5,8 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
-RUN yum update -y \
+RUN set -x \
+ && yum update -y \
  && yum install -y \
         autoconf \
         automake \
@@ -21,14 +22,11 @@ RUN yum update -y \
         sudo \
         vim \
         wget \
-# Add the EPEL 7 repo
-# && wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -O /tmp/epel-release-latest-7.noarch.rpm \
-# && rpm -ivh /tmp/epel-release-latest-7.noarch.rpm \
-# && yum update -y \
-# Add the ius community repo to allow the latest version of git. Also remove any existing git
- && yum -y install  https://centos7.iuscommunity.org/ius-release.rpm \
- && yum remove -y git* \
- && yum -y install  git2u-all \
+# Add the ius community repo to allow the latest version of git.
+ && yum -y install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+# Remove old git. Don't fail even if it was never installed
+ && yum remove -y git* ; true \
+ && yum -y install git224-all \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
@@ -43,8 +41,10 @@ RUN yum update -y \
  && mv /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
  && mv /tmp/limits.conf /etc/security/ \
-# Let's get the latest git client
- && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash
+# Let's get the latest git-lfs client
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash \
+ && sudo yum update -y \
+ && sudo yum install -y git-lfs
 
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm

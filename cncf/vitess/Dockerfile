@@ -1,16 +1,15 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.14-stretch
+FROM accupara/golang:1.14-buster
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
         ant \
-        golang \
         govendor \
-        git \
         mariadb-client \
         mariadb-server \
+        openjdk-11-jdk \
         python-pip \
         virtualenv \
         zlib1g-dev \
@@ -19,26 +18,24 @@ RUN set -x \
  && cd /go/src/vitess.io \
  && git clone https://github.com/vitessio/vitess.git vitess \
  && cd /go/src/vitess.io/vitess \
+# Silence the wget in the bootstrap
+ && sed -i 's/wget\(.*\)http/wget -q\1http/g' bootstrap.sh \
+# ... and then run it
  && ./bootstrap.sh \
- && sudo mkdir -p /opt/vendor_internal ; sudo chown admin:admin /opt/vendor_internal \
- && cd vendor ; mv cloud.google.com github.com golang.org google.golang.org gopkg.in /opt/vendor_internal/
-
- COPY entrypoint.sh /tmp/
- ENTRYPOINT ["/tmp/entrypoint.sh"]
+# We're going overboard with this container: We're going to even download the deps
+ && make build \
+# Cleanup
+ && cd .. ; rm -rf vitess ; mkdir vitess \
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*
 
  # To use this container:
- # 1. Mount the vitess sources into /go/src/vitess.io/vitess inside the container:
+ # Mount the vitess sources into /go/src/vitess.io/vitess inside the container and start the compilation:
  #    docker run --rm -it \
- #        -v `pwd`:/go/src/vitess.io/vitess \
+ #        -v $(readlink -f .):/go/src/vitess.io/vitess \
  #        -w /go/src/vitess.io/vitess \
- #        accupara/vitess \
- #        bash
- # 2. Inside the container:
- #    1. Create the following symbolic links
- #        ln -s /opt/vendor_internal/cloud.google.com  /go/src/vitess.io/vitess/vendor/cloud.google.com
- #        ln -s /opt/vendor_internal/github.com        /go/src/vitess.io/vitess/vendor/github.com
- #        ln -s /opt/vendor_internal/golang.org        /go/src/vitess.io/vitess/vendor/golang.org
- #        ln -s /opt/vendor_internal/google.golang.org /go/src/vitess.io/vitess/vendor/google.golang.org
- #        ln -s /opt/vendor_internal/gopkg.in          /go/src/vitess.io/vitess/vendor/gopkg.in
- #    2. cd /go/src/vitess.io/vitess ; source dev.env
- #    3. make build
+ #        accupara/vitess:latest \
+ #        make all
+ # .... or you know ...
+ # crave run --clean
+ # :)

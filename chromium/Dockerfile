@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:14.04
+FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # https://chromium.googlesource.com/chromium/src/+/master/docs/linux_suid_sandbox_development.md
@@ -9,13 +9,17 @@ ENV SRC="/src" LC_CTYPE="en_US.UTF-8" CHROME_DEVEL_SANDBOX="1"
 # RUN sudo useradd -m chromium \
 RUN sudo mkdir $SRC \
  && sudo chown -R admin:admin $SRC \
- && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"              | sudo tee --append /etc/apt/sources.list \
- && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"          | sudo tee --append /etc/apt/sources.list \
- && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"      | sudo tee --append /etc/apt/sources.list \
- && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"  | sudo tee --append /etc/apt/sources.list \
+ && perl -pi -e 's/archive.ubuntu.com/us.archive.ubuntu.com/' /etc/apt/sources.list \
+ && echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse"              | sudo tee --append /etc/apt/sources.list \
+ && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse"          | sudo tee --append /etc/apt/sources.list \
+ && echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse"      | sudo tee --append /etc/apt/sources.list \
+ && echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse"     | sudo tee --append /etc/apt/sources.list \
+ && echo "deb http://us.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse"    | sudo tee --append /etc/apt/sources.list \
+ && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ bionic-updates main restricted universe multiverse"  | sudo tee --append /etc/apt/sources.list \
+ && sudo apt-get update \
+ && sudo apt-get -yq install locales \
  && sudo locale-gen "en_US.UTF-8" \
  && sudo dpkg-reconfigure locales \
- && sudo apt-get update \
  && sudo apt-get -yq install \
     aptitude \
     build-essential \
@@ -23,14 +27,16 @@ RUN sudo mkdir $SRC \
     dpkg \
     git \
     pkg-config \
-    python-software-properties \
     software-properties-common \
     unzip \
  && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections \
+ && echo tzdata tzdata/Zones/Etc UTC | sudo tee debconf-set-selections \
+ && echo Etc/UTC | sudo tee /etc/timezone \
+ && echo tzdata tzdata/Areas select Etc | sudo tee debconf-set-selections \
  && sudo apt-get install ttf-mscorefonts-installer -yq \
  && sudo apt-get install -yq \
     ant \
-    apache2.2-bin \
+    apache2 \
     autoconf \
     bison \
     cdbs \
@@ -40,7 +46,9 @@ RUN sudo mkdir $SRC \
     dpkg-dev \
     elfutils \
     fakeroot \
+    ffmpeg \
     flex \
+    fonts-indic \
     fonts-thai-tlwg \
     g++ \
     g++-mingw-w64-i686 \
@@ -57,11 +65,9 @@ RUN sudo mkdir $SRC \
     lib32ncurses5-dev \
     lib32stdc++6 \
     lib32z1-dev \
-    libapache2-mod-php5 \
     libasound2 \
     libasound2-dev \
     libatk1.0-0 \
-    libav-tools \
     libbluetooth-dev \
     libbrlapi-dev \
     libbrlapi0.6 \
@@ -113,7 +119,6 @@ RUN sudo mkdir $SRC \
     libpci3 \
     libpcre3 \
     libpixman-1-0 \
-    libpng12-0 \
     libpulse-dev \
     libpulse0 \
     libsctp-dev \
@@ -149,11 +154,12 @@ RUN sudo mkdir $SRC \
     libxt-dev \
     libxtst-dev \
     libxtst6 \
+    manpages-pl \
+    manpages-fr-extra \
     mesa-common-dev \
     openbox \
     patch \
     perl \
-    php5-cgi \
     pkg-config \
     python \
     python-cherrypy3 \
@@ -164,18 +170,13 @@ RUN sudo mkdir $SRC \
     python-openssl \
     python-psutil \
     python-yaml \
-    realpath \
     rpm \
     ruby \
     subversion \
     texinfo \
     ttf-dejavu-core \
-    ttf-indic-fonts \
-    ttf-kochi-gothic \
-    ttf-kochi-mincho \
     ttf-mscorefonts-installer \
     wdiff \
-    xfonts-mathml \
     xsltproc \
     xutils-dev \
     xvfb \
@@ -183,3 +184,27 @@ RUN sudo mkdir $SRC \
     zlib1g \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
+
+RUN \
+    sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y
+
+RUN \
+    cd /opt \
+    && sudo git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+
+ENV PATH=/opt/depot_tools:$PATH
+
+RUN \
+    curl -s https://chromium.googlesource.com/chromium/src/+/master/build/install-build-deps.sh?format=TEXT | base64 -d \
+    | perl -pe 's/  if \[ -z "\$new_list.*/  if false; then/' \
+    | perl -pe 's/apt-get install \$\{do_quietly-}.*/DEBIAN_FRONTEND=noninteractive apt-get install -y \$packages/' \
+    | bash -e -s - \
+        --no-syms \
+        --no-arm \
+        --no-chromeos-fonts \
+        --no-nacl \
+        --no-prompt \
+        --unsupported
+
+RUN \
+    sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

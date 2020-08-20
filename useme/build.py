@@ -63,6 +63,8 @@ def parse_argv():
                         help='Change to directory before doing anything else')
     parser.add_argument('-n', '--dry-run', default=False, action='store_true', dest='dryRun',
                         help='Dry run, dont execute the actual build commands')
+    parser.add_argument('-j', '--threads', default=2, type=int,
+                        help='Number of threads to employ')
 
     return parser.parse_args()
 # end def
@@ -158,7 +160,6 @@ def getImageDest(makefile):
 
 
 class ImageNode:
-
     def __init__(self, Dockerfile='', Makefile='', parentName='', imageName=''):
         self.Dockerfile = Dockerfile
         self.Makefile = Makefile
@@ -517,7 +518,7 @@ def onePassOverBuildPlan(args, plan, executor):
 
 def execBuildPlan(args, plan):
     submitted = []
-    with cf.ThreadPoolExecutor(max_workers=2) as executor:
+    with cf.ThreadPoolExecutor(max_workers=args.threads) as executor:
         while len(plan) != 0:
             submitted.extend(onePassOverBuildPlan(args, plan, executor))
 

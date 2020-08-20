@@ -49,5 +49,5 @@ RUN set -x \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
 
- ENV SHELL=/bin/bash \
-     PATH=/home/admin/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV SHELL=/bin/bash \
+    PATH=/home/admin/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

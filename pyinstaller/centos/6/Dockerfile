@@ -10,24 +10,43 @@ RUN set -x \
     db4-devel \
     expat-devel \
     gdbm-devel \
+    libffi-devel \
     libpcap-devel \
     ncurses-devel \
-    openssl-devel \
     readline-devel \
     sqlite-devel \
     tk-devel \
     wget \
     xz-devel \
     zlib-devel \
- && export PYTHON_VER=3.6.6 \
- && wget http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
+# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1g
+ && cd /tmp/ \
+ && wget -q https://github.com/openssl/openssl/archive/OpenSSL_1_1_1g.tar.gz \
+ && tar -xf OpenSSL_1_1_1g.tar.gz \
+ && cd openssl-OpenSSL_1_1_1g \
+ && ./config --prefix=/usr --openssldir=/usr shared zlib \
+ && make -j4 && sudo make install \
+ && cd .. \
+ && sudo rm -rf OpenSSL_1_1_1g.tar.gz openssl-OpenSSL_1_1_1g \
+# Download and install python 3.8 because centos 6 has a very old python3
+ && cd /tmp/ \
+ && export PYTHON_VER=3.8.5 \
+ && wget -q http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
- && cd Python-${PYTHON_VER} \
- && ./configure --prefix=/usr/local --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
+ && cd /tmp/Python-${PYTHON_VER} \
+# Fixup SSL module info:
+ && echo '_socket socketmodule.c' >>Modules/Setup \
+ && echo 'SSL="/usr/lib64/openssl"' >>Modules/Setup \
+ && echo '_ssl _ssl.c \' >>Modules/Setup \
+ && echo '   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \' >>Modules/Setup \
+ && echo '   -L$(SSL)/lib -lssl -lcrypto' >>Modules/Setup \
+ && ./configure --prefix=/usr/local --with-openssl=/usr/local/openssl --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j4 \
  && sudo make altinstall \
- && sudo /usr/local/bin/pip3.6 install \
-    giturlparse.py \
+# Now pip install the usual suspects required for pyinstaller
+ && sudo /usr/local/bin/python3.8 -m pip install --upgrade pip \
+ && sudo /usr/local/bin/python3.8 -m pip install --upgrade \
+    giturlparse \
     pick \
     pyinstaller \
     python-dateutil \
@@ -39,9 +58,9 @@ RUN set -x \
     websocket-client \
 # Set up links
  && cd /usr/bin/ \
- && sudo ln -s /usr/local/bin/python3.6 \
- && sudo ln -s python3.6 python3 \
- && sudo ln -s /usr/local/bin/pip3.6 \
- && sudo ln -s pip3.6 pip3 \
+ && sudo ln -s /usr/local/bin/python3.8 \
+ && sudo ln -s python3.8 python3 \
+ && sudo ln -s /usr/local/bin/pip3.8 \
+ && sudo ln -s pip3.8 pip3 \
 # Cleanup the sources
  && cd .. && sudo rm -rf Python-${PYTHON_VER}*

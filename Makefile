@@ -5,7 +5,8 @@ SUBDIRS=\
 	business-cards django-nginx qemu duperemove mozilla chromium sonic rustlang \
 	mobile cpython pyinstaller java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
-	ti
+	ti \
+	aosp agl
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

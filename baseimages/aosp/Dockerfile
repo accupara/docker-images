@@ -25,6 +25,9 @@ RUN set -x \
     xsltproc \
     zip \
     zlib1g-dev \
+    libfreetype6 \
+    brotli \
+    openjdk-11-jdk \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir /opt/aosp \

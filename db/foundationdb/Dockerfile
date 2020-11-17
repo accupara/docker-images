@@ -20,8 +20,10 @@ RUN set -x \
  && sudo apt update \
  && sudo apt-get install -y \
     libc++-dev \
+    liblz4-dev \
     libssl-dev \
     mono-devel \
+    ninja-build \
     openjdk-11-jdk \
     software-properties-common \
 # Download boost, but don't compile it

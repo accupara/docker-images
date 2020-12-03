@@ -2,6 +2,8 @@
 FROM i386/ubuntu:16.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
+COPY sshd_config create_build_tools_json.sh /tmp/
+
 # Install the minimum tools
 RUN apt-get update \
     && echo "console-setup   console-setup/codeset47 select  # Latin1 and Latin5 - western Europe and Turkic languages" | debconf-set-selections \
@@ -34,15 +36,21 @@ RUN apt-get update \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
-# Clean up image
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_* \
- && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Store the build tools script into a well known directory
+ && mkdir -p /etc/crave \
+ && mv /tmp/create_build_tools_json.sh /etc/crave \
+# Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && adduser admin sudo \
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
- && mkdir -p /var/run/sshd
+# Configure sshd
+ && mkdir -p /var/run/sshd \
+ && mv /tmp/sshd_config /etc/ssh/sshd_config \
+# Clean up image
+ && echo ". /etc/bash_completion" >> /root/.bashrc \
+ && apt-get clean \
+ && rm -f /var/lib/apt/lists/*_dists_*
 
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm

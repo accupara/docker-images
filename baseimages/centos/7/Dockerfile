@@ -13,6 +13,7 @@ RUN set -x \
         binutils \
         gcc gcc-c++ \
         gettext \
+        jq \
         make \
         openssh-server \
         redhat-lsb \

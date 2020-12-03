@@ -13,6 +13,7 @@ RUN yum update -y \
         gcc gcc-c++ \
         gettext \
         git \
+        jq \
         make \
         openssh-server \
         redhat-lsb \

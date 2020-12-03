@@ -12,6 +12,7 @@ RUN apt-get update && \
         debhelper \
         dh-make \
         git \
+        jq \
         lsb-release \
         openssh-server \
         rsync \

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
-FROM accupara/centos:7
+FROM accupara/centos:8
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \

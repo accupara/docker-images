@@ -40,7 +40,7 @@ RUN set -x \
  && echo '_ssl _ssl.c \' >>Modules/Setup \
  && echo '   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \' >>Modules/Setup \
  && echo '   -L$(SSL)/lib -lssl -lcrypto' >>Modules/Setup \
- && ./configure --prefix=/usr/local --with-openssl=/usr/local/openssl --enable-shared --enable-optimizations LDFLAGS="-Wl,-rpath /usr/local/lib" \
+ && ./configure --prefix=/usr/local --with-openssl=/usr/local/openssl --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j4 \
  && sudo make altinstall \
 # Now pip install the usual suspects required for pyinstaller

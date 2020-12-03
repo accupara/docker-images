@@ -18,6 +18,10 @@ RUN apt-get update && \
         subversion \
         sudo \
         vim-nox \
+# Make sure to install git-lfs
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
+ && apt-get install -y git-lfs \
+# Clean up image
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

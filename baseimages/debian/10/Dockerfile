@@ -32,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && mkdir -p /var/run/sshd \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Clean up image
- && echo ". /etc/bash_completion" >> /root/.bashrc
+ && echo ". /etc/bash_completion" >> /root/.bashrc \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_*
 

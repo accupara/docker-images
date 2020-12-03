@@ -2,7 +2,7 @@
 FROM centos:7
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
 RUN set -x \
@@ -24,9 +24,13 @@ RUN set -x \
         wget \
 # Add the ius community repo to allow the latest version of git.
  && yum -y install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+# Add the github-lfs repo so that we have the latest git client
+ && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Remove old git. Don't fail even if it was never installed
  && yum remove -y git* ; true \
  && yum -y install git224-all \
+# Install the git-lfs package by default
+ && yum install -y git-lfs \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

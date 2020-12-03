@@ -2,7 +2,7 @@
 FROM centos:8
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
 RUN yum update -y \
@@ -22,6 +22,10 @@ RUN yum update -y \
         sudo \
         vim \
         wget \
+# Add the github-lfs repo so that we have the latest git client
+ && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
+# Install the git-lfs package by default
+ && yum install -y git-lfs \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

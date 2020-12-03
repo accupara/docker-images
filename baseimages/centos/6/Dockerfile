@@ -4,9 +4,20 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
-# Install the minimum tools
 RUN set -x \
+# Centos 6 is EOL starting Nov 20, 2020. It's time to use the vault instead of the regular mirrors
+# 1. Comment out all mirrorlist lines
+# 2. Uncomment baseurl and replace "mirror" with "vault"
+ && find /etc/yum.repos.d/ -type f | \
+        while read line ; do \
+            sed -s 's/^mirrorlist=/#mirrorlist=/g' $line | \
+            sed -s 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' >$line-temp ; \
+            cp -f $line $line.orig ; \
+            mv -f $line-temp $line ; \
+        done \
+# With the modifications above, this update shouldn't fail
  && yum update -y \
+# Install the minimum tools
  && yum install -y \
         autoconf \
         automake \
@@ -25,9 +36,12 @@ RUN set -x \
         wget \
 # Add the github-lfs repo so that we have the latest git client
  && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
-# Add the EPEL 6 repo
- && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
+# Add the EPEL 6 repo.... from the archives instead of the live rpm. Centos 6 is EOL'd!
+# && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
+ && yum install -y https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/epel-release-6-8.noarch.rpm \
  && yum update -y \
+# Install the git-lfs package by default
+ && yum install -y git-lfs \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

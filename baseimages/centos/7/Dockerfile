@@ -2,7 +2,7 @@
 FROM centos:7
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf github_git-lfs.repo /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo create_build_tools_json.sh /tmp/
 
 # Install the minimum tools
 RUN set -x \
@@ -32,6 +32,9 @@ RUN set -x \
  && yum -y install git224-all \
 # Install the git-lfs package by default
  && yum install -y git-lfs \
+# Store the build tools script into a well known directory
+ && mkdir -p /etc/crave \
+ && mv /tmp/create_build_tools_json.sh /etc/crave \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

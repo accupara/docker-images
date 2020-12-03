@@ -13,6 +13,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         debhelper \
         dh-make \
         git \
+        jq \
         subversion \
         sudo \
         vim-nox \

@@ -13,7 +13,6 @@ RUN set -x \
         binutils \
         gcc gcc-c++ \
         gettext \
-        jq \
         make \
         openssh-server \
         redhat-lsb \
@@ -30,8 +29,10 @@ RUN set -x \
 # Remove old git. Don't fail even if it was never installed
  && yum remove -y git* ; true \
  && yum -y install git224-all \
-# Install the git-lfs package by default
- && yum install -y git-lfs \
+# Install git-lfs and jq separately
+ && yum install -y \
+    git-lfs \
+    jq \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && mv /tmp/create_build_tools_json.sh /etc/crave \
@@ -48,11 +49,7 @@ RUN set -x \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/login \
  && mv /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
- && mv /tmp/limits.conf /etc/security/ \
-# Let's get the latest git-lfs client
- && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | sudo bash \
- && sudo yum update -y \
- && sudo yum install -y git-lfs
+ && mv /tmp/limits.conf /etc/security/
 
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm

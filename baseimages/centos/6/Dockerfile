@@ -25,7 +25,6 @@ RUN set -x \
         gcc gcc-c++ \
         gettext \
         git \
-        jq \
         make \
         openssh-server \
         redhat-lsb \
@@ -41,8 +40,10 @@ RUN set -x \
 # && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
  && yum install -y https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/epel-release-6-8.noarch.rpm \
  && yum update -y \
-# Install the git-lfs package by default
- && yum install -y git-lfs \
+# Install git-lfs and jq separately
+ && yum install -y \
+    git-lfs \
+    jq \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && mv /tmp/create_build_tools_json.sh /etc/crave \

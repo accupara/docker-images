@@ -2,7 +2,7 @@
 FROM centos:6
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf github_git-lfs.repo /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo create_build_tools_json.sh /tmp/
 
 RUN set -x \
 # Centos 6 is EOL starting Nov 20, 2020. It's time to use the vault instead of the regular mirrors
@@ -42,6 +42,9 @@ RUN set -x \
  && yum update -y \
 # Install the git-lfs package by default
  && yum install -y git-lfs \
+# Store the build tools script into a well known directory
+ && mkdir -p /etc/crave \
+ && mv /tmp/create_build_tools_json.sh /etc/crave \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

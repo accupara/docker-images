@@ -7,11 +7,9 @@ RUN set -x \
  #&& sudo yum groupinstall -y "development tools" \
  && sudo yum install -y \
     bzip2-devel \
-    db4-devel \
     expat-devel \
     gdbm-devel \
     libffi-devel \
-    libpcap-devel \
     ncurses-devel \
     readline-devel \
     sqlite-devel \

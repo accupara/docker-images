@@ -36,6 +36,8 @@ RUN set -x \
  && sudo chmod +x /usr/bin/repo \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+# Make sure that the default version of python is 3
+ && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

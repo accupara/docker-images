@@ -63,7 +63,10 @@ RUN set -x \
  && mv /tmp/limits.conf /etc/security/
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    LANG=en_US.utf8
 WORKDIR /home/admin
 
 RUN chown -R admin:admin /home/admin \

@@ -43,7 +43,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && rm -f /var/lib/apt/lists/*_dists_*
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    LANG=en_US.utf8
 WORKDIR /home/admin
 CMD /bin/bash
 

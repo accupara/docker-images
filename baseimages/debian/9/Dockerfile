@@ -16,6 +16,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         dh-make \
         git \
         jq \
+        locales \
         openssh-server \
         subversion \
         sudo \
@@ -41,12 +42,21 @@ ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin
 CMD /bin/bash
 
-RUN sudo chown -R admin:admin /home/admin \
+RUN set -x \
+# bashrc, ssh directory, completions, etc.
+ && sudo chown -R admin:admin /home/admin \
  && echo ". /etc/bash_completion" >> /home/admin/.bashrc \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
- && sudo chmod 0600 /etc/ssh/*
+ && sudo chmod 0600 /etc/ssh/* \
+# locale setup
+ && sudo sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+ && sudo locale-gen \
+# Export env vars
+ && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
 
 EXPOSE 22

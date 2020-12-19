@@ -17,6 +17,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         git \
         jq \
         locales \
+        lsb-release \
         openssh-server \
         subversion \
         sudo \

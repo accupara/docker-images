@@ -1,0 +1,104 @@
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+FROM accupara/debian:8
+MAINTAINER Crave.io Inc. "contact@crave.io"
+
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    apt \
+    apt-cacher-ng \
+    apt-file \
+    apt-utils \
+    autoconf \
+	 automake \
+    autotools-dev \
+	 bash-completion \
+    bc \
+    bind9-host \
+    binfmt-support \
+    binfmt-support \
+    bison \
+    bsdmainutils \
+    build-essential \
+    ccache \
+    cdbs \
+    cpio \
+    debhelper \
+    debhelper \
+    debhelper \
+	 device-tree-compiler \
+    devscripts \
+    devscripts \
+    dialog \
+    dosfstools \
+    dpkg-sig \
+    emacs \
+    file \
+    flex \
+    gcc \
+    genisoimage \
+	 git \
+    ifupdown \
+    iproute \
+    iputils-ping \
+    isolinux \
+    kmod \
+    less \
+    libc6-dev \
+	 libcurl4-nss-dev \
+	 libdouble-conversion-dev \
+    libedit-dev \
+	 libevent-dev \
+	 libgoogle-glog-dev \
+    libi2c-dev \
+	 libkrb5-dev \
+	 libnuma-dev \
+	 libsasl2-dev \
+	 libsnappy-dev \
+	 libpam-dev \
+    libsnmp-dev \
+	 libssl-dev \
+	 libstdc++6=4.9.2-10 \
+    libtool \
+    locales \
+    lsof \
+    make \
+    mingetty \
+    mtd-utils \
+    mtools \
+    multistrap \
+    nano \
+    ncurses-dev \
+    netbase \
+    net-tools \
+    nfs-common \
+    openssh-server \
+    pkg-config \
+    pkg-config \
+    procps \
+    psmisc \
+    python \
+    python-debian \
+    python-dnspython \
+    python-yaml \
+    qemu \
+    qemu-user-static \
+    realpath \
+    realpath \
+    rsyslog \
+	 ruby \
+	 ruby-dev \
+	 rubygems \
+	 screen \
+    squashfs-tools \
+    sshpass \
+    sudo \
+	 syslinux-utils \
+    traceroute \
+	 u-boot-tools \
+    vim-tiny \
+    wget \
+    zile \
+    zip
+ && sudo apt-get clean -y \
+ && sudo rm -rf /var/lib/apt/lists/*

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:16.04_32
 MAINTAINER Crave.io Inc. "contact@crave.io"
 

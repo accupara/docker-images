@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2020 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/centos:7
 MAINTAINER Crave.io Inc. "contact@crave.io"
 

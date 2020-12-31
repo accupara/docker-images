@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2020 Crave.io Inc. All rights reserved
+# Copyright (c) 2018-2021 Crave.io Inc. All rights reserved
 FROM microsoft/windowsservercore:1803
 
 # $ProgressPreference: https://github.com/PowerShell/PowerShell/issues/2138#issuecomment-251261324

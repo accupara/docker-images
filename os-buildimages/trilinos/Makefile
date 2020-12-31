@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/trilinos
 IMGVER?=ubuntu_1804
 

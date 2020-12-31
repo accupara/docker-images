@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright (c) 2017-2020 Crave.io Inc. All rights reserved
+# Copyright (c) 2017-2021 Crave.io Inc. All rights reserved
 
 import os
 import sys

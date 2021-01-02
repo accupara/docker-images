@@ -2,7 +2,7 @@
 FROM debian:9
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config create_build_tools_json.sh /tmp/
+COPY sshd_config /tmp/
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -22,9 +22,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         subversion \
         sudo \
         vim-nox \
+        wget \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
- && mv /tmp/create_build_tools_json.sh /etc/crave \
+ && wget -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
+ && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

@@ -12,11 +12,22 @@ RUN apt-get update && \
         debhelper \
         dh-make \
         git \
+        jq \
+        locales \
+        lsb-release \
         openssh-server \
         rsync \
         subversion \
         sudo \
         vim-nox \
+# Make sure to install git-lfs
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
+ && apt-get install -y git-lfs \
+# Store the build tools script into a well known directory
+ && mkdir -p /etc/crave \
+ && wget -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
+ && chmod +x /etc/crave/create_build_tools_json.sh \
+# Clean up image
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc \

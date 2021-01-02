@@ -2,7 +2,7 @@
 FROM centos:7
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-COPY sshd_config limits.conf github_git-lfs.repo create_build_tools_json.sh /tmp/
+COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
 RUN set -x \
@@ -35,7 +35,8 @@ RUN set -x \
     jq \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
- && mv /tmp/create_build_tools_json.sh /etc/crave \
+ && wget -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
+ && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \

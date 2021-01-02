@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-SUBDIRS=jdk8 jdk10 jdk11 jdk15
+SUBDIRS=jdk8 jdk10 jdk11
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

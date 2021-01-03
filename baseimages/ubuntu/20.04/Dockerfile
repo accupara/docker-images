@@ -5,7 +5,8 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 COPY sshd_config /tmp/
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
@@ -23,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         subversion \
         sudo \
         vim-nox \
+        wget \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \

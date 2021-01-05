@@ -30,7 +30,7 @@ RUN set -x \
  && apt-get install -y git-lfs \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
- && wget -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
+ && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \

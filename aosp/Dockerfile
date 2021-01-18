@@ -34,6 +34,9 @@ RUN set -x \
  && sudo chown admin:admin /opt/aosp \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
+# Remove python 2 completely
+ && sudo apt-get purge -y python python2.7 \
+ && sudo apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3

@@ -1,9 +1,10 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM accupara/debian:8
+FROM accupara/debian:9
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
+ && echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections \
  && sudo apt-get update \
  && sudo apt-get install -y \
     apt \
@@ -135,11 +136,13 @@ RUN set -x \
     xorriso \
     zile \
     zip \
- && echo "deb https://emdebian.metrotek.center/ jessie main" | sudo tee /etc/apt/sources.list.d/crosstools.list \
- && curl https://emdebian.metrotek.center/emdebian-toolchain-archive.key | sudo apt-key add - \
+ && echo "deb https://emdebian.metrotek.center/ stretch main" | sudo tee /etc/apt/sources.list.d/crosstools.list \
+ && curl https://emdebian.metrotek.center/emdebian-toolchain-archive.key | sudo apt-key add -
+
+RUN set -x \
  && sudo dpkg --add-architecture armel \
  && sudo dpkg --add-architecture arm64 \
-# && sudo dpkg --add-architecture powerpc \ # powerpc no longer supported on Jessie
+ && sudo dpkg --add-architecture powerpc \
  && sudo apt-get update \
  && sudo apt-get install -y \
     cross-gcc-dev \
@@ -172,9 +175,9 @@ RUN set -x \
  && sudo tar -C / -xvzf usr-bin-qemu-aarch64-static.tgz \
  && rm usr-bin-qemu-aarch64-static.tgz \
 # qemu: arm64
- && wget http://www.opennetlinux.org/tarballs/jessie-usr-buildroot-toolchains-arm64.tgz \
- && sudo tar -C / -xvzf jessie-usr-buildroot-toolchains-arm64.tgz \
- && rm jessie-usr-buildroot-toolchains-arm64.tgz \
+ && wget http://www.opennetlinux.org/tarballs/stretch-usr-buildroot-toolchains-arm64.tgz \
+ && sudo tar -C / -xvzf stretch-usr-buildroot-toolchains-arm64.tgz \
+ && rm stretch-usr-buildroot-toolchains-arm64.tgz \
 # LTS architecture fixes
  && sudo sed -i s/'http:\/\/security'/'[arch=amd64,armel] http:\/\/security'/g /etc/apt/sources.list \
  && sudo apt-get update \

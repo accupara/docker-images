@@ -1,4 +1,4 @@
-FROM python:3.7.1-stretch
+FROM python:3.7-buster
 RUN mkdir -p /opt/accupara/logs && \
     mkdir -p /opt/accupara/deploy
 

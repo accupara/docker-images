@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:16.04
+FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.

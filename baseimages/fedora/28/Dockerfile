@@ -9,6 +9,7 @@ RUN dnf update -y \
     file \
     git \
     gcc-c++ \
+    jq \
     make \
     openssh-server \
     redhat-lsb-core \

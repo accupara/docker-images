@@ -12,6 +12,7 @@ RUN set -x \
  && sudo apt-get update \
  && sudo apt-get -y dist-upgrade \
  && sudo apt-get install -y \
+    jq \
     wget \
  && sudo mkdir -p $RUSTUP_HOME $CARGO_HOME \
  && sudo chown admin:admin $RUSTUP_HOME $CARGO_HOME \

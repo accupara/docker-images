@@ -15,6 +15,7 @@ RUN set -x \
         debhelper \
         dh-make \
         git \
+        jq \
         openssh-server \
         subversion \
         sudo \

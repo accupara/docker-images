@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM fedora:27
+FROM fedora:latest
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum set of tools

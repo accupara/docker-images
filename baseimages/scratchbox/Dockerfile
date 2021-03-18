@@ -5,6 +5,7 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 RUN sudo bash -c 'echo "deb http://scratchbox.org/debian/ hathor main" >> /etc/apt/sources.list' && \
     sudo apt-get update && \
     sudo apt-get install -y --allow-unauthenticated \
+     jq \
      scratchbox-core \
      scratchbox-devkit-apt-https \
      scratchbox-devkit-autotools-legacy \

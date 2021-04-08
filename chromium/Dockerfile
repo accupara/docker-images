@@ -13,8 +13,6 @@ RUN sudo mkdir $SRC \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"          | sudo tee --append /etc/apt/sources.list \
  && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"      | sudo tee --append /etc/apt/sources.list \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"  | sudo tee --append /etc/apt/sources.list \
- && sudo locale-gen "en_US.UTF-8" \
- && sudo dpkg-reconfigure locales \
  && sudo apt-get update \
  && sudo apt-get -yq install \
     aptitude \
@@ -23,14 +21,13 @@ RUN sudo mkdir $SRC \
     dpkg \
     git \
     pkg-config \
-    python-software-properties \
     software-properties-common \
     unzip \
  && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections \
  && sudo apt-get install ttf-mscorefonts-installer -yq \
  && sudo apt-get install -yq \
     ant \
-    apache2.2-bin \
+    apache2-bin \
     autoconf \
     bison \
     cdbs \
@@ -57,14 +54,12 @@ RUN sudo mkdir $SRC \
     lib32ncurses5-dev \
     lib32stdc++6 \
     lib32z1-dev \
-    libapache2-mod-php5 \
+    libapache2-mod-php \
     libasound2 \
     libasound2-dev \
     libatk1.0-0 \
-    libav-tools \
     libbluetooth-dev \
     libbrlapi-dev \
-    libbrlapi0.6 \
     libbz2-1.0 \
     libbz2-dev \
     libc6 \
@@ -82,7 +77,6 @@ RUN sudo mkdir $SRC \
     libexif12 \
     libexpat1 \
     libffi-dev \
-    libffi6 \
     libfontconfig1 \
     libfreetype6 \
     libgbm-dev \
@@ -94,8 +88,6 @@ RUN sudo mkdir $SRC \
     libglib2.0-0 \
     libglib2.0-dev \
     libglu1-mesa-dev \
-    libgnome-keyring-dev \
-    libgnome-keyring0 \
     libgpm2 \
     libgtk2.0-0 \
     libgtk2.0-dev \
@@ -121,7 +113,6 @@ RUN sudo mkdir $SRC \
     libspeechd2 \
     libsqlite3-0 \
     libsqlite3-dev \
-    libssl1.0.0 \
     libssl-dev \
     libstdc++6 \
     libtinfo-dev \
@@ -153,29 +144,24 @@ RUN sudo mkdir $SRC \
     openbox \
     patch \
     perl \
-    php5-cgi \
+    php-cgi \
     pkg-config \
-    python \
-    python-cherrypy3 \
-    python-crypto \
-    python-dev \
-    python-numpy \
-    python-opencv \
-    python-openssl \
-    python-psutil \
-    python-yaml \
-    realpath \
+    python3 \
+    python3-cherrypy3 \
+    python3-crypto \
+    python3-dev \
+    python3-numpy \
+    python3-opencv \
+    python3-openssl \
+    python3-psutil \
+    python3-yaml \
     rpm \
     ruby \
     subversion \
     texinfo \
     ttf-dejavu-core \
-    ttf-indic-fonts \
-    ttf-kochi-gothic \
-    ttf-kochi-mincho \
     ttf-mscorefonts-installer \
     wdiff \
-    xfonts-mathml \
     xsltproc \
     xutils-dev \
     xvfb \

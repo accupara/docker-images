@@ -27,7 +27,6 @@ RUN set -x \
     libegl1-mesa \
     libsdl1.2-dev \
     libz-dev \
-    locales \
     pylint3 \
     python \
     python3 \
@@ -46,7 +45,7 @@ RUN set -x \
     unzip \
     xterm \
     xz-utils \
- && sudo locale-gen en_US.UTF-8 \
+# Install the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
@@ -56,5 +55,3 @@ RUN set -x \
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \
  && git config --global color.ui false
-
-ENV LANG=en_US.UTF-8

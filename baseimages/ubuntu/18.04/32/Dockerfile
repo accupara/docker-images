@@ -23,6 +23,7 @@ RUN apt-get update \
         bash-completion \
         binutils \
         build-essential \
+        curl \
         debhelper \
         dh-make \
         git \

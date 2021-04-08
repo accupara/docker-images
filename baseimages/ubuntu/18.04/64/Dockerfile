@@ -12,6 +12,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         bash-completion \
         binutils \
         build-essential \
+        curl \
         debhelper \
         dh-make \
         git \

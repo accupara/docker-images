@@ -105,7 +105,10 @@ RUN sudo mkdir $SRC \
     libpci3 \
     libpcre3 \
     libpixman-1-0 \
-    libpng12-0 \
+    libpng-dev \
+    libpng-tools \
+    libpng++-dev \
+    libpng16-16 \
     libpulse-dev \
     libpulse0 \
     libsctp-dev \
@@ -167,5 +170,6 @@ RUN sudo mkdir $SRC \
     xvfb \
     zip \
     zlib1g \
+# Cleanup
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

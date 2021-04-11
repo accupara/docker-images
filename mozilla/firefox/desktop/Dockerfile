@@ -1,10 +1,15 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 # From the deps specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
-FROM accupara/ubuntu:18.04
+FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
+COPY kb-config.exp /tmp/
+
 RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
+ && sudo apt-get install -y expect \
+ && sudo expect /tmp/kb-config.exp \
  && sudo apt-get install -y \
     autoconf2.13 \
     binutils-avr \
@@ -12,7 +17,6 @@ RUN set -x \
     cargo \
     clang \
     fontconfig \
-    git \
     libasound2-dev \
     libdbus-glib-1-dev \
     libfreetype6 \
@@ -28,23 +32,20 @@ RUN set -x \
     mercurial \
     perl \
     pkg-config \
-    python2.7 \
-    wget \
+    python3 \
     yasm \
     zip \
 # Run the bootstrap script
  && cd /tmp/ ; wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
- && echo 2 | python bootstrap.py --no-interactive || true \
+ && echo 2 | python3 bootstrap.py --no-interactive || true \
 # Mercurial must be at the latest version
  && sudo apt-get purge -y mercurial mercurial-common \
  && cd /tmp/ \
- && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_4.8.2-1ubuntu3_all.deb \
- && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_4.8.2-1ubuntu3_amd64.deb \
- && sudo dpkg -i /tmp/mercurial-common_4.8.2-1ubuntu3_all.deb \
- && sudo dpkg -i /tmp/mercurial_4.8.2-1ubuntu3_amd64.deb \
- && rm /tmp/mercurial-common_4.8.2-1ubuntu3_all.deb /tmp/mercurial_4.8.2-1ubuntu3_amd64.deb \
+ && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_5.5.1-1_all.deb \
+ && sudo dpkg -i /tmp/mercurial-common_5.5.1-1_all.deb \
+ && rm /tmp/*deb \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

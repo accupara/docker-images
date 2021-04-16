@@ -8,10 +8,13 @@ RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
     openjdk-8-jdk-headless \
+    python3-pip \
  && cd /tmp/ \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
- && echo 4 | python bootstrap.py --no-interactive \
+ && echo 4 | python3 bootstrap.py --no-interactive \
  && /home/admin/.cargo/bin/rustup target add armv7-linux-androideabi \
+# Cleanup
+ && rm -rf /tmp/mozilla* \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
 

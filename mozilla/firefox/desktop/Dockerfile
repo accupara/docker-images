@@ -35,18 +35,21 @@ RUN set -x \
     python3 \
     yasm \
     zip \
+# Mercurial must be at the latest version
+ && sudo apt-get purge -y mercurial mercurial-common \
+ && cd /tmp/ \
+ && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_5.3.1-1ubuntu1_amd64.deb \
+         http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_5.3.1-1ubuntu1_all.deb \
+ && sudo dpkg -i /tmp/mercurial-common_5.3.1-1ubuntu1_all.deb \
+ && sudo dpkg -i /tmp/mercurial_5.3.1-1ubuntu1_amd64.deb \
 # Run the bootstrap script
  && cd /tmp/ ; wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
  && echo 2 | python3 bootstrap.py --no-interactive || true \
-# Mercurial must be at the latest version
- && sudo apt-get purge -y mercurial mercurial-common \
- && cd /tmp/ \
- && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_5.5.1-1_all.deb \
- && sudo dpkg -i /tmp/mercurial-common_5.5.1-1_all.deb \
- && rm /tmp/*deb \
 # Cleanup
+ && rm -f /tmp/*deb \
+ && rm -rf /tmp/mozilla* \
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*
 

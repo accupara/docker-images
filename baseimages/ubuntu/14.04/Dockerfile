@@ -12,6 +12,7 @@ RUN apt-get update && \
         curl \
         debhelper \
         dh-make \
+        emacs \
         git \
         jq \
         locales \
@@ -20,6 +21,7 @@ RUN apt-get update && \
         rsync \
         subversion \
         sudo \
+        tmux \
         vim-nox \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \

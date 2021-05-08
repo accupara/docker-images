@@ -16,6 +16,7 @@ RUN set -x \
         curl \
         debhelper \
         dh-make \
+        emacs \
         git \
         jq \
         locales \
@@ -24,6 +25,7 @@ RUN set -x \
         rsync \
         subversion \
         sudo \
+        tmux \
         vim-nox \
         wget \
 # Make sure to install git-lfs

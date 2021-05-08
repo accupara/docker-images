@@ -11,9 +11,12 @@ RUN set -x \
         autoconf \
         automake \
         binutils \
+        emacs \
         gcc gcc-c++ \
         gettext \
+        libevent-devel \
         make \
+        ncurses-devel \
         openssh-server \
         redhat-lsb \
         rpm-build \
@@ -33,6 +36,14 @@ RUN set -x \
  && yum install -y \
     git-lfs \
     jq \
+# Download and install the latest tmux
+ && export TMUX_VERSION=3.2 \
+ && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \
+ && tar -xf tmux-${TMUX_VERSION}.tar.gz && cd tmux-${TMUX_VERSION} \
+ && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
+ && make -j `nproc` \
+ && sudo make install \
+ && cd .. && rm -rf tmux-${TMUX_VERSION} \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \

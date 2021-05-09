@@ -6,7 +6,8 @@ SUBDIRS=\
 	mobile cpython pyinstaller java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \
-	aosp agl
+	aosp agl \
+    golang-apps
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

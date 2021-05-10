@@ -296,7 +296,7 @@ def updateImageMtimes(imageList):
     printf('Fetching image mtimes\n')
     allFutures = []
 
-    with cf.ThreadPoolExecutor(max_workers=20) as executor:
+    with cf.ThreadPoolExecutor(max_workers=8) as executor:
         for i in imageList:
             allFutures.append(executor.submit(updateImageMtime, i))
         # end for

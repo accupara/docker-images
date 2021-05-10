@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM accupara/yocto:ubuntu_1804
+FROM accupara/yocto:ubuntu_2004
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \

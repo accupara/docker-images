@@ -54,7 +54,7 @@ RUN set -x \
  && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
  && make -j `nproc` \
  && sudo make install \
- && cd .. && rm -rf tmux-${TMUX_VERSION} \
+ && cd .. && rm -rf tmux-${TMUX_VERSION}* \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \

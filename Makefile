@@ -2,7 +2,7 @@
 
 SUBDIRS=\
 	baseimages \
-	business-cards django-nginx qemu duperemove mozilla chromium sonic rustlang \
+	business-cards django-nginx qemu duperemove mozilla chromium sonic \
 	mobile cpython pyinstaller java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \

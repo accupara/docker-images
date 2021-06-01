@@ -68,6 +68,8 @@ main() {
     append_list '*-g++'
     echo "| Looking through $TOOLCHAIN_DIR for cpp..."
     append_list '*-cpp'
+    echo "| Looking through $TOOLCHAIN_DIR for rustc..."
+    append_list 'rustc'
 
     echo "| Converting the list of $(wc -l /tmp/list.txt | awk '{print $1}') compilers in /tmp/list.txt into a build_tools.conf ..."
     make_json

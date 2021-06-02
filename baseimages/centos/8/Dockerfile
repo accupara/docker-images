@@ -5,7 +5,11 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 
 # Install the minimum tools
-RUN yum update -y \
+RUN set -x \
+# Add epel 8 first
+ && yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+# ... then start installing packages
+ && yum update -y \
  && yum install -y \
         autoconf \
         automake \
@@ -14,7 +18,8 @@ RUN yum update -y \
         gcc gcc-c++ \
         gettext \
         git \
-        hardening-check \
+# This package isn't available in Centos 8. This means rustc caching won't be recognizable by crave's automated script
+        #hardening-check \
         jq \
         libevent-devel \
         make \

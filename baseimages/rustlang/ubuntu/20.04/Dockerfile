@@ -24,6 +24,8 @@ RUN set -x \
  && rustup --version \
  && cargo --version \
  && rustc --version \
+# Add the rustc compiler into the build tools list
+ && /etc/crave/create_build_tools_json.sh /opt/cargo/bin \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_* \

@@ -13,6 +13,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         binutils \
         build-essential \
         debhelper \
+        devscripts \
         dh-make \
         git \
         jq \

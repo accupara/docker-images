@@ -26,6 +26,7 @@ RUN set -x \
         gcc gcc-c++ \
         gettext \
         git \
+        hardening-check \
         libevent2-devel \
         make \
         ncurses-devel \

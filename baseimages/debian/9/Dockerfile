@@ -13,6 +13,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         binutils \
         build-essential \
         debhelper \
+# This doesn't install hardening-check, even though it works on 8 and 10. :(
+        devscripts \
         dh-make \
         git \
         jq \

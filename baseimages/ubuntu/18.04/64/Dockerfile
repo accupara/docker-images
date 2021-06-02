@@ -14,6 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         build-essential \
         curl \
         debhelper \
+        devscripts \
         dh-make \
         emacs \
         git \

@@ -16,6 +16,20 @@ append_list() {
     sort -u >>/tmp/list.txt
 }
 
+append_pie_list() {
+    find $TOOLCHAIN_DIR -type f -name "$1" | \
+        xargs file | grep 'ELF.*x86' | \
+        cut -d: -f1 | \
+    while read line ; do
+        line=$(readlink -f $line)
+        if [ $(hardening-check $line | grep -c 'Position.*yes') == "1" ] ; then
+            # This is a valid PIE binary
+            echo $line
+        fi
+    done | \
+    sort -u >>/tmp/list.txt
+}
+
 make_list() {
     rm /tmp/list.txt
 
@@ -68,8 +82,9 @@ main() {
     append_list '*-g++'
     echo "| Looking through $TOOLCHAIN_DIR for cpp..."
     append_list '*-cpp'
+
     echo "| Looking through $TOOLCHAIN_DIR for rustc..."
-    append_list 'rustc'
+    append_pie_list 'rustc'
 
     echo "| Converting the list of $(wc -l /tmp/list.txt | awk '{print $1}') compilers in /tmp/list.txt into a build_tools.conf ..."
     make_json

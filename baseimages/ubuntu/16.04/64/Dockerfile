@@ -13,6 +13,7 @@ RUN apt-get update && \
         build-essential \
         curl \
         debhelper \
+        devscripts \
         dh-make \
         emacs \
         git \

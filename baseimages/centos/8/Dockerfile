@@ -14,6 +14,7 @@ RUN yum update -y \
         gcc gcc-c++ \
         gettext \
         git \
+        hardening-check \
         jq \
         libevent-devel \
         make \

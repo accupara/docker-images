@@ -15,6 +15,7 @@ RUN set -x \
         build-essential \
         curl \
         debhelper \
+        devscripts \
         dh-make \
         emacs \
         git \

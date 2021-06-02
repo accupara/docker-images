@@ -14,6 +14,7 @@ RUN set -x \
         emacs \
         gcc gcc-c++ \
         gettext \
+        hardening-check \
         libevent-devel \
         make \
         ncurses-devel \

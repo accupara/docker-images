@@ -9,7 +9,8 @@ RUN sudo apt-get update \
         expect \
         openssh-server \
         python-pip \
- && sudo expect /tmp/kb-config.exp \
+# No longer required?
+# && sudo expect /tmp/kb-config.exp \
  && sudo apt-get install -y xpra \
  && mkdir -p ~/.ssh/ \
  && grep -v start-new-commands /etc/xpra/xpra.conf > /tmp/xpra.conf \

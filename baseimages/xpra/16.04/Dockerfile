@@ -3,13 +3,15 @@ FROM accupara/ubuntu:16.04
 
 COPY kb-config.exp startcmd.sh /tmp/
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
         binutils \
         expect \
         openssh-server \
         python-pip \
- && sudo expect /tmp/kb-config.exp \
+# No longer required?
+# && sudo expect /tmp/kb-config.exp \
  && sudo apt-get install -y xpra \
  && mkdir -p ~/.ssh/ \
  && grep -v start-new-commands /etc/xpra/xpra.conf > /tmp/xpra.conf \

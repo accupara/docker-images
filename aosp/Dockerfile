@@ -14,8 +14,8 @@ RUN set -x \
     gcc-multilib \
     gnupg \
     gperf \
-    lib32ncurses-dev \
-    libncurses-dev \
+    lib32ncurses5-dev \
+    libncurses5-dev \
     lib32z-dev \
     libc6-dev-i386 \
     libgl1-mesa-dev \

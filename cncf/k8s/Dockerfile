@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.16.3-1
+FROM us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.16.5-1
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Install the minimum tools

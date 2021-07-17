@@ -2,9 +2,9 @@
 FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-ENV BOOST_ROOT=/opt/boost_1_73_0 \
-    BOOST_VER=1_73_0 \
-    CMAKE_VER=3.17.3
+ENV BOOST_ROOT=/opt/boost_1_72_0 \
+    BOOST_VER=1_72_0 \
+    CMAKE_VER=3.21.0
 
 RUN set -x \
  && sudo apt-get update \

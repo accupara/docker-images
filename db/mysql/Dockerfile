@@ -54,4 +54,4 @@ RUN set -x \
 # Cleanup apt cache
  && sudo apt-get clean
 
-ENV BOOST=1_72_0
+ENV BOOST=1_73_0

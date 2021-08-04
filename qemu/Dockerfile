@@ -1,13 +1,24 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN sudo apt-get update
 RUN sudo apt-get install -y \
+    binutils-mingw-w64 \
+    binutils-mingw-w64-i686 \
+    binutils-mingw-w64-x86-64 \
     build-essential \
     clang \
+    g++-mingw-w64 \
+    g++-mingw-w64-i686 \
+    g++-mingw-w64-x86-64 \
+    gcc-mingw-w64 \
+    gcc-mingw-w64-i686 \
+    gcc-mingw-w64-x86-64 \
     git \
+    git-email \
     glib2.0-dev \
     libaio-dev \
     libbluetooth-dev \
@@ -38,7 +49,9 @@ RUN sudo apt-get install -y \
     libvdeplug-dev \
     libvte-2.91-dev \
     libxen-dev \
+    libz-mingw-w64-dev \
     valgrind \
+    win-iconv-mingw-w64-dev \
     xfslibs-dev \
     zlib1g-dev \
  && sudo apt-get clean -y \

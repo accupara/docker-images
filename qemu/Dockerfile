@@ -4,8 +4,9 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
-RUN sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
     binutils-mingw-w64 \
     binutils-mingw-w64-i686 \
     binutils-mingw-w64-x86-64 \

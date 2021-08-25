@@ -59,6 +59,7 @@ RUN set -x \
         libxcb-shm0-dev \
         libxcb-xfixes0-dev \
         libzip-dev \
+        ninja-build \
         pkg-config \
         texinfo \
         zlib1g-dev \

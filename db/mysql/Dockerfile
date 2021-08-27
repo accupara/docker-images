@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
+FROM accupara/ubuntu:20.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
@@ -36,6 +36,7 @@ RUN set -x \
     libxml2-dev \
     lsb-release \
     ninja-build \
+    pkg-config \
     perl \
     po-debconf \
     psmisc \

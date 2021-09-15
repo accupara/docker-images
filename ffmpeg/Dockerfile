@@ -3,17 +3,22 @@ FROM accupara/ubuntu:20.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
+ENV LIBFUN_VER=0.3.95
+
 # Dependencies as mentioned in https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 RUN set -x \
  && sudo apt-get update \
+ && sudo apt-get install -y software-properties-common \
  && sudo apt-get install -y \
         autoconf \
         automake \
         build-essential \
+        cmake \
         ladspa-sdk \
         libaom-dev \
         libaribb24-dev \
         libass-dev \
+        libavfilter-dev \
         libbluray-dev \
         libbs2b-dev \
         libcaca-dev \
@@ -27,7 +32,6 @@ RUN set -x \
         libfribidi-dev \
         libghc-gnutls-dev \
         libgcrypt20-dev \
-        liblensfun-dev \
         libmodplug-dev \
         libmp3lame-dev \
         libopencore-amrnb-dev \
@@ -70,6 +74,17 @@ RUN set -x \
         libopus-dev \
         libx264-dev \
         yasm \
+# Lets get the latest Lensfun library (disabled, but kept for future reference)
+ #&& cd /tmp/ \
+ #&& wget https://sourceforge.net/projects/lensfun/files/${LIBFUN_VER}/lensfun-${LIBFUN_VER}.tar.gz \
+ #&& tar -xvf lensfun-${LIBFUN_VER}.tar.gz \
+ #&& cd /tmp/lensfun-${LIBFUN_VER}/ \
+ #&& mkdir build \
+ #&& cd build \
+ #&& cmake -DCMAKE_BUILD_TYPE=release -DCPACK_BINARY_DEB=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr -G Ninja ../ \
+ #&& ninja -v \
+ #&& ninja -v package \
+ #&& sudo dpkg -i ./liblensfun2_${LIBFUN_VER}.0_amd64.deb \
 # OpenCV needs separate installation
 # && cd /tmp ; git clone https://github.com/jayrambhia/Install-OpenCV.git opencv \
 # && cd opencv/Ubuntu && 

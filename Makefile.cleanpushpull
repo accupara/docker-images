@@ -2,26 +2,26 @@
 # This template must only be included by the actual image building makefile
 
 clean:
-	-docker rm $$(docker ps -aq)
-	-docker images | \
+	-${DOCKER} rm $$(${DOCKER} ps -aq)
+	-${DOCKER} images | \
 		awk '{ if ($$1 == "$(IMGTAG)" && $$2 == "$(IMGVER)") { print $$1":"$$2 } }' | \
-		while read line ; do docker rmi $$line ; done
-	-docker images | \
+		while read line ; do ${DOCKER} rmi $$line ; done
+	-${DOCKER} images | \
 		grep '<none>' | \
 		awk '{ print $$3 }' | \
-		while read line ; do docker rmi $$line ; done
+		while read line ; do ${DOCKER} rmi $$line ; done
 
 push:
-	docker push $(IMGTAG):$(IMGVER)
+	${DOCKER} push $(IMGTAG):$(IMGVER)
 
 pull:
-	docker pull $(IMGTAG):$(IMGVER)
+	${DOCKER} pull $(IMGTAG):$(IMGVER)
 
 tag-latest:
-	docker tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest
+	${DOCKER} tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest
 
 it:
-	docker run \
+	${DOCKER} run \
 		--rm -it \
 		-v ~/:/tmp/home \
 		$(IMGTAG):$(IMGVER) \

@@ -4,6 +4,12 @@
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
+ifdef WINDOWS
+	DOCKER=docker.exe
+else
+	DOCKER=docker
+endif
+
 ifdef NOCACHE
 	CACHE_FLAG=--no-cache
 else
@@ -12,7 +18,7 @@ endif
 
 build:
 ifdef dockerfile_git
-	docker build \
+	${DOCKER} build \
 		${CACHE_FLAG} \
 		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -21,7 +27,7 @@ ifdef dockerfile_git
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 else
-	docker build \
+	${DOCKER} build \
 		${CACHE_FLAG} \
 		-f $(DOCKERFILE) \
 		${DOCKER_EXTRA_ARGS} \

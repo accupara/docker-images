@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:14.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 RUN sudo bash -c 'echo "deb http://scratchbox.org/debian/ hathor main" >> /etc/apt/sources.list' && \
     sudo apt-get update && \

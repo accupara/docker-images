@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM ubuntu:14.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 # Install the minimum tools
 RUN apt-get update && \

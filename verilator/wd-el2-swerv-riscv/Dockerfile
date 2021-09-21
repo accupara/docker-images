@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
-FROM accupara/verilator_build:ubuntu_2004
+FROM accupara/ubuntu:20.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 

@@ -21,13 +21,6 @@ RUN set -x \
        zlibc \
        zlib1g \
        zlib1g-dev \
-# Download and install the Freedon Tools riscv tools
-# && cd /tmp && wget -q https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz \
-# && tar -xf riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz \
-# && cd riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14 \
-# && sudo rsync -a bin include lib libexec python riscv64-unknown-elf share /usr/ \
-# && cd /tmp && ls -l ; find riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14 -delete \
-# && rm riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz \
 # Minimize image
  && sudo apt-get autoremove -y \
  && sudo apt-get clean -y \

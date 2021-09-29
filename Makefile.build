@@ -5,15 +5,15 @@ CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
 ifdef WINDOWS
-	DOCKER=docker.exe
+	DOCKER:=docker.exe
 else
-	DOCKER=docker
+	DOCKER:=docker
 endif
 
 ifdef NOCACHE
-	CACHE_FLAG=--no-cache
+	CACHE_FLAG:=--no-cache
 else
-	CACHE_FLAG=
+	CACHE_FLAG:=
 endif
 
 build:

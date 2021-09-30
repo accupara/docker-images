@@ -18,5 +18,5 @@ Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `
     -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
-         + "C:\Program Files\Git\bin\" `
-         + "C:\tools\vim\vim82\")
+         + ";C:\Program Files\Git\bin\" `
+         + ";C:\tools\vim\vim82\")

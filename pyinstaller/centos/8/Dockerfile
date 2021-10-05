@@ -18,12 +18,14 @@ RUN set -x \
     wget \
     xz-devel \
     zlib-devel \
+# Prepare a scratch area for downloading and compiling some projects
+ && mkdir /tmp/scratch \
 # Download and install python 3.8 because centos 7 has a very old python: 3.6
- && cd /tmp/ \
- && export PYTHON_VER=3.8.5 \
+ && cd /tmp/scratch \
+ && export PYTHON_VER=3.8.10 \
  && wget -q http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
- && cd /tmp/Python-${PYTHON_VER} \
+ && cd /tmp/scratch/Python-${PYTHON_VER} \
 # Fixup SSL module info:
  && echo '_socket socketmodule.c' >>Modules/Setup \
  && echo 'SSL="/usr/lib64/openssl"' >>Modules/Setup \
@@ -52,5 +54,6 @@ RUN set -x \
  && sudo ln -sf python3.8 python3 \
  && sudo ln -s /usr/local/bin/pip3.8 \
  && sudo ln -sf pip3.8 pip3 \
-# Cleanup the sources
- && sudo rm -rf /tmp/Python-${PYTHON_VER}*
+# Cleanup
+ && cd /tmp \
+ && sudo find /tmp/scratch -delete

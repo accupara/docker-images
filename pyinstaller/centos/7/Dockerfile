@@ -19,32 +19,48 @@ RUN set -x \
     wget \
     xz-devel \
     zlib-devel \
-# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1g
- && cd /tmp/ \
- && wget -q https://github.com/openssl/openssl/archive/OpenSSL_1_1_1g.tar.gz \
- && tar -xf OpenSSL_1_1_1g.tar.gz \
- && cd openssl-OpenSSL_1_1_1g \
+# Prepare a scratch area for downloading and compiling some projects
+ && mkdir /tmp/scratch \
+# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1l
+ && export OPENSSL_VER=1_1_1l \
+ && cd /tmp/scratch \
+ && wget -q https://github.com/openssl/openssl/archive/OpenSSL_${OPENSSL_VER}.tar.gz \
+ && tar -xf OpenSSL_${OPENSSL_VER}.tar.gz \
+ && cd openssl-OpenSSL_${OPENSSL_VER} \
  && ./config --prefix=/usr --openssldir=/usr shared zlib \
- && make -j4 && sudo make install \
- && cd .. \
- && sudo rm -rf OpenSSL_1_1_1g.tar.gz openssl-OpenSSL_1_1_1g \
+ && make -j `nproc` \
+ && sudo make install \
+# Download and install a newer gcc
+ && export GCC_VER=9_2_0 \
+ && mkdir /tmp/scratch/GCC-source \
+ && cd /tmp/scratch/GCC-source \
+ && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_${GCC_VER}_release/ >/dev/null \
+ && cd gcc_${GCC_VER}_release \
+ && ./contrib/download_prerequisites \
+ && mkdir ../gcc_${GCC_VER}_release_build \
+ && cd ../gcc_${GCC_VER}_release_build \
+ && ../gcc_${GCC_VER}_release/configure \
+ && make -j `nproc` \
+ && sudo make install \
+ && export PATH=/usr/local/bin/:${PATH} \
+ && sudo mv /usr/bin/gcc /usr/bin/gcc-orig \
+ && sudo mv /usr/bin/g++ /usr/bin/g++-orig \
+ && sudo ln -s /usr/local/bin/gcc /usr/bin/gcc \
+ && sudo ln -s /usr/local/bin/g++ /usr/bin/g++ \
 # Download and install python 3.8 because centos 7 has a very old python: 3.6
- && cd /tmp/ \
- && export PYTHON_VER=3.8.5 \
+ && cd /tmp/scratch \
+ && export PYTHON_VER=3.8.10 \
  && wget -q http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
- && cd /tmp/Python-${PYTHON_VER} \
+ && cd /tmp/scratch/Python-${PYTHON_VER} \
 # Fixup SSL module info:
  && echo '_socket socketmodule.c' >>Modules/Setup \
  && echo 'SSL="/usr/lib64/openssl"' >>Modules/Setup \
  && echo '_ssl _ssl.c \' >>Modules/Setup \
  && echo '   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \' >>Modules/Setup \
- && echo '   -L$(SSL)/lib -lssl -lcrypto' >>Modules/Setup
-
-RUN set -x \
- && cd /tmp/Python-3.8.5 \
+ && echo '   -L$(SSL)/lib -lssl -lcrypto' >>Modules/Setup \
  && ./configure --prefix=/usr/local --with-openssl=/usr/local/openssl --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" \
- && make -j4 \
+ && make -j `nproc` \
  && sudo make altinstall \
 # Now pip install the usual suspects required for pyinstaller
  && sudo /usr/local/bin/python3.8 -m pip install --upgrade pip \
@@ -65,5 +81,6 @@ RUN set -x \
  && sudo ln -s python3.8 python3 \
  && sudo ln -s /usr/local/bin/pip3.8 \
  && sudo ln -s pip3.8 pip3 \
-# Cleanup the sources
- && cd .. && sudo rm -rf Python-${PYTHON_VER}*
+# Cleanup
+ && cd /tmp \
+ && sudo find /tmp/scratch -delete

@@ -3,11 +3,14 @@
 
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
+DOCKER_RUN_FLAGS:=
 
 ifdef WINDOWS
 	DOCKER:=docker.exe
+	DOCKER_RUN_FLAGS += --isolation=hyperv
 else
 	DOCKER:=docker
+	DOCKER_RUN_FLAGS += -v ~/:/tmp/home
 endif
 
 ifdef NOCACHE

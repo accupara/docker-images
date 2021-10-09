@@ -23,7 +23,7 @@ tag-latest:
 it:
 	${DOCKER} run \
 		--rm -it \
-		-v ~/:/tmp/home \
+		${DOCKER_RUN_FLAGS} \
 		$(IMGTAG):$(IMGVER) \
 		/bin/bash
 

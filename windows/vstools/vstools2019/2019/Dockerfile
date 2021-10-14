@@ -1,4 +1,4 @@
-FROM accupara/servercore:2019
+FROM accupara/servercore:ltsc2019
 
 ADD install.ps1 /
 

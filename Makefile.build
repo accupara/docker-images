@@ -3,14 +3,20 @@
 
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
+
+DOCKER_BUILD_FLAGS:=
 DOCKER_RUN_FLAGS:=
+DOCKER_RUN_CMD:=
 
 ifdef WINDOWS
 	DOCKER:=docker.exe
-	DOCKER_RUN_FLAGS += --isolation=hyperv
+	DOCKER_BUILD_FLAGS+=--isolation=hyperv
+	DOCKER_RUN_FLAGS+=--isolation=hyperv
+	DOCKER_RUN_CMD+=powershell.exe
 else
 	DOCKER:=docker
-	DOCKER_RUN_FLAGS += -v ~/:/tmp/home
+	DOCKER_RUN_FLAGS+=-v ~/:/tmp/home
+	DOCKER_RUN_CMD+=/bin/bash
 endif
 
 ifdef NOCACHE
@@ -23,6 +29,7 @@ build:
 ifdef dockerfile_git
 	${DOCKER} build \
 		${CACHE_FLAG} \
+		${DOCKER_BUILD_FLAGS} \
 		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
@@ -32,6 +39,7 @@ ifdef dockerfile_git
 else
 	${DOCKER} build \
 		${CACHE_FLAG} \
+		${DOCKER_BUILD_FLAGS} \
 		-f $(DOCKERFILE) \
 		${DOCKER_EXTRA_ARGS} \
 		-t $(IMGTAG):$(IMGVER) \

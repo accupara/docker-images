@@ -25,7 +25,7 @@ it:
 		--rm -it \
 		${DOCKER_RUN_FLAGS} \
 		$(IMGTAG):$(IMGVER) \
-		/bin/bash
+		$(DOCKER_RUN_CMD)
 
 help:
 	@echo "Usage"

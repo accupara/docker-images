@@ -1,3 +1,6 @@
+# "set -x"
+#Set-PSDebug -Trace 1
+
 # Start off by installing Chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
@@ -15,15 +18,10 @@ choco install -y `
     jq `
     vim
 
-choco install openssh -y -params '"/SSHServerFeature"'
-# Setup openssh server config
-Set-Content -Path "C:\ProgramData\ssh\sshd_config" -Value (get-content -Path "C:\ProgramData\ssh\sshd_config" | Select-String -Pattern 'Match Group administrators' -NotMatch)
-Set-Content -Path "C:\ProgramData\ssh\sshd_config" -Value (get-content -Path "C:\ProgramData\ssh\sshd_config" | Select-String -Pattern 'AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys' -NotMatch)
+del C:\ProgramData\chocolatey\logs\chocolatey.log
 
-# Make sshd not run automatically
-sc delete sshd
-Stop-Service sshd
-Set-Service -Name sshd -StartupType Manual
+# Install the openssh server using a script that is based on the one from: https://github.com/StefanScherer/dockerfiles-windows/blob/main/openssh/install-openssh.ps1
+/install-openssh.ps1
 
 # Add things to the PATH
 Set-ItemProperty `
@@ -31,4 +29,7 @@ Set-ItemProperty `
     -Name PATH `
     -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
          + ";C:\Program Files\Git\bin\" `
-         + ";C:\tools\vim\vim82\")
+         + ";C:\tools\vim\vim82\" `
+         + ";C:\\OpenSSH-Win64")
+
+Write-Output "Installation complete"

@@ -32,4 +32,7 @@ Set-ItemProperty `
          + ";C:\tools\vim\vim82\" `
          + ";C:\\OpenSSH-Win64")
 
+Write-Output "Make sure there's no broken installations"
+sfc /scannow
+
 Write-Output "Installation complete"

@@ -45,5 +45,14 @@ else
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 endif
+ifdef WINDOWS
+	${DOCKER} rm -f $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')
+	${DOCKER} run -i \
+		--name $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g') \
+		$(IMGTAG):$(IMGVER) \
+		sfc /scannow
+	${DOCKER} commit $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g') $(IMGTAG):$(IMGVER)
+	${DOCKER} rm -f $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')
+endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

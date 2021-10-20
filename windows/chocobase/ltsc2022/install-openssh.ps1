@@ -1,3 +1,4 @@
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 $ErrorActionPreference = 'Stop'
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12

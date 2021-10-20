@@ -1,3 +1,4 @@
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 # Remove any previous choco logs so that its easier to read logs later
 del C:\ProgramData\chocolatey\logs\chocolatey.log
 

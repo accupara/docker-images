@@ -1,3 +1,5 @@
+# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+
 # "set -x"
 #Set-PSDebug -Trace 1
 

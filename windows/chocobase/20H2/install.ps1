@@ -23,7 +23,7 @@ del C:\ProgramData\chocolatey\logs\chocolatey.log
 # Install the openssh server using a script that is based on the one from: https://github.com/StefanScherer/dockerfiles-windows/blob/main/openssh/install-openssh.ps1
 /install-openssh.ps1
 
-# Add things to the PATH
+# Add tools to the PATH
 Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `

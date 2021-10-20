@@ -1,4 +1,6 @@
 FROM accupara/servercore:20H2
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 ADD install.ps1 /
 

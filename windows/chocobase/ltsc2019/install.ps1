@@ -32,6 +32,6 @@ Set-ItemProperty `
     -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
          + ";C:\Program Files\Git\bin\" `
          + ";C:\tools\vim\vim82\" `
-         + ";C:\\OpenSSH-Win64")
+         + ";C:\OpenSSH-Win64")
 
 Write-Output "Installation complete"

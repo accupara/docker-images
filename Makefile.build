@@ -13,6 +13,8 @@ ifdef WINDOWS
 	DOCKER_BUILD_FLAGS+=--isolation=hyperv
 	DOCKER_RUN_FLAGS+=--isolation=hyperv
 	DOCKER_RUN_CMD+=powershell.exe
+
+	DOCKER_INT_CTR_NAME=$(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')
 else
 	DOCKER:=docker
 	DOCKER_RUN_FLAGS+=-v ~/:/tmp/home
@@ -46,13 +48,13 @@ else
 		$(CONTEXT_DIR)
 endif
 ifdef WINDOWS
-	${DOCKER} rm -f $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')
+	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME}
 	${DOCKER} run -i \
-		--name $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g') \
+		--name ${DOCKER_INT_CTR_NAME} \
 		$(IMGTAG):$(IMGVER) \
 		sfc /scannow
-	${DOCKER} commit $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g') $(IMGTAG):$(IMGVER)
-	${DOCKER} rm -f $(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')
+	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
+	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
 endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

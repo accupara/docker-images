@@ -1,9 +1,28 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+
+# Compile remake on the fly and keep it ready for the next stage
+## Chicken or egg : Which came first?
+FROM accupara/ubuntu:16.04 as remake
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+        autoconf \
+        autopoint \
+        guile-2.0-dev \
+        texinfo \
+ && git clone https://github.com/rocky/remake.git \
+ && cd remake \
+ && ./autogen.sh \
+ && ./configure \
+ && make -j `nproc` \
+ && mv ./make /tmp/
+
 FROM ubuntu:16.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
 COPY sshd_config /tmp/
+COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools
 RUN apt-get update && \
@@ -18,6 +37,7 @@ RUN apt-get update && \
         dh-make \
         emacs \
         git \
+        guile-2.0 \
         jq \
         locales \
         lsb-release \

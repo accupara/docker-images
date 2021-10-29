@@ -20,6 +20,5 @@ RUN set -x \
         libssl-dev \
         openssl \
         perl \
-        remake \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

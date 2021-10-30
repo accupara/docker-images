@@ -20,10 +20,8 @@ RUN set -x \
 # Get the remake sources for 4.3 and compile them
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
- && autoreconf -f -i \
+ && ./autogen.sh \
  && ./configure --enable-maintainer-mode \
- && make po-update \
- && make update \
  && make -j `nproc` \
  && mv ./make /tmp/
 

@@ -9,6 +9,7 @@ RUN set -x \
         autoconf \
         autopoint \
         guile-2.0-dev \
+        pkg-config \
         texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \

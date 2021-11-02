@@ -1,9 +1,79 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Compile remake on the fly and keep it ready for the next stage
+## Chicken or egg : Which came first?
+FROM accupara/centos:6 as remake
+RUN set -x \
+ && sudo yum update \
+ && sudo yum install -y \
+    flex \
+    glibc-devel.i686 \
+    gmp \
+    libgcc.i686 \
+    libunistring \
+    perl \
+    readline-devel \
+    svn \
+    texinfo-tex \
+    zip \
+# Download and install the latest gcc
+ && mkdir ~/GCC-source && cd ~/GCC-source \
+ && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_9_2_0_release/ >/dev/null \
+ && cd gcc_9_2_0_release/ \
+ && ./contrib/download_prerequisites \
+ && mkdir ../gcc_9_2_0_release-build \
+ && cd ../gcc_9_2_0_release-build \
+ && ../gcc_9_2_0_release/configure --disable-multilib \
+ && make -j `nproc` \
+ && sudo make install \
+# Fetch gettext sources and compile them
+ && cd /home/admin \
+ && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
+ && tar -xf gettext-0.21.tar.gz \
+ && cd gettext-0.21 \
+ && ./configure \
+ && make -j `nproc` \
+ && sudo make install \
+# Download and install autoconf
+ && cd /home/admin \
+ && wget -q --no-check-certificate https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz \
+ && tar -xf autoconf-2.71.tar.gz \
+ && cd autoconf-2.71 \
+ && ./configure \
+ && make -j `nproc` \
+ && sudo make install \
+# Download and install automake
+ && cd /home/admin \
+ && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
+ && tar -xf automake-1.16.5.tar.gz \
+ && cd automake-1.16.5 \
+ && ./configure --prefix=/usr \
+ && make -j `nproc` \
+ && sudo make install \
+# Download and install pkg-config
+ && cd /home/admin \
+ && wget -q --no-check-certificate https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz \
+ && tar -xf pkg-config-0.29.2.tar.gz \
+ && cd pkg-config-0.29.2 \
+ && ./configure --with-internal-glib \
+ && make -j `nproc` \
+ && sudo make install \
+# Get the remake sources for 4.3 and compile them
+ && cd /home/admin \
+ && git clone https://github.com/rocky/remake.git remake \
+ && cd remake \
+ && sed 's/AM_PROG_AR/m4_ifdef([AM_PROG_AR], [AM_PROG_AR])/g' configure.ac > configure.ac.new && mv configure.ac.new configure.ac \
+ && grep -v AC_PREREQ configure.ac >configure.ac.new && mv configure.ac.new configure.ac \
+ && ./autogen.sh --without-guile \
+ && make -j `nproc` \
+ && mv ./make /tmp/
+
+################## The real container starts here ##################
 FROM centos:6
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
+COPY --from=remake /tmp/make /usr/bin/remake
 
 RUN set -x \
 # Centos 6 is EOL starting Nov 20, 2020. It's time to use the vault instead of the regular mirrors
@@ -39,7 +109,9 @@ RUN set -x \
         sudo \
         vim \
         wget \
-# Add the github-lfs repo so that we have the latest git client
+# Install the WANDisco to get git v2
+ && sudo yum install -y http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm \
+# Add the github-lfs repo so that we have the latest git-lfs client
  && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Add the EPEL 6 repo.... from the archives instead of the live rpm. Centos 6 is EOL'd!
 # && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm \
@@ -47,6 +119,7 @@ RUN set -x \
  && yum update -y \
 # Install git-lfs and jq separately
  && yum install -y \
+    git \
     git-lfs \
     jq \
 # Download and install the latest tmux
@@ -62,7 +135,7 @@ RUN set -x \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
- && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
+ && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers ; mv /tmp/sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \

@@ -1,9 +1,33 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Compile remake on the fly and keep it ready for the next stage
+## Chicken or egg : Which came first?
+FROM accupara/centos:8 as remake
+RUN set -x \
+ && sudo yum update -y \
+ && sudo dnf -y install dnf-plugins-core \
+ && sudo dnf upgrade \
+ && sudo dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+ && sudo dnf config-manager --set-enabled powertools \
+ && sudo yum install -y \
+    gettext-devel \
+    readline-devel \
+    texinfo \
+    texinfo-tex \
+# Get the remake sources for 4.3 and compile them
+ && cd /home/admin \
+ && git clone https://github.com/rocky/remake.git remake \
+ && cd remake \
+ && ./autogen.sh \
+ && make -j `nproc` \
+ && mv ./make /tmp/
+
+################## The real container starts here ##################
 FROM centos:8
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
+COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools
 RUN set -x \
@@ -19,6 +43,7 @@ RUN set -x \
         gcc gcc-c++ \
         gettext \
         git \
+        guile \
 # This package isn't available in Centos 8. This means rustc caching won't be recognizable by crave's automated script
         #hardening-check \
         jq \

@@ -1,19 +1,19 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/centos:6
-
+FROM accupara/centos:7 as remake
 RUN set -x \
- && sudo yum update \
+ && sudo yum update -y \
  && sudo yum install -y \
     flex \
     glibc-devel.i686 \
-    gmp \
+    gettext-devel \
+    guile-devel \
     libgcc.i686 \
-    libunistring \
     perl \
     readline-devel \
     svn \
+    texinfo \
     texinfo-tex \
     zip \
 # Download and install the latest gcc
@@ -25,24 +25,6 @@ RUN set -x \
  && cd ../gcc_9_2_0_release-build \
  && ../gcc_9_2_0_release/configure --disable-multilib \
  && make -j `nproc` \
- && sudo make install
-
-RUN set -x \
-# Fetch gettext sources and compile them
- && cd /home/admin \
- && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
- && tar -xf gettext-0.21.tar.gz \
- && cd gettext-0.21 \
- && ./configure \
- && make -j `nproc` \
- && sudo make install \
-# Download and install autoconf
- && cd /home/admin \
- && wget -q --no-check-certificate https://ftp.gnu.org/gnu/autoconf/autoconf-2.71.tar.gz \
- && tar -xf autoconf-2.71.tar.gz \
- && cd autoconf-2.71 \
- && ./configure \
- && make -j `nproc` \
  && sudo make install \
 # Download and install automake
  && cd /home/admin \
@@ -51,14 +33,6 @@ RUN set -x \
  && cd automake-1.16.5 \
  && ./configure --prefix=/usr \
  && make -j `nproc` \
- && sudo make install \
-# Download and install pkg-config
- && cd /home/admin \
- && wget -q --no-check-certificate https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz \
- && tar -xf pkg-config-0.29.2.tar.gz \
- && cd pkg-config-0.29.2 \
- && ./configure --with-internal-glib \
- && make -j `nproc` \
  && sudo make install
 
 RUN set -x \
@@ -66,8 +40,6 @@ RUN set -x \
  && cd /home/admin \
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
- && sed 's/AM_PROG_AR/m4_ifdef([AM_PROG_AR], [AM_PROG_AR])/g' configure.ac > configure.ac.new && mv configure.ac.new configure.ac \
- && grep -v AC_PREREQ configure.ac >configure.ac.new && mv configure.ac.new configure.ac \
- && ./autogen.sh --without-guile \
+ && ./autogen.sh \
  && make -j `nproc` \
  && mv ./make /tmp/

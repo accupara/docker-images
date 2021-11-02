@@ -3,7 +3,7 @@
 ## Chicken or egg : Which came first?
 FROM accupara/centos:6 as remake
 RUN set -x \
- && sudo yum update \
+ && sudo yum update -y \
  && sudo yum install -y \
     flex \
     glibc-devel.i686 \

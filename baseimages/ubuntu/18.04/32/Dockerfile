@@ -15,6 +15,7 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
+################## The real container starts here ##################
 FROM i386/ubuntu:18.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"

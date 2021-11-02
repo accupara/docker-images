@@ -1,9 +1,27 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+
+# Compile remake on the fly and keep it ready for the next stage
+## Chicken or egg : Which came first?
+FROM accupara/debian:10 as remake
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+        guile-2.2-dev \
+        texinfo \
+ && git clone https://github.com/rocky/remake.git \
+ && cd remake \
+ && ./autogen.sh \
+ && ./configure \
+ && make -j `nproc` \
+ && mv ./make /tmp/
+
+################## The real container starts here ##################
 FROM debian:10
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
 COPY sshd_config /tmp/
+COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -17,6 +35,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         devscripts \
         dh-make \
         git \
+        guile-2.2 \
         jq \
         locales \
         lsb-release \

@@ -9,6 +9,7 @@ RUN set -x \
         autoconf \
         autopoint \
         guile-2.0-dev \
+        rsync \
         texinfo \
 # Fetch gettext sources and compile them
  && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
@@ -20,8 +21,7 @@ RUN set -x \
 # Get the remake sources for 4.3 and compile them
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
- && ./autogen.sh \
- && ./configure --enable-maintainer-mode \
+ && ./autogen.sh --enable-maintainer-mode \
  && make -j `nproc` \
  && mv ./make /tmp/
 

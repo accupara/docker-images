@@ -7,11 +7,12 @@ RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
         guile-2.2-dev \
+        pkg-config \
+        rsync \
         texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
- && ./configure \
  && make -j `nproc` \
  && mv ./make /tmp/
 

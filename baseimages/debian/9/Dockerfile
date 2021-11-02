@@ -10,11 +10,11 @@ RUN set -x \
         autopoint \
         guile-2.0-dev \
         pkg-config \
+        rsync \
         texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
- && ./configure \
  && make -j `nproc` \
  && mv ./make /tmp/
 

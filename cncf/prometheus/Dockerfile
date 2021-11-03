@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/golang:1.15-buster
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \

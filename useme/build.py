@@ -20,7 +20,7 @@ import concurrent.futures as cf
 externalMtimes = {}
 
 
-def printf(format, *args):
+def printf(str):
     f = inspect.currentframe()
     if f:
         f = f.f_back
@@ -33,7 +33,7 @@ def printf(format, *args):
     # end if
 
     sys.stdout.write(f)
-    sys.stdout.write(format % args)
+    sys.stdout.write(str)
 # end def
 
 
@@ -46,7 +46,7 @@ def is_valid_dir(arg):
     # Argument must be a directory
     arg = os.path.abspath(arg)
     if not os.path.isdir(arg):
-        printf('Invalid argument: %s is not a directory\n', arg)
+        printf('Invalid argument: {} is not a directory\n'.format(arg))
         raise argparse.ArgumentError(
             'Invalid argument: %s is not a directory' % arg)
     # end if
@@ -106,16 +106,22 @@ def getAllDockerFiles(args):
 
 
 def getImageFrom(dockerFile):
+    rv = None
     with open(dockerFile, 'r') as f:
         # Read line by line and look for the FROM line
         for line in f:
             if 'FROM' in line:
-                line = line.rstrip().replace('FROM', '').lstrip()
-                return line
+                line = line.rstrip().replace('FROM', '').lstrip().lower()
+                try:
+                    asIndex = line.index('as')
+                    rv = line[asIndex-1]
+                except:
+                    rv = line
+                # end try
             # end if
         # end for
     # end with
-    return None
+    return rv
 # end def
 
 
@@ -196,7 +202,7 @@ def parseAllDockerFiles(allDockerfiles):
         image = getImageDest(makefile)
 
         if fromLine == image:
-            printf('Recursive image: from = %s. to = %s\n', fromLine, image)
+            printf('Recursive image: from = {}. to = {}\n'.format(fromLine, image))
             continue
         # end if
 
@@ -234,12 +240,12 @@ def generateImageLinks(imageList):
             # end if
 
             if lhs.imageName == rhs.parentName:
-                # printf('%s derived from %s :: %s\n', rhs.imageName,
-                # lhs.imageName, rhs.Dockerfile)
+                # printf('{} derived from {} :: {}\n'.format(rhs.imageName,
+                # lhs.imageName, rhs.Dockerfile))
 
                 if rhs.parentImage:
-                    printf('**** Changing %s parent from %s to %s',
-                           rhs.imageName, rhs.parentImage.imageName, lhs.imageName)
+                    printf('**** Changing {} parent from {} to {}'.format(
+                           rhs.imageName, rhs.parentImage.imageName, lhs.imageName))
                 # end if
 
                 rhs.parentImage = lhs
@@ -254,20 +260,27 @@ def generateImageLinks(imageList):
 
 
 def getImageMtime(imageName):
-    p = subprocess.Popen(['skopeo', 'inspect', 'docker://%s' % imageName],
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    o, e = p.communicate()
-    o = o.decode()
-
+    ctrAuthPath = '/opt/config.json'
+    authParam = '{}:{}'.format(
+        os.path.expanduser(os.path.join('~', '.docker', 'config.json')),
+        ctrAuthPath
+    )
+    cmd = ['docker', 'run', '--rm', '-i',
+           '-v', authParam,
+           'quay.io/skopeo/stable:latest',
+           'inspect',
+           '--authfile', ctrAuthPath,
+           'docker://%s' % imageName]
+    p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     mtime = None
 
     try:
-        data = json.loads(o)
+        data = json.loads(p.stdout)
         mtime = dateutil.parser.parse(data['Created'])
         # print(mtime)
     except Exception as err:
-        printf('Exception retrieving mtime for %s\n', imageName)
-        printf('o:%s\ne:%s\nerr:%s\n', o, e, err)
+        printf('Exception retrieving mtime for {}\n'.format(imageName))
+        printf('o:{}\ne:{}\nerr:{}\n'.format(p.stdout, p.stderr, err))
     # end try
 
     # print('mtime for %s: %s' % (imageName, mtime))
@@ -321,12 +334,12 @@ def updateDockerfileMtimes(imageList):
         try:
             epochSec = os.path.getmtime(i.Dockerfile)
             mtime = datetime.datetime.fromtimestamp(epochSec, tz)
-            # printf('Image mtime = %s. Dockerfile mtime = %s\n', str(i.mtime), str(mtime))
+            # printf('Image mtime = {}. Dockerfile mtime = {}\n'.format(str(i.mtime), str(mtime)))
             if i.mtime < mtime:
                 recursivelyMarkStale(i)
             # end if
         except Exception as e:
-            printf('Failed to retrieve mtime for %s: %s\n', i.Makefile, retr(e))
+            printf('Failed to retrieve mtime for {}: {}\n'.format(i.Makefile, e))
         # end try
     # end for
 # end def
@@ -450,8 +463,8 @@ def printBuildPlan(plan):
 def rebuildImage(args, image):
     if args.dryRun:
         pass
-        #printf('docker pull %s ; make -C %s build push\n',
-        #       image.parentName, os.path.dirname(image.Makefile))
+        #printf('docker pull {} ; make -C {} build push\n'.format(
+        #       image.parentName, os.path.dirname(image.Makefile)))
         #time.sleep(1)
     else:
         # First pull its parent so that we start off with the most recent
@@ -473,7 +486,7 @@ def rebuildImage(args, image):
     image.buildInProgress = False
 
     if args.dryRun == False:
-        printf('%s is ready\n', image.imageName)
+        printf('{} is ready\n'.format(image.imageName))
 
     return 0
 # end def
@@ -492,11 +505,11 @@ def onePassOverBuildPlan(args, plan, executor):
             # end if
 
             if plan[i][j].buildInProgress == True:
-                # printf('%s is building. Come again later\n', plan[i][j].imageName)
+                # printf('{} is building. Come again later\n'.format(plan[i][j].imageName))
                 break
             # end if
 
-            printf('Build: %s\n', plan[i][j].imageName)
+            printf('Build: {}\n'.format(plan[i][j].imageName))
 
             plan[i][j].buildInProgress = True
             submitted.append(executor.submit(rebuildImage, args, plan[i][j]))
@@ -542,10 +555,10 @@ def main():
     args = parse_argv()
 
     allDockerfiles = getAllDockerFiles(args)
-    # printf('All Dockerfiles:\n%s\n', json.dumps(allDockerfiles, indent=2))
+    # printf('All Dockerfiles:\n{}\n'.format(json.dumps(allDockerfiles, indent=2)))
 
     imageList = parseAllDockerFiles(allDockerfiles)
-    # printf('image[0] = %s\n', str(imageList[0]))
+    # printf('image[0] = {}\n'.format(str(imageList[0])))
 
     generateImageLinks(imageList)
 
@@ -564,6 +577,7 @@ def main():
 
     execBuildPlan(args, buildPlan)
 
+    #subprocess.run(['reset'])
     return 0
 # end main
 

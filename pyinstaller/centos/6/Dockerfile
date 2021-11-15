@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/centos:6
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 RUN set -x \
  && sudo yum -y update \
@@ -56,7 +57,7 @@ RUN set -x \
 # Download and install python 3.8 because centos 6 has a very old python3
  && cd /tmp/scratch \
  && export PYTHON_VER=3.8.10 \
- && wget -q http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
+ && wget -q --no-check-certificate http://python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tar.xz \
  && tar xf Python-${PYTHON_VER}.tar.xz \
  && cd /tmp/scratch/Python-${PYTHON_VER} \
 # Fixup SSL module info:

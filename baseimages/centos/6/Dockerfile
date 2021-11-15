@@ -16,13 +16,13 @@ RUN set -x \
     texinfo-tex \
     zip \
 # Download and install the latest gcc
+ && export GCC_VER=9_2_0 \
  && mkdir ~/GCC-source && cd ~/GCC-source \
- && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_9_2_0_release/ >/dev/null \
- && cd gcc_9_2_0_release/ \
+ && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_${GCC_VER}_release/ >/dev/null \
+ && cd gcc_${GCC_VER}_release/ \
  && ./contrib/download_prerequisites \
- && mkdir ../gcc_9_2_0_release-build \
- && cd ../gcc_9_2_0_release-build \
- && ../gcc_9_2_0_release/configure --disable-multilib \
+ && mkdir ../gcc_${GCC_VER}_release-build && cd ../gcc_${GCC_VER}_release-build \
+ && ../gcc_${GCC_VER}_release/configure --disable-multilib \
  && make -j `nproc` \
  && sudo make install \
 # Fetch gettext sources and compile them

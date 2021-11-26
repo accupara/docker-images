@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/k8s-cross
-IMGVER?=v1.16.5-1
+IMGVER?=v1.23.0-go1.17.3-bullseye.0
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

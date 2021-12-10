@@ -5,3 +5,6 @@ sire.cfg
 useme/build
 useme/__pycache__
 useme/dist
+
+# One place to record that "runme" is the place to test out container images for that project
+runme

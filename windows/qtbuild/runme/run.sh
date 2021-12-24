@@ -14,9 +14,9 @@ docker_cmd() {
 }
 
 reset() {
-    mkdir delme
+    mkdir -p delme
     mv qt6-build qt5 qt6 delme/
-    rm -rf delme &
+    find delme -delete &
 
     mkdir qt6-build qt6
     git clone https://code.qt.io/qt/qt5.git qt5
@@ -31,9 +31,9 @@ main() {
     set -xe
 
     reset
-
     docker_cmd qt6-build powershell.exe /c ..\\qt5\\configure -prefix C:\\code\\qt6
-    docker_cmd qt6-build powershell.exe /c cmake --build . --parallel
+    #docker_cmd qt6-build powershell.exe /c cmake --build . --parallel
+    docker_cmd qt6-build powershell.exe /c cmake --build .
 }
 
 main $*

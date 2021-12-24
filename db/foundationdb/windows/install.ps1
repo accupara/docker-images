@@ -2,7 +2,7 @@
 # Remove any previous choco logs so that its easier to read logs later
 del C:\ProgramData\chocolatey\logs\chocolatey.log
 
-#Set-PSDebug -Trace 1
+Set-PSDebug -Trace 1
 
 $BOOST_VER="1_72_0"
 $BOOST_VER_DOTS=($BOOST_VER -replace '_', '.')
@@ -14,8 +14,7 @@ choco install -y `
     mono `
     ninja `
     openjdk11 `
-    python `
-    wixtoolset
+    python
 
 # Find out the path to the JDK bin directory. This can be different every time we run this script. eg: "C:\Program Files\OpenJDK\openjdk-11.0.12_7\bin"
 cd 'C:\Program Files\OpenJDK'

@@ -14,6 +14,7 @@ Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `
     -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
-         + ";C:\Strawberry\perl\bin")
+         + ";C:\Strawberry\perl\bin" `
+         + ";C:\Program Files\CMake\bin")
 
 Write-Output "Installed tools to build Qt"

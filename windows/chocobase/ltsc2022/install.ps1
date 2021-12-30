@@ -29,9 +29,13 @@ del C:\ProgramData\chocolatey\logs\chocolatey.log
 Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `
-    -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
+    -Value ("C:\OpenSSH-Win64;" `
+         + (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
          + ";C:\Program Files\Git\bin\" `
-         + ";C:\tools\vim\vim82\" `
-         + ";C:\\OpenSSH-Win64")
+         + ";C:\ProgramData\chocolatey\lib\Emacs\tools\emacs\bin" `
+         + ";C:\ProgramData\chocolatey\lib\make\tools\install\bin" `
+         + ";C:\ProgramData\chocolatey\lib\jq\tools" `
+         + ";C:\ProgramData\chocolatey\lib\rsync\tools\cwrsync_6.2.4_x64_free\bin" `
+         + ";C:\tools\vim\vim82\")
 
 Write-Output "Installation complete"

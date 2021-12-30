@@ -260,6 +260,7 @@ def generateImageLinks(imageList):
 
 
 def getImageMtime(imageName):
+    # print('I am here. imageName = {}'.format(imageName))
     ctrAuthPath = '/opt/config.json'
     authParam = '{}:{}'.format(
         os.path.expanduser(os.path.join('~', '.docker', 'config.json')),
@@ -289,6 +290,7 @@ def getImageMtime(imageName):
 
 
 def updateImageMtime(image):
+    # print('Updating mtime for {}'.format(image))
     mtime = getImageMtime(image.imageName)
     if mtime:
         image.mtime = mtime

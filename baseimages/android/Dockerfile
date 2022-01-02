@@ -18,8 +18,10 @@ RUN sudo apt-get update
 
 # Setting the env variables before hand doesn't hurt at all
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android/cmdline-tools/latest:/opt/android/cmdline-tools/latest/bin \
+    SDK_TOOLS_VER=7583922 \
+    NDK_TOOLS_VER=23.1.7779620 \
     ANDROID_HOME=/opt/android \
-    SDK_TOOLS_VER=7583922
+    ANDROID_NDK=/opt/android/ndk/23.1.7779620
 
 RUN set -x \
  && sudo apt-get install -y \
@@ -102,4 +104,9 @@ RUN set -x \
  "add-ons;addon-google_apis-google-21" \
  && echo "Add-ons installed" \
  && yes | sdkmanager \
- "ndk;23.1.7779620"
+ "ndk;${NDK_TOOLS_VER}" \
+# There's a LOT of code that depends on this particular version of the NDK... So pre-download it.
+ && cd /opt/android/ndk \
+ && wget -q https://dl.google.com/android/repository/android-ndk-r12b-linux-x86_64.zip \
+ && unzip android-ndk-r12b-linux-x86_64.zip \
+ && rm android-ndk-r12b-linux-x86_64.zip

@@ -7,7 +7,8 @@ SUBDIRS=\
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \
 	aosp agl \
-    golang-apps
+    golang-apps \
+    tak
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

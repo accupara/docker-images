@@ -1,0 +1,8 @@
+takDebugKeyFile=${ANDROID_DBG_KEY_FILE}
+takDebugKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}
+takDebugKeyAlias=${ANDROID_DBG_KEY_ALIAS}
+takDebugKeyPassword=${ANDROID_DBG_STORE_PASSWORD}
+takReleaseKeyFile=${ANDROID_DBG_KEY_FILE}
+takReleaseKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}
+takReleaseKeyAlias=${ANDROID_DBG_KEY_ALIAS}
+takReleaseKeyPassword=${ANDROID_DBG_STORE_PASSWORD}

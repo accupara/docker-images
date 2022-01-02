@@ -51,8 +51,12 @@ main() {
     else
         reset
         docker_cmd atak-civ ./scripts/prebuild.sh
-        docker_cmd atak-civ mkdir -p atak/ATAK/app/keystore
-        docker_cmd atak-civ/atak/ATAK/app/keystore keytool -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999
+
+        # Re-gen key
+        docker_cmd atak-civ ../keystore_cmds.sh
+
+        # Build!
+        docker_cmd atak-civ/atak bash -c "./gradlew assembleCivDebug"
     fi
 }
 

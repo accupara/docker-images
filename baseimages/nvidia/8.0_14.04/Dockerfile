@@ -1,7 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM nvidia/cuda:8.0-devel-ubuntu14.04
-LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
 
 COPY sshd_config /tmp/
 
@@ -34,7 +32,7 @@ RUN set -x \
  && apt-get install -y git-lfs \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
- && wget -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
+ && wget -q -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \

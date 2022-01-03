@@ -1,7 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
-LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
 
 ENV LIBFUN_VER=0.3.95
 
@@ -76,7 +74,7 @@ RUN set -x \
         yasm \
 # Lets get the latest Lensfun library (disabled, but kept for future reference)
  #&& cd /tmp/ \
- #&& wget https://sourceforge.net/projects/lensfun/files/${LIBFUN_VER}/lensfun-${LIBFUN_VER}.tar.gz \
+ #&& wget -q https://sourceforge.net/projects/lensfun/files/${LIBFUN_VER}/lensfun-${LIBFUN_VER}.tar.gz \
  #&& tar -xvf lensfun-${LIBFUN_VER}.tar.gz \
  #&& cd /tmp/lensfun-${LIBFUN_VER}/ \
  #&& mkdir build \

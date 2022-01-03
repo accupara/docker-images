@@ -13,7 +13,8 @@ RUN sudo apt-get update && \
       python3-pip && \
     sudo pip3 install conan
 
-RUN wget https://github.com/danmar/cppcheck/archive/1.79.tar.gz \
+RUN set -x \
+ && wget -q https://github.com/danmar/cppcheck/archive/1.79.tar.gz \
  && tar xvf 1.79.tar.gz \
  && cd cppcheck-1.79 \
  && mkdir build \

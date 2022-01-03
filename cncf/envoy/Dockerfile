@@ -6,7 +6,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 COPY sshd_config /tmp/
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
@@ -27,7 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         wget \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
- && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
+ && wget -q -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \

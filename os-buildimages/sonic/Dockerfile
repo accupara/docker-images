@@ -221,7 +221,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # For gobgp and telemetry build
  && export VERSION=1.11.5 \
  && cd /tmp/ \
- && wget https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz \
+ && wget -q https://storage.googleapis.com/golang/go$VERSION.linux-amd64.tar.gz \
  && sudo tar -C /usr/local -xzf go$VERSION.linux-amd64.tar.gz \
  && echo 'export GOROOT=/usr/local/go'   | sudo tee -a /etc/bash.bashrc \
  && echo 'export PATH=$PATH:$GOROOT/bin' | sudo tee -a /etc/bash.bashrc \

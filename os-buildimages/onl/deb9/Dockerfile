@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
@@ -153,7 +152,7 @@ RUN set -x \
 # Compile and install Ruby
  && cd /tmp/ \
  && export VER=2.7.2 \
- && wget https://cache.ruby-lang.org/pub/ruby/2.7/ruby-$VER.tar.gz \
+ && wget -q https://cache.ruby-lang.org/pub/ruby/2.7/ruby-$VER.tar.gz \
  && tar -xf ruby-$VER.tar.gz \
  && cd ruby-$VER \
  && ./configure \
@@ -171,11 +170,11 @@ RUN set -x \
  && sudo cp /usr/include/linux/i2c-dev.h /usr/include/linux/i2c-devices.h \
  && sudo cp /usr/include/linux/i2c-dev.h /usr/powerpc-linux-gnu/include/linux/i2c-devices.h \
 # qemu: aarch64
- && wget http://www.opennetlinux.org/tarballs/usr-bin-qemu-aarch64-static.tgz \
+ && wget -q http://www.opennetlinux.org/tarballs/usr-bin-qemu-aarch64-static.tgz \
  && sudo tar -C / -xvzf usr-bin-qemu-aarch64-static.tgz \
  && rm usr-bin-qemu-aarch64-static.tgz \
 # qemu: arm64
- && wget http://www.opennetlinux.org/tarballs/stretch-usr-buildroot-toolchains-arm64.tgz \
+ && wget -q http://www.opennetlinux.org/tarballs/stretch-usr-buildroot-toolchains-arm64.tgz \
  && sudo tar -C / -xvzf stretch-usr-buildroot-toolchains-arm64.tgz \
  && rm stretch-usr-buildroot-toolchains-arm64.tgz \
 # LTS architecture fixes

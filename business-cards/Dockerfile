@@ -13,7 +13,7 @@ RUN sudo apt-get install -y \
     texlive-xetex \
     unzip \
     wget \
- && cd /tmp ; wget https://raw.githubusercontent.com/stevebscott/steves-bash-utils/master/install-fira.sh \
+ && cd /tmp ; wget -q https://raw.githubusercontent.com/stevebscott/steves-bash-utils/master/install-fira.sh \
  && chmod +x /tmp/install-fira.sh && /tmp/install-fira.sh \
  && sudo rm -rf /tmp/master.zip* /tmp/Fira-* /tmp/install* \
  && sudo apt-get clean \

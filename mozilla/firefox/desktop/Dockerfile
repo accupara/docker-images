@@ -1,7 +1,6 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 # From the deps specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 FROM accupara/ubuntu:20.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY kb-config.exp /tmp/
 
@@ -38,12 +37,12 @@ RUN set -x \
 # Mercurial must be at the latest version
  && sudo apt-get purge -y mercurial mercurial-common \
  && cd /tmp/ \
- && wget http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_5.3.1-1ubuntu1_amd64.deb \
-         http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_5.3.1-1ubuntu1_all.deb \
+ && wget -q http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_5.3.1-1ubuntu1_amd64.deb \
+            http://security.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_5.3.1-1ubuntu1_all.deb \
  && sudo dpkg -i /tmp/mercurial-common_5.3.1-1ubuntu1_all.deb \
  && sudo dpkg -i /tmp/mercurial_5.3.1-1ubuntu1_amd64.deb \
 # Run the bootstrap script
- && cd /tmp/ ; wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
+ && cd /tmp/ ; wget -q https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
  && export MOZBUILD_STATE_PATH=/opt/mozbuild \
  && sudo mkdir /opt/mozbuild && sudo chown admin:admin /opt/mozbuild \
  && echo 2 | python3 bootstrap.py --no-interactive || true \

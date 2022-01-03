@@ -33,5 +33,6 @@ RUN set -x \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*
 
+# Override the base image's NDK to the one that TAK requires
 ENV ANDROID_NDK=/opt/android/ndk/android-ndk-r12b \
     NDK_TOOLS_VER=android-ndk-r12b

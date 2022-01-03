@@ -50,6 +50,8 @@ main() {
         it
     else
         reset
+
+        # Pre-build steps
         docker_cmd atak-civ ./scripts/prebuild.sh
 
         # Re-gen key

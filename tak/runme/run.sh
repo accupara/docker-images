@@ -21,6 +21,7 @@ docker_cmd() {
     docker run --rm -it \
         -v $MNT \
         -w /tmp/src/$SUBDIR \
+        -e CONAN_USER_HOME=$MNT \
         accupara/tak-civ-android:latest \
         $*
 }
@@ -33,10 +34,6 @@ reset() {
     fi
 
     git clone --recurse-submodules -j 2 -b build-system-improvements git@github.com:uvatbc/AndroidTacticalAssaultKit-CIV.git atak-civ
-    #mkdir -p atak-civ/takengine/thirdparty
-    #pushd atak-civ/takengine/thirdparty
-    #git clone git@github.com:synesissoftware/STLSoft-1.9.git stlsoft
-    #popd
 }
 
 it() {
@@ -58,7 +55,7 @@ main() {
         docker_cmd atak-civ ../keystore_cmds.sh
 
         # Build!
-        docker_cmd atak-civ/atak bash -c "./gradlew assembleCivDebug"
+        docker_cmd atak-civ/atak ./gradlew assembleCivDebug
     fi
 }
 

@@ -32,11 +32,11 @@ reset() {
         find delme -delete &
     fi
 
-    git clone -b build-system-improvements git@github.com:uvatbc/AndroidTacticalAssaultKit-CIV.git atak-civ
-    mkdir -p atak-civ/takengine/thirdparty
-    pushd atak-civ/takengine/thirdparty
-    git clone git@github.com:synesissoftware/STLSoft-1.9.git stlsoft
-    popd
+    git clone --recurse-submodules -j 2 -b build-system-improvements git@github.com:uvatbc/AndroidTacticalAssaultKit-CIV.git atak-civ
+    #mkdir -p atak-civ/takengine/thirdparty
+    #pushd atak-civ/takengine/thirdparty
+    #git clone git@github.com:synesissoftware/STLSoft-1.9.git stlsoft
+    #popd
 }
 
 it() {

@@ -37,10 +37,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         dh-make \
         emacs \
         git \
+        gradle \
         guile-2.2 \
         jq \
         locales \
         lsb-release \
+        ninja-build \
         openssh-server \
         rsync \
         subversion \

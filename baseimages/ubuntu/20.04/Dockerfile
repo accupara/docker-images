@@ -38,10 +38,12 @@ RUN set -x \
         dh-make \
         emacs \
         git \
+        gradle \
         guile-3.0 \
         jq \
         locales \
         lsb-release \
+        ninja-build \
         openssh-server \
         rsync \
         subversion \

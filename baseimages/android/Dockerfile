@@ -3,8 +3,6 @@ FROM accupara/ubuntu:20.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
-RUN sudo apt-get update
-
 # 1. Android Studio download page: https://developer.android.com/studio/index.html#downloads
 #    "Just get the nd line tools"
 # 2. Android NDK Download page: https://developer.android.com/ndk/downloads/index.html
@@ -21,9 +19,12 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/andro
     SDK_TOOLS_VER=7583922 \
     NDK_TOOLS_VER=23.1.7779620 \
     ANDROID_HOME=/opt/android \
-    ANDROID_NDK=/opt/android/ndk/23.1.7779620
+    ANDROID_NDK=/opt/android/ndk/23.1.7779620 \
+    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get dist-upgrade -y \
  && sudo apt-get install -y \
     gradle \
     libasound2 \

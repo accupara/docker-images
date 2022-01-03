@@ -52,9 +52,11 @@ RUN set -x \
         gettext \
         guile \
         hardening-check \
+        java-1.8.0-openjdk-devel \
         libevent-devel \
         make \
         ncurses-devel \
+        ninja-build \
         openssh-server \
         redhat-lsb \
         rpm-build \
@@ -99,13 +101,19 @@ RUN set -x \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/login \
  && mv /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
- && mv /tmp/limits.conf /etc/security/
+ && mv /tmp/limits.conf /etc/security/ \
+# Install gradle
+ && wget https://services.gradle.org/distributions/gradle-5.0-bin.zip -P /tmp \
+ && sudo unzip -d /opt/gradle /tmp/gradle-5.0-bin.zip \
+ && rm /tmp/gradle-5.0-bin.zip
 
 USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    GRADLE_HOME=/opt/gradle/gradle-5.0 \
+    PATH=/opt/gradle/gradle-5.0/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 WORKDIR /home/admin
 
 RUN chown -R admin:admin /home/admin \

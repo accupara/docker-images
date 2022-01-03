@@ -45,10 +45,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         devscripts \
         dh-make \
         git \
+        gradle \
         guile-2.0 \
         jq \
         locales \
         lsb-release \
+        ninja-build \
         subversion \
         sudo \
         vim-nox \

@@ -2,13 +2,11 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/debian:9 as remake
+FROM accupara/debian:11 as remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-        autoconf \
-        autopoint \
-        guile-2.0-dev \
+        guile-2.2-dev \
         pkg-config \
         rsync \
         texinfo \
@@ -19,7 +17,7 @@ RUN set -x \
  && mv ./make /tmp/
 
 ################## The real container starts here ##################
-FROM debian:9
+FROM debian:11
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
@@ -35,12 +33,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         binutils \
         build-essential \
         debhelper \
-# This doesn't install hardening-check, even though it works on 8 and 10. :(
         devscripts \
         dh-make \
         git \
         gradle \
-        guile-2.0 \
+        guile-2.2 \
         jq \
         locales \
         lsb-release \

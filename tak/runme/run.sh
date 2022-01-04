@@ -17,19 +17,21 @@ docker_cmd() {
     SUBDIR=$1
     shift
 
-    MNT=$(readlink -f .):/tmp/src
+    LOCALDIR=$(readlink -f .)
+    REMOTEDIR=/tmp/src
+    MNT=$LOCALDIR:$REMOTEDIR
     docker run --rm -it \
         -v $MNT \
-        -w /tmp/src/$SUBDIR \
-        -e CONAN_USER_HOME=$MNT \
+        -w $REMOTEDIR/$SUBDIR \
+        -e CONAN_USER_HOME=$REMOTEDIR \
         accupara/tak-civ-android:latest \
         $*
 }
 
 reset() {
     if [ -e atak-civ ] ; then
-        mkdir -p delme
-        mv atak-civ delme
+        mkdir -p delme .conan
+        mv atak-civ .conan delme
         find delme -delete &
     fi
 

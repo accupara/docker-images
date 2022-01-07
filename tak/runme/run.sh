@@ -61,4 +61,30 @@ main() {
     fi
 }
 
+allCmds() {
+export CONAN_USER_HOME=/data
+./scripts/prebuild.sh
+rm -rf /data/keystore
+mkdir -p /data/keystore
+echo 'export ANDROID_DBG_KEY_FILE=$(readlink -f atak/ATAK/app/keystore/debug.keystore)' >/data/exports.sh
+echo 'export ANDROID_DBG_KEY_ALIAS=androiddebugkey' >>/data/exports.sh
+echo 'export ANDROID_DBG_KEY_PASSWORD=android' >>/data/exports.sh
+echo 'export ANDROID_DBG_STORE_PASSWORD=android' >>/data/exports.sh
+source /data/exports.sh
+keytool -genkeypair -alias ${ANDROID_DBG_KEY_ALIAS} -keypass ${ANDROID_DBG_KEY_PASSWORD} -keystore ${ANDROID_DBG_KEY_FILE} -storepass ${ANDROID_DBG_STORE_PASSWORD} -dname "CN=Android Debug,O=Android,C=US" -validity 9999
+echo "takDebugKeyFile=${ANDROID_DBG_KEY_FILE}" >atak/local.properties
+echo "takDebugKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}" >>atak/local.properties
+echo "takDebugKeyAlias=${ANDROID_DBG_KEY_ALIAS}" >>atak/local.properties
+echo "takDebugKeyPassword=${ANDROID_DBG_STORE_PASSWORD}" >>atak/local.properties
+echo "takReleaseKeyFile=${ANDROID_DBG_KEY_FILE}" >>atak/local.properties
+echo "takReleaseKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}" >>atak/local.properties
+echo "takReleaseKeyAlias=${ANDROID_DBG_KEY_ALIAS}" >>atak/local.properties
+echo "takReleaseKeyPassword=${ANDROID_DBG_STORE_PASSWORD}" >>atak/local.properties
+cd atak
+./gradlew assembleCivDebug
+
+
+export CONAN_USER_HOME=/data ; ./scripts/prebuild.sh ; rm -rf /data/keystore ; mkdir -p /data/keystore ; echo 'export ANDROID_DBG_KEY_FILE=$(readlink -f atak/ATAK/app/keystore/debug.keystore)' >/data/exports.sh ; echo 'export ANDROID_DBG_KEY_ALIAS=androiddebugkey' >>/data/exports.sh ; echo 'export ANDROID_DBG_KEY_PASSWORD=android' >>/data/exports.sh ; echo 'export ANDROID_DBG_STORE_PASSWORD=android' >>/data/exports.sh ; source /data/exports.sh ; keytool -genkeypair -alias ${ANDROID_DBG_KEY_ALIAS} -keypass ${ANDROID_DBG_KEY_PASSWORD} -keystore ${ANDROID_DBG_KEY_FILE} -storepass ${ANDROID_DBG_STORE_PASSWORD} -dname "CN=Android Debug,O=Android,C=US" -validity 9999 ; echo "takDebugKeyFile=${ANDROID_DBG_KEY_FILE}" >atak/local.properties ; echo "takDebugKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}" >>atak/local.properties ; echo "takDebugKeyAlias=${ANDROID_DBG_KEY_ALIAS}" >>atak/local.properties ; echo "takDebugKeyPassword=${ANDROID_DBG_STORE_PASSWORD}" >>atak/local.properties ; echo "takReleaseKeyFile=${ANDROID_DBG_KEY_FILE}" >>atak/local.properties ; echo "takReleaseKeyFilePassword=${ANDROID_DBG_KEY_PASSWORD}" >>atak/local.properties ; echo "takReleaseKeyAlias=${ANDROID_DBG_KEY_ALIAS}" >>atak/local.properties ; echo "takReleaseKeyPassword=${ANDROID_DBG_STORE_PASSWORD}" >>atak/local.properties ; cd atak ; ./gradlew assembleCivDebug
+}
+
 main $*

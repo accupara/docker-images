@@ -33,6 +33,8 @@ COPY --from=remake /tmp/make /usr/bin/remake
 RUN set -x \
 # Add epel 8 first
  && yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
+# Enable the powertools package next (while installing ninja-build
+ && dnf --enablerepo=powertools install -y ninja-build \
 # ... then start installing packages
  && yum update -y \
  && yum install -y \
@@ -51,7 +53,8 @@ RUN set -x \
         libevent-devel \
         make \
         ncurses-devel \
-        ninja-build \
+# Installed above
+        #ninja-build \
         openssh-server \
         redhat-lsb \
         rpm-build \

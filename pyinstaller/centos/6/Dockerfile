@@ -28,12 +28,12 @@ RUN set -x \
     zlib-devel \
 # Prepare a scratch area for downloading and compiling some projects
  && mkdir /tmp/scratch \
-# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1l
- && export OPENSSL_VER=1_1_1l \
+# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1m
+ && export OPENSSL_VER=1.1.1m \
  && cd /tmp/scratch \
- && wget -q https://github.com/openssl/openssl/archive/OpenSSL_${OPENSSL_VER}.tar.gz \
- && tar -xf OpenSSL_${OPENSSL_VER}.tar.gz \
- && cd openssl-OpenSSL_${OPENSSL_VER} \
+ && wget -q --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz \
+ && tar -xf openssl-${OPENSSL_VER}.tar.gz \
+ && cd openssl-${OPENSSL_VER} \
  && ./config --prefix=/usr --openssldir=/usr shared zlib \
  && make -j `nproc` \
  && sudo make install \

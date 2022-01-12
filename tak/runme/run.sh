@@ -59,9 +59,11 @@ main() {
         # Build!
         docker_cmd atak-civ/atak ./gradlew assembleCivDebug
     elif [ "$1" == "crave" ] ; then
-        crave -c ~/code/crave.foss.crave.io.conf run --clean sleep 5
-        crave -c ~/code/crave.foss.crave.io.conf push run.sh -d /data
-        crave -c ~/code/crave.foss.crave.io.conf run --artifacts atak/gradle-buildlog.txt /data/run.sh crave_cmds
+        CRAVE_CONF=$(readlink -f ~/code/crave.foss.crave.io.conf)
+        crave -c $CRAVE_CONF run --clean sleep 2
+        crave -c $CRAVE_CONF push run.sh -d /data
+        crave -c $CRAVE_CONF run /data/run.sh crave_cmds
+        crave -c $CRAVE_CONF pull $(crave -c $CRAVE_CONF ssh -- find . -name '*.apk') atak/gradle-build.txt -d .
     elif [ "$1" == "crave_cmds" ] ; then
         allCmds
     else
@@ -71,7 +73,7 @@ main() {
 }
 
 allCmds() {
-    set -x
+    set -xe
     rm -rf /data/keystore
     mkdir -p /data/keystore
     echo 'export ANDROID_DBG_KEY_FILE=/data/keystore/debug.keystore' >/data/exports.sh
@@ -90,7 +92,7 @@ allCmds() {
     echo "takReleaseKeyPassword=${ANDROID_DBG_STORE_PASSWORD}" >>atak/local.properties
     ./scripts/prebuild.sh
     cd atak
-    ./gradlew --debug assembleCivRelease 2>&1 | tee ./gradle-buildlog.txt
+    ./gradlew assembleCivDebug assembleCivRelease 2>&1 | tee ./gradle-build.txt
 }
 
 main $*

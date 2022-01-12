@@ -25,6 +25,9 @@ RUN set -x \
     vim \
     wget \
     zip \
+# Install the NDK that TAK needs
+ && yes | sdkmanager \
+ "ndk;21.0.6113669" \
 # Install conan and self detect
  && sudo python3 -m pip install conan \
  && conan profile new default --detect \

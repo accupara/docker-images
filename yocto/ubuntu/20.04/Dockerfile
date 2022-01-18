@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY build-install-dumb-init.sh /tmp/
 
@@ -13,6 +12,7 @@ RUN sudo apt-get update \
         gawk \
         gcc-multilib \
         git-core \
+        liblz4-tool \
         libsdl1.2-dev \
         locales \
         python \
@@ -24,6 +24,7 @@ RUN sudo apt-get update \
         wget \
         xterm \
         xz-utils \
+        zstd \
  && sudo locale-gen en_US.UTF-8 \
  && echo "export LANG=en_US.UTF-8" > /tmp/add_locale \
  && echo "export LANGUAGE=en_US:en" >> /tmp/add_locale \

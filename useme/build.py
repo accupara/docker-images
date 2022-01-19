@@ -260,7 +260,7 @@ def generateImageLinks(imageList):
 
 
 def getImageMtime(imageName):
-    # print('I am here. imageName = {}'.format(imageName))
+    # printf('imageName = {}'.format(imageName))
     ctrAuthPath = '/opt/config.json'
     authParam = '{}:{}'.format(
         os.path.expanduser(os.path.join('~', '.docker', 'config.json')),
@@ -278,7 +278,7 @@ def getImageMtime(imageName):
     try:
         data = json.loads(p.stdout)
         mtime = dateutil.parser.parse(data['Created'])
-        # print(mtime)
+        printf('mtime {} for {}'.format(mtime, imageName))
     except Exception as err:
         printf('Exception retrieving mtime for {}\n'.format(imageName))
         printf('o:{}\ne:{}\nerr:{}\n'.format(p.stdout, p.stderr, err))

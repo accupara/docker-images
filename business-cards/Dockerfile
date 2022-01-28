@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
 
 # Install tex, xetex

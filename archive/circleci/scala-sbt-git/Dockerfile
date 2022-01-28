@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM codestar/circleci-scala-sbt-git:latest
 MAINTAINER Crave.io Inc. "contact@crave.io"
 

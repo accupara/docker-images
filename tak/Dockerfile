@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/android:latest
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"

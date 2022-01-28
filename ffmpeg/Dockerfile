@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2021 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
 ENV LIBFUN_VER=0.3.95

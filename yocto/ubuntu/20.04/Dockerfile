@@ -8,15 +8,27 @@ RUN sudo apt-get update \
         build-essential \
         chrpath \
         cpio \
+        debianutils \
         diffstat \
         gawk \
         gcc-multilib \
         git-core \
+        iputils-ping \
+        libegl1-mesa \
+        libelf-dev \
         liblz4-tool \
         libsdl1.2-dev \
         locales \
+        mesa-common-dev \
+        pylint3 \
         python \
         python3 \
+        python3-git \
+        python3-jinja2 \
+        python3-pexpect \
+        python3-pip \
+        python3-subunit \
+        sed \
         socat \
         sysstat \
         texinfo \

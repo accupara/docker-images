@@ -1,11 +1,11 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:16.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+FROM accupara/ubuntu:20.04
 
 # Follow the steps laid out at http://www.mono-project.com/docs/compiling-mono/linux/
 
-RUN sudo apt-get update && \
-    sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
          autoconf \
          automake \
          build-essential \

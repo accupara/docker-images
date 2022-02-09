@@ -1,12 +1,13 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
+FROM accupara/ubuntu:20.04
 
 # Install tex, xetex
 # Install font-awesome
 # Install Fira Sans from Mozilla (as documented in https://stevescott.ca/2016-10-20-installing-the-fira-font-in-ubuntu.html)
 
-RUN sudo apt-get update
-RUN sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
     fonts-font-awesome \
     inkscape \
     texlive-full \

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:16.04
+FROM accupara/ubuntu:20.04
 
 RUN set -x \
  && sudo apt-get update \

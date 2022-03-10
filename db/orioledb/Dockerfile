@@ -1,32 +1,19 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+# Derive from postgress base container
+FROM accupara/postgres:ubuntu_2004
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get -y dist-upgrade \
  && sudo apt-get install -y \
-        bison \
-        build-essential \
-        flex \
-        gettext \
-        libgettextpo0 \
-        libkrb5-dev \
-        libossp-uuid-dev \
-        libpam0g-dev \
-        libperl-dev \
-        libreadline6-dev \
-        libssl-dev \
-        libtcl8.6 \
-        libxml2-dev \
-        libxslt1-dev \
-        perl-modules \
-        python \
-        python-dev \
-        python3-dev \
-        python3 \
-        readline-common \
-        tcl \
-        tcl-dev \
-        zlib1g-dev \
-        libxml2-utils \
-        xsltproc \
+    libpq-dev \
+# Download the prerequisites script from OrioleDB's Github and use it to configure the environment
+ && wget -O /tmp/prerequisites.sh https://raw.githubusercontent.com/orioledb/orioledb/main/ci/prerequisites.sh \
+ && chmod +x /tmp/prerequisites.sh \
+ && export GITHUB_ENV=/tmp/ghenv \
+ && export COMPILER=gcc \
+ && export CHECK_TYPE=valgrind_1 \
+ && /tmp/prerequisites.sh \
+# Cleanup the image
  && sudo apt-get clean

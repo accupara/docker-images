@@ -32,9 +32,10 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools
-RUN apt-get update && \
-    apt-get -y dist-upgrade && \
-    apt-get install -y \
+RUN set -x \
+ && apt-get update \
+ && apt-get -y dist-upgrade \
+ && apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
@@ -43,10 +44,14 @@ RUN apt-get update && \
         devscripts \
         dh-make \
         emacs \
+        gettext \
         git \
         gradle \
         guile-2.0 \
         jq \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        libssl-dev \
         locales \
         lsb-release \
         ninja-build \
@@ -56,9 +61,17 @@ RUN apt-get update && \
         sudo \
         tmux \
         vim-nox \
+        unzip \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
+# Install the latest git
+ && export GIT_VER=2.35.1 \
+ && cd /tmp && wget -q https://github.com/git/git/archive/refs/tags/v${GIT_VER}.tar.gz \
+ && tar -xf v${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
@@ -66,6 +79,7 @@ RUN apt-get update && \
 # Clean up image
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
+# Bash completion and admin in sudoers
  && echo ". /etc/bash_completion" >> /root/.bashrc \
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
@@ -80,7 +94,8 @@ ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin
 CMD /bin/bash
 
-RUN sudo chown -R admin:admin /home/admin \
+RUN set -x \
+ && sudo chown -R admin:admin /home/admin \
  && echo ". /etc/bash_completion" >> /home/admin/.bashrc \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \

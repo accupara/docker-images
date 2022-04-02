@@ -71,7 +71,8 @@ RUN set -x \
  && tar -xf v${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \

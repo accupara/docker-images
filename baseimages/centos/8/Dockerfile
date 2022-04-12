@@ -67,6 +67,22 @@ RUN set -x \
  && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Install the git-lfs package by default
  && yum install -y git-lfs \
+# Install the latest git
+ && export GIT_VER=2.35.1 \
+ && yum install -y \
+    expat-devel \
+    gettext \
+    gnutls-devel \
+    libcurl-devel \
+    libzip-devel \
+    openssl-devel \
+    unzip \
+ && cd /tmp && wget -q https://github.com/git/git/archive/refs/tags/v${GIT_VER}.tar.gz \
+ && tar -xf v${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Download and install the latest tmux
  && export TMUX_VERSION=3.2 \
  && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \

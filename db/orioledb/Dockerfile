@@ -5,8 +5,9 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \
- && sudo apt-get -y dist-upgrade \
  && sudo apt-get install -y \
+    clang \
+    clang-tools \
     libpq-dev \
 # Download the prerequisites script from OrioleDB's Github and use it to configure the environment
  && wget -O /tmp/prerequisites.sh https://raw.githubusercontent.com/orioledb/orioledb/main/ci/prerequisites.sh \
@@ -16,4 +17,5 @@ RUN set -x \
  && export CHECK_TYPE=valgrind_1 \
  && /tmp/prerequisites.sh \
 # Cleanup the image
+ && rm /tmp/prerequisites.sh \
  && sudo apt-get clean

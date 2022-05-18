@@ -43,8 +43,10 @@ RUN set -x \
         jq \
         locales \
         lsb-release \
+        multitail \
         ninja-build \
         openssh-server \
+        psmisc \
         rsync \
         subversion \
         sudo \

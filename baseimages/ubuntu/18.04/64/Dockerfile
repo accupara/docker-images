@@ -42,8 +42,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         jq \
         locales \
         lsb-release \
+        multitail \
         ninja-build \
         openssh-server \
+        psmisc \
         rsync \
         subversion \
         sudo \

@@ -3,6 +3,8 @@ FROM accupara/android:latest
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
+ENV CMAKE_VER=3.23.2
+
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -10,7 +12,6 @@ RUN set -x \
     autoconf \
     automake \
     build-essential \
-    cmake \
     curl \
     dos2unix \
     git \
@@ -25,6 +26,10 @@ RUN set -x \
     vim \
     wget \
     zip \
+# Latest version of cmake required for compilation
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Install the NDK that TAK needs
  && yes | sdkmanager \
  "ndk;21.0.6113669" \

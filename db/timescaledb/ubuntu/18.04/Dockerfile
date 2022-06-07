@@ -2,7 +2,7 @@
 FROM accupara/ubuntu:18.04
 MAINTAINER Crave.io Inc. "contact@crave.io"
 
-ENV CMAKE_VER=3.21.0 \
+ENV CMAKE_VER=3.23.2 \
     PGVER=12
 
 RUN sudo apt-get update \

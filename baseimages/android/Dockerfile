@@ -17,9 +17,9 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Setting the env variables before hand doesn't hurt at all
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android/cmdline-tools/latest:/opt/android/cmdline-tools/latest/bin \
     SDK_TOOLS_VER=7583922 \
-    NDK_TOOLS_VER=23.1.7779620 \
+    NDK_TOOLS_VER=24.0.8215888 \
     ANDROID_HOME=/opt/android \
-    ANDROID_NDK=/opt/android/ndk/23.1.7779620 \
+    ANDROID_NDK=/opt/android/ndk/24.0.8215888 \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 RUN set -x \

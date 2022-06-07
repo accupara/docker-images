@@ -4,7 +4,7 @@ MAINTAINER Crave.io Inc. "contact@crave.io"
 
 ENV BOOST_ROOT=/opt/boost_1_72_0 \
     BOOST_VER=1_72_0 \
-    CMAKE_VER=3.21.0
+    CMAKE_VER=3.23.2
 
 RUN set -x \
  && sudo apt-get update \

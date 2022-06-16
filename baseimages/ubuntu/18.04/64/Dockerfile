@@ -54,19 +54,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
 # Install the latest git
- && export GIT_VER=2.35.1 \
- && sudo apt-get install -y \
-        gettext \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        unzip \
-        zlib1g-dev \
- && cd /tmp && wget -q https://github.com/git/git/archive/refs/tags/v${GIT_VER}.tar.gz \
- && tar -xf v${GIT_VER}.tar.gz \
+ && export GIT_VER=2.36.1 \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && make prefix=/usr all \
- && sudo make prefix=/usr install \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
  && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Install the latest version of gradle
  && cd /tmp \

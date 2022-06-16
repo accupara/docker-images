@@ -77,7 +77,7 @@ RUN set -x \
     git-lfs \
     jq \
 # Install the latest git
- && export GIT_VER=2.35.1 \
+ && export GIT_VER=2.36.1 \
  && yum install -y \
     expat-devel \
     gettext \
@@ -86,8 +86,8 @@ RUN set -x \
     libzip-devel \
     openssl-devel \
     unzip \
- && cd /tmp && wget -q https://github.com/git/git/archive/refs/tags/v${GIT_VER}.tar.gz \
- && tar -xf v${GIT_VER}.tar.gz \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \

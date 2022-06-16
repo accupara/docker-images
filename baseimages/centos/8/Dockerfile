@@ -109,10 +109,14 @@ RUN set -x \
  && mv /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
  && mv /tmp/limits.conf /etc/security/ \
-# Install gradle
- && wget https://services.gradle.org/distributions/gradle-5.0-bin.zip -P /tmp \
- && sudo unzip -d /opt/gradle /tmp/gradle-5.0-bin.zip \
- && rm /tmp/gradle-5.0-bin.zip
+# Install the latest version of gradle
+ && cd /tmp \
+ && export GRADLE_VER=7.4.2 \
+ && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
+ && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
+ && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && rm gradle-${GRADLE_VER}-bin.zip
 
 USER admin
 ENV HOME=/home/admin \

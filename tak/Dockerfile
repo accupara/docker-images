@@ -30,6 +30,7 @@ RUN set -x \
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
+ && rm /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
 # Install the NDK that TAK needs
  && yes | sdkmanager \
  "ndk;21.0.6113669" \

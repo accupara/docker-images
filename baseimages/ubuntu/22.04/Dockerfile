@@ -2,24 +2,21 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/debian:9 as remake
+FROM accupara/ubuntu:20.04 as remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-        autoconf \
-        autopoint \
-        guile-2.0-dev \
-        pkg-config \
-        rsync \
+        guile-3.0-dev \
         texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
+ && ./configure \
  && make -j `nproc` \
  && mv ./make /tmp/
 
 ################## The real container starts here ##################
-FROM debian:9
+FROM ubuntu:22.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.name="contact@crave.io"
 
@@ -27,28 +24,52 @@ COPY sshd_config /tmp/
 COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
+        curl \
         debhelper \
-# This doesn't install hardening-check, even though it works on 8 and 10. :(
         devscripts \
         dh-make \
+        emacs \
         git \
-        guile-2.0 \
+        guile-3.0 \
         jq \
         locales \
         lsb-release \
+        multitail \
         ninja-build \
         openssh-server \
+        psmisc \
+        rsync \
         subversion \
         sudo \
+        tmux \
         vim-nox \
         wget \
+# Make sure to install git-lfs
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
+ && apt-get install -y git-lfs \
+# Install the latest git
+ && export GIT_VER=2.35.1 \
+ && sudo apt-get install -y \
+        gettext \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        libssl-dev \
+        unzip \
+        zlib1g-dev \
+ && cd /tmp && wget -q https://github.com/git/git/archive/refs/tags/v${GIT_VER}.tar.gz \
+ && tar -xf v${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr all \
+ && sudo make prefix=/usr install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.4.2 \
@@ -92,8 +113,8 @@ RUN set -x \
  && touch /home/admin/.ssh/authorized_keys \
  && sudo chmod 0600 /etc/ssh/* \
 # locale setup
- && sudo sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
- && sudo locale-gen \
+ && sudo locale-gen en_US.UTF-8 \
+ && sudo update-locale LANG=en_US.UTF-8 \
 # Export env vars
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \

@@ -38,7 +38,6 @@ RUN set -x \
         dh-make \
         emacs \
         git \
-        gradle \
         guile-3.0 \
         jq \
         locales \
@@ -71,6 +70,14 @@ RUN set -x \
  && make prefix=/usr all \
  && sudo make prefix=/usr install \
  && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+# Install the latest version of gradle
+ && cd /tmp \
+ && export GRADLE_VER=7.4.2 \
+ && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
+ && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
+ && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && rm gradle-${GRADLE_VER}-bin.zip \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \

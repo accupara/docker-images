@@ -91,7 +91,7 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Download and install the latest tmux
  && export TMUX_VERSION=3.2 \
  && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \

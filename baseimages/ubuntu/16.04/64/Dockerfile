@@ -65,7 +65,7 @@ RUN apt-get update && \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.4.2 \

@@ -8,3 +8,4 @@ useme/dist
 
 # One place to record that "runme" is the place to test out container images for that project
 runme
+.vscode

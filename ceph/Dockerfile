@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+FROM accupara/ubuntu:20.04
 
 RUN set -x \
  && sudo apt-get update \
@@ -36,9 +35,9 @@ RUN set -x \
     libtool \
     libudev-dev \
     pkg-config \
-    python-dev \
-    python-pip \
-    python-virtualenv \
+    python3-dev \
+    python3-pip \
+    python3-virtualenv \
     uuid-dev \
     xfslibs-dev \
 # Clone the ceph repo and run the install-deps.sh script. This does all the heavy lifting

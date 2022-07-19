@@ -1,10 +1,11 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+FROM accupara/ubuntu:20.04
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update -y \
  && sudo apt-get install -y \
-    python-pip \
- && sudo pip install \
+    python3-pip \
+ && sudo python3 -m pip install \
     tensorflow

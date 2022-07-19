@@ -1,7 +1,8 @@
-FROM accupara/lkbuild:amd64
+FROM accupara/lkbuild:latest
 
-RUN sudo apt-get update && \
-    sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
       autoconf \
       automake \
       build-essential \
@@ -23,5 +24,5 @@ RUN sudo apt-get update && \
       python3-pip \
       pkg-config \
       unzip \
-    && sudo apt-get clean \
-    && sudo rm -rf /var/lib/apt/lists/*
+&& sudo apt-get clean \
+&& sudo rm -rf /var/lib/apt/lists/*

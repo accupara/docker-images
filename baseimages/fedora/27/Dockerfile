@@ -17,12 +17,15 @@ RUN dnf update -y \
     subversion \
     sudo \
     vim-enhanced \
+# Install compilation tools
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -a -G wheel admin \
+# Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
  && mkdir -p /var/run/sshd
 

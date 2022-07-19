@@ -35,7 +35,7 @@ RUN set -x \
 ################## The real container starts here ##################
 FROM centos:7
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
+      org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
 COPY --from=remake /tmp/make /usr/bin/remake

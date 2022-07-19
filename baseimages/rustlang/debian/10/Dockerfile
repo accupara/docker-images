@@ -1,7 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/debian:10
-LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
 
 ENV RUSTUP_HOME=/opt/rustup \
     CARGO_HOME=/opt/cargo \

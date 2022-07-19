@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/rustlang:debian_10
-LABEL maintainer="Crave.io Inc. 'contact@crave.io'"
 
 RUN set -x \
  && sudo apt-get update \

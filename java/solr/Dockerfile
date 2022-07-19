@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/openjdk:11
-LABEL maintainer="Crave.io Inc. <contact@crave.io>"
 
 # Install the minimum tools
 RUN set -x \

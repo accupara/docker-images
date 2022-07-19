@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM envoyproxy/envoy-build:latest
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
+      org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
 

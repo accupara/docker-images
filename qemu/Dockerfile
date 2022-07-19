@@ -1,7 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
-LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \

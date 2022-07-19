@@ -16,9 +16,6 @@ RUN set -x \
  && ls -lrt /tmp/
 
 FROM accupara/ubuntu:20.04
-LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
-
 COPY --from=stage1 /tmp/pack /tmp/
 
 RUN set -x \

@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM fedora:27
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
+      org.opencontainers.image.author.email="contact@crave.io"
 
 # Install the minimum set of tools
 RUN dnf update -y \

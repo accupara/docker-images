@@ -28,7 +28,7 @@ RUN set -x \
 ################## The real container starts here ################## 
 FROM ubuntu:14.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
-      org.opencontainers.image.author.name="contact@crave.io"
+      org.opencontainers.image.author.email="contact@crave.io"
 COPY --from=remake /tmp/make /usr/bin/remake
 
 # Install the minimum tools

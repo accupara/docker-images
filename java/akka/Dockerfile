@@ -2,7 +2,8 @@
 FROM accupara/openjdk:8
 
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo apt-get install -y apt-transport-https \
  && echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list \

@@ -1,4 +1,6 @@
 FROM accupara/lkbuild:latest
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.name="contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \

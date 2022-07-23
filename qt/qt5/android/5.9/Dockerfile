@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/android
-MAINTAINER Crave.io Inc. "contact@crave.io"
+FROM us.gcr.io/crave-228104/android:latest
 
 COPY installqt.qs /tmp/installqt.qs
 

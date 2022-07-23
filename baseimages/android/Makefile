@@ -1,5 +1,4 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-#IMGTAG?=accupara/android
 IMGTAG?=us.gcr.io/crave-228104/android
 IMGVER?=latest
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/android:latest
+FROM us.gcr.io/crave-228104/android:latest
 
 ENV CMAKE_VER=3.23.2
 

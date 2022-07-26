@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/centos:7
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo yum -y update \
@@ -9,6 +8,7 @@ RUN set -x \
     bzip2-devel \
     db4-devel \
     expat-devel \
+    flex \
     gdbm-devel \
     glibc-devel.i686 \
     libffi-devel \
@@ -40,7 +40,7 @@ RUN set -x \
  && ./contrib/download_prerequisites \
  && mkdir ../gcc_${GCC_VER}_release_build \
  && cd ../gcc_${GCC_VER}_release_build \
- && ../gcc_${GCC_VER}_release/configure \
+ && ../gcc_${GCC_VER}_release/configure --disable-multilib \
  && make -j `nproc` \
  && sudo make install \
  && export PATH=/usr/local/bin/:${PATH} \

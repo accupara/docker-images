@@ -35,23 +35,6 @@ RUN set -x \
  && ./config --prefix=/usr --openssldir=/usr shared zlib \
  && make -j `nproc` \
  && sudo make install \
-# Download and install a newer gcc
- && export GCC_VER=9_2_0 \
- && mkdir /tmp/scratch/GCC-source \
- && cd /tmp/scratch/GCC-source \
- && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_${GCC_VER}_release/ >/dev/null \
- && cd gcc_${GCC_VER}_release \
- && ./contrib/download_prerequisites \
- && mkdir ../gcc_${GCC_VER}_release_build \
- && cd ../gcc_${GCC_VER}_release_build \
- && ../gcc_${GCC_VER}_release/configure \
- && make -j `nproc` \
- && sudo make install \
- && export PATH=/usr/local/bin/:${PATH} \
- && sudo mv /usr/bin/gcc /usr/bin/gcc-orig \
- && sudo mv /usr/bin/g++ /usr/bin/g++-orig \
- && sudo ln -s /usr/local/bin/gcc /usr/bin/gcc \
- && sudo ln -s /usr/local/bin/g++ /usr/bin/g++ \
 # Download and install python 3.8 because centos 6 has a very old python3
  && cd /tmp/scratch \
  && export PYTHON_VER=3.8.10 \

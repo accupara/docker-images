@@ -25,6 +25,9 @@ RUN set -x \
  && ../gcc_${GCC_VER}_release/configure --disable-multilib \
  && make -j `nproc` \
  && sudo make install \
+ && sudo rm -f /usr/bin/gcc /usr/bin/g++ \
+ && sudo ln -s /usr/local/bin/gcc /usr/bin/gcc \
+ && sudo ln -s /usr/local/bin/g++ /usr/bin/g++ \
 # Fetch gettext sources and compile them
  && cd /home/admin \
  && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \

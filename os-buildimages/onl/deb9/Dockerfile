@@ -27,6 +27,7 @@ RUN set -x \
     cmake \
     cpio \
     cryptsetup-bin \
+    curl \
     debhelper \
     device-tree-compiler \
     devscripts \
@@ -45,7 +46,6 @@ RUN set -x \
     git \
     gperf \
     g++ \
-    hardening-wrapper \
     ifupdown \
     iproute \
     iputils-ping \
@@ -64,12 +64,11 @@ RUN set -x \
     libexpat1-dev \
     libgoogle-glog-dev \
     libi2c-dev \
-    libjson0 \
-    libjson0-dev \
+    libjson-c3 \
     libjson-c-dev \
     libkrb5-dev \
+    libncurses5-dev \
     libnuma-dev \
-    libpam0g-dev \
     libpam-dev \
     libpcap-dev \
     libpcre3-dev \
@@ -85,7 +84,6 @@ RUN set -x \
     libusb-dev \
     libxml2-dev \
     linux-perf-4.9 \
-    linux-tools-3.16 \
     linux-tools \
     locales \
     lsof \
@@ -95,7 +93,6 @@ RUN set -x \
     mtools \
     multistrap \
     nano \
-    ncurses-dev \
     netbase \
     net-tools \
     nfs-common \
@@ -114,7 +111,6 @@ RUN set -x \
     rsyslog \
     ruby \
     ruby-dev \
-    rubygems \
     screen \
     squashfs-tools \
     sshpass \
@@ -136,7 +132,7 @@ RUN set -x \
     zile \
     zip \
  && echo "deb https://emdebian.metrotek.center/ stretch main" | sudo tee /etc/apt/sources.list.d/crosstools.list \
- && curl https://emdebian.metrotek.center/emdebian-toolchain-archive.key | sudo apt-key add -
+ && curl -k https://emdebian.metrotek.center/emdebian-toolchain-archive.key | sudo apt-key add -
 
 RUN set -x \
  && sudo dpkg --add-architecture armel \

@@ -29,9 +29,11 @@ RUN set -x \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
  && rm /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
-# Install the NDK that TAK needs
+# Install the NDK that TAK needs as well as the Build tools that the gradle section requires
  && yes | sdkmanager \
  "ndk;21.0.6113669" \
+ "build-tools;30.0.2" \
+ "platforms;android-29" \
 # Install conan and self detect
  && sudo python3 -m pip install conan \
  && conan profile new default --detect \

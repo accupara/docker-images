@@ -1,11 +1,12 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/debian:9
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH
 
-RUN sudo apt-get update --fix-missing && sudo apt-get install -y wget bzip2 ca-certificates \
+RUN set -x \
+ && sudo apt-get update --fix-missing \
+ && sudo apt-get install -y wget bzip2 ca-certificates \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
     git mercurial subversion
 

@@ -1,7 +1,6 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 # Derive from postgress base container
 FROM accupara/postgres:ubuntu_2004
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo apt-get update \

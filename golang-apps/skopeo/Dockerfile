@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/golang:1.16-buster
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 ENV lsb_release_env="stretch"
 # Install the minimum tools

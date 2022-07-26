@@ -1,9 +1,9 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 # Keep the update separate so that Docker build system can cache it.
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo apt-get -y install \
         libpq-dev \
@@ -20,9 +20,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         setuptools \
  && sudo pip3 install --upgrade \
         django \
-        uwsgi
-
-RUN sudo rm /etc/nginx/sites-enabled/*
+        uwsgi \
+ && sudo rm /etc/nginx/sites-enabled/*
 
 # nginx conf file
 COPY nginx.conf /etc/nginx/

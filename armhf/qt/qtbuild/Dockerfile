@@ -1,8 +1,8 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:16.04_arm32v7
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y software-properties-common \
  && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test \
  && sudo apt-get update \

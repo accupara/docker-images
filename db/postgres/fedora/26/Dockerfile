@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/fedora:26
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN sudo dnf update -y \
  && sudo dnf install -y \

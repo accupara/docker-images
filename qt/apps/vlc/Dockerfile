@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list \

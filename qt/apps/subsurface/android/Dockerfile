@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:16.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY installqt.qs /tmp/installqt.qs
 
@@ -9,22 +8,23 @@ ENV QT_MAJOR=5.9 \
     NDK_VERSION=r14b \
     SDK_VERSION=25.2.3 \
     API_VERSION=16 \
-    ANDROID_SDK=android-sdk-linux
+    ANDROID_SDK=android-sdk-linux \
 
-ENV QT_BINARIES=qt-opensource-linux-x64-${QT_VERSION}.run \
+    QT_BINARIES=qt-opensource-linux-x64-${QT_VERSION}.run \
     SDK_TOOLS=tools_r${SDK_VERSION}-linux.zip \
     ANDROID_NDK=android-ndk-${NDK_VERSION} \
-    ANDROID_SDK_ROOT=/opt/${ANDROID_SDK}
+    ANDROID_SDK_ROOT=/opt/${ANDROID_SDK} \
 
-ENV QT5_ANDROID=/opt/Qt/${QT_VERSION} \
+    QT5_ANDROID=/opt/Qt/${QT_VERSION} \
     NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip \
     QT_DOWNLOAD_URL=http://download.qt.io/archive/qt/${QT_MAJOR}/${QT_VERSION}/${QT_BINARIES} \
     SDK_DOWNLOAD_URL=https://dl.google.com/android/repository/${SDK_TOOLS} \
-    ANDROID_NDK_ROOT=/opt/${ANDROID_NDK}
+    ANDROID_NDK_ROOT=/opt/${ANDROID_NDK} \
 
-ENV NDK_DOWNLOAD_URL=https://dl.google.com/android/repository/${NDK_BINARIES}
+    NDK_DOWNLOAD_URL=https://dl.google.com/android/repository/${NDK_BINARIES}
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get -y --no-install-recommends install \
     git \
     g++ \

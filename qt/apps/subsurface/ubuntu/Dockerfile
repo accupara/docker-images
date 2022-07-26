@@ -1,12 +1,9 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/qt5:linux
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
-# Keep the update separate so that Docker build system can cache it.
-RUN sudo apt-get update
-
-# libgit2-dev has to be installed after the rest
-RUN sudo apt-get install -y \
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
     autoconf \
     automake \
     cmake \
@@ -46,7 +43,7 @@ ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Subsurface for Ubuntu Linux" \
       org.label-schema.description="Build environment for compiling Subsurface for Ubuntu Linux AMD64" \
-      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.url="https://www.crave.io/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_REF \
       org.label-schema.vendor="Crave.io Inc."

@@ -1,11 +1,13 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM arm32v7/ubuntu:16.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.email="contact@crave.io"
 
 # Install the minimum tools
-RUN apt-get update && \
-    apt-get -y dist-upgrade && \
-    apt-get install -y \
+RUN set -x \
+ && apt-get update \
+ && apt-get -y dist-upgrade \
+ && apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
@@ -16,9 +18,8 @@ RUN apt-get update && \
         sudo \
         vim \
  && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
-
-RUN echo ". /etc/bash_completion" >> /root/.bashrc
+ && rm -f /var/lib/apt/lists/*_dists_* \
+ && echo ". /etc/bash_completion" >> /root/.bashrc
 
 CMD /bin/bash
 

@@ -1,10 +1,10 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:14.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
-RUN sudo ln -svf /bin/bash /bin/sh
-RUN sudo apt-get update
-RUN sudo apt-get install -y \
+RUN set -x \
+ && sudo ln -svf /bin/bash /bin/sh \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
         bison \
         build-essential \
         curl \

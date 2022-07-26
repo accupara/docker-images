@@ -1,5 +1,6 @@
 FROM microsoft/windowsservercore:1709
-LABEL maintainer=bain@accupara.com description="accupara qt build container"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.email="contact@crave.io"
 
 
 RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command \

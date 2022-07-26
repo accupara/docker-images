@@ -1,8 +1,8 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/fedora:26
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
-RUN sudo dnf -y install \
+RUN set -x \
+ && sudo dnf -y install \
     git \
     gcc-c++ \
     make \
@@ -59,7 +59,7 @@ ARG VCS_REF
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Subsurface for Fedora Linux" \
       org.label-schema.description="Build environment for compiling Subsurface for Fedora Linux AMD64" \
-      org.label-schema.url="https://www.accupara.com/" \
+      org.label-schema.url="https://crave.io/" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url=$VCS_REF \
       org.label-schema.vendor="Crave.io Inc."

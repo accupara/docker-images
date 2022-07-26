@@ -1,16 +1,13 @@
 # Copyright (c) 2019-2022 Crave.io Inc. All rights reserved
 
-# Take base of postgres
-FROM postgres:alpine
-
 # Apply accupara docker image standards base
 FROM accupara/alpine:3.9
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 COPY sshd_config /etc/ssh/sshd_config
 
 # Install dependancies for timescaledb
-RUN sudo apk update \
+RUN set -x \
+ && sudo apk update \
  && sudo apk add --no-cache --virtual .build-deps \
        bison \
        cmake \

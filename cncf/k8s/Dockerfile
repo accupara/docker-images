@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM us.gcr.io/k8s-artifacts-prod/build-image/kube-cross:v1.25.0-go1.18.3-bullseye.0
-MAINTAINER Crave.io Inc. "contact@crave.io"
+LABEL org.opencontainers.image.author.name="Crave.io Inc." \
+      org.opencontainers.image.author.email="contact@crave.io"
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \

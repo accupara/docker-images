@@ -1,11 +1,11 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 ENV CMAKE_VER=3.23.2 \
     PGVER=12
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
         bison \
         build-essential \

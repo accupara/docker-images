@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/centos:6
-MAINTAINER Crave.io Inc. "contact@crave.io"
 
 RUN set -x \
  && sudo yum -y update \

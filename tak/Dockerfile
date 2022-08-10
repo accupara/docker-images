@@ -1,8 +1,6 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM us.gcr.io/crave-228104/android:latest
 
-ENV CMAKE_VER=3.23.2
-
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -24,16 +22,12 @@ RUN set -x \
     vim \
     wget \
     zip \
-# Latest version of cmake required for compilation
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
- && rm /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
 # Install the NDK that TAK needs as well as the Build tools that the gradle section requires
  && yes | sdkmanager \
  "ndk;21.0.6113669" \
  "build-tools;30.0.2" \
  "platforms;android-29" \
+ "cmake;3.18.1" \
 # Install conan and self detect
  && sudo python3 -m pip install conan \
  && conan profile new default --detect \
@@ -44,4 +38,6 @@ RUN set -x \
 
 # Override the base image's NDK to the one that TAK requires
 ENV ANDROID_NDK=/opt/android/ndk/android-ndk-r12b \
-    NDK_TOOLS_VER=android-ndk-r12b
+    ANDROID_NDK_HOME=/opt/android/ndk/android-ndk-r12b \
+    NDK_TOOLS_VER=android-ndk-r12b \
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android/cmdline-tools/latest:/opt/android/cmdline-tools/latest/bin:/opt/android/cmake/3.18.1/bin

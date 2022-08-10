@@ -16,6 +16,7 @@ FROM accupara/ubuntu:20.04
 ENV SDK_TOOLS_VER=7583922 \
     NDK_TOOLS_VER=24.0.8215888 \
     ANDROID_HOME=/opt/android \
+    ANDROID_SDK=/opt/android \
     ANDROID_NDK=/opt/android/ndk/24.0.8215888 \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
     PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/android/cmdline-tools/latest:/opt/android/cmdline-tools/latest/bin

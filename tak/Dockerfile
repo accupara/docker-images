@@ -3,6 +3,8 @@ FROM us.gcr.io/crave-228104/android:latest
 
 RUN set -x \
  && sudo apt-get update \
+# Purge JDK 11.
+ && sudo apt-get purge -y openjdk-11-jre* || true \
  && sudo apt-get install -y \
     ant \
     autoconf \

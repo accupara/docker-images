@@ -3,7 +3,8 @@ FROM accupara/ubuntu:18.04
 
 COPY kb-config.exp startcmd.sh /tmp/
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
         binutils \
         expect \

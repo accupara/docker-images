@@ -1,0 +1,14 @@
+#!/usr/bin/env expect
+# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+
+set timeout -1
+spawn apt-get install -y keyboard-configuration
+expect {
+    "\\\[More\\\]" { send "\n"; exp_continue; }
+    "Country of origin for the keyboard: " { send "31\n"; }
+}
+expect {
+    "\\\[More\\\]" { send "\n"; exp_continue; }
+    "Keyboard layout: " { send "1\n" }
+}
+expect eof

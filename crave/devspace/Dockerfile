@@ -1,10 +1,35 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+FROM accupara/xpra:22.04
+
+COPY vnc.conf /tmp/
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
+# Update the underlying base image
  && sudo apt-get update \
  && sudo apt-get -y dist-upgrade \
+# Install LXDE + a bunch of x utilities for VNC and a browser
+ && sudo apt-get install -y \
+      lxde \
+      software-properties-common \
+      supervisor \
+      x11vnc \
+      xvfb \
+# Fix a problem in xfwm4
+ && sudo add-apt-repository ppa:xubuntu-dev/staging \
+ && sudo apt update \
+ && sudo apt upgrade -y \
+# Get rid of the firefox snap and install it from PPA so that it is a regular debian package
+ && sudo apt-get purge -y firefox \
+ && sudo add-apt-repository ppa:mozillateam/ppa \
+ && echo 'Package: *' | sudo tee /etc/apt/preferences.d/mozilla-firefox \
+ && echo 'Pin: release o=LP-PPA-mozillateam' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
+ && echo 'Pin-Priority: 1001' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
+ && sudo apt-get update \
+ && sudo apt-get install -y --allow-downgrades firefox \
+# Put the supervisor conf where it needs to be
+ && sudo cp /tmp/vnc.conf /etc/supervisor/conf.d/ \
+# Install the GRPC tool for crave clone
  && mkdir -p /tmp/grpcurl_download \
  && LOCATION=$(curl -s https://api.github.com/repos/fullstorydev/grpcurl/releases/latest \
        | grep "tag_name" \
@@ -12,16 +37,19 @@ RUN set -x \
  && curl -L $LOCATION | tar xvz -C /tmp/grpcurl_download \
  && sudo cp /tmp/grpcurl_download/grpcurl /usr/bin \
  && rm -rf /tmp/grpcurl_download \
- # Get the latest version of repo
+# Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
- # Remove python 2 completely
+# Remove python 2 completely
  && sudo apt-get purge -y python python2.7 \
  && sudo apt-get -y autoremove \
- # Use python3 as the default python
+# Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
- # Make sure that the default version of python is 3
- && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi
+# Make sure that the default version of python is 3
+ && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
+# The usual cleanup
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

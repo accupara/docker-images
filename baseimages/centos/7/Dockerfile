@@ -57,6 +57,7 @@ RUN set -x \
         make \
         ncurses-devel \
         ninja-build \
+        openssh-clients \
         openssh-server \
         redhat-lsb \
         rpm-build \

@@ -15,6 +15,28 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
+FROM accupara/ubuntu:22.04 as rsync
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    libacl1-dev \
+    libattr1-dev \
+    liblz4-dev \
+    libxxhash-dev \
+    libpopt-dev \
+    libssh-dev \
+    libzstd-dev \
+    python3-cmarkgfm \
+    python3-pip \
+ && sudo python3 -m pip install --user commonmark \
+ && export RSYNC_VER=3.2.5 \
+ && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+ && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && cd rsync-${RSYNC_VER} \
+ && ./configure --prefix=/tmp/rsync \
+ && make -j `nproc` CFLAGS="-static" \
+ && make install
+
 ################## The real container starts here ##################
 FROM ubuntu:22.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
@@ -22,6 +44,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 COPY sshd_config /tmp/
 COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 # Install the minimum tools
 RUN set -x \
@@ -39,13 +62,14 @@ RUN set -x \
         emacs \
         guile-3.0 \
         jq \
+        libpopt0 \
+        libxxhash0 \
         locales \
         lsb-release \
         multitail \
         ninja-build \
         openssh-server \
         psmisc \
-        rsync \
         subversion \
         sudo \
         tmux \
@@ -60,7 +84,7 @@ RUN set -x \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.36.1 \
+ && export GIT_VER=2.36.2 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
@@ -69,7 +93,7 @@ RUN set -x \
  && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.4.2 \
+ && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \

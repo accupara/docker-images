@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
+# Compile remake and rsync on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
 FROM accupara/ubuntu:16.04 as remake
 RUN set -x \
@@ -17,6 +17,24 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
+FROM accupara/ubuntu:16.04 as rsync
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    libacl1-dev \
+    libattr1-dev \
+    liblz4-dev \
+    libpopt-dev \
+    libssh-dev \
+    python3-pip \
+ && export RSYNC_VER=3.2.5 \
+ && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+ && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && cd rsync-${RSYNC_VER} \
+ && ./configure --prefix=/tmp/rsync --disable-zstd --disable-xxhash \
+ && make -j `nproc` CFLAGS="-static" \
+ && make install
+
 ################## The real container starts here ##################
 FROM ubuntu:16.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
@@ -24,6 +42,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 COPY sshd_config /tmp/
 COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 # Install the minimum tools
 RUN apt-get update && \
@@ -39,6 +58,7 @@ RUN apt-get update && \
         emacs \
         guile-2.0 \
         jq \
+        libpopt0 \
         locales \
         lsb-release \
         multitail \
@@ -59,7 +79,7 @@ RUN apt-get update && \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.36.1 \
+ && export GIT_VER=2.36.2 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
@@ -68,7 +88,7 @@ RUN apt-get update && \
  && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.4.2 \
+ && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \

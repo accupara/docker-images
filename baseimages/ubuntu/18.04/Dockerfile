@@ -1,8 +1,8 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
+# Compile remake and rsync on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/ubuntu:18.04_32 as remake
+FROM accupara/ubuntu:18.04 as remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -15,30 +15,39 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
+FROM accupara/ubuntu:18.04 as rsync
+RUN set -x \
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    libacl1-dev \
+    libattr1-dev \
+    liblz4-dev \
+    libxxhash-dev \
+    libpopt-dev \
+    libssh-dev \
+    python3-pip \
+ && export RSYNC_VER=3.2.5 \
+ && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+ && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && cd rsync-${RSYNC_VER} \
+ && ./configure --prefix=/tmp/rsync --disable-zstd \
+ && make -j `nproc` CFLAGS="-static" \
+ && make install
+
 ################## The real container starts here ##################
-FROM i386/ubuntu:18.04
+FROM ubuntu:18.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
 COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 # Install the minimum tools
-RUN apt-get update \
-    && echo "console-setup   console-setup/codeset47 select  # Latin1 and Latin5 - western Europe and Turkic languages" | debconf-set-selections \
-    && echo "console-setup   console-setup/fontface47        select  Fixed" | debconf-set-selections \
-    && echo "console-setup   console-setup/fontsize-text47   select  16" | debconf-set-selections \
-    && echo "console-setup   console-setup/charmap47 select  UTF-8" | debconf-set-selections \
-    && echo "keyboard-configuration  console-setup/detect    detect-keyboard" | debconf-set-selections \
-    && echo "keyboard-configuration  console-setup/detected  note" | debconf-set-selections \
-    && echo "console-setup   console-setup/codesetcode       string  Lat15" | debconf-set-selections \
-    && echo "keyboard-configuration  console-setup/ask_detect        boolean false" | debconf-set-selections \
-    && echo "console-setup   console-setup/store_defaults_in_debconf_db      boolean true" | debconf-set-selections \
-    && echo "console-setup   console-setup/fontsize-fb47     select  16" | debconf-set-selections \
-    && echo "console-setup   console-setup/fontsize  string  16" | debconf-set-selections \
-    && echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections \
-    && apt-get -y dist-upgrade \
-    && apt-get install -y \
+RUN export DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get -y dist-upgrade \
+ && apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
@@ -47,8 +56,9 @@ RUN apt-get update \
         devscripts \
         dh-make \
         emacs \
-        git \
         guile-2.2 \
+        libpopt0 \
+        libxxhash0 \
         jq \
         locales \
         lsb-release \
@@ -56,7 +66,6 @@ RUN apt-get update \
         ninja-build \
         openssh-server \
         psmisc \
-        rsync \
         subversion \
         sudo \
         tmux \
@@ -65,16 +74,22 @@ RUN apt-get update \
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
 # Install the latest git
- && export GIT_VER=2.36.1 \
+ && sudo apt-get install -y \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        libssl-dev \
+        zlib1g-dev \
+ && sudo apt-get install -y \
+ && export GIT_VER=2.36.2 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.4.2 \
+ && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \

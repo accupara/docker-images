@@ -15,27 +15,27 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/ubuntu:22.04 as rsync
-RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-    libacl1-dev \
-    libattr1-dev \
-    liblz4-dev \
-    libxxhash-dev \
-    libpopt-dev \
-    libssh-dev \
-    libzstd-dev \
-    python3-cmarkgfm \
-    python3-pip \
- && sudo python3 -m pip install --user commonmark \
- && export RSYNC_VER=3.2.5 \
- && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
- && tar -xf rsync-${RSYNC_VER}.tar.gz \
- && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync \
- && make -j `nproc` CFLAGS="-static" \
- && make install
+#FROM accupara/ubuntu:22.04 as rsync
+#RUN set -x \
+# && sudo apt-get update \
+# && sudo apt-get install -y \
+#    libacl1-dev \
+#    libattr1-dev \
+#    liblz4-dev \
+#    libxxhash-dev \
+#    libpopt-dev \
+#    libssh-dev \
+#    libzstd-dev \
+#    python3-cmarkgfm \
+#    python3-pip \
+# && sudo python3 -m pip install --user commonmark \
+# && export RSYNC_VER=3.2.5 \
+# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+# && tar -xf rsync-${RSYNC_VER}.tar.gz \
+# && cd rsync-${RSYNC_VER} \
+# && ./configure --prefix=/tmp/rsync \
+# && make -j `nproc` CFLAGS="-static" \
+# && make install
 
 ################## The real container starts here ##################
 FROM ubuntu:22.04
@@ -43,8 +43,6 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
-COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 # Install the minimum tools
 RUN set -x \
@@ -70,6 +68,7 @@ RUN set -x \
         ninja-build \
         openssh-server \
         psmisc \
+        rsync \
         subversion \
         sudo \
         tmux \
@@ -140,5 +139,8 @@ RUN set -x \
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+
+COPY --from=remake /tmp/make /usr/bin/remake
+#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

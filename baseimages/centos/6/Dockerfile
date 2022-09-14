@@ -71,7 +71,7 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-# The binary generated from this step works in centos7, and ubuntu flavors 14.04,16.04,18.04,20.04. It does not work in 22.04
+# The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/centos:6 as rsync
 RUN set -x \
  && sudo yum update -y \
@@ -99,7 +99,8 @@ RUN set -x \
         zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/trees.o zlib/zutil.o zlib/adler32.o zlib/compress.o zlib/crc32.o  \
         -lpopt -llz4 -lzstd -lcrypto \
         -L/usr/lib64 -ldl \
- && make install
+ && make install \
+ && strip /tmp/rsync/bin/rsync
 
 ################## The real container starts here ##################
 FROM centos:6
@@ -107,8 +108,6 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config limits.conf github_git-lfs.repo /tmp/
-COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 RUN set -x \
 # Centos 6 is EOL starting Nov 20, 2020. It's time to use the vault instead of the regular mirrors
@@ -141,6 +140,8 @@ RUN set -x \
         openssh-server \
         redhat-lsb \
         rpm-build \
+        # install rsync because it allows the updated rsync to work correctly
+        rsync \
         subversion \
         sudo \
         vim \
@@ -231,6 +232,10 @@ RUN chown -R admin:admin /home/admin \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys
+
+# Copy these at the very end
+COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22
 CMD /bin/bash

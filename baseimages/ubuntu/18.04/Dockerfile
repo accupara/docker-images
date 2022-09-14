@@ -15,24 +15,56 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/ubuntu:18.04 as rsync
+#FROM accupara/ubuntu:18.04 as rsync
+#RUN set -x \
+# && sudo apt-get update \
+# && sudo apt-get install -y \
+#    libacl1-dev \
+#    libattr1-dev \
+#    liblz4-dev \
+#    libxxhash-dev \
+#    libpopt-dev \
+#    libssh-dev \
+#    python3-pip \
+# && export RSYNC_VER=3.2.5 \
+# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+# && tar -xf rsync-${RSYNC_VER}.tar.gz \
+# && cd rsync-${RSYNC_VER} \
+# && ./configure --prefix=/tmp/rsync --disable-zstd \
+# && make -j `nproc` CFLAGS="-static" \
+# && make install \
+# && strip /tmp/rsync/bin/rsync
+
+# The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
+FROM accupara/centos:6 as rsync
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-    libacl1-dev \
-    libattr1-dev \
-    liblz4-dev \
-    libxxhash-dev \
-    libpopt-dev \
-    libssh-dev \
-    python3-pip \
+ && sudo yum update -y \
+ && sudo yum install -y \
+    glibc-static \
+    popt-static \
+    libzstd-devel \
+    libzstd-static \
+    lz4-devel \
+    lz4-static \
+    openssl-static \
  && export RSYNC_VER=3.2.5 \
- && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
+ && curl https://download.samba.org/pub/rsync/src/rsync-3.2.5.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync --disable-zstd \
- && make -j `nproc` CFLAGS="-static" \
- && make install
+ && ./configure --prefix=/tmp/rsync --disable-xxhash \
+# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
+ && make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
+# So this command fixes the order of the LDFLAGS
+ ;  gcc -std=gnu99 -static -o rsync \
+        flist.o rsync.o generator.o receiver.o cleanup.o sender.o exclude.o util1.o util2.o main.o checksum.o match.o syscall.o log.o \
+        backup.o delete.o options.o io.o compat.o hlink.o token.o uidlist.o socket.o hashtable.o usage.o fileio.o batch.o clientname.o \
+        chmod.o acls.o xattrs.o progress.o pipe.o params.o loadparm.o clientserver.o access.o connection.o authenticate.o lib/wildmatch.o \
+        lib/compat.o lib/snprintf.o lib/mdfour.o lib/md5.o lib/permstring.o lib/pool_alloc.o lib/sysacls.o lib/sysxattrs.o  zlib/deflate.o \
+        zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/trees.o zlib/zutil.o zlib/adler32.o zlib/compress.o zlib/crc32.o  \
+        -lpopt -llz4 -lzstd -lcrypto \
+        -L/usr/lib64 -ldl \
+ && make install \
+ && strip /tmp/rsync/bin/rsync
 
 ################## The real container starts here ##################
 FROM ubuntu:18.04
@@ -40,8 +72,6 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
-COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -66,6 +96,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         ninja-build \
         openssh-server \
         psmisc \
+        # install rsync because it allows the updated rsync to work correctly
+        rsync \
         subversion \
         sudo \
         tmux \
@@ -136,5 +168,9 @@ RUN set -x \
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+
+# Copy these at the very end
+COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

@@ -28,6 +28,9 @@ StrictModes yes
 RSAAuthentication yes
 PubkeyAuthentication yes
 #AuthorizedKeysFile     %h/.ssh/authorized_keys
+# This doesn't work for the openssh 6.7 in debian 8
+#PubkeyAcceptedKeyTypes=+ssh-rsa
+#PubkeyAcceptedAlgorithms=+ssh-rsa
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes

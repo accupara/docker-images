@@ -28,6 +28,9 @@ StrictModes yes
 RSAAuthentication yes
 PubkeyAuthentication yes
 #AuthorizedKeysFile     %h/.ssh/authorized_keys
+PubkeyAcceptedKeyTypes=+ssh-rsa
+# This flag doesn't work for Ubuntu 18.04
+# PubkeyAcceptedAlgorithms=+ssh-rsa
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes

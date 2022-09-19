@@ -10,9 +10,14 @@ RUN set -x \
  && sudo apt-get -y dist-upgrade \
 # Install LXDE + a bunch of x utilities for VNC and a browser
  && sudo apt-get install -y \
+      arc-theme \
+      gnome-themes-standard \
+      gtk2-engines-murrine \
+      gtk2-engines-pixbuf \
       lxde \
       software-properties-common \
       supervisor \
+      task-lxde-desktop \
       x11vnc \
       xvfb \
 # Fix a problem in xfwm4
@@ -39,7 +44,7 @@ RUN set -x \
  && rm -rf /tmp/grpcurl_download \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
- && sudo mkdir /opt/aosp \
+ && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
@@ -50,6 +55,11 @@ RUN set -x \
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
  && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
+# LXDE tweaks
+ && mkdir -p /home/admin/.config/pcmanfm/LXDE/ \
 # The usual cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
+
+COPY startup.sh /home/admin/
+ENTRYPOINT [ "/home/admin/startup.sh" ]

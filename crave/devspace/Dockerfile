@@ -1,8 +1,6 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/xpra:22.04
 
-COPY vnc.conf /tmp/
-
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
@@ -32,8 +30,6 @@ RUN set -x \
  && echo 'Pin-Priority: 1001' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
  && sudo apt-get update \
  && sudo apt-get install -y --allow-downgrades firefox \
-# Put the supervisor conf where it needs to be
- && sudo cp /tmp/vnc.conf /etc/supervisor/conf.d/ \
 # Install the GRPC tool for crave clone
  && mkdir -p /tmp/grpcurl_download \
  && LOCATION=$(curl -s https://api.github.com/repos/fullstorydev/grpcurl/releases/latest \
@@ -61,5 +57,8 @@ RUN set -x \
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
-COPY startup.sh /home/admin/
-ENTRYPOINT [ "/home/admin/startup.sh" ]
+# Put the supervisor conf where it needs to be
+COPY vnc.conf /etc/supervisor/conf.d/
+
+#COPY startup.sh /home/admin/
+#ENTRYPOINT [ "/home/admin/startup.sh" ]

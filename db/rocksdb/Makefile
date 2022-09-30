@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/rocksdb
-IMGVER?=ubuntu_1804
+IMGVER?=ubuntu_2004
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

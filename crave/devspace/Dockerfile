@@ -6,16 +6,20 @@ RUN set -x \
 # Update the underlying base image
  && sudo apt-get update \
  && sudo apt-get -y dist-upgrade \
-# Install LXDE + a bunch of x utilities for VNC and a browser
+# Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
  && sudo apt-get install -y \
       arc-theme \
+      bmon \
       gnome-themes-standard \
       gtk2-engines-murrine \
       gtk2-engines-pixbuf \
+      htop \
       lxde \
+      python3-meld3 \
       software-properties-common \
       supervisor \
       task-lxde-desktop \
+      vim-gtk3 \
       x11vnc \
       xvfb \
 # Fix a problem in xfwm4
@@ -59,6 +63,8 @@ RUN set -x \
 
 # Put the supervisor conf where it needs to be
 COPY vnc.conf /etc/supervisor/conf.d/
+# Put the tmux conf where it should be
+COPY tmux.conf /home/admin/.tmux.conf
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

@@ -65,6 +65,8 @@ RUN set -x \
 COPY vnc.conf /etc/supervisor/conf.d/
 # Put the tmux conf where it should be
 COPY tmux.conf /home/admin/.tmux.conf
+# Copy the init script to its intended location
+COPY init.sh /etc/crave/
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

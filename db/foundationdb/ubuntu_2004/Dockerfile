@@ -1,8 +1,8 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
-ENV BOOST_ROOT=/opt/boost_1_72_0 \
-    BOOST_VER=1_72_0 \
+ENV BOOST_ROOT=/opt/boost_1_80_0 \
+    BOOST_VER=1_80_0 \
     CMAKE_VER=3.23.2
 
 RUN set -x \

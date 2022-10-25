@@ -4,7 +4,7 @@ del C:\ProgramData\chocolatey\logs\chocolatey.log
 
 Set-PSDebug -Trace 1
 
-$BOOST_VER="1_72_0"
+$BOOST_VER="1_80_0"
 $BOOST_VER_DOTS=($BOOST_VER -replace '_', '.')
 
 # Install the ENTIRE 2019 build tools. Eats up at least 60 GB. Takes more than an hour to complete. Give it that time and space.

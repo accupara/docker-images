@@ -43,7 +43,7 @@ RUN set -x \
     zlib1g-dev \
 # Manually download boost and save it
  && cd /tmp \
- && export BOOST=1_80_0 \
+ && export BOOST=1_77_0 \
 # Sometimes Boost's servers run out of bandwidth
 # && wget https://dl.bintray.com/boostorg/release/$(echo ${BOOST} | sed 's/_/./g')/source/boost_${BOOST}.tar.gz \
  && wget -q https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST} | sed 's/_/./g')/boost_${BOOST}.tar.bz2 \
@@ -54,4 +54,4 @@ RUN set -x \
 # Cleanup apt cache
  && sudo apt-get clean
 
-ENV BOOST=1_80_0
+ENV BOOST=1_77_0

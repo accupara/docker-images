@@ -61,9 +61,7 @@ RUN set -x \
  && yes | sdkmanager --licenses \
  && echo "Licenses accepted" \
  && yes | sdkmanager \
- "emulator" \
  "tools" \
- "platform-tools" \
  && echo "Platform tools installed" \
  && yes | sdkmanager \
  "platforms;android-32" \

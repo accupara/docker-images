@@ -75,7 +75,6 @@ RUN set -x \
  "system-images;android-32;google_apis;x86_64" \
  "system-images;android-32;google_apis_playstore;x86_64" \
  "system-images;android-32;google_apis_playstore;arm64-v8a" \
- "system-images;android-32;google_apis;arm64-v8a" \
  "system-images;android-31;google-tv;x86" \
  "system-images;android-31;google_apis;x86_64" \
  "system-images;android-31;google_apis_playstore;x86_64" \

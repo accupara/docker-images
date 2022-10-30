@@ -15,10 +15,13 @@ RUN set -x \
       gtk2-engines-pixbuf \
       htop \
       lxde \
+      multitail \
+      net-tools \
       python3-meld3 \
       software-properties-common \
       supervisor \
       task-lxde-desktop \
+      telnet \
       vim-gtk3 \
       x11vnc \
       xvfb \

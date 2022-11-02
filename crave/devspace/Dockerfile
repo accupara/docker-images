@@ -14,6 +14,7 @@ RUN set -x \
       gtk2-engines-murrine \
       gtk2-engines-pixbuf \
       htop \
+      iputils-ping \
       lxde \
       multitail \
       net-tools \

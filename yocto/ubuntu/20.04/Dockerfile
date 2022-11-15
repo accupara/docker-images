@@ -44,4 +44,5 @@ RUN sudo apt-get update \
  && cd /tmp && wget https://raw.githubusercontent.com/crops/yocto-dockerfiles/master/build-install-dumb-init.sh && chmod +x build-install-dumb-init.sh \
  #&& sudo /tmp/build-install-dumb-init.sh \
 # Cleanup
- && sudo apt-get clean
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

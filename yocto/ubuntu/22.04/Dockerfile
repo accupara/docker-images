@@ -19,8 +19,7 @@ RUN set -x \
         libsdl1.2-dev \
         locales \
         mesa-common-dev \
-        pylint3 \
-        python \
+        pylint \
         python3 \
         python3-git \
         python3-jinja2 \
@@ -46,4 +45,4 @@ RUN set -x \
  #&& sudo /tmp/build-install-dumb-init.sh \
 # Cleanup
  && sudo apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

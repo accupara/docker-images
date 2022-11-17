@@ -10,6 +10,8 @@ RUN set -x \
  && sudo apt-get install -y \
       arc-theme \
       bmon \
+      cscope \
+      exuberant-ctags \
       gnome-themes-standard \
       gtk2-engines-murrine \
       gtk2-engines-pixbuf \

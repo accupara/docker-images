@@ -92,7 +92,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libssl-dev \
         zlib1g-dev \
  && sudo apt-get install -y \
- && export GIT_VER=2.36.2 \
+ && export GIT_VER=2.38.2 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \

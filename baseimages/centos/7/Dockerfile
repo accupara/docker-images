@@ -103,12 +103,8 @@ RUN set -x \
 # Remove old git. Don't fail even if it was never installed
  && yum remove -y git* ; true \
  && yum -y install git224-all \
-# Install git-lfs and jq separately
- && yum install -y \
-    git-lfs \
-    jq \
 # Install the latest git
- && export GIT_VER=2.36.1 \
+ && export GIT_VER=2.38.2 \
  && yum install -y \
     expat-devel \
     gettext \
@@ -156,7 +152,11 @@ RUN set -x \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
  && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip
+ && rm gradle-${GRADLE_VER}-bin.zip \
+# Install git-lfs and jq separately
+ && yum install -y \
+    git-lfs \
+    jq
 
 USER admin
 ENV HOME=/home/admin \

@@ -19,6 +19,7 @@ RUN set -x \
  && sudo apt update \
  && sudo apt-get install -y \
     libc++-dev \
+    libjemalloc-dev \
     liblz4-dev \
     libssl-dev \
     mono-devel \

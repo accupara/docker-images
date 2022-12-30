@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:18.04
+FROM accupara/ubuntu:22.04
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
@@ -8,8 +8,10 @@ RUN set -x \
     binutils-mingw-w64 \
     binutils-mingw-w64-i686 \
     binutils-mingw-w64-x86-64 \
+    bison \
     build-essential \
     clang \
+    flex \
     g++-mingw-w64 \
     g++-mingw-w64-i686 \
     g++-mingw-w64-x86-64 \
@@ -65,5 +67,6 @@ RUN set -x \
     win-iconv-mingw-w64-dev \
     xfslibs-dev \
     zlib1g-dev \
+# Cleanup
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

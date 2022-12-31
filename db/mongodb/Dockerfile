@@ -8,6 +8,7 @@ RUN set -x \
  && sudo apt-get install -y \
     libcurl4-openssl-dev \
     liblzma-dev \
+    lld \
     python3-pip \
 # Python3 deps
  && mkdir deps \

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/qt4:linux
 
 # Keep the update separate so that Docker build system can cache it.

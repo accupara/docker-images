@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/debian:10
 
 ENV RUSTUP_HOME=/opt/rustup \

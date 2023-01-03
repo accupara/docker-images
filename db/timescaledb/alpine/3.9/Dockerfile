@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2019-2023 Crave.io Inc. All rights reserved
 
 # Apply accupara docker image standards base
 FROM accupara/alpine:3.9

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
 # 1. Android Studio download page: https://developer.android.com/studio/index.html#downloads

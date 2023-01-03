@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 IMGTAG?=us.gcr.io/crave-228104/tak-civ-android
 IMGVER?=latest
 

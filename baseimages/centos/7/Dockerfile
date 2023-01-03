@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
 FROM accupara/centos:7 as remake

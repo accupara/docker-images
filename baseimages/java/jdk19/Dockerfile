@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM openjdk:19-jdk-bullseye
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"

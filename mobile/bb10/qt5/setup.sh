@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 
 IMGNAME=accupara/bb10_qt5
 BUILD_CONTAINER=bb10_qt5

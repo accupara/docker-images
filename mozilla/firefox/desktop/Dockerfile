@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 # From the deps specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 FROM accupara/ubuntu:20.04
 

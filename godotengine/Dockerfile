@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
 
 # Dependencies as mentioned in https://docs.godotengine.org/en/latest/development/compiling/compiling_for_x11.html

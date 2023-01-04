@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 # Stage 1
 FROM accupara/verilator_build:ubuntu_2004 AS stage1
 # Get Crave, clone verilator stable branch, compile verilator using crave, download output

@@ -18,6 +18,7 @@ RUN set -x \
         libssl-dev \
         openssl \
         perl \
-        qemu \
+        gawk \
+        qemu-kvm \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

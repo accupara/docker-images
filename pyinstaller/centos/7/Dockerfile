@@ -31,23 +31,23 @@ RUN set -x \
  && ./config --prefix=/usr --openssldir=/usr shared zlib \
  && make -j `nproc` \
  && sudo make install \
-# Download and install a newer gcc
- && export GCC_VER=9_2_0 \
- && mkdir /tmp/scratch/GCC-source \
- && cd /tmp/scratch/GCC-source \
- && svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_${GCC_VER}_release/ >/dev/null \
- && cd gcc_${GCC_VER}_release \
- && ./contrib/download_prerequisites \
- && mkdir ../gcc_${GCC_VER}_release_build \
- && cd ../gcc_${GCC_VER}_release_build \
- && ../gcc_${GCC_VER}_release/configure --disable-multilib \
- && make -j `nproc` \
- && sudo make install \
- && export PATH=/usr/local/bin/:${PATH} \
- && sudo mv /usr/bin/gcc /usr/bin/gcc-orig \
- && sudo mv /usr/bin/g++ /usr/bin/g++-orig \
- && sudo ln -s /usr/local/bin/gcc /usr/bin/gcc \
- && sudo ln -s /usr/local/bin/g++ /usr/bin/g++ \
+# Download and install the latest gcc
+ && export GCC_VER=9.2.0 \
+ && mkdir ~/GCC-source && cd ~/GCC-source \
+# Get Crave
+ && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
+ && export CRAVE=$(readlink -f crave) \
+# Get GCC source
+ && git clone git://gcc.gnu.org/git/gcc.git gcc \
+ && cd gcc \
+ && git checkout releases/gcc-${GCC_VER} \
+# Compile GCC using Crave zeroconf
+ && ${CRAVE} run --clean 'export SRC=$(readlink -f .) ; $SRC/contrib/download_prerequisites ; cd /build ; $SRC/configure --disable-multilib ; make -j `nproc` && sudo make install && rsync -av /usr/local/ /build/final/' \
+# Pull back the results and copy them to /usr
+ && ${CRAVE} pull /build/final/ -d ./op/ \
+ && sudo rsync -av ./op/ /usr/ \
+ && cd /tmp ; rm -rf ~/GCC-source \
+ && gcc --version 2>&1 | tee /tmp/gcc-version.txt \
 # Download and install python 3.8 because centos 7 has a very old python: 3.6
  && cd /tmp/scratch \
  && export PYTHON_VER=3.8.10 \

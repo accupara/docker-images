@@ -5,9 +5,10 @@
 FROM accupara/debian:8 as remake
 RUN set -x \
  && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo apt-get install -y --force-yes \
         autoconf \
         autopoint \
+        git \
         guile-2.0-dev \
         rsync \
         texinfo \
@@ -67,7 +68,7 @@ COPY sshd_config /tmp/
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
- && apt-get install -y \
+ && apt-get install -y --force-yes \
         bash-completion \
         binutils \
         build-essential \

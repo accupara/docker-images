@@ -12,6 +12,7 @@ RUN set -x \
        cmake \
        flex \
        graphviz \
+       help2man \
        lcov \
        libbit-vector-perl \
        libfl2 \

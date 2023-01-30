@@ -18,6 +18,7 @@ RUN set -x \
         git \
         jq \
         openssh-server \
+        maven \
         subversion \
         sudo \
         vim-nox \

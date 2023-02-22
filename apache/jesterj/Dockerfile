@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/openjdk:18
+FROM accupara/openjdk:8
 
 ENV CMAKE_VER=3.23.2 \
     PROTOBUF_VER=3.7.1 \

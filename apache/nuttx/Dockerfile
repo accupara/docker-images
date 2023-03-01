@@ -11,11 +11,17 @@ RUN set -x \
     flex \
     gdb \
     gperf \
+    kconfig-frontends \
     libgmp-dev \
     libgmp3-dev \
     libmpc-dev \
     libmpfr-dev \
     libncurses-dev \
+# Install a whole bunch of cross compilers
+ && apt-cache search linux-gnu | grep gcc- | grep -v 'gcc-[0-9]' | awk '{print $1}' | \
+    xargs sudo apt-get install -y \
+ && apt-cache search 'gcc-' | grep eabi | grep -v 'gcc-[0-9]' | grep -v source | awk '{print $1}' | \
+    xargs sudo apt-get install -y \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

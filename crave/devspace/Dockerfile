@@ -63,6 +63,10 @@ RUN set -x \
  && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
 # LXDE tweaks
  && mkdir -p /home/admin/.config/pcmanfm/LXDE/ \
+# Unminimize so that man pages are present
+ && yes | sudo unminimize \
+# Make git statuses faster
+ && git config --global feature.manyFiles true \
 # The usual cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

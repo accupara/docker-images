@@ -32,7 +32,7 @@ RUN set -x \
  "cmake;3.18.1" \
 # Install conan and self detect
  && sudo python3 -m pip install conan \
- && conan profile new default --detect \
+ && conan profile detect \
 # Minimize image
  && sudo apt-get autoremove -y \
  && sudo apt-get clean -y \

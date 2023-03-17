@@ -17,8 +17,9 @@ RUN set -x \
         dh-make \
         git \
         jq \
-        openssh-server \
         maven \
+        openssh-server \
+        rsync \
         subversion \
         sudo \
         vim-nox \

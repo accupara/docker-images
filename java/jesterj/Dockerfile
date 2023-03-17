@@ -6,6 +6,11 @@ ENV CASSANDRA_VER=4.1.0
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
+# Install emacs and nano... because "someone" hates vim with a passion :D
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+    emacs \
+    nano \
 # Download the correct version of cassandra tools
  && wget -q https://dlcdn.apache.org/cassandra/${CASSANDRA_VER}/apache-cassandra-${CASSANDRA_VER}-bin.tar.gz \
  && tar -xvf apache-cassandra-${CASSANDRA_VER}-bin.tar.gz \

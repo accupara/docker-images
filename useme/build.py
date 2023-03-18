@@ -469,13 +469,6 @@ def rebuildImage(args, image):
         #       image.parentName, os.path.dirname(image.Makefile)))
         #time.sleep(1)
     else:
-        # First pull its parent so that we start off with the most recent
-        # version of the parent
-        rv = subprocess.call(['docker', 'pull', image.parentName])
-        if rv != 0:
-            return rv
-        # end if
-
         # Then start a rebuild in the correct directory
         rv = subprocess.call(
             ['make', '-C', os.path.dirname(image.Makefile), 'build', 'push', 'NOCACHE=yes'])

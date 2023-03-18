@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.18-buster
+FROM accupara/golang:1.19-buster
 
 RUN set -x \
  && cd /tmp \

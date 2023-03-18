@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM grafana/loki-build-image:0.24.2
+FROM grafana/loki-build-image:0.28.1
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 

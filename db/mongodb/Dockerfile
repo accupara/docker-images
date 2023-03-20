@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:22.04
 
-ENV CMAKE_VER=3.23.2
+ENV CMAKE_VER=3.26.0
 
 RUN set -x \
  && sudo apt-get update \

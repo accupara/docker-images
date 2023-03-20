@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
+ENV CMAKE_VER=3.26.0
+
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y software-properties-common \
@@ -18,8 +20,6 @@ RUN set -x \
         perl \
         python \
 # Install the newest cmake
- && export CMAKE_VER=3.26.0 \
- && wget -q https://github.com/Kitware/CMake/releases/download/v3.22.0/cmake-${CMAKE_VER}-linux-x86_64.sh \
- && chmod +x cmake-${CMAKE_VER}-linux-x86_64.sh \
- && sudo ./cmake-${CMAKE_VER}-linux-x86_64.sh --skip-license --prefix=/usr \
- && rm cmake-${CMAKE_VER}-linux-x86_64.sh
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr

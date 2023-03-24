@@ -3,7 +3,7 @@
 del C:\ProgramData\chocolatey\logs\chocolatey.log
 
 # Install the ENTIRE 2019 build tools. Eats up at least 60 GB. Takes more than an hour to complete. Give it that time and space.
-choco install -y visualstudio2019buildtools --execution-timeout 7200 --package-parameters "--allWorkloads --includeRecommended --includeOptional"
+choco install -y visualstudio2019buildtools --execution-timeout 10800 --package-parameters "--allWorkloads --includeRecommended --includeOptional"
 
 dir 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\Tools\'
 

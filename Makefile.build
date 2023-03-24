@@ -15,8 +15,10 @@ DOCKER_RUN_CMD:=
 
 ifdef WINDOWS
 	DOCKER:=docker.exe
+ifndef WIN_NO_ISOLATION
 	DOCKER_BUILD_FLAGS+=--isolation=hyperv
 	DOCKER_RUN_FLAGS+=--isolation=hyperv
+endif
 	DOCKER_RUN_CMD+=powershell.exe
 
 	DOCKER_INT_CTR_NAME=$(shell echo '$(IMGTAG)_$(IMGVER)' | sed 's|/|_|g' | sed 's|:|_|g')

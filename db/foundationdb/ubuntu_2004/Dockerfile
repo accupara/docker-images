@@ -25,6 +25,8 @@ RUN set -x \
     mono-devel \
     ninja-build \
     openjdk-11-jdk \
+    python3-pip \
+    python3-venv \
     software-properties-common \
 # Download boost, but don't compile it
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \

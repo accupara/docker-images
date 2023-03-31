@@ -5,9 +5,13 @@ CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
 ifdef SQUASH
-DOCKER_BUILD_FLAGS:=--squash --pull
+DOCKER_BUILD_FLAGS:=--squash
 else
-DOCKER_BUILD_FLAGS:=--pull
+DOCKER_BUILD_FLAGS:=
+endif
+
+ifndef NOPULL
+DOCKER_BUILD_FLAGS+=--pull
 endif
 
 DOCKER_RUN_FLAGS:=

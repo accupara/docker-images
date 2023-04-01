@@ -5,7 +5,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
+RUN set -x \
+ && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
     git \

@@ -19,7 +19,9 @@ DOCKER_RUN_CMD:=
 
 ifdef WINDOWS
 	DOCKER:=docker.exe
+ifdef USE_POWERSHELL
 	SHELL:=powershell.exe
+endif
 
 ifndef WIN_NO_ISOLATION
 	DOCKER_BUILD_FLAGS+=--isolation=hyperv

@@ -31,11 +31,15 @@ append_pie_list() {
 }
 
 make_list() {
-    rm /tmp/list.txt
+    rm -f /tmp/list.txt
 
     # If there is no input, jq errors out and no output is created
     # If there is an existing build_tools.conf, it is converted into a flat list
-    jq -r '.[]' </etc/crave/build_tools.conf >/tmp/list.txt
+    if [ -e /etc/crave/build_tools.conf ] ; then
+        jq -r '.[]' </etc/crave/build_tools.conf >/tmp/list.txt
+    else
+        touch /tmp/list.txt
+    fi
 }
 
 make_json() {

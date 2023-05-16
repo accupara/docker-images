@@ -67,18 +67,39 @@ RUN set -x \
  && yes | sudo unminimize \
 # Make git statuses faster
  && git config --global feature.manyFiles true \
+# Add the crane tool
+ && wget -q -O /tmp/go-crane.tar.gz https://github.com/google/go-containerregistry/releases/download/v0.15.1/go-containerregistry_Linux_x86_64.tar.gz \
+ && mkdir -p /tmp/crane \
+ && tar -C /tmp/crane -xvf /tmp/go-crane.tar.gz \
+ && sudo mv /tmp/crane/crane /tmp/crane/gcrane /tmp/crane/krane /usr/bin/ \
+ && rm -rf /tmp/crane /tmp/go-crane.tar.gz \
+# Add the GCloud tools
+ && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
+ && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - \
+ && sudo apt-get update && sudo apt-get install -y google-cloud-cli \
+# Add the AWS tools
+ && mkdir -p /tmp/awscli \
+ && cd /tmp/awscli \
+ && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip \
+ && unzip awscliv2.zip \
+ && sudo ./aws/install \
+ && cd /tmp \
+ && rm -rf awscli \
 # The usual cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
+# Copy everything in one shot and then move each file to its appropriate location
+COPY vnc.conf tmux.conf sshd_config init.sh /tmp/
+RUN set -x \
 # Put the supervisor conf where it needs to be
-COPY vnc.conf /etc/supervisor/conf.d/
+ && sudo mv /tmp/vnc.conf /etc/supervisor/conf.d/ \
 # Put the tmux conf where it should be
-COPY tmux.conf /home/admin/.tmux.conf
+ && sudo mv /tmp/tmux.conf /home/admin/.tmux.conf \
 # Put the sshd conf where it should be
-COPY sshd_config /etc/ssh/sshd_config
+ && sudo mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Copy the init script to its intended location
-COPY init.sh /etc/crave/
+ && sudo mv /tmp/init.sh /etc/crave/
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

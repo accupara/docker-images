@@ -8,7 +8,7 @@ usage() {
 
 append_list() {
     find $TOOLCHAIN_DIR -type f -name "$1" | \
-        xargs file | grep 'ELF.*executable.*x86' | \
+        xargs file --no-run-if-empty | grep 'ELF.*executable.*x86' | \
         cut -d: -f1 | \
     while read line ; do
         readlink -f $line
@@ -18,7 +18,7 @@ append_list() {
 
 append_pie_list() {
     find $TOOLCHAIN_DIR -type f -name "$1" | \
-        xargs file | grep 'ELF.*x86' | \
+        xargs file --no-run-if-empty | grep 'ELF.*x86' | \
         cut -d: -f1 | \
     while read line ; do
         line=$(readlink -f $line)

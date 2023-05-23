@@ -68,7 +68,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         vim-nox \
         wget \
 # Install the latest git
- && sudo apt-get install -y \
+ && apt-get install -y \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
@@ -78,15 +78,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
- && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
- && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && mv gradle-${GRADLE_VER} /usr/lib/ \
+ && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \

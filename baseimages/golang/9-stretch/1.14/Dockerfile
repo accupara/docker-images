@@ -23,6 +23,19 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         subversion \
         sudo \
         vim-nox \
+# Install the latest git
+ && sudo apt-get install -y \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        libssl-dev \
+        zlib1g-dev \
+ && export GIT_VER=2.38.2 \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Cleanup the apt cache
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \

@@ -3,7 +3,7 @@ FROM golang:1.16-buster
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
-ENV lsb_release_env="stretch"
+ENV lsb_release_env="buster"
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && set -x \

@@ -18,10 +18,25 @@ RUN set -x \
     subversion \
     sudo \
     vim-enhanced \
+    wget \
 # Install compilation tools
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Install the latest git
+ && dnf -y install \ 
+    expat-devel \
+    gnutls-devel \
+    libcurl-devel \
+    openssl-devel \
+    zlib-devel \
+ && export GIT_VER=2.39.3 \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

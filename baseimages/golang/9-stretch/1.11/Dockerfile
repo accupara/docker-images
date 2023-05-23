@@ -7,6 +7,7 @@ ENV lsb_release_env="stretch"
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && set -x \
+ && sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
@@ -24,7 +25,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         sudo \
         vim-nox \
 # Install the latest git
- && sudo apt-get install -y \
+ && apt-get install -y \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
@@ -34,8 +35,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Cleanup the apt cache
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \

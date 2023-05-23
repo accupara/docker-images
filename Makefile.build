@@ -4,18 +4,17 @@
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
+DOCKER_BUILD_FLAGS:=--progress=plain
+DOCKER_RUN_FLAGS:=
+DOCKER_RUN_CMD:=
+
 ifdef SQUASH
-DOCKER_BUILD_FLAGS:=--squash
-else
-DOCKER_BUILD_FLAGS:=
+DOCKER_BUILD_FLAGS+=--squash
 endif
 
 ifndef NOPULL
 DOCKER_BUILD_FLAGS+=--pull
 endif
-
-DOCKER_RUN_FLAGS:=
-DOCKER_RUN_CMD:=
 
 ifdef WINDOWS
 	DOCKER:=docker.exe

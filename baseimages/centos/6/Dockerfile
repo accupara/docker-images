@@ -165,7 +165,7 @@ RUN set -x \
     git-lfs \
     jq \
 # Install the latest git
- && export GIT_VER=2.38.2 \
+ && export GIT_VER=2.39.3 \
  && yum install -y \
     expat-devel \
     gettext \

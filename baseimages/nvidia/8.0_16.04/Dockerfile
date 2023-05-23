@@ -28,6 +28,19 @@ RUN set -x \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
+# Install the latest git
+ && sudo apt-get install -y \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        libssl-dev \
+        zlib1g-dev \
+ && export GIT_VER=2.39.3 \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -q -O /etc/crave/create_build_tools_json.sh https://github.com/accupara/docker-images/blob/master/baseimages/shared/create_build_tools_json.sh?raw=true \

@@ -104,7 +104,7 @@ RUN set -x \
  && yum remove -y git* ; true \
  && yum -y install git224-all \
 # Install the latest git
- && export GIT_VER=2.38.2 \
+ && export GIT_VER=2.39.3 \
  && yum install -y \
     expat-devel \
     gettext \

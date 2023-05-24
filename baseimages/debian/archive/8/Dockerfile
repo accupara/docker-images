@@ -4,7 +4,8 @@
 ## Chicken or egg : Which came first?
 FROM accupara/debian:8 as remake
 RUN set -x \
- && sudo apt-get update \
+ && sudo sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+ && sudo apt-get -o Acquire::Check-Valid-Until=false update \
  && sudo apt-get install -y --force-yes \
         autoconf \
         autopoint \
@@ -12,6 +13,7 @@ RUN set -x \
         guile-2.0-dev \
         rsync \
         texinfo \
+        wget \
 # Fetch gettext sources and compile them
  && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
  && tar -xf gettext-0.21.tar.gz \
@@ -66,8 +68,9 @@ COPY sshd_config /tmp/
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
- && apt-get update \
- && apt-get -y dist-upgrade \
+ && sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
+ && apt-get -o Acquire::Check-Valid-Until=false update \
+ ;  apt-get -y dist-upgrade \
  && apt-get install -y --force-yes \
         bash-completion \
         binutils \

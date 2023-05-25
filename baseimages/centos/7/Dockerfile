@@ -1,4 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
 FROM accupara/centos:7 as remake
@@ -99,40 +100,21 @@ RUN set -x \
 # Add the ius community repo to allow the latest version of git.
  && yum -y install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 # Add the github-lfs repo so that we have the latest git client
- && sudo mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
-# Remove old git. Don't fail even if it was never installed
- && yum remove -y git* ; true \
- && yum -y install git224-all \
-# Install the latest git
- && export GIT_VER=2.39.3 \
- && yum install -y \
-    expat-devel \
-    gettext \
-    gnutls-devel \
-    libcurl-devel \
-    libzip-devel \
-    openssl-devel \
-    unzip \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && tar -xf git-${GIT_VER}.tar.gz \
- && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
 # Download and install the latest tmux
  && export TMUX_VERSION=3.2 \
  && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \
  && tar -xf tmux-${TMUX_VERSION}.tar.gz && cd tmux-${TMUX_VERSION} \
  && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
  && make -j `nproc` \
- && sudo make install \
+ && make install \
  && cd .. && rm -rf tmux-${TMUX_VERSION}* \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
- && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' > /sudoers ; mv /sudoers /etc/sudoers \
+ && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers ; mv /tmp/sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \
@@ -150,8 +132,8 @@ RUN set -x \
  && export GRADLE_VER=7.4.2 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
- && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
- && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && mv gradle-${GRADLE_VER} /usr/lib/ \
+ && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \
 # Install git-lfs and jq separately
  && yum install -y \
@@ -177,7 +159,24 @@ RUN chown -R admin:admin /home/admin \
 # User ssh directory
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys
+ && touch /home/admin/.ssh/authorized_keys \
+# Install the latest git
+ && export GIT_VER=2.39.3 \
+ && sudo yum install -y \
+    expat-devel \
+    gettext \
+    gnutls-devel \
+    libcurl-devel \
+    libzip-devel \
+    openssl-devel \
+    unzip \
+ && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
+ && cd git-${GIT_VER} \
+ && make prefix=/usr CFLAGS="-std=gnu99" all 2>&1 | tee /tmp/git.build.log \
+ && sudo make prefix=/usr CFLAGS="-std=gnu99" install 2>&1 | tee -a /tmp/git.build.log \
+ && cd /tmp ; rm -rf git-${GIT_VER}*
+
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

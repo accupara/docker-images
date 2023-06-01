@@ -46,11 +46,7 @@ RUN set -x \
  && make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
 # So this command fixes the order of the LDFLAGS
  ;  gcc -std=gnu99 -static -o rsync \
-        flist.o rsync.o generator.o receiver.o cleanup.o sender.o exclude.o util1.o util2.o main.o checksum.o match.o syscall.o log.o \
-        backup.o delete.o options.o io.o compat.o hlink.o token.o uidlist.o socket.o hashtable.o usage.o fileio.o batch.o clientname.o \
-        chmod.o acls.o xattrs.o progress.o pipe.o params.o loadparm.o clientserver.o access.o connection.o authenticate.o lib/wildmatch.o \
-        lib/compat.o lib/snprintf.o lib/mdfour.o lib/md5.o lib/permstring.o lib/pool_alloc.o lib/sysacls.o lib/sysxattrs.o  zlib/deflate.o \
-        zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/trees.o zlib/zutil.o zlib/adler32.o zlib/compress.o zlib/crc32.o  \
+        $(find . -name '*.o' | xargs echo) \
         -lpopt -llz4 -lzstd -lcrypto \
         -L/usr/lib64 -ldl \
  && make install \

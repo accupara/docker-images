@@ -83,12 +83,12 @@ RUN set -x \
     glibc-static \
     popt-static \
     libzstd-devel \
-    libzstd-static \
+    libzstd \
     lz4-devel \
     lz4-static \
     openssl-static \
  && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-3.2.5.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \

@@ -87,7 +87,7 @@ RUN set -x \
     lz4-devel \
     lz4-static \
     openssl-static \
- && export RSYNC_VER=3.2.5 \
+ && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-3.2.5.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \

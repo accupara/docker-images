@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/centos
-IMGVER?=$(shell if [ "$(uname -a | grep -c x86)" == "1" ] ; then echo 7_x86 ; else echo 7_arm ; fi)
+IMGVER?=7_$(shell if [ "$(uname -a | grep -c x86)" == "1" ] ; then echo x86 ; else echo arm ; fi)
 
 manifest:
 	docker manifest create \

@@ -22,11 +22,11 @@ pull:
 	${DOCKER} pull $(IMGTAG):$(IMGVER)
 
 manifest:
-	docker manifest create \
+	${DOCKER} manifest create \
 		${IMGTAG}:${IMGVER_BASE} \
 		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \
 		--amend ${IMGTAG}:${IMGVER_BASE}_arm
-	${MAKE} push
+	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
 
 tag-latest:
 	${DOCKER} tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest

@@ -83,7 +83,6 @@ RUN set -x \
       hardening-check \
       java-1.8.0-openjdk-devel \
       libevent-devel \
-      libzstd \
       make \
       ncurses-devel \
       ninja-build \
@@ -172,6 +171,7 @@ RUN chown -R admin:admin /home/admin \
 # Install git-lfs and jq separately
  && sudo yum install -y \
       git-lfs \
+      libzstd \
       jq
 
 # Copy these at the very end

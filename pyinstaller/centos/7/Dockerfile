@@ -13,7 +13,6 @@ RUN set -x \
     glibc-devel.i686 \
     libffi-devel \
     libpcap-devel \
-    libzstd \
     ncurses-devel \
     readline-devel \
     sqlite-devel \

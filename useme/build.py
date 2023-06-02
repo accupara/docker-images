@@ -126,42 +126,9 @@ def getImageFrom(dockerFile):
 
 
 def getImageDest(makefile):
-    imgtag = ''
-    imgver = ''
-
-    with open(makefile, 'r') as f:
-        # Read line by line and look for two lines: IMGPATH and IMGTAG
-        for line in f:
-            if 'IMGTAG' in line:
-                if line.lstrip().startswith('#'):
-                    continue
-                # end if
-                if '=' not in line:
-                    continue
-                # end if
-                imgtag = line.replace('IMGTAG', '').replace(
-                    '?=', '').replace('=', '').strip()
-            elif 'IMGVER' in line:
-                if line.lstrip().startswith('#'):
-                    continue
-                # end if
-                if '=' not in line:
-                    continue
-                # end if
-                imgver = line.replace('IMGVER', '').replace(
-                    '?=', '').replace('=', '').strip()
-            # end if
-        # end for
-    # end with
-
-    image = ''
-    if len(imgver) != 0:
-        image = '%s:%s' % (imgtag, imgver)
-    else:
-        image = '%s:%s' % (imgtag, 'latest')
-    # end if
-
-    return image
+    cmd = [ 'make', '-C', os.path.dirname(makefile), '--no-print-directory', 'get_image_name' ]
+    p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return p.stdout
 # end def
 
 

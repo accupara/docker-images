@@ -3,7 +3,20 @@
 
 ifdef IMGVER_BASE
 IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "`uname -a | grep -c x86`" == "1" ] ; then echo x86 ; else echo arm ; fi')
+
+manifest:
+	${DOCKER} manifest create \
+		${IMGTAG}:${IMGVER_BASE} \
+		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \
+		--amend ${IMGTAG}:${IMGVER_BASE}_arm
+	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
+else
+manifest:
+	echo "There is no base image defined. No manifest required.
 endif
+
+get_image_name:
+	@echo "${IMGTAG}:${IMGVER}"
 
 clean:
 	-${DOCKER} rm $$(${DOCKER} ps -aq)
@@ -20,13 +33,6 @@ push:
 
 pull:
 	${DOCKER} pull $(IMGTAG):$(IMGVER)
-
-manifest:
-	${DOCKER} manifest create \
-		${IMGTAG}:${IMGVER_BASE} \
-		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \
-		--amend ${IMGTAG}:${IMGVER_BASE}_arm
-	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
 
 tag-latest:
 	${DOCKER} tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest

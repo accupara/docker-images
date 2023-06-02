@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/pyinstaller
-IMGVER?=centos_7_$(shell /bin/bash -c 'if [ "$(uname -a | grep -c x86)" = "1" ] ; then echo x86 ; else echo arm ; fi')
+IMGVER_BASE?=centos_7
 
 manifest:
 	docker manifest create \

@@ -55,6 +55,7 @@ RUN set -x \
  && sudo /usr/local/bin/python3.8 -m pip install --upgrade \
     giturlparse \
     pick \
+    pipenv \
     pyinstaller \
     python-dateutil \
     requests \

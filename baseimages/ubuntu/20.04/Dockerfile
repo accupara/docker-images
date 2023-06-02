@@ -28,37 +28,37 @@ RUN set -x \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
-        bash-completion \
-        binutils \
-        build-essential \
-        curl \
-        debhelper \
-        devscripts \
-        dh-make \
-        emacs \
-        git-lfs \
-        guile-3.0 \
-        jq \
-        libpopt0 \
-        locales \
-        lsb-release \
-        multitail \
-        ninja-build \
-        openssh-server \
-        psmisc \
-        # install rsync because it allows the updated rsync to work correctly
-        rsync \
-        subversion \
-        sudo \
-        tmux \
-        vim-nox \
-        wget \
+       bash-completion \
+       binutils \
+       build-essential \
+       curl \
+       debhelper \
+       devscripts \
+       dh-make \
+       emacs \
+       git-lfs \
+       guile-3.0 \
+       jq \
+       libpopt0 \
+       locales \
+       lsb-release \
+       multitail \
+       ninja-build \
+       openssh-server \
+       psmisc \
+       # install rsync because it allows the updated rsync to work correctly
+       rsync \
+       subversion \
+       sudo \
+       tmux \
+       vim-nox \
+       wget \
 # Install the latest git
  && apt-get install -y \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        zlib1g-dev \
+       libcurl4-gnutls-dev \
+       libexpat1-dev \
+       libssl-dev \
+       zlib1g-dev \
  && export GIT_VER=2.39.3 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \

@@ -52,55 +52,56 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 COPY sshd_config /tmp/
 
 # Install the minimum tools
-RUN apt-get update && \
-    apt-get -y dist-upgrade && \
-    apt-get install -y \
-        bash-completion \
-        binutils \
-        build-essential \
-        curl \
-        debhelper \
-        devscripts \
-        dh-make \
-        emacs \
-        guile-2.0 \
-        jq \
-        libpopt0 \
-        locales \
-        lsb-release \
-        multitail \
-        ninja-build \
-        openssh-server \
-        psmisc \
-        # install rsync because it allows the updated rsync to work correctly
-        rsync \
-        subversion \
-        sudo \
-        tmux \
-        vim-nox \
+RUN set -x \
+ && apt-get update \
+    apt-get -y dist-upgrade \
+ && apt-get install -y \
+       bash-completion \
+       binutils \
+       build-essential \
+       curl \
+       debhelper \
+       devscripts \
+       dh-make \
+       emacs \
+       guile-2.0 \
+       jq \
+       libpopt0 \
+       locales \
+       lsb-release \
+       multitail \
+       ninja-build \
+       openssh-server \
+       psmisc \
+       # install rsync because it allows the updated rsync to work correctly
+       rsync \
+       subversion \
+       sudo \
+       tmux \
+       vim-nox \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \
 # Install the latest git
- && sudo apt-get install -y \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        zlib1g-dev \
+ && apt-get install -y \
+       libcurl4-gnutls-dev \
+       libexpat1-dev \
+       libssl-dev \
+       zlib1g-dev \
  && export GIT_VER=2.39.3 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
- && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
- && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && mv gradle-${GRADLE_VER} /usr/lib/ \
+ && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \

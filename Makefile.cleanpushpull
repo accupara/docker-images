@@ -2,7 +2,7 @@
 # This template must only be included by the actual image building makefile
 
 ifdef IMGVER_BASE
-IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "$(uname -a | grep -c x86)" = "1" ] ; then echo x86 ; else echo arm ; fi')
+IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "`uname -a | grep -c x86`" == "1" ] ; then echo x86 ; else echo arm ; fi')
 endif
 
 clean:

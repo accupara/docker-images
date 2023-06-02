@@ -128,7 +128,7 @@ def getImageFrom(dockerFile):
 def getImageDest(makefile):
     cmd = [ 'make', '-C', os.path.dirname(makefile), '--no-print-directory', 'get_image_name' ]
     p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return p.stdout
+    return p.stdout.strip()
 # end def
 
 

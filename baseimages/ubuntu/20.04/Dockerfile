@@ -6,8 +6,12 @@ FROM accupara/ubuntu:20.04 as remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-        guile-3.0-dev \
-        texinfo \
+      autopoint \
+      build-essential \
+      gettext \
+      guile-3.0-dev \
+      rsync \
+      texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \

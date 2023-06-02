@@ -45,20 +45,18 @@ RUN set -x \
     lz4-devel \
     lz4-static \
     openssl-static \
- && export RSYNC_VER=3.2.5 \
- && curl https://download.samba.org/pub/rsync/src/rsync-3.2.5.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && export RSYNC_VER=3.2.7 \
+ && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
 # This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- && make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
+ #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
+ && make -j `nproc` \
 # So this command fixes the order of the LDFLAGS
- ;  gcc -std=gnu99 -static -o rsync \
-        flist.o rsync.o generator.o receiver.o cleanup.o sender.o exclude.o util1.o util2.o main.o checksum.o match.o syscall.o log.o \
-        backup.o delete.o options.o io.o compat.o hlink.o token.o uidlist.o socket.o hashtable.o usage.o fileio.o batch.o clientname.o \
-        chmod.o acls.o xattrs.o progress.o pipe.o params.o loadparm.o clientserver.o access.o connection.o authenticate.o lib/wildmatch.o \
-        lib/compat.o lib/snprintf.o lib/mdfour.o lib/md5.o lib/permstring.o lib/pool_alloc.o lib/sysacls.o lib/sysxattrs.o  zlib/deflate.o \
-        zlib/inffast.o zlib/inflate.o zlib/inftrees.o zlib/trees.o zlib/zutil.o zlib/adler32.o zlib/compress.o zlib/crc32.o  \
+ ;  gcc -std=gnu99 -o rsync \
+        $(find . -name '*.o' | xargs echo) \
         -lpopt -llz4 -lzstd -lcrypto \
         -L/usr/lib64 -ldl \
  && make install
@@ -68,39 +66,37 @@ FROM centos:7
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
-COPY sshd_config limits.conf github_git-lfs.repo /tmp/
+COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
  && yum update -y \
  && yum install -y \
-        autoconf \
-        automake \
-        binutils \
-        emacs \
-        gcc gcc-c++ \
-        gettext \
-        guile \
-        hardening-check \
-        java-1.8.0-openjdk-devel \
-        libevent-devel \
-        make \
-        ncurses-devel \
-        ninja-build \
-        openssh-clients \
-        openssh-server \
-        redhat-lsb \
-        rpm-build \
-        # install rsync because it allows the updated rsync to work correctly
-        rsync \
-        subversion \
-        sudo \
-        vim \
-        wget \
-# Add the ius community repo to allow the latest version of git.
- && yum -y install https://repo.ius.io/ius-release-el7.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-# Add the github-lfs repo so that we have the latest git client
- && mv /tmp/github_git-lfs.repo /etc/yum.repos.d/ \
+      autoconf \
+      automake \
+      binutils \
+      emacs \
+      epel-release \
+      gcc gcc-c++ \
+      gettext \
+      guile \
+      hardening-check \
+      java-1.8.0-openjdk-devel \
+      libevent-devel \
+      libzstd \
+      make \
+      ncurses-devel \
+      ninja-build \
+      openssh-clients \
+      openssh-server \
+      redhat-lsb \
+      rpm-build \
+      # install rsync because it allows the updated rsync to work correctly
+      rsync \
+      subversion \
+      sudo \
+      vim \
+      wget \
 # Download and install the latest tmux
  && export TMUX_VERSION=3.2 \
  && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \
@@ -114,11 +110,12 @@ RUN set -x \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add admin user and add it to sudoers
- && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers ; mv /tmp/sudoers /etc/sudoers \
+ && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers \
+  ; mv /tmp/sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers \
 # Pre-configure the ssh server
  && mkdir -p /var/run/sshd \
  && ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key \
@@ -134,11 +131,7 @@ RUN set -x \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip \
-# Install git-lfs and jq separately
- && yum install -y \
-    git-lfs \
-    jq
+ && rm gradle-${GRADLE_VER}-bin.zip
 
 USER admin
 ENV HOME=/home/admin \
@@ -175,8 +168,11 @@ RUN chown -R admin:admin /home/admin \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" all 2>&1 | tee /tmp/git.build.log \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" install 2>&1 | tee -a /tmp/git.build.log \
- && cd /tmp ; rm -rf git-${GIT_VER}*
-
+ && cd /tmp ; rm -rf git-${GIT_VER}* \
+# Install git-lfs and jq separately
+ && sudo yum install -y \
+      git-lfs \
+      jq
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

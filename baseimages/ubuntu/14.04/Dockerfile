@@ -26,29 +26,20 @@ RUN set -x \
  && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-FROM accupara/centos:7 as rsync
+FROM accupara/ubuntu:14.04 as rsync
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y \
-    glibc-static \
-    popt-static \
-    libzstd-devel \
-    libzstd-static \
-    lz4-devel \
-    lz4-static \
-    openssl-static \
+ && sudo apt-get update -y \
+ && sudo apt-get install -y \
+    libpopt-dev \
+    zlib1g-dev \
+    liblz4-dev \
  && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync --disable-xxhash \
+ && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd --disable-lz4 \
 # This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- && make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
-# So this command fixes the order of the LDFLAGS
- ;  gcc -std=gnu99 -static -o rsync \
-        $(find . -name '*.o' | xargs echo) \
-        -lpopt -llz4 -lzstd -lcrypto \
-        -L/usr/lib64 -ldl \
+ && make -j `nproc` \
  && make install \
  && strip /tmp/rsync/bin/rsync
 
@@ -75,6 +66,7 @@ RUN set -x \
         jq \
         libcurl4-gnutls-dev \
         libexpat1-dev \
+        liblz4-1 \
         libpopt0 \
         libssl-dev \
         locales \
@@ -90,6 +82,7 @@ RUN set -x \
         tmux \
         vim-nox \
         unzip \
+        zlib1g \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
  && apt-get install -y git-lfs \

@@ -26,8 +26,8 @@ RUN set -x \
     zlib-devel \
 # Prepare a scratch area for downloading and compiling some projects
  && mkdir /tmp/scratch \
-# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1m
- && export OPENSSL_VER=1.1.1m \
+# Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1u
+ && export OPENSSL_VER=1.1.1u \
  && cd /tmp/scratch \
  && wget -q --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz \
  && tar -xf openssl-${OPENSSL_VER}.tar.gz \

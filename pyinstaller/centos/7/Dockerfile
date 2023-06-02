@@ -57,8 +57,8 @@ RUN set -x \
 # Fixup SSL module info:
  && echo '_socket socketmodule.c' >>Modules/Setup \
  && echo 'SSL="/usr/lib64/openssl"' >>Modules/Setup \
- && echo '_ssl _ssl.c \' >>Modules/Setup \
- && echo '   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \' >>Modules/Setup \
+ && echo '_ssl _ssl.c ' >>Modules/Setup \
+ && echo '   -DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl ' >>Modules/Setup \
  && echo '   -L$(SSL)/lib -lssl -lcrypto' >>Modules/Setup \
  && ./configure --prefix=/usr/local --with-openssl=/usr/local/openssl --enable-shared LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j `nproc` \

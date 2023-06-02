@@ -15,55 +15,6 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-#FROM accupara/ubuntu:20.04 as rsync
-#RUN set -x \
-# && sudo apt-get update \
-# && sudo apt-get install -y \
-#    libacl1-dev \
-#    libattr1-dev \
-#    liblz4-dev \
-#    libpopt-dev \
-#    libssh-dev \
-#    libzstd-dev \
-#    python3-cmarkgfm \
-#    python3-pip \
-# && sudo python3 -m pip install --user commonmark \
-# && export RSYNC_VER=3.2.7 \
-# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/usr/bin --disable-xxhash \
-# && make -j `nproc` CFLAGS="-static" \
-# && make install \
-# && strip /tmp/rsync/bin/rsync
-
-# The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-#FROM accupara/centos:6 as rsync
-#RUN set -x \
-# && sudo yum update -y \
-# && sudo yum install -y \
-#    glibc-static \
-#    popt-static \
-#    libzstd-devel \
-#    libzstd-static \
-#    lz4-devel \
-#    lz4-static \
-#    openssl-static \
-# && export RSYNC_VER=3.2.7 \
-# && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/tmp/rsync --disable-xxhash \
-## This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
-# && make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
-## So this command fixes the order of the LDFLAGS
-# ;  gcc -std=gnu99 -static -o rsync \
-#        $(find . -name '*.o' | xargs echo) \
-#        -lpopt -llz4 -lzstd -lcrypto \
-#        -L/usr/lib64 -ldl \
-# && make install \
-# && strip /tmp/rsync/bin/rsync
-
 ################## The real container starts here ##################
 FROM ubuntu:20.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \

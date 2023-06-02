@@ -17,25 +17,6 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-#FROM accupara/ubuntu:16.04 as rsync
-#RUN set -x \
-# && sudo apt-get update \
-# && sudo apt-get install -y \
-#    libacl1-dev \
-#    libattr1-dev \
-#    liblz4-dev \
-#    libpopt-dev \
-#    libssh-dev \
-#    python3-pip \
-# && export RSYNC_VER=3.2.7 \
-# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/tmp/rsync --disable-zstd --disable-xxhash \
-# && make -j `nproc` CFLAGS="-static" \
-# && make install \
-# && strip /tmp/rsync/bin/rsync
-
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/centos:6 as rsync
 RUN set -x \

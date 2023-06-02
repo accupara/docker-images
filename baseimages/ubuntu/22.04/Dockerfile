@@ -15,28 +15,6 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-#FROM accupara/ubuntu:22.04 as rsync
-#RUN set -x \
-# && sudo apt-get update \
-# && sudo apt-get install -y \
-#    libacl1-dev \
-#    libattr1-dev \
-#    liblz4-dev \
-#    libxxhash-dev \
-#    libpopt-dev \
-#    libssh-dev \
-#    libzstd-dev \
-#    python3-cmarkgfm \
-#    python3-pip \
-# && sudo python3 -m pip install --user commonmark \
-# && export RSYNC_VER=3.2.7 \
-# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/tmp/rsync \
-# && make -j `nproc` CFLAGS="-static" \
-# && make install
-
 ################## The real container starts here ##################
 FROM ubuntu:22.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \

@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/xpra
-IMGVER?=14.04
+IMGVER_BASE?=14.04
 
 CTR_NAME?=xpra
 

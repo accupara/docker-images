@@ -22,6 +22,31 @@ RUN set -x \
     zlib-devel \
 # Prepare a scratch area for downloading and compiling some projects
  && mkdir /tmp/scratch \
+# Download and install the latest gcc
+ && export GCC_VER=9.2.0 \
+ && mkdir GCC-source && cd GCC-source \
+# Get Crave
+ && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
+ && export CRAVE=$(readlink -f crave) \
+# Get GCC source
+ && git clone git://gcc.gnu.org/git/gcc.git gcc \
+ && cd gcc \
+ && git checkout releases/gcc-${GCC_VER} \
+# For x86, Compile GCC using Crave zeroconf
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        ${CRAVE} run --clean 'export SRC=$(readlink -f .) ; $SRC/contrib/download_prerequisites ; cd /build ; $SRC/configure --disable-multilib ; make -j `nproc` && sudo make install && rsync -av /usr/local/ /build/final/' \
+# Pull back the results and copy them to /usr
+     && ${CRAVE} pull /build/final/ -d ./op/ \
+     && sudo rsync -av ./op/ /usr/ ; \
+    else \
+        export SRC=$(readlink -f .) \
+     && $SRC/contrib/download_prerequisites \
+     && mkdir -p ../build && cd ../build \
+     && $SRC/configure --disable-multilib \
+     && make -j `nproc` \
+     && sudo make install ; \
+    fi \
+ && gcc --version 2>&1 | tee /tmp/gcc-version.txt \
 # Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1u
  && export OPENSSL_VER=1.1.1u \
  && cd /tmp/scratch \
@@ -31,8 +56,9 @@ RUN set -x \
  && ./config --prefix=/usr --openssldir=/usr shared zlib \
  && make -j `nproc` \
  && sudo make install \
-# Update the ldconfig for openssl first
+# Update the ldconfig for openssl and gcc
  && echo "/usr/lib" | sudo tee /etc/ld.so.conf.d/crave.conf \
+ && echo "/usr/local/lib64" | sudo tee -a /etc/ld.so.conf.d/crave.conf \
  && sudo ldconfig -v \
 # Download and install python 3.8 because centos 7 has a very old python: 3.6
  && cd /tmp/scratch \

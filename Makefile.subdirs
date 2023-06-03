@@ -1,20 +1,12 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 # This makefile should only be included by the real makefile that has to invoke makefiles in subdirs
 
-.PHONY: clean build push pull recreate
+.PHONY: clean build push pull recreate manifest
 
-clean:
-	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i clean ; done
-
-build:
-	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i build ; done
-
-push:
-	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i push ; done
-
-pull:
-	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i pull ; done
+clean build push pull manifest:
+	set -xe ; for i in ${SUBDIRS} ; do ${MAKE} -C $$i $@ ; done
 
 recreate:
 	for i in ${SUBDIRS} ; do \
-		${MAKE} -C $$i recreate || ${MAKE} -C $$i clean build push clean ; done
+		${MAKE} -C $$i recreate || ${MAKE} -C $$i clean build push clean ; \
+	done

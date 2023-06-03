@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 # This template must only be included by the actual image building makefile
 
+.PHONY: manifest get_image_name clean push pull tag-latest it help
+
 ifdef IMGVER_BASE
 IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "`uname -a | grep -c x86`" == "1" ] ; then echo x86 ; else echo arm ; fi')
 
@@ -47,5 +49,5 @@ it:
 
 help:
 	@echo "Usage"
-	@echo "make [clean|push|pull|tag-latest|it]"
+	@echo "make [manifest|get_image_name|clean|push|pull|tag-latest|it|help]"
 	@echo "make build [NOCACHE=y]"

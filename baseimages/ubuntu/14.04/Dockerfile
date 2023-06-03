@@ -8,6 +8,8 @@ RUN set -x \
  && sudo apt-get install -y \
         autoconf \
         autopoint \
+        build-essential \
+        git \
         guile-2.0-dev \
         texinfo \
 # Fetch gettext sources and compile them

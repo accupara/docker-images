@@ -5,6 +5,7 @@ ifdef IMGVER_BASE
 IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "`uname -a | grep -c x86`" == "1" ] ; then echo x86 ; else echo arm ; fi')
 
 manifest:
+	-${DOCKER} manifest rm ${IMGTAG}:${IMGVER_BASE}
 	${DOCKER} manifest create \
 		${IMGTAG}:${IMGVER_BASE} \
 		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \

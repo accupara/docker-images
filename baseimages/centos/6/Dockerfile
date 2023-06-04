@@ -83,6 +83,7 @@ RUN set -x \
     glibc-static \
     popt-static \
     libzstd-devel \
+    libzstd-static \
     libzstd \
     lz4-devel \
     lz4-static \

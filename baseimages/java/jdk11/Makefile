@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/openjdk
-IMGVER?=11
+IMGVER_BASE?=11
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

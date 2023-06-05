@@ -31,8 +31,14 @@ RUN set -x \
  && ./configure --prefix=/usr --enable-shared --with-openssl=/usr LDFLAGS="-Wl,-rpath /usr/local/lib" \
  && make -j `nproc` \
  && sudo make altinstall \
+# Change the link to python3 to point to the python3.8
+ && sudo ln -sf python3.8 /usr/bin/python3 \
 # Reconfig after installing
- && sudo ldconfig -v \
+ && sudo ldconfig -v
+
+RUN set -x \
+# Make sure that lsb_release works correctly:
+ && sudo sed -i 's/python3 /python3.8 /' /usr/bin/lsb_release \
 # Use the new python to install all the deps for pyinstaller
  && sudo python3 -m pip install --upgrade pip \
  && sudo python3 -m pip install --upgrade setuptools wheel \

@@ -12,7 +12,7 @@ RUN set -x \
 # For x86, Compile verilator using Crave zeroconf
  && if [ $(uname -a | grep -c x86) == "1" ] ; then \
         cd verilator \
-     && ../crave run --clean 'set -x ; autoconf && ./configure --prefix=/usr && make -j && make DESTDIR=`readlink -f pack` install' \
+     && ../crave run --clean 'set -x ; autoconf && ./configure --prefix=/usr && make -j `nproc` && make DESTDIR=`readlink -f pack` install' \
      && ../crave pull pack -d /tmp/ ; \
     else \
 # compile verilator locally

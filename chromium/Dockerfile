@@ -6,7 +6,8 @@ FROM accupara/ubuntu:20.04
 ENV SRC="/src" LC_CTYPE="en_US.UTF-8" CHROME_DEVEL_SANDBOX="1"
 
 # RUN sudo useradd -m chromium \
-RUN sudo mkdir $SRC \
+RUN set -x \
+ && sudo mkdir $SRC \
  && sudo chown -R admin:admin $SRC \
  && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"              | sudo tee --append /etc/apt/sources.list \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"          | sudo tee --append /etc/apt/sources.list \

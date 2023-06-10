@@ -9,10 +9,20 @@ RUN set -x \
  && git clone https://github.com/verilator/verilator.git verilator \
 # Get Crave
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
-# compile verilator
- && cd verilator \
- && ../crave run --clean 'set -x ; autoconf && ./configure --prefix=/usr && make -j && make DESTDIR=`readlink -f pack` install' \
- && ../crave pull pack -d /tmp/ \
+# For x86, Compile verilator using Crave zeroconf
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        cd verilator \
+     && ../crave run --clean 'set -x ; autoconf && ./configure --prefix=/usr && make -j && make DESTDIR=`readlink -f pack` install' \
+     && ../crave pull pack -d /tmp/ ; \
+    else \
+# compile verilator locally
+        cd verilator \
+     && autoconf \
+     && ./configure --prefix=/usr \
+     && make -j `nproc` \
+     && make DESTDIR=`readlink -f pack` install \
+     && mv pack /tmp/ ; \
+    fi \
  && ls -lrt /tmp/
 
 FROM accupara/ubuntu:20.04

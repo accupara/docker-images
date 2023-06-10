@@ -15,7 +15,7 @@ manifest:
 	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
 else
 manifest:
-	echo "There is no base image defined. No manifest required.
+	echo "There is no base image defined. No manifest required."
 endif
 
 get_image_name:

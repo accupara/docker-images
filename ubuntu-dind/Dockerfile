@@ -1,7 +1,6 @@
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
-
-# Keep the update separate so that Docker build system can cache it.
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -9,26 +8,25 @@ RUN set -x \
         automake \
         bc \
         bison \
+        ca-certificates \
         clang-6.0 \
         cpio \
+        curl \
         flex \
+        gawk \
         gcc-arm-linux-gnueabi \
+        iptables \
         libelf-dev \
         libncurses5-dev \
         libssl-dev \
+        openssh-client \
         openssl \
         perl \
-        gawk \
         qemu-kvm \
+        supervisor \
+        wget \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*
-
-
-RUN set -x \
-    && sudo -E apt-get update \
-    && sudo -E apt install -y ca-certificates openssh-client \
-    wget curl iptables supervisor \
-    && sudo -E rm -rf /var/lib/apt/list/*
 
 ENV DOCKER_CHANNEL=stable \
 	DOCKER_VERSION=23.0.1 \
@@ -84,7 +82,7 @@ VOLUME /var/lib/docker
 
 # Docker compose installation
 RUN sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
-	&& sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version
+ && sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version
 	
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'

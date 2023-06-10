@@ -14,4 +14,4 @@ RUN set -x \
     unzip \
     wget \
     zip \
- && rm -rf /var/lib/apt/lists/*
+ && sudo rm -rf /var/lib/apt/lists/*

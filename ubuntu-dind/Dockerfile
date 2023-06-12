@@ -98,6 +98,12 @@ RUN set -x \
  && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
  && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+# helm
+RUN set -x \
+ && wget https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz \
+ && tar -zxvf helm-v3.9.2-linux-amd64.tar.gz \
+ && sudo mv linux-amd64/helm /usr/local/bin/helm
+
 ENTRYPOINT ["startup.sh"]
 
 USER root

@@ -1,5 +1,4 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-
 FROM accupara/ubuntu-dind:latest
 
 # Copied and modified from the open source IntelliJ-Community Dockerfile.

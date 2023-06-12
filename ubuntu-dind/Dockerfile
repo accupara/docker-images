@@ -103,12 +103,10 @@ RUN set -x \
 
 ENTRYPOINT ["startup.sh"]
 
-#USER root
-#ENV HOME=/root \
-#    USER=root \
-#    TERM=xterm \
-#    LANG=en_US.utf8
-#WORKDIR /root
+USER root
+ENV HOME=/root \
+    USER=root
+WORKDIR /root
 
 ENV TERM=xterm \
     LANG=en_US.utf8

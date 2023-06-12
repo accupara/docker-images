@@ -3,7 +3,7 @@ FROM accupara/ubuntu-dind:latest
 
 USER admin
 ENV HOME=/home/admin \
-    USER=admin \
+    USER=admin
 WORKDIR /home/admin
 CMD /bin/bash
 

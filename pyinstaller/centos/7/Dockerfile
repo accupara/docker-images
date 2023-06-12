@@ -24,6 +24,7 @@ RUN set -x \
  && mkdir /tmp/scratch \
 # Download and install the latest gcc
  && export GCC_VER=9.2.0 \
+ && cd /tmp/scratch \
  && mkdir GCC-source && cd GCC-source \
 # Get Crave
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \

@@ -80,34 +80,36 @@ COPY logger.sh /opt/bash-utils/logger.sh
 RUN sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe
 VOLUME /var/lib/docker
 
+RUN set -x \
 # Docker compose installation
-RUN sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
- && sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version
-	
+ && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+ && sudo -E chmod +x /usr/local/bin/docker-compose \
+ && docker-compose version \
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'
-RUN sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
-
-
+ && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
 # kubectl and minikube
-RUN set -x \
  && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
  && sudo install minikube-linux-amd64 /usr/local/bin/minikube \
  && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
- && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
+ && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
-RUN set -x \
  && wget https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz \
  && tar -zxvf helm-v3.9.2-linux-amd64.tar.gz \
- && sudo mv linux-amd64/helm /usr/local/bin/helm
+ && sudo mv linux-amd64/helm /usr/local/bin/helm \
+# Add user to docker group
+ && sudo groupadd docker \
+ && sudo usermod -aG docker admin
 
 ENTRYPOINT ["startup.sh"]
 
-USER root
-ENV HOME=/root \
-    USER=root \
-    TERM=xterm \
+#USER root
+#ENV HOME=/root \
+#    USER=root \
+#    TERM=xterm \
+#    LANG=en_US.utf8
+#WORKDIR /root
+
+ENV TERM=xterm \
     LANG=en_US.utf8
-WORKDIR /root
 CMD /bin/bash

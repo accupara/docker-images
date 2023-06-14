@@ -6,17 +6,19 @@ ENV RUSTUP_HOME=/opt/rustup \
     PATH=/opt/cargo/bin:$PATH
 
 # Install the minimum tools
+SHELL ["/bin/bash", "-c"]
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo apt-get -y dist-upgrade \
- && sudo apt-get install -y \
-    jq \
-    wget \
  && sudo mkdir -p $RUSTUP_HOME $CARGO_HOME \
  && sudo chown admin:admin $RUSTUP_HOME $CARGO_HOME \
  && cd /tmp \
- && wget -q "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init" \
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        wget -q "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init" ; \
+    else \
+        wget -q "https://static.rust-lang.org/rustup/dist/aarch64-unknown-linux-gnu/rustup-init" ; \
+    fi \
  && chmod +x rustup-init \
  && ./rustup-init -y --no-modify-path --default-toolchain nightly \
  && sudo chmod -R a+w $RUSTUP_HOME $CARGO_HOME \

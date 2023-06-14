@@ -16,27 +16,25 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-#FROM accupara/debian:11 as rsync
-#RUN set -x \
-# && sudo apt-get update \
-# && sudo apt-get install -y \
-#    libacl1-dev \
-#    libattr1-dev \
-#    liblz4-dev \
-#    libpopt-dev \
-#    libssh-dev \
-#    libzstd-dev \
-#    python3-cmarkgfm \
-#    python3-pip \
-# && sudo python3 -m pip install --user commonmark \
-# && export RSYNC_VER=3.2.7 \
-# && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/tmp/rsync --disable-xxhash \
-# && make -j `nproc` CFLAGS="-static" \
-# && make install \
-# && strip /tmp/rsync/bin/rsync
+FROM accupara/debian:11 as rsync
+RUN set -x \
+ && sudo apt-get update -y \
+ && sudo apt-get install -y \
+    curl \
+    golang-github-pierrec-xxhash-dev \
+    libpopt-dev \
+    libssl-dev \
+    liblz4-dev \
+    zlib1g-dev \
+ && export RSYNC_VER=3.2.7 \
+ && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && cd rsync-${RSYNC_VER} \
+ && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
+# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
+ && make -j `nproc` \
+ && make install \
+ && strip /tmp/rsync/bin/rsync
 
 ################## The real container starts here ##################
 FROM debian:11

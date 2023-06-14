@@ -16,7 +16,6 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-# The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/debian:10 as rsync
 RUN set -x \
  && sudo apt-get update -y \

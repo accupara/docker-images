@@ -9,7 +9,7 @@ RUN set -x \
         mariadb-client \
         mariadb-server \
         openjdk-11-jdk \
-        python-pip \
+        python3-pip \
         virtualenv \
         zlib1g-dev \
  && sudo pip install --upgrade pip \

@@ -16,8 +16,6 @@ RUN set -x \
     fluxbox \
     g++ \
     gawk \
-    g++-multilib \
-    gcc-multilib \
     gettext \
     git-core \
     iproute2 \
@@ -44,6 +42,11 @@ RUN set -x \
     unzip \
     xterm \
     xz-utils \
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        sudo apt-get -y install \
+            g++-multilib \
+            gcc-multilib ; \
+    fi \
 # Install the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir /opt/aosp \

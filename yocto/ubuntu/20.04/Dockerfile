@@ -1,7 +1,8 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
-RUN sudo apt-get update \
+RUN set -x \
+ && sudo apt-get update \
  && sudo apt-get install -y \
         build-essential \
         chrpath \
@@ -9,7 +10,6 @@ RUN sudo apt-get update \
         debianutils \
         diffstat \
         gawk \
-        gcc-multilib \
         git-core \
         iputils-ping \
         libegl1-mesa \
@@ -19,7 +19,6 @@ RUN sudo apt-get update \
         locales \
         mesa-common-dev \
         pylint3 \
-        python \
         python3 \
         python3-git \
         python3-jinja2 \
@@ -35,6 +34,11 @@ RUN sudo apt-get update \
         xterm \
         xz-utils \
         zstd \
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        sudo apt-get -y install \
+            g++-multilib \
+            gcc-multilib ; \
+    fi \
 # Set up locale
  && sudo locale-gen en_US.UTF-8 \
  && echo "export LANG=en_US.UTF-8" > /tmp/add_locale \

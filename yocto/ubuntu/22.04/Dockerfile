@@ -10,7 +10,6 @@ RUN set -x \
         debianutils \
         diffstat \
         gawk \
-        gcc-multilib \
         git-core \
         iputils-ping \
         libegl1-mesa \
@@ -35,6 +34,11 @@ RUN set -x \
         xterm \
         xz-utils \
         zstd \
+ && if [ $(uname -a | grep -c x86) == "1" ] ; then \
+        sudo apt-get -y install \
+            g++-multilib \
+            gcc-multilib ; \
+    fi \
 # Set up locale
  && sudo locale-gen en_US.UTF-8 \
  && echo "export LANG=en_US.UTF-8" > /tmp/add_locale \

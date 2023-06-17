@@ -152,6 +152,11 @@ RUN chown -R admin:admin /home/admin \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
+# Install git-lfs and jq separately
+ && sudo yum install -y \
+      git-lfs \
+      libzstd \
+      jq \
 # Install the latest git
  && export GIT_VER=2.39.3 \
  && sudo yum install -y \
@@ -167,12 +172,7 @@ RUN chown -R admin:admin /home/admin \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" all 2>&1 | tee /tmp/git.build.log \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" install 2>&1 | tee -a /tmp/git.build.log \
- && cd /tmp ; rm -rf git-${GIT_VER}* \
-# Install git-lfs and jq separately
- && sudo yum install -y \
-      git-lfs \
-      libzstd \
-      jq
+ && cd /tmp ; rm -rf git-${GIT_VER}*
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

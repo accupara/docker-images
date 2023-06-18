@@ -4,7 +4,7 @@
 CONTEXT_DIR?=.
 DOCKERFILE?=$(CONTEXT_DIR)/Dockerfile
 
-DOCKER_BUILD_FLAGS:=--progress=plain
+DOCKER_BUILD_FLAGS:=
 DOCKER_RUN_FLAGS:=
 DOCKER_RUN_CMD:=
 
@@ -33,6 +33,7 @@ else
 	DOCKER:=docker
 	DOCKER_RUN_FLAGS+=-v ~/:/tmp/home
 	DOCKER_RUN_CMD+=/bin/bash
+	DOCKER_BUILD_FLAGS+=--progress=plain
 endif
 
 ifdef NOCACHE

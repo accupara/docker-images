@@ -7,7 +7,7 @@ RUN set -x \
       clang \
       cmake \
       curl \
-      gcc-powerpc-linux-gnu \
+      gcc \
       lcov \
       libssl-dev \
       llvm \

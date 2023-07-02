@@ -4,9 +4,8 @@ FROM accupara/ubuntu:22.04
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get -y install \
-        libphonon-dev \
+        libphonon4qt5-dev \
         libqt5webkit5-dev \
         libqt5xmlpatterns5-dev \
         libssl-dev \
-        qt5-default \
         qtmultimedia5-dev

@@ -1,5 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-IMGTAG?=accupara/qt5
-IMGVER_BASE?=ubuntu_1604
-
-include $(shell git rev-parse --show-toplevel)/Makefile.build
+SUBDIRS=16.04 22.04
+include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

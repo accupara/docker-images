@@ -4,10 +4,9 @@ FROM accupara/qt5:ubuntu_2204
 ENV CMAKE_VER=3.26.4 \
     BOOST_VER=1_82_0
 
-# Keep the update separate so that Docker build system can cache it.
 RUN set -x \
  && sudo apt-get update \
-# Install everything else
+# Install dependencies that have been identified from cmake failures
  && sudo apt-get install -y \
       cmake \
       extra-cmake-modules \

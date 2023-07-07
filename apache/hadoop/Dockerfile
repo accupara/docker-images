@@ -3,7 +3,7 @@ FROM accupara/openjdk:18
 
 ENV CMAKE_VER=3.26.4 \
     PROTOBUF_VER=3.7.1 \
-    BOOST_VER=1_80_0
+    BOOST_VER=1_82_0
 
 RUN set -x \
  && sudo apt-get update \

@@ -26,16 +26,30 @@ RUN set -x \
       libkf5windowsystem-dev \
       libqt5svg5-dev \
       libqt5x11extras5-dev \
+      qtquickcontrols2-5-dev \
       xorg-dev \
+# Place for all the deps
+ && mkdir -p /tmp/deps \
 # Latest version of cmake required for compilation
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
+ && wget -q -O /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && chmod +x /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && sudo /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Download boost, and compile it
- && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
- && sudo tar -C /opt -xf /tmp/boost_${BOOST_VER}.tar.gz \
- && rm /tmp/boost_${BOOST_VER}.tar.gz \
+ && wget -q -O /tmp/deps/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
+ && sudo tar -C /opt -xf /tmp/deps/boost_${BOOST_VER}.tar.gz \
+ && rm /tmp/deps/boost_${BOOST_VER}.tar.gz \
  && sudo chown -R admin:admin /opt/boost_${BOOST_VER} \
  && cd /opt/boost_${BOOST_VER} \
  && ./bootstrap.sh \
- && ./b2
+ && ./b2 \
+# Download and install immer, zug, lager
+ && cd /tmp/deps \
+ && git clone https://github.com/arximboldi/immer.git immer \
+ && git clone https://github.com/arximboldi/zug.git zug \
+ && git clone https://github.com/arximboldi/lager.git lager \
+ && for i in immer zug lager ; do \
+        cd /tmp/deps/${i} && mkdir build && cd build && cmake .. && sudo make install ; \
+    done \
+# Cleanup all deps temp files
+ && cd /tmp \
+ && sudo find /tmp/deps -delete

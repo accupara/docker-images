@@ -3,7 +3,7 @@ FROM accupara/ubuntu:20.04
 
 ENV BOOST_ROOT=/opt/boost_1_80_0 \
     BOOST_VER=1_80_0 \
-    CMAKE_VER=3.26.0
+    CMAKE_VER=3.26.4
 
 RUN set -x \
  && sudo apt-get update \

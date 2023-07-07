@@ -2,7 +2,8 @@
 FROM accupara/qt5:ubuntu_2204
 
 ENV CMAKE_VER=3.26.4 \
-    BOOST_VER=1_82_0
+    BOOST_VER=1_82_0 \
+    BOOST_ROOT=/opt/boost_1_82_0
 
 RUN set -x \
  && sudo apt-get update \

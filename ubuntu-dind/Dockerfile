@@ -79,9 +79,9 @@ RUN set -eux; \
 COPY modprobe startup.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY logger.sh /opt/bash-utils/logger.sh
-
-RUN sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe
 VOLUME /var/lib/docker
+
+ENV HELM_VER=3.12.1
 
 RUN set -x \
  && mkdir -p /tmp/deps && cd /tmp/deps \

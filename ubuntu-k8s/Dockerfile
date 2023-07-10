@@ -70,7 +70,10 @@ RUN set -eux; \
 	\
 	sudo -E dockerd --version; \
 	sudo -E docker --version; \
-	sudo -E docker buildx version
+	sudo -E docker buildx version \
+# Add user to docker group
+ && sudo groupadd docker \
+ && sudo usermod -aG docker admin
 
 COPY modprobe startup.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
@@ -105,9 +108,10 @@ RUN set -x \
  && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
  && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
- && tar -zxvf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && tar -zxf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
  && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
  && helm plugin install https://github.com/jkroepke/helm-secrets \
+# AWS CLI
  && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
  && unzip awscliv2.zip \
  && sudo ./aws/install \
@@ -118,6 +122,7 @@ RUN set -x \
  && export GOPATH=/opt/go \
  && sudo mkdir -p /opt/go \
  && sudo go install sigs.k8s.io/kind@v${KIND_VER} \
+# Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete
 

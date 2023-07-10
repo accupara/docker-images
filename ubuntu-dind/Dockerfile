@@ -71,7 +71,10 @@ RUN set -eux; \
 	\
 	sudo -E dockerd --version; \
 	sudo -E docker --version; \
-	sudo -E docker buildx version
+	sudo -E docker buildx version \
+# Add user to docker group
+ && sudo groupadd docker \
+ && sudo usermod -aG docker admin
 
 COPY modprobe startup.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
@@ -81,33 +84,43 @@ RUN sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe
 VOLUME /var/lib/docker
 
 RUN set -x \
+ && mkdir -p /tmp/deps && cd /tmp/deps \
+ && sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe \
+# Calculate alternative arch names
+ && arch="$(uname -m)" \
+ && case "$arch" in \
+    # amd64
+    x86_64) altArch='amd64' ;; \
+    aarch64) altArch='arm64' ;; \
+    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+	esac \
 # Docker compose installation
- && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
+ && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -o /usr/local/bin/docker-compose \
  && sudo -E chmod +x /usr/local/bin/docker-compose \
  && docker-compose version \
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'
  && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
 # kubectl and minikube
- && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
- && sudo install minikube-linux-amd64 /usr/local/bin/minikube \
- && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+ && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
+ && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
+ && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
  && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
- && wget https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz \
- && tar -zxvf helm-v3.9.2-linux-amd64.tar.gz \
- && sudo mv linux-amd64/helm /usr/local/bin/helm \
-# Add user to docker group
- && sudo groupadd docker \
- && sudo usermod -aG docker admin
+ && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && tar -zxf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
+ && helm plugin install https://github.com/jkroepke/helm-secrets \
+# Cleanup
+ && cd /tmp/ \
+ && sudo find /tmp/deps -delete
 
 ENTRYPOINT ["startup.sh"]
 
 USER root
 ENV HOME=/root \
-    USER=root
-WORKDIR /root
-
-ENV TERM=xterm \
+    USER=root \
+    TERM=xterm \
     LANG=en_US.utf8
+WORKDIR /root
 CMD /bin/bash

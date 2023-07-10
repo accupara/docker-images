@@ -9,8 +9,6 @@ RUN set -x \
     build-essential \
     curl \
     flex \
-    g++-multilib \
-    gcc-multilib \
     gnupg \
     gperf \
     lib32ncurses5-dev \

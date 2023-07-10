@@ -75,47 +75,51 @@ RUN set -eux; \
 COPY modprobe startup.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY logger.sh /opt/bash-utils/logger.sh
-
-RUN sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe
 VOLUME /var/lib/docker
 
+ENV HELM_VER=3.12.1 \
+	GOLANG_VER=1.20.1 \
+	KIND_VER=0.20.0
+
+RUN set -x \
+ && mkdir -p /tmp/deps && cd /tmp/deps \
+ && sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe \
+# Calculate alternative arch names
+ && arch="$(uname -m)" \
+ && case "$arch" in \
+    # amd64
+    x86_64) altArch='amd64' ;; \
+    aarch64) altArch='arm64' ;; \
+    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+	esac \
 # Docker compose installation
-RUN sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
- && sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version
-	
+ && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -o /usr/local/bin/docker-compose \
+ && sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version \
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'
-RUN sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose
-
-
+ && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
 # kubectl and minikube
-RUN set -x \
- && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
- && sudo install minikube-linux-amd64 /usr/local/bin/minikube \
- && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
- && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
+ && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
+ && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
+ && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
+ && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
-RUN set -x \
- && wget https://get.helm.sh/helm-v3.9.2-linux-amd64.tar.gz \
- && tar -zxvf helm-v3.9.2-linux-amd64.tar.gz \
- && sudo mv linux-amd64/helm /usr/local/bin/helm \
+ && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && tar -zxvf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
  && helm plugin install https://github.com/jkroepke/helm-secrets \
- && mkdir temp \
- && cd temp \
- && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"\
+ && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
  && unzip awscliv2.zip \
  && sudo ./aws/install \
- && cd -
-
 # golang and kind
-RUN set -x \
- && wget https://go.dev/dl/go1.20.1.linux-amd64.tar.gz \
- && sudo tar -C /usr/local -xzf go1.20.1.linux-amd64.tar.gz \
+ && wget -q https://go.dev/dl/go1.20.1.linux-${altArch}.tar.gz \
+ && sudo tar -C /usr/local -xzf go1.20.1.linux-${altArch}.tar.gz \
  && sudo ln -s /usr/local/go/bin/go /usr/local/bin/go \
- && export GOTPATH=/opt/go \
+ && export GOPATH=/opt/go \
  && sudo mkdir -p /opt/go \
- && sudo go install sigs.k8s.io/kind@v0.20.0
+ && sudo go install sigs.k8s.io/kind@v${KIND_VER} \
+ && cd /tmp/ \
+ && sudo find /tmp/deps -delete
 
 ENTRYPOINT ["startup.sh"]
 

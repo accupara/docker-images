@@ -11,11 +11,8 @@ RUN set -x \
     flex \
     gnupg \
     gperf \
-    lib32ncurses5-dev \
     libncurses5-dev \
     libncurses5 \
-    lib32z-dev \
-    libc6-dev-i386 \
     libgl1-mesa-dev \
     libx11-dev \
     libxml2-utils \

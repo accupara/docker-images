@@ -67,7 +67,6 @@ RUN set -eux; \
 	sudo -E mkdir -p /usr/local/lib/docker/cli-plugins; \
 	sudo -E chmod +x docker-buildx; \
 	sudo -E mv docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx; \
-	\
 	sudo -E dockerd --version; \
 	sudo -E docker --version; \
 	sudo -E docker buildx version
@@ -117,6 +116,15 @@ RUN set -x \
  && sudo mkdir -p /opt/go \
  && sudo go install sigs.k8s.io/kind@v0.20.0
 
+# helm plugin and monit
+RUN set -x \
+  && helm plugin install https://github.com/zendesk/helm-secrets
+  && sudo apt-get update -y
+  && sudo apt install -y monit
+  && echo "set daemon 5i\n" \
+          "set httpd port 2812 and\n" \
+          "  allow localhost\n" \
+          "  allow admin:monit" > /etc/monit/conf.d/custom.settings
 ENTRYPOINT ["startup.sh"]
 
 USER root

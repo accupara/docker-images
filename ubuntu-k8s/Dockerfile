@@ -118,13 +118,14 @@ RUN set -x \
 
 # helm plugin and monit
 RUN set -x \
-  && helm plugin install https://github.com/zendesk/helm-secrets
-  && sudo apt-get update -y
-  && sudo apt install -y monit
-  && echo "set daemon 5i\n" \
-          "set httpd port 2812 and\n" \
-          "  allow localhost\n" \
-          "  allow admin:monit" > /etc/monit/conf.d/custom.settings
+  && helm plugin install https://github.com/zendesk/helm-secrets \
+  && sudo apt-get update -y \
+  && sudo apt install -y monit \
+  && echo "set daemon 5i\n \
+set httpd port 2812 and\n \
+  allow localhost\n \
+  allow admin:monit \
+" > /etc/monit/conf.d/custom.settings
 ENTRYPOINT ["startup.sh"]
 
 USER root

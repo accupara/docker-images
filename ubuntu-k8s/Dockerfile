@@ -1,8 +1,12 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu-dind:latest
 
+# Get the version numbers from:
+# https://github.com/helm/helm/releases
+# https://go.dev/doc/devel/release
+# https://github.com/kubernetes-sigs/kind/releases
 ENV HELM_VER=3.12.1 \
-	GOLANG_VER=1.20.1 \
+	GOLANG_VER=1.20.6 \
 	KIND_VER=0.20.0
 
 RUN set -x \

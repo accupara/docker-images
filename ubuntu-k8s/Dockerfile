@@ -1,84 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
-
-RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        autoconf \
-        automake \
-        bc \
-        bison \
-        ca-certificates \
-        clang-6.0 \
-        cpio \
-        curl \
-        flex \
-        gawk \
-        iptables \
-        libelf-dev \
-        libncurses5-dev \
-        libssl-dev \
-        openssh-client \
-        openssl \
-        perl \
-        qemu-kvm \
-        supervisor \
-        wget \
- && sudo apt-get clean -y \
- && sudo rm -rf /var/lib/apt/lists/*
-
-ENV DOCKER_CHANNEL=stable \
-	DOCKER_VERSION=23.0.1 \
-	DOCKER_COMPOSE_VERSION=v2.16.0 \
-	BUILDX_VERSION=v0.10.3 \
-	DEBUG=false
-
-# Docker and buildx installation
-RUN set -eux; \
-	\
-	arch="$(uname -m)"; \
-	case "$arch" in \
-        # amd64
-		x86_64) dockerArch='x86_64' ; buildx_arch='linux-amd64' ;; \
-        # arm32v6
-		armhf) dockerArch='armel' ; buildx_arch='linux-arm-v6' ;; \
-        # arm32v7
-		armv7) dockerArch='armhf' ; buildx_arch='linux-arm-v7' ;; \
-        # arm64v8
-		aarch64) dockerArch='aarch64' ; buildx_arch='linux-arm64' ;; \
-		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-	esac; \
-	\
-	if ! sudo -E wget -q -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
-		echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
-		exit 1; \
-	fi; \
-	\
-	sudo -E tar --extract \
-		--file docker.tgz \
-		--strip-components 1 \
-		--directory /usr/local/bin/ \
-	; \
-	sudo -E rm docker.tgz; \
-	if ! sudo -E wget -q -O docker-buildx "https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.${buildx_arch}"; then \
-		echo >&2 "error: failed to download 'buildx-${BUILDX_VERSION}.${buildx_arch}'"; \
-		exit 1; \
-	fi; \
-	sudo -E mkdir -p /usr/local/lib/docker/cli-plugins; \
-	sudo -E chmod +x docker-buildx; \
-	sudo -E mv docker-buildx /usr/local/lib/docker/cli-plugins/docker-buildx; \
-	\
-	sudo -E dockerd --version; \
-	sudo -E docker --version; \
-	sudo -E docker buildx version \
-# Add user to docker group
- && sudo groupadd docker \
- && sudo usermod -aG docker admin
-
-COPY modprobe startup.sh /usr/local/bin/
-COPY supervisor/ /etc/supervisor/conf.d/
-COPY logger.sh /opt/bash-utils/logger.sh
-VOLUME /var/lib/docker
+FROM accupara/ubuntu-dind:latest
 
 ENV HELM_VER=3.12.1 \
 	GOLANG_VER=1.20.1 \
@@ -86,21 +7,19 @@ ENV HELM_VER=3.12.1 \
 
 RUN set -x \
  && mkdir -p /tmp/deps && cd /tmp/deps \
- && sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe \
 # Calculate alternative arch names
- && arch="$(uname -m)" \
- && case "$arch" in \
-    # amd64
-    x86_64) altArch='amd64' ;; \
-    aarch64) altArch='arm64' ;; \
-    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-	esac \
-# Docker compose installation
- && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -o /usr/local/bin/docker-compose \
- && sudo -E chmod +x /usr/local/bin/docker-compose && docker-compose version \
-# Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
-# for users which uses 'docker compose' instead of 'docker-compose'
- && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
+ && arch="$(uname -m)"; \
+	case "$arch" in \
+        # amd64
+		x86_64)  altArch='amd64' ;; \
+        # arm32v6
+		armhf)   altArch='armel' ;; \
+        # arm32v7
+		armv7)   altArch='armhf' ;; \
+        # arm64v8
+		aarch64) altArch='arm64' ;; \
+		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+	esac; \
 # kubectl and minikube
  && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
  && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
@@ -110,11 +29,16 @@ RUN set -x \
  && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
  && tar -zxf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
  && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
+# Install helm secrets
  && helm plugin install https://github.com/jkroepke/helm-secrets \
-# AWS CLI
- && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
- && unzip awscliv2.zip \
- && sudo ./aws/install \
+# Install monit
+ && sudo apt-get update -y \
+ && sudo apt install -y monit \
+ && echo "set daemon 5i\n \
+set httpd port 2812 and\n \
+  allow localhost\n \
+  allow admin:monit \
+" >sudo tee /etc/monit/conf.d/custom.settings \
 # golang and kind
  && wget -q https://go.dev/dl/go1.20.1.linux-${altArch}.tar.gz \
  && sudo tar -C /usr/local -xzf go1.20.1.linux-${altArch}.tar.gz \
@@ -125,8 +49,6 @@ RUN set -x \
 # Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete
-
-ENTRYPOINT ["startup.sh"]
 
 USER root
 ENV HOME=/root \

@@ -1,6 +1,16 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
+ENV DOCKER_CHANNEL=stable \
+	DOCKER_VERSION=23.0.1 \
+	DOCKER_COMPOSE_VERSION=v2.16.0 \
+	BUILDX_VERSION=v0.10.3 \
+	DEBUG=false
+
+COPY modprobe startup.sh /usr/local/bin/
+COPY supervisor/ /etc/supervisor/conf.d/
+COPY logger.sh /opt/bash-utils/logger.sh
+
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -25,28 +35,18 @@ RUN set -x \
         qemu-kvm \
         supervisor \
         wget \
- && sudo apt-get clean -y \
- && sudo rm -rf /var/lib/apt/lists/*
-
-ENV DOCKER_CHANNEL=stable \
-	DOCKER_VERSION=23.0.1 \
-	DOCKER_COMPOSE_VERSION=v2.16.0 \
-	BUILDX_VERSION=v0.10.3 \
-	DEBUG=false
-
 # Docker and buildx installation
-RUN set -eux; \
-	\
-	arch="$(uname -m)"; \
+# Calculate alternative arch names
+ && arch="$(uname -m)"; \
 	case "$arch" in \
         # amd64
-		x86_64) dockerArch='x86_64' ; buildx_arch='linux-amd64' ;; \
+		x86_64)  dockerArch='x86_64'  ; altArch='amd64' ; buildx_arch='linux-amd64' ;; \
         # arm32v6
-		armhf) dockerArch='armel' ; buildx_arch='linux-arm-v6' ;; \
+		armhf)   dockerArch='armel'   ; altArch='armel' ; buildx_arch='linux-arm-v6' ;; \
         # arm32v7
-		armv7) dockerArch='armhf' ; buildx_arch='linux-arm-v7' ;; \
+		armv7)   dockerArch='armhf'   ; altArch='armhf' ; buildx_arch='linux-arm-v7' ;; \
         # arm64v8
-		aarch64) dockerArch='aarch64' ; buildx_arch='linux-arm64' ;; \
+		aarch64) dockerArch='aarch64' ; altArch='arm64' ; buildx_arch='linux-arm64' ;; \
 		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
 	esac; \
 	\
@@ -74,26 +74,10 @@ RUN set -eux; \
 	sudo -E docker buildx version \
 # Add user to docker group
  && sudo groupadd docker \
- && sudo usermod -aG docker admin
-
-COPY modprobe startup.sh /usr/local/bin/
-COPY supervisor/ /etc/supervisor/conf.d/
-COPY logger.sh /opt/bash-utils/logger.sh
-VOLUME /var/lib/docker
-
-ENV HELM_VER=3.12.1
-
-RUN set -x \
+ && sudo usermod -aG docker admin \
+# Prep for all deps
  && mkdir -p /tmp/deps && cd /tmp/deps \
  && sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe \
-# Calculate alternative arch names
- && arch="$(uname -m)" \
- && case "$arch" in \
-    # amd64
-    x86_64) altArch='amd64' ;; \
-    aarch64) altArch='arm64' ;; \
-    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-	esac \
 # Docker compose installation
  && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -o /usr/local/bin/docker-compose \
  && sudo -E chmod +x /usr/local/bin/docker-compose \
@@ -101,19 +85,15 @@ RUN set -x \
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'
  && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
-# kubectl and minikube
- && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
- && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
- && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
- && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
-# helm
- && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
- && tar -zxf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
- && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
- && helm plugin install https://github.com/jkroepke/helm-secrets \
+# AWS CLI
+ && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
+ && unzip awscliv2.zip \
+ && sudo ./aws/install \
 # Cleanup
  && cd /tmp/ \
- && sudo find /tmp/deps -delete
+ && sudo find /tmp/deps -delete \
+ && sudo apt-get clean -y \
+ && sudo rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["startup.sh"]
 
@@ -124,3 +104,4 @@ ENV HOME=/root \
     LANG=en_US.utf8
 WORKDIR /root
 CMD /bin/bash
+VOLUME /var/lib/docker

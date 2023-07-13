@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=14.04 16.04 18.04 20.04 22.04
+SUBDIRS=14.04 16.04 18.04 20.04 22.04 ubuntu-dind
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

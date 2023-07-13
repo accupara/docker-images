@@ -8,18 +8,18 @@ ENV HELM_VER=3.12.1 \
 RUN set -x \
  && mkdir -p /tmp/deps && cd /tmp/deps \
 # Calculate alternative arch names
- && arch="$(uname -m)"; \
-	case "$arch" in \
+ && arch="$(uname -m)" \
+ && case "$arch" in \
         # amd64
-		x86_64)  altArch='amd64' ;; \
+        x86_64)  altArch='amd64' ;; \
         # arm32v6
-		armhf)   altArch='armel' ;; \
+        armhf)   altArch='armel' ;; \
         # arm32v7
-		armv7)   altArch='armhf' ;; \
+        armv7)   altArch='armhf' ;; \
         # arm64v8
-		aarch64) altArch='arm64' ;; \
-		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-	esac; \
+        aarch64) altArch='arm64' ;; \
+        *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+    esac \
 # kubectl and minikube
  && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
  && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \

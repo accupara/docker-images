@@ -47,7 +47,7 @@ RUN set -x \
  && git clone https://github.com/arximboldi/immer.git immer \
  && git clone https://github.com/arximboldi/zug.git zug \
  && git clone https://github.com/arximboldi/lager.git lager \
- && for i in immer zug lager ; do \
+ && for i in immer zug ; do \
         cd /tmp/deps/${i} && mkdir build && cd build && cmake .. && sudo make install ; \
     done \
 # Cleanup all deps temp files

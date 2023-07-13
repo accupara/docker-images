@@ -29,6 +29,7 @@ RUN set -x \
         flex \
         gawk \
         gcc-arm-linux-gnueabi \
+        iproute2 \
         iptables \
         libelf-dev \
         libncurses5-dev \

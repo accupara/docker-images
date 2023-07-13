@@ -25,6 +25,7 @@ RUN set -x \
         ca-certificates \
         clang-6.0 \
         cpio \
+		cron \
         curl \
         flex \
         gawk \
@@ -37,6 +38,8 @@ RUN set -x \
         openssh-client \
         openssl \
         perl \
+		python3 \
+		python3-pip \
         qemu-kvm \
         supervisor \
         wget \

@@ -6,10 +6,10 @@ FROM accupara/ubuntu:20.04
 # https://docs.docker.com/compose/release-notes/
 # https://docs.docker.com/build/release-notes/
 ENV DOCKER_CHANNEL=stable \
-	DOCKER_VERSION=24.0.4 \
-	DOCKER_COMPOSE_VERSION=v2.20.0 \
-	BUILDX_VERSION=v0.11.1 \
-	DEBUG=false
+    DOCKER_VERSION=24.0.4 \
+    DOCKER_COMPOSE_VERSION=v2.20.0 \
+    BUILDX_VERSION=v0.11.1 \
+    DEBUG=false
 
 COPY modprobe startup.sh /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
@@ -25,7 +25,7 @@ RUN set -x \
         ca-certificates \
         clang-6.0 \
         cpio \
-		cron \
+        cron \
         curl \
         flex \
         gawk \
@@ -38,8 +38,8 @@ RUN set -x \
         openssh-client \
         openssl \
         perl \
-		python3 \
-		python3-pip \
+        python3 \
+        python3-pip \
         qemu-kvm \
         supervisor \
         wget \

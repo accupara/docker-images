@@ -11,6 +11,7 @@ RUN set -x \
  && sudo apt-get install -y \
       cmake \
       extra-cmake-modules \
+      libgsl-dev \
       libkdecorations2-dev \
       libkf5completion-dev \
       libkf5config-dev \
@@ -26,10 +27,36 @@ RUN set -x \
       libkf5windowsystem-dev \
       libqt5svg5-dev \
       libqt5x11extras5-dev \
+      libwebp-dev \
+      ninja-build \
+      pyqt5-dev \
+      python3-pip \
+      python3-qtpy \
       qtquickcontrols2-5-dev \
+      sip-dev \
+      ruby-sass \
       xorg-dev \
+# Sip headers from pyqt5
+ && pushd /usr/lib/python3/dist-packages/PyQt5/bindings/ \
+ && find . -mindepth 1 -maxdepth 1 -type d | \
+    while read line ; do \
+        if [ -d $line ] ; then \
+            sudo mkdir -p /usr/include/x86_64-linux-gnu/qt5/$line ; \
+        fi ; \
+        pushd /usr/include/x86_64-linux-gnu/qt5/$line ; \
+        find /usr/lib/python3/dist-packages/PyQt5/bindings/$line | \
+        while read line2 ; do \
+            sudo ln -sf $line2 ; \
+        done ; \
+        popd ; \
+    done \
+ && popd \
 # Place for all the deps
  && mkdir -p /tmp/deps \
+# Upgrade pip and then install deps
+ && sudo python3 -m pip install --upgrade pip \
+# && sudo python3 -m pip install \
+#    sipphone \
 # Latest version of cmake required for compilation
  && wget -q -O /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh \
@@ -47,9 +74,14 @@ RUN set -x \
  && git clone https://github.com/arximboldi/immer.git immer \
  && git clone https://github.com/arximboldi/zug.git zug \
  && git clone https://github.com/arximboldi/lager.git lager \
- && for i in immer zug ; do \
+ && git clone https://github.com/wdas/SeExpr seexpr \
+ && for i in immer zug lager ; do \
         cd /tmp/deps/${i} && mkdir build && cd build && cmake .. && sudo make install ; \
     done \
+ && cd /tmp/deps/seexpr \
+ && make all \
 # Cleanup all deps temp files
  && cd /tmp \
  && sudo find /tmp/deps -delete
+
+# Build command: cmake -G Ninja ../krita -DCMAKE_INSTALL_PREFIX=$HOME/kritadev/install -DCMAKE_BUILD_TYPE=Debug -DKRITA_DEVS=ON ; 

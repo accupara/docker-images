@@ -2,8 +2,9 @@
 FROM accupara/qt5:ubuntu_2204
 
 ENV CMAKE_VER=3.26.4 \
-    BOOST_VER=1_82_0 \
-    BOOST_ROOT=/opt/boost_1_82_0
+    BOOST_VER=1_82_0
+
+SHELL [ "/bin/bash", "-c" ]
 
 RUN set -x \
  && sudo apt-get update \
@@ -36,6 +37,43 @@ RUN set -x \
       sip-dev \
       ruby-sass \
       xorg-dev \
+# Default python to python3
+ && sudo update-alternatives --install /usr/local/bin/python python /usr/bin/python3 20 \
+# Upgrade pip and then install deps
+ && sudo python3 -m pip install --upgrade pip \
+ && sudo python3 -m pip install numpy \
+# Place for all the deps
+ && mkdir -p /tmp/deps \
+# Latest version of cmake required for compilation
+ && wget -q -O /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && chmod +x /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+ && sudo /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
+# Download boost, and compile it
+ && wget -q -O /tmp/deps/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
+ && sudo tar -C /tmp/deps -xf /tmp/deps/boost_${BOOST_VER}.tar.gz \
+ && sudo chown -R admin:admin /tmp/deps/boost_${BOOST_VER} \
+ && cd /tmp/deps/boost_${BOOST_VER} \
+ && ./bootstrap.sh --prefix=/usr \
+ && ./b2 \
+ && sudo ./b2 install \
+# Download and install immer, zug, lager
+ && cd /tmp/deps \
+ && git clone https://github.com/arximboldi/immer.git immer \
+ && git clone https://github.com/arximboldi/zug.git zug \
+ && git clone https://github.com/arximboldi/lager.git lager \
+ && for i in immer zug lager ; do \
+        cd /tmp/deps/${i} && mkdir build && cd build && cmake .. && sudo make install ; \
+    done \
+# Install faber for boost.python
+ && cd /tmp/deps \
+ && git clone https://github.com/stefanseefeld/faber.git faber \
+ && cd faber \
+ && sudo python3 setup.py install \
+# Cleanup all deps temp files
+ && cd /tmp \
+ && sudo find /tmp/deps -delete
+
+RUN set -x \
 # Sip headers from pyqt5
  && pushd /usr/lib/python3/dist-packages/PyQt5/bindings/ \
  && find . -mindepth 1 -maxdepth 1 -type d | \
@@ -53,33 +91,16 @@ RUN set -x \
  && popd \
 # Place for all the deps
  && mkdir -p /tmp/deps \
-# Upgrade pip and then install deps
- && sudo python3 -m pip install --upgrade pip \
-# && sudo python3 -m pip install \
-#    sipphone \
-# Latest version of cmake required for compilation
- && wget -q -O /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && chmod +x /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && sudo /tmp/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
-# Download boost, and compile it
- && wget -q -O /tmp/deps/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
- && sudo tar -C /opt -xf /tmp/deps/boost_${BOOST_VER}.tar.gz \
- && rm /tmp/deps/boost_${BOOST_VER}.tar.gz \
- && sudo chown -R admin:admin /opt/boost_${BOOST_VER} \
- && cd /opt/boost_${BOOST_VER} \
- && ./bootstrap.sh \
- && ./b2 \
-# Download and install immer, zug, lager
+# Install boost.python
  && cd /tmp/deps \
- && git clone https://github.com/arximboldi/immer.git immer \
- && git clone https://github.com/arximboldi/zug.git zug \
- && git clone https://github.com/arximboldi/lager.git lager \
+ && git clone https://github.com/boostorg/python.git boost.python \
+ && cd boost.python/build \
+ && cmake -G Ninja .. \
+# Download and install SeExpr
+ && cd /tmp/deps \
  && git clone https://github.com/wdas/SeExpr seexpr \
- && for i in immer zug lager ; do \
-        cd /tmp/deps/${i} && mkdir build && cd build && cmake .. && sudo make install ; \
-    done \
  && cd /tmp/deps/seexpr \
- && make all \
+# && make all \
 # Cleanup all deps temp files
  && cd /tmp \
  && sudo find /tmp/deps -delete

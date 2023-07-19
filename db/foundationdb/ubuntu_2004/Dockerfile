@@ -2,7 +2,7 @@
 FROM accupara/ubuntu:20.04
 
 ENV BOOST_VER=1_82_0 \
-    BOOST_ROOT=/opt/boost_1_80_0 \
+    BOOST_ROOT=/opt/boost_1_82_0 \
     CMAKE_VER=3.26.4 \
     SWIFT_VER=5.8.1
 
@@ -49,7 +49,7 @@ RUN set -x \
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
  && sudo tar -C /opt -xf /tmp/boost_${BOOST_VER}.tar.gz \
  && rm /tmp/boost_${BOOST_VER}.tar.gz \
- && sudo chown -R admin:admin ${BOOST_ROOT}} \
+ && sudo chown -R admin:admin ${BOOST_ROOT} \
 # Install Swift
  && sudo apt install -y \
     clang \

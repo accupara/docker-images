@@ -25,20 +25,20 @@ RUN set -x \
     libc6-dev \
     libcurl4-openssl-dev \
     libedit2 \
-    libgcc-11-dev \
+    libgcc-10-dev \
     libjemalloc-dev \
     liblz4-dev \
     libpython3-dev \
     libsqlite3-0 \
     libssl-dev \
-    libstdc++-11-dev \
+    libstdc++-10-dev \
     libxml2-dev \
     libz3-dev \
     mono-devel \
     ninja-build \
     openjdk-11-jdk \
     pkg-config \
-    python3-lldb-13 \
+    python3-lldb-12 \
     python3-pip \
     python3-venv \
     software-properties-common \

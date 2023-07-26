@@ -113,6 +113,9 @@ RUN set -x \
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
+# Add the crave binary into the base image
+ && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
+ && sudo mv crave /usr/local/bin/ \
 # Clean up image
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \

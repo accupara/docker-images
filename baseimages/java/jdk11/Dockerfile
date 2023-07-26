@@ -13,6 +13,7 @@ RUN set -x \
         bash-completion \
         binutils \
         build-essential \
+        curl \
         debhelper \
         dh-make \
         git \
@@ -23,6 +24,7 @@ RUN set -x \
         subversion \
         sudo \
         vim-nox \
+        wget \
 # ANT needs these directories
  && mkdir -p /home/admin/.ant/lib \
 # Install the latest git
@@ -38,6 +40,9 @@ RUN set -x \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
  && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+# Add the crave binary into the base image
+ && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
+ && sudo mv crave /usr/local/bin/ \
 # Cleanup apt cache
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \

@@ -8,6 +8,7 @@ RUN set -x \
  && sudo apt-get install -y \
         autoconf \
         autopoint \
+        git \
         guile-2.0-dev \
         texinfo \
  && git clone https://github.com/rocky/remake.git \

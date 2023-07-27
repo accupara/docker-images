@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/openjdk:11
 
-ENV CASSANDRA_VER=4.1.2
+ENV CASSANDRA_VER=4.1.3
 
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 RUN set -x \
@@ -19,7 +19,7 @@ RUN set -x \
  && cd /usr/local/apache-cassandra-${CASSANDRA_VER}/bin \
 # Symlink it into /usr/bin so that cassandra tools are accessible without $PATH changes
  && cd /usr/bin \
- && find ../local/apache-cassandra-4.1.0/bin/ -mindepth 1 -maxdepth 1 | \
+ && find ../local/apache-cassandra-${CASSANDRA_VER}/bin/ -mindepth 1 -maxdepth 1 | \
        while read line ; do \
               sudo ln -sf $line ./$(basename $line) ; \
        done

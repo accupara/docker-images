@@ -41,10 +41,9 @@ RUN set -x \
     uuid-dev \
     xfslibs-dev \
 # Clone the ceph repo and run the install-deps.sh script. This does all the heavy lifting
- && mkdir -p /tmp/src/ && cd /tmp/src \
- && git clone https://github.com/ceph/ceph.git \
+ && git clone https://github.com/ceph/ceph.git ceph \
  && cd ceph && sudo ./install-deps.sh \
 ## Clean up after ourselves
- && cd .. && rm -rf src \
+ && cd .. && rm -rf ceph \
  && sudo apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

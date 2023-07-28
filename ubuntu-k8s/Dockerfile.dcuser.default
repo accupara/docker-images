@@ -1,0 +1,21 @@
+# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+FROM accupara/ubuntu-k8s:latest
+
+COPY startup.sh /usr/local/bin/
+
+RUN set -x \
+ && sudo id admin \
+ && sudo usermod -l dcuser admin \
+ && sudo groupmod -n dcuser admin \
+ && sudo usermod -d /home/dcuser -m dcuser \
+ && sudo chown -R dcuser:dcuser /home/dcuser \
+ && echo "dcuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && sudo id dcuser \
+ && sudo -E chmod +x /usr/local/bin/startup.sh
+USER dcuser
+ENV HOME=/dcuser \
+    USER=dcuser \
+    TERM=xterm \
+    LANG=en_US.utf8
+WORKDIR /home/dcuser
+CMD /bin/bash

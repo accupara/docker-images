@@ -5,11 +5,10 @@ FROM accupara/ubuntu:16.04
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install --no-install-recommends -y  \
-    build-essential     \
-    gcc-multilib        \
-    libpcap-dev         \
+    build-essential \
+    libpcap-dev \
     linux-headers-generic \
-    && sudo rm -rf /var/lib/apt/lists/*
+ && sudo rm -rf /var/lib/apt/lists/*
 
 ENV RTE_KERNELDIR /usr/src/linux-headers-4.4.0-64-generic
 

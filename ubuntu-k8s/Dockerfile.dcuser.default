@@ -13,7 +13,7 @@ RUN set -x \
  && sudo id dcuser \
  && sudo -E chmod +x /usr/local/bin/startup.sh
 USER dcuser
-ENV HOME=/dcuser \
+ENV HOME=/home/dcuser \
     USER=dcuser \
     TERM=xterm \
     LANG=en_US.utf8

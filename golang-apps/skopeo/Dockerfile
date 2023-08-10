@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.20-bullseye
+FROM accupara/golang:1.21-bullseye
 
 ENV lsb_release_env="stretch"
 # Install the minimum tools

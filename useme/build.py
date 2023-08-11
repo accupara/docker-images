@@ -65,6 +65,8 @@ def parse_argv():
                         help='Dry run, dont execute the actual build commands')
     parser.add_argument('-j', '--threads', default=2, type=int,
                         help='Number of threads to employ')
+    parser.add_argument('--only-with-base', default=False, dest='only_with_base', action='store_true',
+                        help='Compile only when there is an IMGVER_BASE variable')
 
     return parser.parse_args()
 # end def
@@ -88,6 +90,7 @@ def getAllDockerFiles(args):
     for relPath in allRelPaths:
         fullPath = os.path.abspath(relPath)
 
+        # Ignore the directories that have the ".ignoreDir" sentinel file
         ignoreThisOne = False
         for i in ignoreDirs:
             if i in fullPath:
@@ -96,6 +99,15 @@ def getAllDockerFiles(args):
         # end for
         if ignoreThisOne:
             continue
+        # end if
+
+        # If we're supposed to only build arch specific images, then check if this Makefile has the IMAGE_BASE
+        if args.only_with_base == True:
+            cmd = [ 'make', '-C', os.path.dirname(fullPath), '--no-print-directory', 'is_arch_specific' ]
+            p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if p.stdout.strip().lower() != "yes":
+                continue
+            # end if
         # end if
 
         fullPaths.append(fullPath)

@@ -13,9 +13,17 @@ manifest:
 		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \
 		--amend ${IMGTAG}:${IMGVER_BASE}_arm
 	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
+
+is_arch_specific:
+	@echo "YES"
+
 else
+
 manifest:
 	echo "There is no base image defined. No manifest required."
+
+is_arch_specific:
+	@echo "NO"
 endif
 
 get_image_name:

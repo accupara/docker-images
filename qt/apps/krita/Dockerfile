@@ -95,7 +95,7 @@ RUN set -x \
  && cd /tmp/deps \
  && git clone https://github.com/boostorg/python.git boost.python \
  && cd boost.python/build \
- && cmake -G Ninja .. \
+# && cmake -G Ninja .. \
 # Download and install SeExpr
  && cd /tmp/deps \
  && git clone https://github.com/wdas/SeExpr seexpr \

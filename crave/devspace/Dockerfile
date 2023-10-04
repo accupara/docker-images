@@ -4,8 +4,8 @@ FROM accupara/xpra:22.04
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
- && sudo DEBIAN_FRONTEND=noninteractive apt-get -y update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade \
+ && sudo apt-get -y update \
+ && sudo apt-get -y dist-upgrade \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
  && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
       arc-theme \

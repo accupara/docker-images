@@ -4,10 +4,10 @@ FROM accupara/xpra:22.04
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
- && sudo DEBIAN_FRONTEND=noninteractive apt-get -y update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade \
+ && sudo apt-get -y update \
+ && sudo apt-get -y dist-upgrade \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
- && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && sudo apt-get install -y \
       arc-theme \
       bmon \
       cscope \
@@ -105,11 +105,7 @@ RUN set -x \
  && sudo add-apt-repository -y universe \
  && sudo apt-get -y update \
  && sudo apt install -y python3-pip \
- && sudo python -m pip -v install argcomplete \
- && mkdir -p /home/admin/.bash_completion.d \
- && register-python-argcomplete crave > /tmp/crave_bash_completion \
- && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
- && sudo chown -R admin:admin /home/admin/.bash_completion.d
+ && sudo python -m pip -v install argcomplete
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

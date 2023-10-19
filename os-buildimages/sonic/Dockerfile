@@ -1,9 +1,13 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/debian:9
+FROM accupara/debian:10
 
 COPY sources.list /etc/apt/sources.list
 
 RUN export DEBIAN_FRONTEND=noninteractive \
+# Copied from: https://github.com/sonic-net/sonic-buildimage/blob/master/sonic-slave-buster/no-check-valid-until
+ && echo 'Acquire::Check-Valid-Until "false";' | sudo tee /etc/apt/apt.conf.d/no-check-valid-until \
+# Additional entries from https://github.com/sonic-net/sonic-buildimage/blob/a850f8b2f51b96a9d57dab1a6ab55b9ecdeaa0ca/sonic-slave-buster/Dockerfile.j2#L40
+ && echo "deb http://ftp.debian.org/debian buster-backports main" | sudo tee -a /etc/apt/sources.list \
 # && sudo apt-get update -o Acquire::Check-Valid-Until=false \
  && sudo apt-get update \
  && sudo apt-get install -y debconf-utils \

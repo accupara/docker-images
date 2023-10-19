@@ -62,6 +62,7 @@ RUN set -x \
         debhelper \
         devscripts \
         dh-make \
+        eatmydata \
         emacs \
         gettext \
         guile-2.0 \
@@ -88,25 +89,25 @@ RUN set -x \
         zlib1g \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
- && apt-get install -y git-lfs \
+ && eatmydata -- apt-get install -y git-lfs \
 # Install the latest git
- && sudo apt-get install -y \
+ && eatmydata -- apt-get install -y \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
  && export GIT_VER=2.39.3 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && tar -xf git-${GIT_VER}.tar.gz \
+ && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && cd /tmp ; eatmydata -- rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && unzip gradle-${GRADLE_VER}-bin.zip \
+ && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
  && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \

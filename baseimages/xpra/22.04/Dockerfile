@@ -11,7 +11,7 @@ RUN set -x \
         openssh-server \
         python-pip \
 # No longer required?
- && sudo expect /tmp/kb-config.exp \
+ && if [ "$(uname -m)" != "x86_64" ] ; then sudo expect /tmp/kb-config.exp ; fi \
  && sudo apt-get install -y xpra \
  && mkdir -p ~/.ssh/ \
  && grep -v start-new-commands /etc/xpra/xpra.conf > /tmp/xpra.conf \

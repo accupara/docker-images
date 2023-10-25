@@ -13,7 +13,7 @@ RUN set -x \
     texlive-xetex \
     unzip \
     wget \
-# Install Fira Sans Font
+# Install Fira Sans Font: Copied from https://github.com/matze/mtheme/blob/master/docker/getFiraFont.sh
  && cd /tmp && mkdir dl && cd dl \
 # Fonts also available at: https://github.com/bBoxType/FiraSans
  && wget -q "https://bboxtype.com/downloads/Fira/Download_Folder_FiraSans_4301.zip" \

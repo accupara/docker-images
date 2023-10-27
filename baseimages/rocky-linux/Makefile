@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=ubuntu centos debian fedora rocky-linux xpra scratchbox golang java rustlang nvidia
+SUBDIRS=8
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

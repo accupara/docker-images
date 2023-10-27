@@ -1,5 +1,6 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/golang:1.21-bullseye
+
 RUN set -x \
  && sudo mkdir -p /opt/accupara/logs \
  && sudo mkdir /opt/accupara/bin \

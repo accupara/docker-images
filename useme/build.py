@@ -313,9 +313,29 @@ def updateDockerfileMtimes(imageList):
     printf('Updating Dockerfile mtimes\n')
     for i in imageList:
         try:
-            epochSec = os.path.getmtime(i.Dockerfile)
-            mtime = datetime.datetime.fromtimestamp(epochSec, tz)
-            # printf('Image mtime = {}. Dockerfile mtime = {}\n'.format(str(i.mtime), str(mtime)))
+            # Run 'git status --porcelain Dockerfile' and see if it starts off with an 'M'
+            localModification = False
+            cmd = ['git', 'status', '--porcelain', i.Dockerfile]
+            for line in subprocess.run(cmd, capture_output=True).stdout.decode().splitlines():
+                line = line.strip()
+                if line.startswith('M'):
+                    localModification = True
+                # end if
+            # end for
+            
+            mtime = None
+            if localModification:
+                epochSec = os.path.getmtime(i.Dockerfile)
+                mtime = datetime.datetime.fromtimestamp(epochSec, tz)
+                # printf('Image mtime = {}. Dockerfile mtime = {}\n'.format(str(i.mtime), str(mtime)))
+            else:
+                # No local modifications, look for the committed time on the file to get accurate mtime
+                cmd = ['git', 'log', '-1', '--pretty="%cI"', i.Dockerfile]
+                line = subprocess.run(cmd, capture_output=True).stdout.decode().replace('"', '').strip()
+                #printf("git log output: '{}'\n".format(line))
+                mtime = datetime.datetime.fromisoformat(line)
+            # end if
+
             if i.mtime < mtime:
                 recursivelyMarkStale(i)
             # end if

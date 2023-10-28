@@ -257,7 +257,7 @@ def getImageMtime(imageName):
     try:
         data = json.loads(p.stdout)
         mtime = dateutil.parser.parse(data['Created'])
-        printf('mtime {} for {}\n'.format(mtime, imageName))
+        #printf('mtime {} for {}\n'.format(mtime, imageName))
     except Exception as err:
         printf('Exception retrieving mtime for {}\n'.format(imageName))
         printf('o:{}\ne:{}\nerr:{}\n'.format(p.stdout, p.stderr, err))

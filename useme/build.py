@@ -257,7 +257,7 @@ def getImageMtime(imageName):
     try:
         data = json.loads(p.stdout)
         mtime = dateutil.parser.parse(data['Created'])
-        printf('mtime {} for {}'.format(mtime, imageName))
+        printf('mtime {} for {}\n'.format(mtime, imageName))
     except Exception as err:
         printf('Exception retrieving mtime for {}\n'.format(imageName))
         printf('o:{}\ne:{}\nerr:{}\n'.format(p.stdout, p.stderr, err))
@@ -336,6 +336,7 @@ def updateDockerfileMtimes(imageList):
                 mtime = datetime.datetime.fromisoformat(line)
             # end if
 
+            #printf('{} is < {}\n'.format(i.mtime, mtime))
             if i.mtime < mtime:
                 recursivelyMarkStale(i)
             # end if

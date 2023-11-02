@@ -6,9 +6,9 @@ FROM accupara/ubuntu:20.04
 # https://docs.docker.com/compose/release-notes/
 # https://docs.docker.com/build/release-notes/
 ENV DOCKER_CHANNEL=stable \
-    DOCKER_VERSION=24.0.4 \
-    DOCKER_COMPOSE_VERSION=v2.20.0 \
-    BUILDX_VERSION=v0.11.1 \
+    DOCKER_VERSION=24.0.7 \
+    DOCKER_COMPOSE_VERSION=v2.23.0 \
+    BUILDX_VERSION=v0.11.2 \
     DEBUG=false
 
 COPY modprobe startup.sh /usr/local/bin/

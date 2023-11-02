@@ -5,10 +5,16 @@ FROM accupara/ubuntu:20.04
 # https://docs.docker.com/engine/release-notes
 # https://docs.docker.com/compose/release-notes/
 # https://docs.docker.com/build/release-notes/
+# https://github.com/helm/helm/releases
+# https://go.dev/doc/devel/release
+# https://github.com/kubernetes-sigs/kind/releases
 ENV DOCKER_CHANNEL=stable \
     DOCKER_VERSION=24.0.7 \
     DOCKER_COMPOSE_VERSION=v2.23.0 \
     BUILDX_VERSION=v0.11.2 \
+    HELM_VER=3.12.1 \
+    GOLANG_VER=1.20.6 \
+    KIND_VER=0.20.0 \
     DEBUG=false
 
 COPY modprobe startup.sh /usr/local/bin/
@@ -56,9 +62,10 @@ RUN set -x \
         # arm64v8
 		aarch64) dockerArch='aarch64' ; altArch='arm64' ; buildx_arch='linux-arm64' ;; \
 		*) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-	esac; \
-	\
-	if ! sudo -E wget -q -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
+	esac \
+ && mkdir -p /tmp/deps && cd /tmp/deps \
+# Install Docker
+ && if ! sudo -E wget -q -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
 		echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"; \
 		exit 1; \
 	fi; \
@@ -97,6 +104,32 @@ RUN set -x \
  && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
  && unzip awscliv2.zip \
  && sudo ./aws/install \
+# kubectl and minikube
+ && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
+ && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
+ && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
+ && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
+# helm
+ && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && tar -zxf helm-v${HELM_VER}-linux-${altArch}.tar.gz \
+ && sudo mv linux-${altArch}/helm /usr/local/bin/helm \
+# Install helm secrets
+ && helm plugin install https://github.com/jkroepke/helm-secrets \
+# Install monit
+ && sudo apt-get update -y \
+ && sudo apt install -y monit \
+ && echo "set daemon 5i\n \
+set httpd port 2812 and\n \
+  allow localhost\n \
+  allow admin:monit \
+" >sudo tee /etc/monit/conf.d/custom.settings \
+# golang and kind
+ && wget -q https://go.dev/dl/go1.20.1.linux-${altArch}.tar.gz \
+ && sudo tar -C /usr/local -xzf go1.20.1.linux-${altArch}.tar.gz \
+ && sudo ln -s /usr/local/go/bin/go /usr/local/bin/go \
+ && export GOPATH=/opt/go \
+ && sudo mkdir -p /opt/go \
+ && sudo go install sigs.k8s.io/kind@v${KIND_VER} \
 # Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete \

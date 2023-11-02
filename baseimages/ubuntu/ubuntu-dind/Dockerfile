@@ -29,7 +29,7 @@ RUN set -x \
         bc \
         bison \
         ca-certificates \
-        clang-6.0 \
+        clang \
         cpio \
         cron \
         curl \

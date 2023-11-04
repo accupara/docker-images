@@ -7,11 +7,11 @@ ifdef IMGVER_BASE
 #IMGVER:=${IMGVER_BASE}_$(shell uname -m)
 
 manifest:
-	-${DOCKER} manifest rm ${IMGTAG}:${IMGVER_BASE}
-	${DOCKER} manifest create \
+	-@echo ${DOCKER} manifest rm ${IMGTAG}:${IMGVER_BASE}
+	@echo ${DOCKER} manifest create \
 		${IMGTAG}:${IMGVER_BASE} \
-		$(foreach var,${IMGVER_TARGETS},--amend ${IMGTAG}:${IMGVER_BASE}_$(call platform_for_uname,${var}))
-	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
+		$(foreach var,${IMGVER_TARGETS},--amend ${IMGTAG}:${IMGVER_BASE}_$(var))
+	@echo ${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
 
 is_arch_specific:
 	@echo "YES"

@@ -8,6 +8,11 @@ DOCKER_BUILD_FLAGS:=
 DOCKER_RUN_FLAGS:=
 DOCKER_RUN_CMD:=
 
+IMGVER_TARGETS?=aarch64 s390x x86_64
+define platform_for_uname
+$(shell python3 $(shell git rev-parse --show-toplevel)/functions.py platform_for_uname $(1))
+endef
+
 ifdef SQUASH
 DOCKER_BUILD_FLAGS+=--squash
 endif
@@ -33,7 +38,6 @@ else
 	DOCKER:=docker
 	DOCKER_RUN_FLAGS+=-v ~/:/tmp/home
 	DOCKER_RUN_CMD+=/bin/bash
-	#DOCKER_BUILD_FLAGS+=--progress=plain
 endif
 
 ifdef NOCACHE
@@ -42,6 +46,20 @@ else
 	CACHE_FLAG:=
 endif
 
+build_%:
+	${DOCKER} buildx build \
+		${CACHE_FLAG} \
+		${DOCKER_BUILD_FLAGS} \
+		--progress=plain \
+		-f $(DOCKERFILE) \
+		--platform $(call platform_for_uname,$*) \
+		${DOCKER_EXTRA_ARGS} \
+		-t $(IMGTAG):$(IMGVER_BASE)_$* \
+		$(CONTEXT_DIR)
+
+ifdef IMGVER_BASE
+build: $(foreach var,$(IMGVER_TARGETS),build_$(var))
+else
 build:
 ifdef dockerfile_git
 	${DOCKER} build \
@@ -70,6 +88,7 @@ ifdef WINDOWS
 		sfc /scannow
 	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
+endif
 endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

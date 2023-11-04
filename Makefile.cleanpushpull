@@ -4,14 +4,13 @@
 .PHONY: manifest get_image_name clean push pull tag-latest it help
 
 ifdef IMGVER_BASE
-IMGVER:=${IMGVER_BASE}_$(shell /bin/bash -c 'if [ "`uname -a | grep -c x86`" == "1" ] ; then echo x86 ; else echo arm ; fi')
+#IMGVER:=${IMGVER_BASE}_$(shell uname -m)
 
 manifest:
 	-${DOCKER} manifest rm ${IMGTAG}:${IMGVER_BASE}
 	${DOCKER} manifest create \
 		${IMGTAG}:${IMGVER_BASE} \
-		--amend ${IMGTAG}:${IMGVER_BASE}_x86 \
-		--amend ${IMGTAG}:${IMGVER_BASE}_arm
+		$(foreach var,${IMGVER_TARGETS},--amend ${IMGTAG}:${IMGVER_BASE}_$(call platform_for_uname,${var}))
 	${DOCKER} manifest push ${IMGTAG}:${IMGVER_BASE}
 
 is_arch_specific:
@@ -24,10 +23,15 @@ manifest:
 
 is_arch_specific:
 	@echo "NO"
+
 endif
 
 get_image_name:
-	@echo "${IMGTAG}:${IMGVER}"
+ifdef IMGVER_BASE
+	@$(foreach var,${IMGVER_TARGETS},echo "${var} ${IMGTAG}:${IMGVER_BASE}_${var}";)
+else
+	@echo "default $(IMGTAG):$(IMGVER)"
+endif
 
 clean:
 	-${DOCKER} rm $$(${DOCKER} ps -aq)
@@ -39,21 +43,37 @@ clean:
 		awk '{ print $$3 }' | \
 		while read line ; do ${DOCKER} rmi $$line ; done
 
+ifdef IMGVER_BASE
+push_%:
+	${DOCKER} push $(IMGTAG):$(IMGVER_BASE)_$*
+push: $(foreach var,$(IMGVER_TARGETS),push_$(var))
+else
 push:
 	${DOCKER} push $(IMGTAG):$(IMGVER)
+endif
 
+ifdef IMGVER_BASE
+pull_%:
+	${DOCKER} pull $(IMGTAG):$(IMGVER_BASE)_$*
+pull: $(foreach var,$(IMGVER_TARGETS),pull_$(var))
+else
 pull:
 	${DOCKER} pull $(IMGTAG):$(IMGVER)
+endif
 
 tag-latest:
+ifdef IMGVER_BASE
+	${DOCKER} tag $(IMGTAG):$(IMGVER_BASE) $(IMGTAG):latest
+else
 	${DOCKER} tag $(IMGTAG):$(IMGVER) $(IMGTAG):latest
+endif
 
 it:
-	${DOCKER} run \
-		--rm -it \
-		${DOCKER_RUN_FLAGS} \
-		$(IMGTAG):$(IMGVER) \
-		$(DOCKER_RUN_CMD)
+ifdef IMGVER_BASE
+	${DOCKER} run --rm -it ${DOCKER_RUN_FLAGS} $(IMGTAG):$(IMGVER_BASE) $(DOCKER_RUN_CMD)
+else
+	${DOCKER} run --rm -it ${DOCKER_RUN_FLAGS} $(IMGTAG):$(IMGVER) $(DOCKER_RUN_CMD)
+endif
 
 help:
 	@echo "Usage"

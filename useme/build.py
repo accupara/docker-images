@@ -139,13 +139,18 @@ def getImageFrom(dockerFile):
 
 def getImageDest(makefile):
     cmd = [ 'make', '-C', os.path.dirname(makefile), '--no-print-directory', 'get_image_name' ]
-    p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    return p.stdout.strip()
+    name_list = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip().splitlines()
+    rv = []
+    for entry in name_list:
+        platform, name = entry.split()
+        rv.append([platform, name])
+    # end for
+    return rv
 # end def
 
 
 class ImageNode:
-    def __init__(self, Dockerfile='', Makefile='', parentName='', imageName=''):
+    def __init__(self, Dockerfile='', Makefile='', parentName='', imageName='', platform='default'):
         self.Dockerfile = Dockerfile
         self.Makefile = Makefile
         self.parentName = parentName
@@ -153,15 +158,15 @@ class ImageNode:
         self.parentImage = None
         self.dependentImageList = []
         # Impossibly old date
-        self.mtime = datetime.datetime(
-            1970, 1, 1, tzinfo=datetime.timezone.utc)
+        self.mtime = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
         # Markers
         self.isStale = False
         self.buildInProgress = False
+        self.platform = platform
     # end def
 
     def __str__(self):
-        return str({'Dockerfile': self.Dockerfile, 'Makefile': self.Makefile, 'base': self.parentName, 'name': self.imageName})
+        return str({'Dockerfile': self.Dockerfile, 'Makefile': self.Makefile, 'base': self.parentName, 'name': self.imageName, 'platform': self.platform})
 # end class
 
 
@@ -178,16 +183,17 @@ def parseAllDockerFiles(allDockerfiles):
             continue
         # end if
 
-        image = getImageDest(makefile)
+        images = getImageDest(makefile)
+        for image in images:
+            #printf('image = {}\n'.format(image))
+            if fromLine == image[1]:
+                printf('Recursive image: from = {}. to = {}\n'.format(fromLine, image[1]))
+                continue
+            # end if
 
-        if fromLine == image:
-            printf('Recursive image: from = {}. to = {}\n'.format(fromLine, image))
-            continue
-        # end if
-
-        entry = ImageNode(Dockerfile=filePath, Makefile=makefile,
-                          parentName=fromLine, imageName=image)
-        imageList.append(entry)
+            entry = ImageNode(Dockerfile=filePath, Makefile=makefile, parentName=fromLine, imageName=image[1], platform=image[0])
+            imageList.append(entry)
+        # end for
     # end for
 
     return imageList
@@ -239,22 +245,31 @@ def generateImageLinks(imageList):
 
 
 def getImageMtime(imageName):
-    # printf('imageName = {}'.format(imageName))
-    ctrAuthPath = '/opt/config.json'
-    authParam = '{}:{}'.format(
-        os.path.expanduser(os.path.join('~', '.docker', 'config.json')),
-        ctrAuthPath
-    )
-    cmd = ['docker', 'run', '--rm', '-i',
-           '-v', authParam,
-           'quay.io/skopeo/stable:latest',
-           'inspect',
-           '--authfile', ctrAuthPath,
-           'docker://%s' % imageName]
-    p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    mtime = None
+    #printf('imageName = {}'.format(imageName))
 
+    ctrAuthPath = '/opt/config.json'
+    hostAuthPath = os.path.expanduser(os.path.join('~', '.docker', 'config.json'))
+    authParam = '{}:{}'.format(hostAuthPath, ctrAuthPath)
+
+    cmd = ['docker', 'run', '--rm', '-i']
+
+    if os.path.exists(hostAuthPath):
+        cmd.extend(['-v', authParam])
+    else:
+        printf('Authparam {} not found!\n'.format(authParam))
+    # end if
+
+    cmd.extend(['quay.io/skopeo/stable:latest', 'inspect'])
+    
+    if os.path.exists(hostAuthPath):
+        cmd.extend(['--authfile', ctrAuthPath])
+    # end if
+    cmd.append('docker://%s' % imageName)
+    #printf('cmd: {}\n'.format(cmd))
+
+    mtime = None
     try:
+        p = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         data = json.loads(p.stdout)
         mtime = dateutil.parser.parse(data['Created'])
         #printf('mtime {} for {}\n'.format(mtime, imageName))
@@ -269,8 +284,8 @@ def getImageMtime(imageName):
 
 
 def updateImageMtime(image):
-    # print('Updating mtime for {}'.format(image))
     mtime = getImageMtime(image.imageName)
+    #printf('Updating mtime for {} to {}\n'.format(image, mtime))
     if mtime:
         image.mtime = mtime
     # end if
@@ -292,18 +307,21 @@ def updateImageMtimes(imageList):
 
     with cf.ThreadPoolExecutor(max_workers=10) as executor:
         for i in imageList:
+            #printf('image: {}\n'.format(i))
             allFutures.append(executor.submit(updateImageMtime, i))
         # end for
 
         for i in imageList:
             if not i.parentImage:
-                allFutures.append(executor.submit(
-                    getExternalImageMtime, i.parentName))
+                #printf('parent image: {}\n'.format(i.parentName))
+                allFutures.append(executor.submit(getExternalImageMtime, i.parentName))
             # end if
         # end for
     # end with
 
+    #printf('af count: {}\n'.format(len(allFutures)))
     cf.wait(allFutures)
+    #printf('all afs done\n')
 # end def
 
 
@@ -327,12 +345,12 @@ def updateDockerfileMtimes(imageList):
             if localModification:
                 epochSec = os.path.getmtime(i.Dockerfile)
                 mtime = datetime.datetime.fromtimestamp(epochSec, tz)
-                # printf('Image mtime = {}. Dockerfile mtime = {}\n'.format(str(i.mtime), str(mtime)))
+                #printf('Image mtime = {}. Dockerfile mtime = {}\n'.format(str(i.mtime), str(mtime)))
             else:
                 # No local modifications, look for the committed time on the file to get accurate mtime
                 cmd = ['git', 'log', '-1', '--pretty="%cI"', i.Dockerfile]
                 line = subprocess.run(cmd, capture_output=True).stdout.decode().replace('"', '').strip()
-                #printf("git log output: '{}'\n".format(line))
+                #printf("output of {}: '{}'\n".format(cmd, line))
                 mtime = datetime.datetime.fromisoformat(line)
             # end if
 
@@ -463,15 +481,20 @@ def printBuildPlan(plan):
 
 
 def rebuildImage(args, image):
+    cmd = ['make', '-C', os.path.dirname(image.Makefile)]
+    if image.platform != 'default':
+        cmd.extend(['build_{}'.format(image.platform), 'push_{}'.format(image.platform)])
+    else:
+        cmd.extend(['build', 'push'])
+    # end if
+    cmd.append('NOCACHE=yes')
     if args.dryRun:
-        pass
-        #printf('docker pull {} ; make -C {} build push\n'.format(
-        #       image.parentName, os.path.dirname(image.Makefile)))
+        printf('{}\n'.format(cmd))
         #time.sleep(1)
+        pass
     else:
         # Then start a rebuild in the correct directory
-        rv = subprocess.call(
-            ['make', '-C', os.path.dirname(image.Makefile), 'build', 'push', 'NOCACHE=yes'])
+        rv = subprocess.call(cmd)
         if rv != 0:
             return rv
         # end if
@@ -482,6 +505,7 @@ def rebuildImage(args, image):
 
     if args.dryRun == False:
         printf('{} is ready\n'.format(image.imageName))
+    # end if
 
     return 0
 # end def

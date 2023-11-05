@@ -17,3 +17,6 @@ recreate_all_android:
 	$(MAKE) -C baseimages/android         build push
 	$(MAKE) -C qt/qt5/android             build push
 	$(MAKE) -C qt/apps/subsurface/android build push
+
+everything:
+	./useme/build.py -C baseimages

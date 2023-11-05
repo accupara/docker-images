@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=phase1 phase2 scratchbox golang java rustlang nvidia
+SUBDIRS=ubuntu centos debian fedora rocky-linux golang java
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -3,7 +3,7 @@
 SUBDIRS=\
 	baseimages \
 	business-cards django-nginx qemu duperemove mozilla chromium sonic \
-	mobile cpython pyinstaller java cncf db \
+	mobile cpython java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \
 	aosp agl \
@@ -18,5 +18,19 @@ recreate_all_android:
 	$(MAKE) -C qt/qt5/android             build push
 	$(MAKE) -C qt/apps/subsurface/android build push
 
+######################################################################
+everything_phase1:
+	./useme/build.py -C baseimages/phase1 -j8
+	$(MAKE) -C baseimages/phase1 manifest -k
+
+everything_phase2: everything_phase1
+	./useme/build.py -C baseimages/phase2 -j8
+	$(MAKE) -C baseimages/phase2 manifest -k
+
+everything_dir_%:
+	./useme/build.py -C $* -j8
+	$(MAKE) -C $* manifest -k
+
 everything:
-	./useme/build.py -C baseimages
+	$(MAKE) everything_phase2
+	$(MAKE) -j4 everything_dir_db everything_dir_java everything_dir_cncf

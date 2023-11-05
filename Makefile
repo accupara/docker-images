@@ -19,6 +19,7 @@ recreate_all_android:
 	$(MAKE) -C qt/apps/subsurface/android build push
 
 ######################################################################
+.PHONY: everything_phase1 everything_phase2 everything_dir_cncf everything_dir_db everything_dir_java everything
 everything_phase1:
 	./useme/build.py -C baseimages/phase1 -j8
 	$(MAKE) -C baseimages/phase1 manifest -k
@@ -32,5 +33,6 @@ everything_dir_%:
 	$(MAKE) -C $* manifest -k
 
 everything:
-	$(MAKE) everything_phase2
+	$(MAKE) -j4 everything_phase1
+	$(MAKE) -j4 everything_phase2
 	$(MAKE) -j4 everything_dir_db everything_dir_java everything_dir_cncf

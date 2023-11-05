@@ -138,10 +138,16 @@ def getImageFrom(dockerFile):
 
 
 def getImageDest(makefile):
-    cmd = [ 'make', '-C', os.path.dirname(makefile), '--no-print-directory', 'get_image_name' ]
+    cmd = ['make', '--no-print-directory', '-C', os.path.dirname(makefile), 'get_image_name']
     name_list = subprocess.run(cmd, text=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.strip().splitlines()
+    #printf('cmd = {}. name_list = {}\n'.format(cmd, name_list))
     rv = []
     for entry in name_list:
+        #printf('entry = {}\n'.format(entry))
+        if 'ing directory' in entry:
+            # ignore Entering and Leaving directory messages
+            continue
+        # end if
         platform, name = entry.split()
         rv.append([platform, name])
     # end for

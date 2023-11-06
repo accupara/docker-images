@@ -495,7 +495,7 @@ def rebuildImage(args, image):
     # end if
     cmd.append('NOCACHE=yes')
     if args.dryRun:
-        printf('{}\n'.format(cmd))
+        #printf('{}\n'.format(cmd))
         #time.sleep(1)
         pass
     else:

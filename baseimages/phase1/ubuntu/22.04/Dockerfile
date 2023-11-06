@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 
 # Compile remake on the fly and keep it ready for the next stage
-## Chicken or egg : Which came first?
+# Chicken or egg : Which came first?
 FROM accupara/ubuntu:22.04 as remake
 RUN set -x \
  && sudo apt-get update \
@@ -121,6 +121,5 @@ RUN set -x \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
 
 COPY --from=remake /tmp/make /usr/bin/remake
-#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

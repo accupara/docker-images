@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 
 # Compile remake on the fly and keep it ready for the next stage
-## Chicken or egg : Which came first?
+# Chicken or egg : Which came first?
 FROM accupara/ubuntu:20.04 as remake
 RUN set -x \
  && sudo apt-get update \

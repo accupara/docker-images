@@ -135,6 +135,6 @@ RUN set -x \
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake
-#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

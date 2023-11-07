@@ -24,7 +24,7 @@ RUN set -x \
  && sudo apt-get install -y \
     golang-github-pierrec-xxhash-dev \
     libpopt-dev \
-    libssl-dev \
+    libssh-dev \
     liblz4-dev \
     zlib1g-dev \
  && export RSYNC_VER=3.2.7 \
@@ -47,8 +47,9 @@ COPY sshd_config /tmp/
 # Install the minimum tools
 RUN set -x \
  && apt-get update \
- && apt-get -y dist-upgrade \
- && apt-get install -y \
+ && apt-get install -y eatmydata \
+ && eatmydata apt-get -y dist-upgrade \
+ && eatmydata apt-get install -y \
       bash-completion \
       binutils \
       build-essential \

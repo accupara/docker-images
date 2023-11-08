@@ -99,7 +99,7 @@ RUN set -x \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
  && cd /tmp ; eatmydata -- rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle

@@ -292,6 +292,7 @@ def getImageMtime(imageName):
 def updateImageMtime(image):
     mtime = getImageMtime(image.imageName)
     #printf('Updating mtime for {} to {}\n'.format(image, mtime))
+    printf('Updating mtime for {} to {}\n'.format(image.imageName, mtime))
     if mtime:
         image.mtime = mtime
     # end if
@@ -360,8 +361,8 @@ def updateDockerfileMtimes(imageList):
                 mtime = datetime.datetime.fromisoformat(line)
             # end if
 
-            #printf('{} is < {}\n'.format(i.mtime, mtime))
             if i.mtime < mtime:
+                printf('{} is < {} for {}. localMod = {}\n'.format(i.mtime, mtime, i.imageName, localModification))
                 recursivelyMarkStale(i)
             # end if
         except Exception as e:

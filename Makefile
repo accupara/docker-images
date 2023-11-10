@@ -19,7 +19,7 @@ recreate_all_android:
 	$(MAKE) -C qt/apps/subsurface/android build push
 
 ######################################################################
-.PHONY: everything_phase1 everything_phase2 everything_dir_cncf everything_dir_db everything_dir_java everything
+.PHONY: everything_phase1 everything_phase2 everything
 everything_phase1:
 	./useme/build.py -C baseimages/phase1 -j `nproc`
 	-$(MAKE) -C baseimages/phase1 manifest -k

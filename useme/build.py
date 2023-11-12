@@ -259,7 +259,7 @@ def getImageMtime(imageName):
     hostAuthPath = os.path.expanduser(os.path.join('~', '.docker', 'config.json'))
     authParam = '{}:{}'.format(hostAuthPath, ctrAuthPath)
 
-    cmd = ['docker', 'run', '--pull', 'always', '--rm', '-i']
+    cmd = ['docker', 'run', '--rm', '-i']
 
     if os.path.exists(hostAuthPath):
         cmd.extend(['-v', authParam])

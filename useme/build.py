@@ -16,6 +16,7 @@ import glob
 import subprocess
 
 import concurrent.futures as cf
+from ratelimiter import RateLimiter
 
 externalMtimes = {}
 
@@ -250,6 +251,7 @@ def generateImageLinks(imageList):
 # end def
 
 
+@RateLimiter(max_calls=10, period=1)
 def getImageMtime(imageName):
     #printf('imageName = {}'.format(imageName))
 
@@ -257,7 +259,7 @@ def getImageMtime(imageName):
     hostAuthPath = os.path.expanduser(os.path.join('~', '.docker', 'config.json'))
     authParam = '{}:{}'.format(hostAuthPath, ctrAuthPath)
 
-    cmd = ['docker', 'run', '--rm', '-i']
+    cmd = ['docker', 'run', '--pull', 'always', '--rm', '-i']
 
     if os.path.exists(hostAuthPath):
         cmd.extend(['-v', authParam])
@@ -312,7 +314,7 @@ def updateImageMtimes(imageList):
     printf('Fetching image mtimes\n')
     allFutures = []
 
-    with cf.ThreadPoolExecutor(max_workers=10) as executor:
+    with cf.ThreadPoolExecutor(max_workers=16) as executor:
         for i in imageList:
             #printf('image: {}\n'.format(i))
             allFutures.append(executor.submit(updateImageMtime, i))

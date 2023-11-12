@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=ubuntu centos debian fedora rocky-linux golang java nvidia
+SUBDIRS=ubuntu centos debian fedora rocky-linux golang nvidia
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

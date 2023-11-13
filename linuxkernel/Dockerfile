@@ -12,7 +12,6 @@ RUN set -x \
         clang-6.0 \
         cpio \
         flex \
-        gcc-arm-linux-gnueabi \
         libelf-dev \
         libncurses5-dev \
         libssl-dev \

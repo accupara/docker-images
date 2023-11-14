@@ -94,7 +94,7 @@ RUN set -x \
  && mkdir -p /home/admin/.bash_completion.d \
  && register-python-argcomplete crave > /tmp/crave_bash_completion \
  && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
- && sudo chown -R admin:admin /home/admin/.bash_completion.d
+ && sudo chown -R admin:admin /home/admin/.bash_completion.d \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

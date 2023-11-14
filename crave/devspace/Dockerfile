@@ -4,10 +4,10 @@ FROM accupara/xpra:22.04
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
- && sudo apt-get -y update \
- && sudo apt-get -y dist-upgrade \
+ && sudo eatmydata apt-get -y update \
+ && sudo eatmydata apt-get -y dist-upgrade \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
- && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \
       bmon \
       cscope \
@@ -29,17 +29,17 @@ RUN set -x \
       x11vnc \
       xvfb \
 # Fix a problem in xfwm4
- && sudo add-apt-repository ppa:xubuntu-dev/staging \
- && sudo apt update \
- && sudo apt upgrade -y \
+ && sudo eatmydata add-apt-repository ppa:xubuntu-dev/staging \
+ && sudo eatmydata apt update \
+ && sudo eatmydata apt upgrade -y \
 # Get rid of the firefox snap and install it from PPA so that it is a regular debian package
- && sudo apt-get purge -y firefox \
- && sudo add-apt-repository ppa:mozillateam/ppa \
+ && sudo eatmydata apt-get purge -y firefox \
+ && sudo eatmydata add-apt-repository ppa:mozillateam/ppa \
  && echo 'Package: *' | sudo tee /etc/apt/preferences.d/mozilla-firefox \
  && echo 'Pin: release o=LP-PPA-mozillateam' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
  && echo 'Pin-Priority: 1001' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
- && sudo apt-get update \
- && sudo apt-get install -y --allow-downgrades firefox \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y --allow-downgrades firefox \
 # Install the GRPC tool for crave clone
  && mkdir -p /tmp/grpcurl_download \
  && LOCATION=$(curl -s https://api.github.com/repos/fullstorydev/grpcurl/releases/latest \
@@ -55,8 +55,8 @@ RUN set -x \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
 # Remove python 2 completely
- && sudo apt-get purge -y python python2.7 \
- && sudo apt-get -y autoremove \
+ && sudo eatmydata apt-get purge -y python python2.7 \
+ && sudo eatmydata apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
@@ -76,7 +76,8 @@ RUN set -x \
 # Add the GCloud tools
  && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - \
- && sudo apt-get update && sudo apt-get install -y google-cloud-cli \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y google-cloud-cli \
 # Add the AWS tools
  && mkdir -p /tmp/awscli \
  && cd /tmp/awscli \
@@ -85,8 +86,17 @@ RUN set -x \
  && sudo ./aws/install \
  && cd /tmp \
  && rm -rf awscli \
+# Install the deps for autocompletions for the crave client binary inside devspace sessions
+ && sudo eatmydata add-apt-repository -y universe \
+ && sudo eatmydata apt-get -y update \
+ && sudo eatmydata apt install -y python3-pip \
+ && sudo python -m pip -v install argcomplete \
+ && mkdir -p /home/admin/.bash_completion.d \
+ && register-python-argcomplete crave > /tmp/crave_bash_completion \
+ && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
+ && sudo chown -R admin:admin /home/admin/.bash_completion.d
 # The usual cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
@@ -100,16 +110,6 @@ RUN set -x \
  && sudo mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Copy the init script to its intended location
  && sudo mv /tmp/init.sh /etc/crave/
-
-RUN set -x \
- && sudo add-apt-repository -y universe \
- && sudo apt-get -y update \
- && sudo apt install -y python3-pip \
- && sudo python -m pip -v install argcomplete \
- && mkdir -p /home/admin/.bash_completion.d \
- && register-python-argcomplete crave > /tmp/crave_bash_completion \
- && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
- && sudo chown -R admin:admin /home/admin/.bash_completion.d
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

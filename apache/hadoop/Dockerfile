@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/openjdk:18
+FROM accupara/openjdk:19
 
 ENV CMAKE_VER=3.26.4 \
     PROTOBUF_VER=3.7.1 \
@@ -26,9 +26,10 @@ RUN set -x \
         software-properties-common \
         zlib1g-dev \
 # Latest version of cmake required for compilation
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
+ && ARCH=$(uname -m) \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh --skip-license --prefix=/usr \
 # Download boost, but don't compile it
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
  && sudo tar -C /opt -xf /tmp/boost_${BOOST_VER}.tar.gz \

@@ -66,6 +66,13 @@ FROM centos:7
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
+# Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
+# Gradle: https://gradle.org/releases/
+# Tmux: https://github.com/tmux/tmux/releases
+ENV GIT_VER=2.42.1 \
+    GRADLE_VER=8.4 \
+    TMUX_VERSION=3.3
+
 COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
@@ -98,7 +105,6 @@ RUN set -x \
       vim \
       wget \
 # Download and install the latest tmux
- && export TMUX_VERSION=3.2 \
  && cd /tmp && wget https://github.com/tmux/tmux/releases/download/3.2/tmux-${TMUX_VERSION}.tar.gz \
  && tar -xf tmux-${TMUX_VERSION}.tar.gz && cd tmux-${TMUX_VERSION} \
  && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
@@ -129,7 +135,6 @@ RUN set -x \
  && mv /tmp/limits.conf /etc/security/ \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.4.2 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
@@ -141,8 +146,8 @@ ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
     LANG=en_US.utf8 \
-    GRADLE_HOME=/opt/gradle/gradle-5.0 \
-    PATH=/opt/gradle/gradle-5.0/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VER} \
+    PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 WORKDIR /home/admin
 
 RUN chown -R admin:admin /home/admin \
@@ -162,7 +167,6 @@ RUN chown -R admin:admin /home/admin \
       libzstd \
       jq \
 # Install the latest git
- && export GIT_VER=2.39.3 \
  && sudo yum install -y \
     expat-devel \
     gettext \

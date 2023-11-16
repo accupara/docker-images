@@ -4,7 +4,8 @@ def platform_for_uname(uname):
     m = {
         'x86_64':'linux/amd64',
         'aarch64':'linux/arm64',
-        's390x':'linux/s390x'
+        's390x':'linux/s390x',
+        'ppc64le':'linux/ppc64le'
     }
 
     if uname not in m:

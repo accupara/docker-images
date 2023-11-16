@@ -43,6 +43,11 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 COPY sshd_config /tmp/
 
+# Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
+# Gradle: https://gradle.org/releases/
+ENV GIT_VER=2.42.1 \
+    GRADLE_VER=8.4
+
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
@@ -72,16 +77,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.39.3 \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && mkdir -p /tmp/dl && cd /tmp/dl \
+ && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
  && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; eatmydata -- rm -rf v${GIT_VER}.tar.gz git-${GIT_VER} \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
@@ -104,6 +107,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Clean up image
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+ && cd /tmp && sudo find dl -delete \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_*
 

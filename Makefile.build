@@ -8,7 +8,7 @@ DOCKER_BUILD_FLAGS:=
 DOCKER_RUN_FLAGS:=
 DOCKER_RUN_CMD:=
 
-IMGVER_TARGETS?=aarch64 s390x x86_64
+IMGVER_TARGETS?=aarch64 s390x x86_64 ppc64le
 define platform_for_uname
 $(shell python3 $(shell git rev-parse --show-toplevel)/functions.py platform_for_uname $(1))
 endef

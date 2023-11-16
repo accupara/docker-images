@@ -51,15 +51,8 @@ RUN set -x \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
-# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
  && make -j `nproc` \
-# So this command fixes the order of the LDFLAGS
- ;  gcc -std=gnu99 -o rsync \
-        $(find . -name '*.o' | xargs echo) \
-        -lpopt -llz4 -lzstd -lcrypto \
-        -L/usr/lib64 -ldl \
- && make install
+ && sudo make install
 
 ################## The real container starts here ##################
 FROM centos:7

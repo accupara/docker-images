@@ -1,12 +1,11 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM alpine:3.9
+FROM alpine:3
 
 ENV LANG en_US.utf8
 
 RUN set -x \
  && apk update \
- && apk add --virtual \
-    build-dependencies \
+ && apk add --virtual build-dependencies \
     ca-certificates \
     openssl \
     openssh-server \
@@ -38,7 +37,11 @@ RUN set -x \
     rsync \
     sudo \
     vim \
-    wget \
+# Add glibc from custom repo
+ && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+ && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
+ && apk add glibc-2.29-r0.apk \
+ && rm glibc-2.29-r0.apk \
 # Add default admin user
  && addgroup -g 1000 -S admin \
  && adduser -u 1000 -D -s /bin/bash admin -G admin \
@@ -63,11 +66,6 @@ RUN set -x \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys \
-# Add glibc from custom repo
- && sudo wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
- && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
- && sudo apk add glibc-2.29-r0.apk \
- && rm glibc-2.29-r0.apk
+ && touch /home/admin/.ssh/authorized_keys
 
 EXPOSE 22

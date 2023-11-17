@@ -95,7 +95,7 @@ RUN set -x \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.39.3 \
+ && export GIT_VER=2.42.1 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
@@ -104,7 +104,7 @@ RUN set -x \
  && cd /tmp ; eatmydata -- rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.5.1 \
+ && export GRADLE_VER=8.4 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \

@@ -5,43 +5,40 @@ ENV LANG en_US.utf8
 
 RUN set -x \
  && apk update \
- && apk add --virtual build-dependencies \
-    ca-certificates \
-    openssl \
-    openssh-server \
-    tar \
-    xz \
-    pigz \
-    build-base \
-    gcc \
-    g++ \
-    zlib-dev \
-    make \
-    cmake \
+ && apk add --virtual \
     autoconf \
-    wget \
-    git \
-    subversion \
-    curl \
-    less \
     bash \
     bash-completion \
-    util-linux \
-    pciutils \
-    usbutils \
-    coreutils \
     binutils \
+    build-base \
+    build-dependencies \
+    ca-certificates \
+    cmake \
+    coreutils \
+    curl \
     findutils \
+    g++ \
+    gcc \
+    gcompat \
+    git \
     grep \
-    shadow \
+    less \
+    make \
+    openssl \
+    openssh-server \
+    pciutils \
+    pigz \
     rsync \
+    shadow \
+    subversion \
     sudo \
+    tar \
+    usbutils \
+    util-linux \
     vim \
-# Add glibc from custom repo
- && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
- && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
- && apk add glibc-2.29-r0.apk \
- && rm glibc-2.29-r0.apk \
+    wget \
+    xz \
+    zlib-dev \
 # Add default admin user
  && addgroup -g 1000 -S admin \
  && adduser -u 1000 -D -s /bin/bash admin -G admin \

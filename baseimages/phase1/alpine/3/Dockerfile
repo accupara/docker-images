@@ -6,12 +6,11 @@ ENV LANG en_US.utf8
 RUN set -x \
  && apk update \
  && apk add --virtual \
-    autoconf \
     bash \
     bash-completion \
     binutils \
     build-base \
-    build-dependencies \
+    #build-dependencies \
     ca-certificates \
     cmake \
     coreutils \

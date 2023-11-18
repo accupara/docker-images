@@ -22,15 +22,15 @@ recreate_all_android:
 .PHONY: everything_phase1 everything_phase2 everything
 everything_phase1:
 	./useme/build.py -C baseimages/phase1 -j `nproc`
-	-$(MAKE) -C baseimages/phase1 manifest -k
+	-$(MAKE) -C baseimages/phase1 manifest -k -j `nproc`
 
 everything_phase2: everything_phase1
 	./useme/build.py -C baseimages/phase2 -j `nproc`
-	-$(MAKE) -C baseimages/phase2 manifest -k
+	-$(MAKE) -C baseimages/phase2 manifest -k -j `nproc`
 
 everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
-	-$(MAKE) -C $* manifest -k
+	-$(MAKE) -C $* manifest -k -j `nproc`
 
 everything:
 	$(MAKE) -j4 everything_phase1

@@ -5,10 +5,6 @@ set timeout -1
 spawn apt-get install -y keyboard-configuration
 expect {
     "\\\[More\\\]" { send "\n"; exp_continue; }
-    "Country of origin for the keyboard: " { send "29\n"; }
+    "Country of origin for the keyboard: " { send "29\n"; exp_continue; }
+    "Keyboard layout: " { send "1\n"; exp_continue; }
 }
-expect {
-    "\\\[More\\\]" { send "\n"; exp_continue; }
-    "Keyboard layout: " { send "1\n" }
-}
-expect eof

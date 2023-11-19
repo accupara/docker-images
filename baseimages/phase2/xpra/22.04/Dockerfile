@@ -4,21 +4,22 @@ FROM accupara/ubuntu:22.04
 COPY kb-config.exp startcmd.sh /tmp/
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         binutils \
         expect \
         openssh-server \
         python-pip \
 # No longer required?
- && if [ "$(uname -m)" != "x86_64" ] ; then sudo expect /tmp/kb-config.exp ; fi \
- && sudo apt-get install -y xpra \
+ && sudo expect /tmp/kb-config.exp \
+ && sudo eatmydata apt-get install -y xpra \
  && mkdir -p ~/.ssh/ \
  && grep -v start-new-commands /etc/xpra/xpra.conf > /tmp/xpra.conf \
  && echo "start-new-commands = yes" >> /tmp/xpra.conf \
  && sudo mv /tmp/xpra.conf /etc/xpra/xpra.conf \
  && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc \
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 CMD /tmp/startcmd.sh

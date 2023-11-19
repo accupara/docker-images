@@ -14,7 +14,8 @@ RUN set -x \
  && sudo mkdir -p $RUSTUP_HOME $CARGO_HOME \
  && sudo chown admin:admin $RUSTUP_HOME $CARGO_HOME \
  && cd /tmp \
- && wget -q "https://static.rust-lang.org/rustup/dist/$(uname -m)-unknown-linux-gnu/rustup-init" \
+ && arch=$(uname -m) && if [ "$arch" == "ppc64le" ] ; then arch="powerpc64le" ; fi \
+ && wget -q "https://static.rust-lang.org/rustup/dist/$(arch)-unknown-linux-gnu/rustup-init" \
  && chmod +x rustup-init \
  && eatmydata ./rustup-init -y --no-modify-path --default-toolchain nightly \
  && sudo chmod -R a+w $RUSTUP_HOME $CARGO_HOME \

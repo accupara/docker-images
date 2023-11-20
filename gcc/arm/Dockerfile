@@ -10,7 +10,7 @@ RUN set -x \
     xz-utils \
     wget \
 # Get the cross-compiler directly from ARM
- && wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/${GCC_ARM_VER}/binrel/gcc-arm-$(GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
+ && wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/${GCC_ARM_VER}/binrel/gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
  && tar -xf gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
  && rm gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
  && export GCC_ARM_DIR=$(readlink -f gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu) \

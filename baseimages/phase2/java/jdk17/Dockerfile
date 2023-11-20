@@ -2,8 +2,10 @@
 FROM eclipse-temurin:17-jdk-centos7 as jdk
 FROM accupara/debian:10
 
+# Maven: https://maven.apache.org/download.cgi
 ENV JAVA_HOME=/opt/java/openjdk \
-    PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/opt/java/openjdk/bin:/opt/java/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    MAVEN_VER=3.9.5
 
 # See https://hub.docker.com/_/eclipse-temurin
 COPY --from=jdk /opt/java/openjdk /opt/java/openjdk

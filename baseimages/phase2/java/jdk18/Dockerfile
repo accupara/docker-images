@@ -23,7 +23,7 @@ RUN set -x \
  && sudo eatmydata apt-get install -y \
     libfreetype6 \
 # And then do the final bit of cleanup
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_* \
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_* \
  && cd /tmp \
  && sudo find dl -delete

@@ -7,6 +7,7 @@ ENV JAVA_HOME=/opt/java/openjdk \
     PATH=/opt/java/openjdk/bin:/opt/java/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     MAVEN_VER=3.9.5
 
+# See https://hub.docker.com/_/eclipse-temurin
 COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
 
 RUN set -x \
@@ -17,6 +18,10 @@ RUN set -x \
  && sudo mv apache-maven-${MAVEN_VER} /opt/java/maven \
 # Now lets confirm that it actually works
  && mvn -v \
+# Add some fonts
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
+    libfreetype6 \
 # And then do the final bit of cleanup
  && cd /tmp \
  && sudo find dl -delete

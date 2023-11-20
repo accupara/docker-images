@@ -13,7 +13,7 @@ COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
 RUN set -x \
  && mkdir -p /tmp/dl \
  && cd /tmp/dl \
- && wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VER}/binaries/apache-maven-${MAVEN_VER}-bin.tar.gz -O maven.tar.gz \
+ && wget -q https://dlcdn.apache.org/maven/maven-3/${MAVEN_VER}/binaries/apache-maven-${MAVEN_VER}-bin.tar.gz -O maven.tar.gz \
  && tar -xf maven.tar.gz \
  && sudo mv apache-maven-${MAVEN_VER} /opt/java/maven \
 # Now lets confirm that it actually works

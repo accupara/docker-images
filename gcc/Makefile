@@ -1,5 +1,4 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-IMGTAG?=accupara/gcc
-IMGVER?=latest
+SUBDIRS=build arm
 
-include $(shell git rev-parse --show-toplevel)/Makefile.build
+include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

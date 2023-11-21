@@ -21,9 +21,10 @@ RUN set -x \
 # Add some fonts
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y \
+    libfontconfig1 \
     libfreetype6 \
 # And then do the final bit of cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_* \
  && cd /tmp \
  && sudo find dl -delete

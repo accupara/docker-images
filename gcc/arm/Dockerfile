@@ -19,6 +19,7 @@ RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && sudo eatmydata apt-get update -y \
  && sudo eatmydata apt-get install -y \
+    gcc-multilib \
     xz-utils \
     wget \
 # Get the cross-compiler directly from ARM
@@ -26,6 +27,7 @@ RUN set -x \
  && tar -xf gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
  && rm gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu.tar.xz \
  && sudo mv $(readlink -f gcc-arm-${GCC_ARM_VER}-x86_64-aarch64-none-linux-gnu) /opt/ \
+ && sudo chown -R admin:admin /opt/ \
 # Create temp directory in which to download stuff
  && mkdir -p /tmp/dl \
 # Download, extract and copy the appropriate files from each deb into the gcc_arm_dir
@@ -76,20 +78,19 @@ RUN set -x \
  && wget -q --no-check-certificate https://curl.se/download/curl-${CURL_VER}.tar.gz \
  && tar xvf curl-${CURL_VER}.tar.gz \
  && cd curl-${CURL_VER} \
- #&& ./configure --build x86_64-pc-linux-gnu --host aarch64-linux-gnu --with-gnutls --prefix=${GCC_ARM_DIR}/lib/ --enable-static  \
- #&& make \
- #&& sudo make install \
- #&& cp ${GCC_ARM_DIR}/lib/lib/libcurl.* ${GCC_ARM_DIR}/aarch64-none-linux-gnu/libc/lib64/. \
+ && ./configure --build x86_64-pc-linux-gnu --host aarch64-linux-gnu --with-gnutls --prefix=${GCC_ARM_DIR}/lib/ --enable-static  \
+ && make -j `nproc` \
+ && make install \
+ && cp ${GCC_ARM_DIR}/lib/lib/libcurl.* ${GCC_ARM_DIR}/aarch64-none-linux-gnu/libc/lib64/. \
 # The following library is for parsing XML in the AGF application.
 # Download and build libxml2
  && cd /tmp/dl \
  && wget -q http://xmlsoft.org/sources/libxml2-${LIBXML_VER}.tar.gz \
  && tar xvfz libxml2-${LIBXML_VER}.tar.gz \
  && cd libxml2-${LIBXML_VER} \
- #&& ./configure --build x86_64-pc-linux-gnu --host aarch64-linux-gnu --prefix=${GCC_ARM_DIR}/lib/ --enable-static \
- #&& make \
- #&& sudo make install \
+ && ./configure --build x86_64-pc-linux-gnu --host aarch64-linux-gnu --prefix=${GCC_ARM_DIR}/lib/ --enable-static \
+ && make -j `nproc` \
+ && make install \
 # Cleanup
- #&& cd /tmp/ \
- #&& find dl -delete
- && exit 0
+ && cd /tmp/ \
+ && find dl -delete

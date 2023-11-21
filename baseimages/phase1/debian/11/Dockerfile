@@ -51,8 +51,9 @@ ENV GIT_VER=2.42.1 \
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
- && apt-get -y dist-upgrade \
- && apt-get install -y \
+ && apt-get install -y eatmydata \
+ && eatmydata apt-get -y dist-upgrade \
+ && eatmydata apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
@@ -60,14 +61,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         debhelper \
         devscripts \
         dh-make \
-        eatmydata \
         guile-2.2 \
         jq \
+        libpopt0 \
         locales \
         lsb-release \
         ninja-build \
         openssh-server \
-        rsync \
         subversion \
         sudo \
         vim-nox \
@@ -86,7 +86,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Install the latest version of gradle
  && cd /tmp \
- && export GRADLE_VER=7.5.1 \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \

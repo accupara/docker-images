@@ -51,8 +51,9 @@ ENV GIT_VER=2.42.1 \
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
- && apt-get -y dist-upgrade \
- && apt-get install -y \
+ && apt-get install -y eatmydata \
+ && eatmydata apt-get -y dist-upgrade \
+ && eatmydata apt-get install -y \
         bash-completion \
         binutils \
         build-essential \
@@ -60,9 +61,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         debhelper \
         devscripts \
         dh-make \
-        eatmydata \
         guile-2.2 \
         jq \
+        libpopt0 \
         locales \
         lsb-release \
         ninja-build \

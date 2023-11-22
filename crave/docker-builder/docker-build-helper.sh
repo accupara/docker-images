@@ -1,7 +1,7 @@
 #!/bin/bash
 
 follow_build() {
-    watch "ps -ef | grep 'docker.\(build\|push\|pull\)' | grep -v runc | grep -v usr.local.lib"
+    watch "ps -ef | grep 'docker.\(build\|push\|pull\)' | grep -v runc | grep -v usr.local.lib ; echo '' ; df -h ."
 }
 
 main () {

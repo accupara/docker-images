@@ -91,6 +91,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \
+# Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
+ && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
+ && sudo mv /tmp/repo /usr/bin/repo \
+ && sudo chmod +x /usr/bin/repo \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \

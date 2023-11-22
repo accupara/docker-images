@@ -47,12 +47,6 @@ RUN set -x \
             g++-multilib \
             gcc-multilib ; \
     fi \
-# Install the latest version of repo
- && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
- && sudo mkdir /opt/aosp \
- && sudo chown admin:admin /opt/aosp \
- && sudo mv /tmp/repo /usr/bin/repo \
- && sudo chmod +x /usr/bin/repo \
 # This is required for agl compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

@@ -24,12 +24,9 @@ RUN set -x \
     libfreetype6 \
     brotli \
     openjdk-11-jdk \
-# Get the latest version of repo
- && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
- && sudo mkdir /opt/aosp \
+# Create a directory for aosp
+ && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
- && sudo mv /tmp/repo /usr/bin/repo \
- && sudo chmod +x /usr/bin/repo \
 # Remove python 2 completely
  && sudo apt-get purge -y python python2.7 \
  && sudo apt-get -y autoremove \

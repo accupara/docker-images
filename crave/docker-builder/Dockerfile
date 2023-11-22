@@ -6,6 +6,7 @@ COPY docker-build-helper.sh /usr/bin/
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
+ 	bmon \
  	htop \
  && sudo python3 -m pip install \
   	pick \

@@ -33,6 +33,5 @@ everything_dir_%:
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
 everything:
-	$(MAKE) -j4 everything_phase1
 	$(MAKE) -j4 everything_phase2
 	$(MAKE) -j4 everything_dir_tak everything_dir_db everything_dir_java everything_dir_cncf

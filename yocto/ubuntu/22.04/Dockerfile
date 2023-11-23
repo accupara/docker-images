@@ -2,8 +2,8 @@
 FROM accupara/ubuntu:22.04
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         build-essential \
         chrpath \
         cpio \
@@ -35,10 +35,12 @@ RUN set -x \
         xz-utils \
         zstd \
  && if [ $(uname -a | grep -c x86) == "1" ] ; then \
-        sudo apt-get -y install \
+        sudo eatmydata apt-get -y install \
             g++-multilib \
             gcc-multilib ; \
     fi \
+# Switch to python3
+ && sudo eatmydata apt-get install -y python-is-python3 \
 # Set up locale
  && sudo locale-gen en_US.UTF-8 \
  && echo "export LANG=en_US.UTF-8" > /tmp/add_locale \
@@ -48,5 +50,5 @@ RUN set -x \
  && cd /tmp && wget https://raw.githubusercontent.com/crops/yocto-dockerfiles/master/build-install-dumb-init.sh && chmod +x build-install-dumb-init.sh \
  #&& sudo /tmp/build-install-dumb-init.sh \
 # Cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

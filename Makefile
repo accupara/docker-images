@@ -32,6 +32,9 @@ everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
+DIRS=tak db java cncf apache aosp yocto
+everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
+
 everything:
 	$(MAKE) -j4 everything_phase2
-	$(MAKE) -j4 everything_dir_tak everything_dir_db everything_dir_java everything_dir_cncf
+	$(MAKE) -j4 everything_dirs

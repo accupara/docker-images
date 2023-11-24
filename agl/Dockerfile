@@ -7,9 +7,7 @@ RUN set -x \
  && sudo eatmydata apt-get -y install \
     autoconf \
     automake \
-    build-essential \
     chrpath \
-    cpio \ 
     curl \
     debianutils \
     diffstat \
@@ -25,12 +23,6 @@ RUN set -x \
     libsdl1.2-dev \
     libz-dev \
     pylint3 \
-    python \
-    python3 \
-    python3-git \
-    python3-jinja2 \ 
-    python3-pip \
-    python3-pexpect \
     screen \
     socat \
     strace \

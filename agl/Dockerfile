@@ -22,7 +22,7 @@ RUN set -x \
     libegl1-mesa \
     libsdl1.2-dev \
     libz-dev \
-    pylint3 \
+    pylint \
     screen \
     socat \
     strace \

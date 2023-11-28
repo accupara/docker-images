@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/xpra:22.04
 
+ENV YQ_VER=4.40.3
+
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
@@ -86,6 +88,15 @@ RUN set -x \
  && sudo ./aws/install \
  && cd /tmp \
  && rm -rf awscli \
+# Add the yq tool from the releases at https://github.com/mikefarah/yq
+ && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
+ && chmod +x yq \
+ && sudo mv yq /usr/bin/ \
+# Install the jfrog tool: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/install
+ && wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog\_public\_gpg.key | sudo apt-key add - \
+ && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
+ && sudo apt-get update \
+ && sudo apt-get install -y jfrog-cli-v2 \
 # Install the deps for autocompletions for the crave client binary inside devspace sessions
  && sudo eatmydata add-apt-repository -y universe \
  && sudo eatmydata apt-get -y update \

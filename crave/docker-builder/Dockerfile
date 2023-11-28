@@ -2,6 +2,7 @@
 FROM accupara/ubuntu-dind:latest
 
 COPY docker-build-helper.sh /usr/bin/
+ENV YQ_VER=4.40.3
 
 RUN set -x \
  # Add the yq tool from the releases at https://github.com/mikefarah/yq

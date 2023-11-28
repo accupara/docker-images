@@ -3,8 +3,8 @@ FROM accupara/ubuntu:22.04
 
 # Picked up these instructions from https://wiki.qemu.org/Hosts/Linux and trial and error
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     bison \
     flex \
     libaio-dev \
@@ -43,5 +43,5 @@ RUN set -x \
     xfslibs-dev \
     zlib1g-dev \
 # Cleanup
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

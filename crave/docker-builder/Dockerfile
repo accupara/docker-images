@@ -2,7 +2,10 @@
 FROM accupara/ubuntu-dind:latest
 
 COPY docker-build-helper.sh /usr/bin/
-ENV YQ_VER=4.40.3
+
+# CI=true is to tell jfrog to be noninteractive
+ENV YQ_VER=4.40.3 \
+    CI=true
 
 RUN set -x \
  # Add the yq tool from the releases at https://github.com/mikefarah/yq

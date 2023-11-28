@@ -1,7 +1,9 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/xpra:22.04
 
-ENV YQ_VER=4.40.3
+# CI=true is to tell jfrog to be noninteractive
+ENV YQ_VER=4.40.3 \
+    CI=true
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \

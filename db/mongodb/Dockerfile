@@ -29,7 +29,7 @@ RUN set -x \
     pyyaml \
 # Prep the poetry deps: Clone the mongo sources at the root in which the venv is to be sync'd
  && mkdir -p ${SRC_ROOT} && cd ${SRC_ROOT} \
- && git clone https://github.com/mongodb/mongo.git . \
+ && git clone --depth=1 https://github.com/mongodb/mongo.git . \
 # Sync the potry deps
  && python3 -m poetry install --no-root --sync \
 # Cleanup

@@ -1,9 +1,10 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:20.04
 
+# Cmake: https://cmake.org/download/
 ENV BOOST_VER=1_82_0 \
     BOOST_ROOT=/opt/boost_1_82_0 \
-    CMAKE_VER=3.26.4 \
+    CMAKE_VER=3.27.9 \
     SWIFT_VER=5.8.1
 
 RUN set -x \

@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=ubuntu_2004 windows
+SUBDIRS=ubuntu windows
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -19,7 +19,7 @@ RUN set -x \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Now for the rest of the deps
- && sudo eatmydata apt update \
+ && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y \
     binutils \
     gnupg2 \
@@ -53,7 +53,7 @@ RUN set -x \
  && rm /tmp/boost_${BOOST_VER}.tar.gz \
  && sudo chown -R admin:admin ${BOOST_ROOT} \
 # Install Swift
- && sudo eatmydata apt install -y \
+ && sudo eatmydata apt-get install -y \
     clang \
     libpython2.7 \
     libpython2.7-dev \

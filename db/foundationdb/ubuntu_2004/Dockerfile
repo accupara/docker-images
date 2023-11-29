@@ -1,25 +1,26 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+FROM accupara/ubuntu:22.04
 
 # Cmake: https://cmake.org/download/
-ENV BOOST_VER=1_82_0 \
-    BOOST_ROOT=/opt/boost_1_82_0 \
+ENV BOOST_VER=1_83_0 \
     CMAKE_VER=3.27.9 \
     SWIFT_VER=5.8.1
+# On a separate line so that it can pick up values from the previous ENV
+ENV BOOST_ROOT=/opt/boost_${BOOST_VER}
 
 RUN set -x \
- && sudo apt-get update \
+ && sudo eatmydata apt-get update \
 # Prep for Mono installation
- && sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
- && sudo apt-get install -y apt-transport-https ca-certificates \
+ && sudo eatmydata apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
+ && sudo eatmydata apt-get install -y apt-transport-https ca-certificates \
  && echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list \
 # Latest version of cmake required for compilation
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Now for the rest of the deps
- && sudo apt update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt update \
+ && sudo eatmydata apt-get install -y \
     binutils \
     gnupg2 \
     libc++-dev \
@@ -52,7 +53,7 @@ RUN set -x \
  && rm /tmp/boost_${BOOST_VER}.tar.gz \
  && sudo chown -R admin:admin ${BOOST_ROOT} \
 # Install Swift
- && sudo apt install -y \
+ && sudo eatmydata apt install -y \
     clang \
     libpython2.7 \
     libpython2.7-dev \
@@ -60,4 +61,5 @@ RUN set -x \
  && sudo tar -C /tmp/ -xf /tmp/swift.tar.gz \
  && sudo rsync -a /tmp/swift-${SWIFT_VER}-RELEASE-ubuntu20.04/usr/ /usr/ \
 # Cleanup apt cache
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

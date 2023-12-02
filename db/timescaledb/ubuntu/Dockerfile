@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+FROM accupara/ubuntu:22.04
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9 \
@@ -34,9 +34,10 @@ RUN set -x \
         libxml2-utils \
         xsltproc \
 # Latest version of cmake required for compilation
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
+ && export ARCH=$(uname -m) \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-${ARCH}.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh --skip-license --prefix=/usr \
 # Install PG 12
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - \
  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list \

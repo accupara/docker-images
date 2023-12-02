@@ -3,7 +3,7 @@ FROM accupara/ubuntu:20.04
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9 \
-    PGVER=12
+    PG_VER=12
 
 RUN set -x \
  && sudo apt-get update \
@@ -42,8 +42,8 @@ RUN set -x \
  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list \
  && sudo apt-get update \
  && sudo apt-get -y install \
-    postgresql-${PGVER} \
-    postgresql-client-${PGVER} \
-    postgresql-server-dev-${PGVER} \
+    postgresql-${PG_VER} \
+    postgresql-client-${PG_VER} \
+    postgresql-server-dev-${PG_VER} \
 # Cleanup
  && sudo apt-get clean

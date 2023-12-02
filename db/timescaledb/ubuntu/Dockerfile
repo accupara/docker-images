@@ -3,11 +3,11 @@ FROM accupara/ubuntu:22.04
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9 \
-    PG_VER=12
+    PG_VER=15
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         bison \
         build-essential \
         flex \
@@ -38,10 +38,10 @@ RUN set -x \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh --skip-license --prefix=/usr \
 # Install PG 12
- && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - \
+ && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo eatmydata apt-key add - \
  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list \
- && sudo apt-get update \
- && sudo apt-get -y install \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y install \
     postgresql-${PG_VER} \
     postgresql-client-${PG_VER} \
     postgresql-server-dev-${PG_VER} \

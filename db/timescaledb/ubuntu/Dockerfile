@@ -23,10 +23,9 @@ RUN set -x \
         libxml2-dev \
         libxslt1-dev \
         perl-modules \
-        python \
-        python-dev \
         python3-dev \
         python3 \
+        python-is-python3 \
         readline-common \
         tcl \
         tcl-dev \

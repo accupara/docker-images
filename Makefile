@@ -32,7 +32,7 @@ everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
-DIRS=tak db java cncf apache aosp yocto
+DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync
 everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 
 everything:

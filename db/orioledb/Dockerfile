@@ -12,6 +12,7 @@ RUN set -x \
  && wget -O /tmp/prerequisites.sh https://raw.githubusercontent.com/orioledb/orioledb/main/ci/prerequisites.sh \
  && chmod +x /tmp/prerequisites.sh \
  && export GITHUB_ENV=/tmp/ghenv \
+ && export GITHUB_JOB="" \
  && export COMPILER=gcc \
  && export CHECK_TYPE=valgrind_1 \
  && /tmp/prerequisites.sh \

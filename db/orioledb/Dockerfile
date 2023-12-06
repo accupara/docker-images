@@ -3,8 +3,8 @@
 FROM accupara/postgres:ubuntu_2004
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     clang \
     clang-tools \
     libpq-dev \
@@ -17,4 +17,4 @@ RUN set -x \
  && /tmp/prerequisites.sh \
 # Cleanup the image
  && rm /tmp/prerequisites.sh \
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean

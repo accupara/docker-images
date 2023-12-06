@@ -2,8 +2,8 @@
 FROM accupara/ubuntu:16.04
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         bison \
         build-essential \
         flex \
@@ -29,4 +29,4 @@ RUN set -x \
         zlib1g-dev \
         libxml2-utils \
         xsltproc \
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean

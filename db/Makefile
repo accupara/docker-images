@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
-SUBDIRS=ferretdb foundationdb mariadb mongodb mysql orioledb postgres rocksdb timescaledb 
+SUBDIRS=ferretdb foundationdb mariadb mongodb mysql orioledb postgres rocksdb timescaledb pg_cpu_test
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

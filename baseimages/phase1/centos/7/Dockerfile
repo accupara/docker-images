@@ -6,6 +6,7 @@ FROM accupara/centos:7 as remake
 RUN set -x \
  && sudo yum update -y \
  && sudo yum install -y \
+    eatmydata \
     flex \
     glibc-devel.i686 \
     gettext-devel \

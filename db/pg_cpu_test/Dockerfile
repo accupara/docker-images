@@ -12,7 +12,7 @@ RUN set -x \
  && git clone https://github.com/sebasmannem/pg_cpu_test.git pg_cpu_test \
  && cd pg_cpu_test/pg_cpu_load_tester \
  && sudo cp sar.sh builder.sh run.sh pg_cpu_load_c7 loaddisplay.py / \
- && sudo chmod 0700 /builder.sh \
+ && sudo chmod +x /builder.sh \
  && sudo /builder.sh \
 # Clean up
  && cd /tmp \

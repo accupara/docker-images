@@ -78,7 +78,6 @@ RUN set -x \
       curl \
       emacs \
       epel-release \
-      eatmydata \
       gcc gcc-c++ \
       gettext \
       guile \
@@ -162,6 +161,7 @@ RUN chown -R admin:admin /home/admin \
       jq \
 # Install the latest git
  && sudo yum install -y \
+    eatmydata \
     expat-devel \
     gettext \
     gnutls-devel \

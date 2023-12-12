@@ -70,15 +70,15 @@ COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
- && yum install -y eatmydata \
- && eatmydata yum update -y \
- && eatmydata yum install -y \
+ && yum update -y \
+ && yum install -y \
       autoconf \
       automake \
       binutils \
       curl \
       emacs \
       epel-release \
+      eatmydata \
       gcc gcc-c++ \
       gettext \
       guile \

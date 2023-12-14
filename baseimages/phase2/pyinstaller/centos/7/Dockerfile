@@ -33,20 +33,12 @@ RUN set -x \
  && git clone git://gcc.gnu.org/git/gcc.git gcc \
  && cd gcc \
  && git checkout releases/gcc-${GCC_VER} \
-# For x86, Compile GCC using Crave zeroconf
- && if [ $(uname -a | grep -c x86) == "1" ] ; then \
-        ${CRAVE} run --clean 'export SRC=$(readlink -f .) ; $SRC/contrib/download_prerequisites ; cd /build ; $SRC/configure --disable-multilib ; make -j `nproc` && sudo make install && rsync -av /usr/local/ /build/final/' \
-# Pull back the results and copy them to /usr
-     && ${CRAVE} pull /build/final/ -d ./op/ \
-     && sudo rsync -av ./op/ /usr/ ; \
-    else \
-        export SRC=$(readlink -f .) \
-     && $SRC/contrib/download_prerequisites \
-     && mkdir -p ../build && cd ../build \
-     && $SRC/configure --disable-multilib \
-     && make -j `nproc` \
-     && sudo make install ; \
-    fi \
+ && export SRC=$(readlink -f .) \
+ && $SRC/contrib/download_prerequisites \
+ && mkdir -p ../build && cd ../build \
+ && $SRC/configure --disable-multilib \
+ && make -j `nproc` \
+ && sudo make install \
  && gcc --version 2>&1 | tee /tmp/gcc-version.txt \
 # Download and install a version of SSL that python3 supports: 1.1.0 or better: 1.1.1u
  && export OPENSSL_VER=1.1.1u \

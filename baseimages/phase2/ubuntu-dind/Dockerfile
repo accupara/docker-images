@@ -134,7 +134,7 @@ set httpd port 2812 and\n \
 # Packer
  && cd /tmp/deps \
  && wget -q https://releases.hashicorp.com/packer/${PACKER_VER}/packer_${PACKER_VER}_linux_${altArch}.zip \
- && tar -xf packer_${PACKER_VER}_linux_${altArch}.zip \
+ && unzip packer_${PACKER_VER}_linux_${altArch}.zip \
  && sudo mv packer /usr/bin/ \
 # Cleanup
  && cd /tmp/ \

@@ -15,6 +15,7 @@ ENV DOCKER_CHANNEL=stable \
     HELM_VER=3.12.1 \
     GOLANG_VER=1.20.6 \
     KIND_VER=0.20.0 \
+    PACKER_VER=1.10.0 \
     DEBUG=false
 
 COPY modprobe startup.sh /usr/local/bin/
@@ -130,6 +131,11 @@ set httpd port 2812 and\n \
  && export GOPATH=/opt/go \
  && sudo mkdir -p /opt/go \
  && sudo go install sigs.k8s.io/kind@v${KIND_VER} \
+# Packer
+ && cd /tmp/deps \
+ && wget -q https://releases.hashicorp.com/packer/${PACKER_VER}/packer_${PACKER_VER}_linux_${altArch}.zip \
+ && tar -xf packer_${PACKER_VER}_linux_${altArch}.zip \
+ && sudo mv packer /usr/bin/ \
 # Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete \

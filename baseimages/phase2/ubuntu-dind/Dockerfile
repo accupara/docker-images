@@ -136,6 +136,8 @@ set httpd port 2812 and\n \
  && wget -q https://releases.hashicorp.com/packer/${PACKER_VER}/packer_${PACKER_VER}_linux_${altArch}.zip \
  && unzip packer_${PACKER_VER}_linux_${altArch}.zip \
  && sudo mv packer /usr/bin/ \
+# Packer qemu plugin
+ && packer plugins install github.com/hashicorp/qemu \
 # Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete \

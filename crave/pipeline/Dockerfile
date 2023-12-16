@@ -17,3 +17,4 @@ RUN set -x \
  && rm -f /var/lib/apt/lists/*_dists_*
 
 COPY bin/crave /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/crave"]

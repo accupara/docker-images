@@ -5,9 +5,9 @@ ENV LIBFUN_VER=0.3.95
 
 # Dependencies as mentioned in https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y software-properties-common \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y software-properties-common \
+ && sudo eatmydata apt-get install -y \
         autoconf \
         automake \
         build-essential \
@@ -66,7 +66,7 @@ RUN set -x \
         texinfo \
         zlib1g-dev \
 # These deps are on the same site, but are mentioned separately. Not sure why
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get install -y \
         libvpx-dev \
         libmp3lame-dev \
         libopus-dev \
@@ -86,5 +86,5 @@ RUN set -x \
 # OpenCV needs separate installation
 # && cd /tmp ; git clone https://github.com/jayrambhia/Install-OpenCV.git opencv \
 # && cd opencv/Ubuntu && 
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

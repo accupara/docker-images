@@ -13,12 +13,12 @@ RUN set -x \
  && chmod +x yq \
  && sudo mv yq /usr/bin/ \
 # Install the jfrog tool: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/install
- && wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog\_public\_gpg.key | sudo apt-key add - \
+ && wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog\_public\_gpg.key | sudo eatmydata apt-key add - \
  && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
- && sudo apt-get update \
- && sudo apt-get install -y jfrog-cli-v2 \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y jfrog-cli-v2 \
 # Then install htop and bmon
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get install -y \
  	bmon \
  	htop \
  && sudo python3 -m pip install \
@@ -27,5 +27,5 @@ RUN set -x \
 	ratelimiter \
 	tzlocal \
 # Cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

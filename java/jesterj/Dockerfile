@@ -7,8 +7,8 @@ ENV CASSANDRA_VER=4.1.3
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
 # Install emacs and nano... because "someone" hates vim with a passion :D
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     emacs \
     nano \
 # Download the correct version of cassandra tools

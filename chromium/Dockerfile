@@ -13,8 +13,8 @@ RUN set -x \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty multiverse"          | sudo tee --append /etc/apt/sources.list \
  && echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"      | sudo tee --append /etc/apt/sources.list \
  && echo "deb-src http://us.archive.ubuntu.com/ubuntu/ trusty-updates multiverse"  | sudo tee --append /etc/apt/sources.list \
- && sudo apt-get update \
- && sudo apt-get -yq install \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -yq install \
     aptitude \
     build-essential \
     bzip2 \
@@ -24,8 +24,8 @@ RUN set -x \
     software-properties-common \
     unzip \
  && echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections \
- && sudo apt-get install ttf-mscorefonts-installer -yq \
- && sudo apt-get install -yq \
+ && sudo eatmydata apt-get install ttf-mscorefonts-installer -yq \
+ && sudo eatmydata apt-get install -yq \
     ant \
     apache2-bin \
     autoconf \
@@ -171,5 +171,5 @@ RUN set -x \
     zip \
     zlib1g \
 # Cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

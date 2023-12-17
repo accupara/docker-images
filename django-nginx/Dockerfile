@@ -4,8 +4,8 @@ FROM accupara/ubuntu:18.04
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update \
- && sudo apt-get -y install \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y install \
         libpq-dev \
         multitail \
         nginx \

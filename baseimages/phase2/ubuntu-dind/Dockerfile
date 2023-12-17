@@ -23,8 +23,8 @@ COPY supervisor/ /etc/supervisor/conf.d/
 COPY logger.sh /opt/bash-utils/logger.sh
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         autoconf \
         automake \
         bc \
@@ -117,8 +117,8 @@ RUN set -x \
 # Install helm secrets
  && helm plugin install https://github.com/jkroepke/helm-secrets \
 # Install monit
- && sudo apt-get update -y \
- && sudo apt install -y monit \
+ && sudo eatmydata apt-get update -y \
+ && sudo eatmydata apt-get install -y monit \
  && echo "set daemon 5i\n \
 set httpd port 2812 and\n \
   allow localhost\n \
@@ -141,7 +141,7 @@ set httpd port 2812 and\n \
 # Cleanup
  && cd /tmp/ \
  && sudo find /tmp/deps -delete \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["startup.sh"]

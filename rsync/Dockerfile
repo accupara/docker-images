@@ -2,8 +2,8 @@
 FROM accupara/ubuntu:20.04
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         autoconf \
         automake \
         clang \
@@ -13,4 +13,7 @@ RUN set -x \
         libzstd-dev \
         perl \
         python3-pip \
- && sudo pip3 install commonmark
+ && sudo python3 -m pip install commonmark \
+# Clean up image
+ && sudo eatmydata apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

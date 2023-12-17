@@ -3,8 +3,8 @@ FROM accupara/ubuntu:20.04
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         bison \
         gawk \
         gettext \
@@ -13,4 +13,4 @@ RUN set -x \
         texinfo \
         wget \
 # Cleanup apt cache
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean

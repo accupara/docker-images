@@ -2,11 +2,11 @@
 FROM accupara/ubuntu:20.04
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y software-properties-common \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y software-properties-common \
  && sudo add-apt-repository ppa:maria-captains/travis-ci-helper-repo \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     bison \
     chrpath \
     cmake \
@@ -52,6 +52,6 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/boost_${BOOST} \
  && rm -f boost_${BOOST}.tar.bz2 \
 # Cleanup apt cache
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean
 
 ENV BOOST=1_77_0

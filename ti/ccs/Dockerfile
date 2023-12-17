@@ -7,8 +7,8 @@ FROM accupara/ubuntu:18.04
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update \
- && sudo -E apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo -E eatmydata apt-get install -y \
 # Deps info from: https://software-dl.ti.com/ccs/esd/documents/ccsv10_linux_host_support.html
        libc6-i386 \
        libgconf-2-4 \
@@ -32,6 +32,6 @@ RUN set -x \
 # Minimize image
  && cd /tmp/ \
  && sudo rm -rf /tmp/ccs \
- && sudo apt-get autoremove -y \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get autoremove -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

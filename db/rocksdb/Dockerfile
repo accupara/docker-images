@@ -5,10 +5,10 @@ FROM accupara/ubuntu:20.04
 ENV CMAKE_VER=3.27.9
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y software-properties-common \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y software-properties-common \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     libbz2-dev \
     libgflags-dev \
     liblz4-dev \
@@ -21,4 +21,4 @@ RUN set -x \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr \
 # Cleanup apt cache
- && sudo apt-get clean
+ && sudo eatmydata apt-get clean

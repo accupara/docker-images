@@ -1,8 +1,8 @@
 FROM accupara/lkbuild:latest
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
       autoconf \
       automake \
       build-essential \
@@ -24,5 +24,5 @@ RUN set -x \
       python3-pip \
       pkg-config \
       unzip \
-&& sudo apt-get clean \
+&& sudo eatmydata apt-get clean \
 && sudo rm -rf /var/lib/apt/lists/*

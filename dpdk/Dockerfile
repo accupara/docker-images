@@ -3,8 +3,8 @@ FROM accupara/ubuntu:16.04
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install --no-install-recommends -y  \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install --no-install-recommends -y  \
     build-essential \
     libpcap-dev \
     linux-headers-generic \

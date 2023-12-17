@@ -3,8 +3,8 @@ FROM accupara/ubuntu:18.04
 
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
- && sudo apt-get update \
- && sudo -E apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo -E eatmydata apt-get install -y \
        acl \
        attr \
        autoconf \
@@ -56,6 +56,6 @@ RUN set -x \
        zlib1g-dev \
        liblmdb-dev \
        lmdb-utils \
- && sudo apt-get autoremove -y \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get autoremove -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

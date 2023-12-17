@@ -3,8 +3,8 @@ FROM accupara/ubuntu:20.04
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
         autoconf \
         automake \
         bc \
@@ -19,5 +19,5 @@ RUN set -x \
         perl \
         gawk \
         qemu-kvm \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

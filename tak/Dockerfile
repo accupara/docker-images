@@ -2,10 +2,10 @@
 FROM us.gcr.io/crave-228104/android:latest
 
 RUN set -x \
- && sudo apt-get update \
+ && sudo eatmydata apt-get update \
 # Purge JDK 11.
- && sudo apt-get purge -y openjdk-11-jre* || true \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get purge -y openjdk-11-jre* || true \
+ && sudo eatmydata apt-get install -y \
     ant \
     autoconf \
     automake \
@@ -34,8 +34,8 @@ RUN set -x \
  && sudo python3 -m pip install conan \
  && conan profile detect \
 # Minimize image
- && sudo apt-get autoremove -y \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get autoremove -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*
 
 # Override the base image's NDK to the one that TAK requires

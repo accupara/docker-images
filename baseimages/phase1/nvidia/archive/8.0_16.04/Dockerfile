@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM nvidia/cuda:8.0-devel-ubuntu16.04
 
 COPY sshd_config /tmp/

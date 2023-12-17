@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/openjdk:8
 
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html

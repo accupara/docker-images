@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/xpra:22.04
 
 # CI=true is to tell jfrog to be noninteractive

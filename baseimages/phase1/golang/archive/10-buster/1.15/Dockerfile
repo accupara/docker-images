@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM golang:1.15-buster
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"

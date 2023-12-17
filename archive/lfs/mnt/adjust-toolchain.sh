@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
 mv -v /tools/bin/{ld,ld-old}
 mv -v /tools/$(uname -m)-pc-linux-gnu/bin/{ld,ld-old}

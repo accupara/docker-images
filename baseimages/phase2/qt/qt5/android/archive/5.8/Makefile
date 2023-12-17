@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 IMGTAG?=us.gcr.io/crave-228104/android/android_qt
 IMGVER?=5.8
 

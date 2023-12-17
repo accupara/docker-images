@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM eclipse-temurin:17-jdk-centos7 as jdk
 FROM accupara/debian:10
 

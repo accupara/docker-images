@@ -3,12 +3,12 @@ FROM accupara/ubuntu:18.04
 
 RUN set -x \
  && sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list \
- && sudo apt-get update \
- && sudo apt-get install -y software-properties-common \
- && sudo add-apt-repository -y ppa:beineri/opt-qt-5.13.2-bionic \
- && sudo apt-get update \
- && sudo apt-get -y build-dep vlc vlc-plugin-qt \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y software-properties-common \
+ && sudo eatmydata add-apt-repository -y ppa:beineri/opt-qt-5.13.2-bionic \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y build-dep vlc vlc-plugin-qt \
+ && sudo eatmydata apt-get install -y \
         autoconf \
         automake \
         autopoint \
@@ -130,13 +130,9 @@ RUN set -x \
         wayland-protocols \
         wget \
         zip \
- && sudo apt-get autoremove -y \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get autoremove -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/* \
  && sudo locale-gen en_US.UTF-8
 
 ENV LANG=en_US.UTF-8
-
-#RUN set -x \
-# && sudo apt-get update \
-# && sudo apt-get install -y

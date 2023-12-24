@@ -2,9 +2,8 @@
 FROM accupara/ubuntu:20.04
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get -y dist-upgrade \
- && sudo apt-get -y install \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y install \
     bison \
     build-essential \
     curl \
@@ -28,8 +27,8 @@ RUN set -x \
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
 # Remove python 2 completely
- && sudo apt-get purge -y python python2.7 \
- && sudo apt-get -y autoremove \
+ && sudo eatmydata apt-get purge -y python python2.7 \
+ && sudo eatmydata apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
@@ -40,5 +39,5 @@ RUN set -x \
 # Please stop asking what colors I want
  && git config --global color.ui false \
 # Final cleanups
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

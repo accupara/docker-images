@@ -3,7 +3,6 @@ FROM accupara/yocto:ubuntu_2204
 
 RUN set -x \
  && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y dist-upgrade \
  && sudo eatmydata apt-get -y install \
     autoconf \
     automake \

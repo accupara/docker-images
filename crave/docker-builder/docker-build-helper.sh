@@ -9,7 +9,7 @@ push_finished() {
         awk '{printf("%s:%s\n", $1, $2)}' | \
         while read line ; do
             echo "Pushing image: $line"
-            docker push $line &
+            docker push $line && docker rmi $line
         done
     wait
 }

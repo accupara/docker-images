@@ -4,7 +4,6 @@ FROM accupara/ubuntu:18.04
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
- && sudo apt-get -y dist-upgrade \
 # Install OpenJDK 8 and maven
  && sudo apt-get install -y \
         maven \

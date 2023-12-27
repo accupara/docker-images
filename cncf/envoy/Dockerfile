@@ -9,7 +9,6 @@ COPY sshd_config /tmp/
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
- && apt-get -y dist-upgrade \
  && apt-get install -y \
         bash-completion \
         binutils \

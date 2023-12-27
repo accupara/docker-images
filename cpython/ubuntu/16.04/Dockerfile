@@ -2,7 +2,6 @@
 FROM accupara/ubuntu:16.04
 
 RUN sudo apt-get update \
- && sudo apt-get dist-upgrade -y \
  && sudo apt-get install -y \
     libbz2-dev \
     libdb5.3++-dev \

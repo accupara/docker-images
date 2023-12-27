@@ -6,7 +6,6 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
- && apt-get -y dist-upgrade \
  && apt-get install -y \
         bash-completion \
         binutils \

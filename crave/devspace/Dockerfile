@@ -9,7 +9,6 @@ ENV YQ_VER=4.40.3 \
 RUN set -x \
 # Update the underlying base image
  && sudo eatmydata apt-get -y update \
- && sudo eatmydata apt-get -y dist-upgrade \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \

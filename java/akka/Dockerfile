@@ -11,7 +11,6 @@ RUN set -x \
  && curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import \
  && sudo chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg \
  && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y dist-upgrade \
  && sudo eatmydata apt-get install -y \
         sbt \
  && sudo eatmydata apt-get clean \

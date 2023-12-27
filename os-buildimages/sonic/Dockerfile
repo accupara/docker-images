@@ -15,7 +15,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && echo "keyboard-configuration  keyboard-configuration/variant  select  English (US)" | sudo debconf-set-selections \
  && echo "console-setup   console-setup/codesetcode       string  Lat15"                | sudo debconf-set-selections \
  && echo "console-setup   console-setup/codeset47 select"                               | sudo debconf-set-selections \
- && sudo apt-get dist-upgrade -y \
  && sudo apt-get install -y \
 	apt-utils \
 	default-jre-headless \

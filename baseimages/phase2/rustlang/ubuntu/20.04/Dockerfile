@@ -10,7 +10,6 @@ SHELL ["/bin/bash", "-c"]
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y dist-upgrade \
  && sudo mkdir -p $RUSTUP_HOME $CARGO_HOME \
  && sudo chown admin:admin $RUSTUP_HOME $CARGO_HOME \
  && cd /tmp \

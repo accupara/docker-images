@@ -9,7 +9,6 @@ ENV RUSTUP_HOME=/opt/rustup \
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
- && sudo apt-get -y dist-upgrade \
  && sudo apt-get install -y \
     jq \
     wget \

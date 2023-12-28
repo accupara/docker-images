@@ -32,7 +32,7 @@ everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
-DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync remake
+DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow
 everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 
 everything:

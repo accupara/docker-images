@@ -12,6 +12,7 @@ push_finished() {
             docker push $line && docker rmi $line
         done
     wait
+    docker system prune
 }
 
 main () {

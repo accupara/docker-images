@@ -8,6 +8,7 @@ DOCKER_BUILD_FLAGS:=
 DOCKER_RUN_FLAGS:=
 DOCKER_RUN_CMD:=
 
+# These are the default platforms. Update this when you decide to publish more platforms.
 IMGVER_TARGETS?=aarch64 s390x x86_64 ppc64le
 define platform_for_uname
 $(shell python3 $(shell git rev-parse --show-toplevel)/functions.py platform_for_uname $(1))

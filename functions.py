@@ -4,6 +4,7 @@ def platform_for_uname(uname):
     m = {
         'x86_64':'linux/amd64',
         'aarch64':'linux/arm64',
+        'armv7l':'linux/arm',
         's390x':'linux/s390x',
         'ppc64le':'linux/ppc64le'
     }

@@ -23,6 +23,7 @@ RUN set -x \
       lxde \
       multitail \
       net-tools \
+      npm \
       python3-meld3 \
       software-properties-common \
       supervisor \
@@ -31,6 +32,7 @@ RUN set -x \
       vim-gtk3 \
       x11vnc \
       xvfb \
+      yarnpkg \
 # Fix a problem in xfwm4
  && sudo eatmydata add-apt-repository ppa:xubuntu-dev/staging \
  && sudo eatmydata apt update \

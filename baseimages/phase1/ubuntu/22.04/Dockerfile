@@ -48,12 +48,15 @@ RUN set -x \
        ninja-build \
        openssh-server \
        psmisc \
+       # install rsync because it allows the updated rsync to work correctly
        rsync \
        subversion \
        sudo \
        tmux \
        vim-nox \
        wget \
+# Newest versions of openssh-server don't seem to create all the host keys
+ && sudo sudo /usr/bin/ssh-keygen -A \
 # Compile and install the latest git
  && eatmydata -- apt-get install -y \
        libcurl4-gnutls-dev \

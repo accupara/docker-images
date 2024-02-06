@@ -58,6 +58,8 @@ RUN set -x \
        tmux \
        vim-nox \
        wget \
+# Newest versions of openssh-server don't seem to create all the host keys
+ && sudo sudo /usr/bin/ssh-keygen -A \
 # Install the latest git
  && eatmydata -- apt-get install -y \
        libcurl4-gnutls-dev \

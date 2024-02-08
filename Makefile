@@ -28,11 +28,12 @@ everything_phase2: everything_phase1
 	./useme/build.py -C baseimages/phase2 -j `nproc`
 	-$(MAKE) -C baseimages/phase2 manifest -k -j `nproc`
 
+everything_dir_protocolbuffers: everything_dir_linuxkernel
 everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
-DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow
+DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow protocolbuffers golang-apps
 everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 
 everything:

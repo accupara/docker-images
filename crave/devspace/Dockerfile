@@ -15,6 +15,7 @@ RUN set -x \
       bmon \
       cscope \
       exuberant-ctags \
+      fish \
       gnome-themes-standard \
       gtk2-engines-murrine \
       gtk2-engines-pixbuf \

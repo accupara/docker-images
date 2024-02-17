@@ -24,7 +24,7 @@ RUN set -x \
     brotli \
     openjdk-11-jdk \
 # For schedtool (sorted by name)
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get install -y \
     autoconf \
     automake \
     bash \
@@ -79,6 +79,9 @@ RUN set -x \
     zip \
     zlib1g-dev \
     zstd \
+# For the dumper
+ && sudo eatmydata apt-get install -y \
+    virtualenv \
 # Create a directory for aosp
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \

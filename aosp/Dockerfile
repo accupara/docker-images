@@ -23,6 +23,62 @@ RUN set -x \
     libfreetype6 \
     brotli \
     openjdk-11-jdk \
+# For schedtool (sorted by name)
+ && sudo apt-get install -y \
+    autoconf \
+    automake \
+    bash \
+    bc \
+    binutils \
+    bison \
+    build-essential \
+    bzip2 \
+    ccache \
+    clang \
+    cmake \
+    cpio \
+    curl \
+    dialog \
+    dos2unix \
+    expect \
+    flex \
+    g++ \
+    gawk \
+    gcc \
+    gcc-aarch64-linux-gnu \
+    gcc-arm-linux-gnueabi \
+    gcc-arm-linux-gnueabihf \
+    git \
+    gperf \
+    jq \
+    liblz4-tool \
+    libncurses5-dev \
+    libsdl1.2-dev \
+    libssl-dev \
+    libstdc++6 \
+    libxml2 \
+    libxml2-utils \
+    lld \
+    lldb \
+    llvm \
+    lzop \
+    make \
+    neofetch \
+    openssl \
+    perl \
+    pngcrush \
+    python2 \
+    python3 \
+    schedtool \
+    sed \
+    squashfs-tools \
+    tar \
+    unzip \
+    wget \
+    xsltproc \
+    zip \
+    zlib1g-dev \
+    zstd \
 # Create a directory for aosp
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \

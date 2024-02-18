@@ -33,7 +33,6 @@ RUN set -x \
     bison \
     build-essential \
     bzip2 \
-    ccache \
     clang \
     cmake \
     cpio \

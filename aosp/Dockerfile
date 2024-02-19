@@ -99,3 +99,6 @@ RUN set -x \
 # Final cleanups
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
+
+ENV REPO_NO_INTERACTIVE=1 \
+    GIT_TERMINAL_PROMPT=0

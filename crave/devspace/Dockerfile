@@ -23,6 +23,7 @@ RUN set -x \
       iputils-ping \
       lxde \
       multitail \
+      nano \
       net-tools \
       npm \
       python3-meld3 \

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 main() {
-    sudo service supervisor start
+    #sudo service supervisor start
 
     mkdir -p /home/admin/.bash_completion.d
     register-python-argcomplete crave > /home/admin/.bash_completion.d/crave

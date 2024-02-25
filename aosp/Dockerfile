@@ -80,6 +80,7 @@ RUN set -x \
     zstd \
 # For the dumper
  && sudo eatmydata apt-get install -y \
+    python3-venv \
     virtualenv \
 # Create a directory for aosp
  && sudo mkdir -p /opt/aosp \

@@ -80,7 +80,7 @@ RUN set -x \
       epel-release \
       gcc gcc-c++ \
       gettext \
-      guile \
+      #guile \
       #hardening-check \
       java-1.8.0-openjdk-devel \
       libevent-devel \

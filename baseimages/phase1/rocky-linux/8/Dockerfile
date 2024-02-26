@@ -2,64 +2,64 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-#FROM accupara/rockylinux:8 as remake
-#RUN set -x \
-# && sudo yum update -y \
-# && sudo yum install -y \
-#    flex \
-#    glibc-devel.i686 \
-#    gettext-devel \
-#    guile-devel \
-#    libgcc.i686 \
-#    perl \
-#    readline-devel \
-#    svn \
-#    texinfo \
-#    texinfo-tex \
-#    zip \
-## Download and install automake
-# && cd /home/admin \
-# && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
-# && tar -xf automake-1.16.5.tar.gz \
-# && cd automake-1.16.5 \
-# && ./configure --prefix=/usr \
-# && make -j `nproc` \
-# && sudo make install \
-## Get the remake sources for 4.3 and compile them
-# && cd /home/admin \
-# && git clone https://github.com/rocky/remake.git remake \
-# && cd remake \
-# && ./autogen.sh \
-# && make -j `nproc` \
-# && mv ./make /tmp/
+FROM accupara/rockylinux:8 as remake
+RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y \
+    flex \
+    glibc-devel.i686 \
+    gettext-devel \
+    guile-devel \
+    libgcc.i686 \
+    perl \
+    readline-devel \
+    svn \
+    texinfo \
+    texinfo-tex \
+    zip \
+# Download and install automake
+ && cd /home/admin \
+ && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
+ && tar -xf automake-1.16.5.tar.gz \
+ && cd automake-1.16.5 \
+ && ./configure --prefix=/usr \
+ && make -j `nproc` \
+ && sudo make install \
+# Get the remake sources for 4.3 and compile them
+ && cd /home/admin \
+ && git clone https://github.com/rocky/remake.git remake \
+ && cd remake \
+ && ./autogen.sh \
+ && make -j `nproc` \
+ && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-#FROM accupara/rockylinux:8 as rsync
-#RUN set -x \
-# && sudo yum update -y \
-# && sudo yum install -y \
-#    glibc-static \
-#    popt-static \
-#    libzstd-devel \
-#    libzstd-static \
-#    lz4-devel \
-#    lz4-static \
-#    openssl-static \
-# && export RSYNC_VER=3.2.7 \
-# && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
-# && tar -xf rsync-${RSYNC_VER}.tar.gz \
-# && ls -l \
-# && cd rsync-${RSYNC_VER} \
-# && ./configure --prefix=/tmp/rsync --disable-xxhash \
-## This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
-# #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
-# && make -j `nproc` \
-## So this command fixes the order of the LDFLAGS
-# ;  gcc -std=gnu99 -o rsync \
-#        $(find . -name '*.o' | xargs echo) \
-#        -lpopt -llz4 -lzstd -lcrypto \
-#        -L/usr/lib64 -ldl \
-# && make install
+FROM accupara/rockylinux:8 as rsync
+RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y \
+    glibc-static \
+    popt-static \
+    libzstd-devel \
+    libzstd-static \
+    lz4-devel \
+    lz4-static \
+    openssl-static \
+ && export RSYNC_VER=3.2.7 \
+ && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && tar -xf rsync-${RSYNC_VER}.tar.gz \
+ && ls -l \
+ && cd rsync-${RSYNC_VER} \
+ && ./configure --prefix=/tmp/rsync --disable-xxhash \
+# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
+ #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
+ && make -j `nproc` \
+# So this command fixes the order of the LDFLAGS
+ ;  gcc -std=gnu99 -o rsync \
+        $(find . -name '*.o' | xargs echo) \
+        -lpopt -llz4 -lzstd -lcrypto \
+        -L/usr/lib64 -ldl \
+ && make install
 
 ################## The real container starts here ##################
 FROM rockylinux:8

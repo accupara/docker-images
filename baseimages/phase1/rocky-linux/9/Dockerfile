@@ -89,7 +89,7 @@ RUN set -x \
       #ninja-build \
       openssh-clients \
       openssh-server \
-      redhat-lsb \
+      #redhat-lsb \
       rpm-build \
       # install rsync because it allows the updated rsync to work correctly
       rsync \

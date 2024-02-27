@@ -4,13 +4,8 @@
 ## Chicken or egg : Which came first?
 FROM accupara/rockylinux:8 as remake
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
+ && sudo eatmydata yum update -y \
+ && sudo eatmydata yum install -y \
     flex \
     glibc-devel \
     gettext-devel \
@@ -38,16 +33,10 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-# The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/rockylinux:8 as rsync
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
+ && sudo eatmydata yum update -y \
+ && sudo eatmydata yum install -y \
     glibc-static \
     popt-static \
     libzstd-devel \
@@ -60,14 +49,7 @@ RUN set -x \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
-# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
  && make -j `nproc` \
-# So this command fixes the order of the LDFLAGS
-# ;  gcc -std=gnu99 -o rsync \
-#        $(find . -name '*.o' | xargs echo) \
-#        -lpopt -llz4 -lzstd -lcrypto \
-#        -L/usr/lib64 -ldl \
  && make install
 
 ################## The real container starts here ##################
@@ -90,6 +72,7 @@ RUN set -x \
       automake \
       binutils \
       curl \
+      eatmydata \
       emacs \
       gcc gcc-c++ \
       gettext \
@@ -170,13 +153,13 @@ RUN chown -R admin:admin /home/admin \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
 # Install git-lfs and jq separately
- && sudo yum install -y \
+ && sudo eatmydata yum install -y \
       git-lfs \
       libzstd \
       jq \
 # Install the latest git
  && export GIT_VER=2.39.3 \
- && sudo yum install -y \
+ && sudo eatmydata yum install -y \
     expat-devel \
     gettext \
     gnutls-devel \

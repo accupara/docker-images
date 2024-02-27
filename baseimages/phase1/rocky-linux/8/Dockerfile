@@ -4,13 +4,18 @@
 ## Chicken or egg : Which came first?
 FROM accupara/rockylinux:8 as remake
 RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
+ && sudo eatmydata yum config-manager --enable devel \
+ && sudo eatmydata yum config-manager --enable extras \
+ && sudo eatmydata yum config-manager --enable plus \
  && sudo eatmydata yum update -y \
  && sudo eatmydata yum install -y \
     flex \
     glibc-devel \
     gettext-devel \
     guile-devel \
-    libgcc.i686 \
+    libgcc \
     perl \
     readline-devel \
     svn \
@@ -35,6 +40,11 @@ RUN set -x \
 
 FROM accupara/rockylinux:8 as rsync
 RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
+ && sudo eatmydata yum config-manager --enable devel \
+ && sudo eatmydata yum config-manager --enable extras \
+ && sudo eatmydata yum config-manager --enable plus \
  && sudo eatmydata yum update -y \
  && sudo eatmydata yum install -y \
     glibc-static \

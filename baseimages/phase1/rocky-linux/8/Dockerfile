@@ -4,8 +4,11 @@
 ## Chicken or egg : Which came first?
 FROM accupara/rockylinux:8 as remake
 RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
  && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable epel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
  && sudo yum update -y \
  && sudo yum install -y \
     flex \
@@ -38,14 +41,16 @@ RUN set -x \
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/rockylinux:8 as rsync
 RUN set -x \
+ && sudo yum update -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
  && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable epel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
  && sudo yum update -y \
  && sudo yum install -y \
     glibc-static \
     popt-static \
     libzstd-devel \
-    libzstd-static \
     lz4-devel \
     lz4-static \
     openssl-static \
@@ -59,10 +64,10 @@ RUN set -x \
  #&& make -j `nproc` CFLAGS="-static" LDFLAGS="-L/usr/lib64 -ldl" \
  && make -j `nproc` \
 # So this command fixes the order of the LDFLAGS
- ;  gcc -std=gnu99 -o rsync \
-        $(find . -name '*.o' | xargs echo) \
-        -lpopt -llz4 -lzstd -lcrypto \
-        -L/usr/lib64 -ldl \
+# ;  gcc -std=gnu99 -o rsync \
+#        $(find . -name '*.o' | xargs echo) \
+#        -lpopt -llz4 -lzstd -lcrypto \
+#        -L/usr/lib64 -ldl \
  && make install
 
 ################## The real container starts here ##################
@@ -74,8 +79,11 @@ COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
+ && yum update -y \
+ && yum install -y 'dnf-command(config-manager)' \
  && yum config-manager --enable devel \
- && yum config-manager --enable epel \
+ && yum config-manager --enable extras \
+ && yum config-manager --enable plus \
  && yum update -y \
  && yum install -y \
       autoconf \

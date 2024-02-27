@@ -71,6 +71,11 @@ COPY sshd_config limits.conf /tmp/
 # Install the minimum tools
 RUN set -x \
  && yum update -y \
+ && yum install -y 'dnf-command(config-manager)' \
+ && yum config-manager --enable devel \
+ && yum config-manager --enable extras \
+ && yum config-manager --enable plus \
+ && yum update -y \
  && yum install -y \
       autoconf \
       automake \
@@ -86,10 +91,10 @@ RUN set -x \
       libevent-devel \
       make \
       ncurses-devel \
-      #ninja-build \
+      ninja-build \
       openssh-clients \
       openssh-server \
-      #redhat-lsb \
+      redhat-lsb \
       rpm-build \
       # install rsync because it allows the updated rsync to work correctly
       rsync \

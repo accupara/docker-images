@@ -75,7 +75,7 @@ RUN set -x \
       autoconf \
       automake \
       binutils \
-      curl \
+      #curl \
       emacs \
       epel-release \
       gcc gcc-c++ \

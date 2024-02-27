@@ -12,7 +12,7 @@ RUN set -x \
  && sudo yum update -y \
  && sudo yum install -y \
     flex \
-    glibc-devel.i686 \
+    glibc-devel \
     gettext-devel \
     guile-devel \
     libgcc.i686 \

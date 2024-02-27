@@ -179,8 +179,8 @@ RUN chown -R admin:admin /home/admin \
  && cd /tmp ; rm -rf git-${GIT_VER}*
 
 # Copy these at the very end
-#COPY --from=remake /tmp/make /usr/bin/remake
-#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22
 CMD /bin/bash

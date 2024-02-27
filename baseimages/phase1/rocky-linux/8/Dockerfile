@@ -4,6 +4,8 @@
 ## Chicken or egg : Which came first?
 FROM accupara/rockylinux:8 as remake
 RUN set -x \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable epel \
  && sudo yum update -y \
  && sudo yum install -y \
     flex \
@@ -36,6 +38,8 @@ RUN set -x \
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
 FROM accupara/rockylinux:8 as rsync
 RUN set -x \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable epel \
  && sudo yum update -y \
  && sudo yum install -y \
     glibc-static \
@@ -70,6 +74,8 @@ COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
+ && yum config-manager --enable devel \
+ && yum config-manager --enable epel \
  && yum update -y \
  && yum install -y \
       autoconf \
@@ -77,7 +83,6 @@ RUN set -x \
       binutils \
       curl \
       emacs \
-      epel-release \
       gcc gcc-c++ \
       gettext \
       guile \
@@ -86,7 +91,7 @@ RUN set -x \
       libevent-devel \
       make \
       ncurses-devel \
-      #ninja-build \
+      ninja-build \
       openssh-clients \
       openssh-server \
       redhat-lsb \

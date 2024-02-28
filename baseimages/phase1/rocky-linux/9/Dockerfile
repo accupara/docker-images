@@ -2,41 +2,37 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/rockylinux:9 as remake
-RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
-    flex \
-    glibc-devel \
-    gettext-devel \
-    guile-devel \
-    libgcc.i686 \
-    perl \
-    readline-devel \
-    svn \
-    texinfo \
-    texinfo-tex \
-    zip \
-# Download and install automake
- && cd /home/admin \
- && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
- && tar -xf automake-1.16.5.tar.gz \
- && cd automake-1.16.5 \
- && ./configure --prefix=/usr \
- && make -j `nproc` \
- && sudo make install \
-# Get the remake sources for 4.3 and compile them
- && cd /home/admin \
- && git clone https://github.com/rocky/remake.git remake \
- && cd remake \
- && ./autogen.sh \
- && make -j `nproc` \
- && mv ./make /tmp/
+#FROM accupara/rockylinux:9 as remake
+#RUN set -x \
+# && sudo yum update -y \
+# && sudo yum install -y 'dnf-command(config-manager)' \
+# && sudo yum config-manager --enable devel \
+# && sudo yum config-manager --enable extras \
+# && sudo yum config-manager --enable plus \
+# && sudo yum install -y epel-release \
+# && sudo yum update -y \
+# && sudo yum install -y \
+#    autoconf \
+#    flex \
+#    git \
+#    glibc-devel \
+#    gettext-devel \
+#    guile30-devel \
+#    libgcc \
+#    patchutils \
+#    perl \
+#    readline-devel \
+#    svn \
+#    texinfo \
+#    texinfo-tex \
+#    zip \
+## Get the remake sources for 4.3 and compile them
+# && cd /tmp \
+# && git clone https://github.com/rocky/remake.git remake \
+# && cd remake \
+# && ./autogen.sh \
+# && make -j `nproc` \
+# && mv ./make /tmp/
 
 FROM accupara/rockylinux:9 as rsync
 RUN set -x \
@@ -51,8 +47,9 @@ RUN set -x \
     libzstd-devel \
     lz4-devel \
     openssl-devel \
+    wget \
  && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && wget https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
@@ -183,7 +180,7 @@ RUN chown -R admin:admin /home/admin \
  && cd /tmp ; rm -rf git-${GIT_VER}*
 
 # Copy these at the very end
-COPY --from=remake /tmp/make /usr/bin/remake
+#COPY --from=remake /tmp/make /usr/bin/remake
 COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

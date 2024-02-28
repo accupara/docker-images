@@ -5,12 +5,12 @@
 FROM accupara/rockylinux:8 as remake
 RUN set -x \
  && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
- && sudo eatmydata yum config-manager --enable devel \
- && sudo eatmydata yum config-manager --enable extras \
- && sudo eatmydata yum config-manager --enable plus \
- && sudo eatmydata yum update -y \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
+ && sudo yum update -y \
+ && sudo yum install -y \
     flex \
     glibc-devel \
     gettext-devel \
@@ -41,12 +41,12 @@ RUN set -x \
 FROM accupara/rockylinux:8 as rsync
 RUN set -x \
  && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
- && sudo eatmydata yum config-manager --enable devel \
- && sudo eatmydata yum config-manager --enable extras \
- && sudo eatmydata yum config-manager --enable plus \
- && sudo eatmydata yum update -y \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
+ && sudo yum update -y \
+ && sudo yum install -y \
     glibc-static \
     popt-static \
     libzstd-devel \
@@ -82,7 +82,6 @@ RUN set -x \
       automake \
       binutils \
       curl \
-      eatmydata \
       emacs \
       gcc gcc-c++ \
       gettext \
@@ -163,13 +162,13 @@ RUN chown -R admin:admin /home/admin \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
 # Install git-lfs and jq separately
- && sudo eatmydata yum install -y \
+ && sudo yum install -y \
       git-lfs \
       libzstd \
       jq \
 # Install the latest git
  && export GIT_VER=2.39.3 \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y \
     expat-devel \
     gettext \
     gnutls-devel \

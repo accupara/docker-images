@@ -5,12 +5,12 @@
 FROM accupara/rockylinux:9 as remake
 RUN set -x \
  && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
- && sudo eatmydata yum config-manager --enable devel \
- && sudo eatmydata yum config-manager --enable extras \
- && sudo eatmydata yum config-manager --enable plus \
- && sudo eatmydata yum update -y \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
+ && sudo yum update -y \
+ && sudo yum install -y \
     flex \
     glibc-devel.i686 \
     gettext-devel \
@@ -41,12 +41,12 @@ RUN set -x \
 FROM accupara/rockylinux:9 as rsync
 RUN set -x \
  && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' eatmydata \
- && sudo eatmydata yum config-manager --enable devel \
- && sudo eatmydata yum config-manager --enable extras \
- && sudo eatmydata yum config-manager --enable plus \
- && sudo eatmydata yum update -y \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y 'dnf-command(config-manager)' \
+ && sudo yum config-manager --enable devel \
+ && sudo yum config-manager --enable extras \
+ && sudo yum config-manager --enable plus \
+ && sudo yum update -y \
+ && sudo yum install -y \
     popt-devel \
     libzstd-devel \
     lz4-devel \
@@ -184,8 +184,8 @@ RUN chown -R admin:admin /home/admin \
  && cd /tmp ; rm -rf git-${GIT_VER}*
 
 # Copy these at the very end
-#COPY --from=remake /tmp/make /usr/bin/remake
-#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22
 CMD /bin/bash

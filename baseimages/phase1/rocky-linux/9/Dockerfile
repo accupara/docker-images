@@ -80,7 +80,6 @@ RUN set -x \
       automake \
       binutils \
       #curl \
-      eatmydata \
       emacs \
       epel-release \
       gcc gcc-c++ \
@@ -162,13 +161,13 @@ RUN chown -R admin:admin /home/admin \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
 # Install git-lfs and jq separately
- && sudo eatmydata yum install -y \
+ && sudo yum install -y \
       git-lfs \
       libzstd \
       jq \
 # Install the latest git
  && export GIT_VER=2.39.3 \
- && sudo eatmydata yum install -y \
+ && sudo yum install -y \
     expat-devel \
     gettext \
     gnutls-devel \

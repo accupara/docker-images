@@ -23,63 +23,8 @@ RUN set -x \
     libfreetype6 \
     brotli \
     openjdk-11-jdk \
-# For schedtool (sorted by name)
- && sudo eatmydata apt-get install -y \
-    autoconf \
-    automake \
-    bash \
-    bc \
-    binutils \
-    bison \
-    build-essential \
-    bzip2 \
-    clang \
-    cmake \
-    cpio \
-    curl \
-    dialog \
-    dos2unix \
-    expect \
-    flex \
-    g++ \
-    gawk \
-    gcc \
-    gcc-aarch64-linux-gnu \
-    gcc-arm-linux-gnueabi \
-    gcc-arm-linux-gnueabihf \
-    git \
-    gperf \
-    jq \
-    liblz4-tool \
-    libncurses5-dev \
-    libsdl1.2-dev \
-    libssl-dev \
-    libstdc++6 \
-    libxml2 \
-    libxml2-utils \
-    lld \
-    lldb \
-    llvm \
-    lzop \
-    make \
-    neofetch \
-    openssl \
-    perl \
-    pngcrush \
-    python2 \
-    python3 \
-    schedtool \
-    sed \
-    squashfs-tools \
-    tar \
-    unzip \
-    wget \
-    xsltproc \
-    zip \
-    zlib1g-dev \
-    zstd \
 # For Ardour
- && sudo eatmydata apt-get -y -qq update && apt-get -y --no-install-recommends install \
+ && sudo eatmydata apt-get -y --no-install-recommends install \
             apt-transport-https \
             curl \
             wget \
@@ -96,7 +41,7 @@ RUN set -x \
             ocaml-nox \
             gperf \
             meson \
-            python \
+            python2 \
             python3 \
             python3-pip \
             build-essential \
@@ -106,11 +51,9 @@ RUN set -x \
             libtool \
             pkg-config \
             libboost-all-dev \
-            python \
             libjack-dev \
-             libglibmm-2.4-dev \
+            libglibmm-2.4-dev \
             libsndfile1-dev \
-            libcurl4-nss-dev \
             libarchive-dev \
             liblo-dev \
             libtag1-dev \
@@ -132,22 +75,12 @@ RUN set -x \
             libusb-1.0-0-dev \
             libwebsockets-dev \
             a2jmidid \
-            libjack-jackd2-dev \
             libjack-dev \
-# For the dumper
- && sudo eatmydata apt-get install -y \
-    python3-venv \
-    virtualenv \
-# Create a directory for aosp
+            libcurl4-gnutls-dev \
+            libjack0 \
+# Create a directory for ardour
  && sudo mkdir -p /opt/ardour \
  && sudo chown admin:admin /opt/ardour \
-# Remove python 2 completely
-# && sudo eatmydata apt-get purge -y python python2.7 \
-# && sudo eatmydata apt-get -y autoremove \
-# Use python3 as the default python
-# && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
-# Make sure that the default version of python is 3
-# && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email ardour@crave.io \

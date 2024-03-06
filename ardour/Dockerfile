@@ -79,7 +79,7 @@ RUN set -x \
     zlib1g-dev \
     zstd \
 # For Ardour
-          apt-get -y -qq update && apt-get -y --no-install-recommends install \
+ && sudo eatmydata apt-get -y -qq update && apt-get -y --no-install-recommends install \
             apt-transport-https \
             curl \
             wget \

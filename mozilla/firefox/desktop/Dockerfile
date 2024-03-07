@@ -19,7 +19,7 @@ RUN set -x \
  && curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O \
  && sudo python3 bootstrap.py --vcs=git --no-interactive \
 # Don't keep any of the sources in the container. Just the deps need installation
- && find . -delete \
+ && sudo find . -delete \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

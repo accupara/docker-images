@@ -3,6 +3,7 @@ FROM accupara/xpra:22.04
 
 # CI=true is to tell jfrog to be noninteractive
 ENV YQ_VER=4.40.3 \
+    CRANE_VER=0.19.0 \
     CI=true
 
 # Keep the update separate so that Docker build system can cache it.
@@ -75,7 +76,7 @@ RUN set -x \
 # Make git statuses faster
  && git config --global feature.manyFiles true \
 # Add the crane tool
- && wget -q -O /tmp/go-crane.tar.gz https://github.com/google/go-containerregistry/releases/download/v0.15.1/go-containerregistry_Linux_x86_64.tar.gz \
+ && wget -q -O /tmp/go-crane.tar.gz https://github.com/google/go-containerregistry/releases/download/v${CRANE_VER}/go-containerregistry_Linux_x86_64.tar.gz \
  && mkdir -p /tmp/crane \
  && tar -C /tmp/crane -xvf /tmp/go-crane.tar.gz \
  && sudo mv /tmp/crane/crane /tmp/crane/gcrane /tmp/crane/krane /usr/bin/ \

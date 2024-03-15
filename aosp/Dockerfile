@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:22.04
 
+ENV YQ_VER=4.40.3
+
 RUN set -x \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get -y install \
@@ -92,6 +94,10 @@ RUN set -x \
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
  && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
+# Add the yq tool from the releases at https://github.com/mikefarah/yq
+ && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
+ && chmod +x yq \
+ && sudo mv yq /usr/bin/ \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

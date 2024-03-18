@@ -3,6 +3,8 @@ FROM accupara/ubuntu:22.04
 
 ENV YQ_VER=4.40.3
 
+COPY resync.sh /opt/crave/
+
 RUN set -x \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get -y install \

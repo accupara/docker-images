@@ -5,7 +5,7 @@ main() {
     repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags 2>&1 | tee /tmp/output.txt
 
     # Check if there are any failing repositories
-    if grep -q "Failing repos:" /tmp/output ; then
+    if grep -q "Failing repos:" /tmp/output.txt ; then
         echo "Deleting failing repositories..."
         # Extract failing repositories from the error message and echo the deletion path
         while IFS= read -r line; do
@@ -19,7 +19,7 @@ main() {
             echo "Deleted repository: $repo_info" > deleted_repositories.txt
             # Delete the repository
             rm -rf "$repo_path/$repo_name"
-        done <<< "$(cat /tmp/output | awk '/Failing repos:/ {flag=1; next} /Try/ {flag=0} flag')"
+        done <<< "$(cat /tmp/output.txt | awk '/Failing repos:/ {flag=1; next} /Try/ {flag=0} flag')"
 
         # Re-sync all repositories after deletion
         echo "Re-syncing all repositories..."

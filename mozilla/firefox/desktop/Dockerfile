@@ -21,10 +21,8 @@ RUN set -x \
  && curl https://raw.githubusercontent.com/glandium/git-cinnabar/master/download.py -O \
  && python3 download.py \
  && sudo mv git-cinnabar git-remote-hg /usr/bin/ \
-# Now use the bootstrap for mozilla
- && curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O \
-# This makes the sourcees sit in /tmp/src/mozilla-unified
- && sudo python3 bootstrap.py --vcs=git --no-interactive \
+# Clone the sources into /tmp/src/mozilla-unified
+ && git clone https://github.com/mozilla/gecko-dev.git mozilla-unified \
 # Go into the sources and then mach bootstrap
  && cd mozilla-unified \
  && ./mach --no-interactive bootstrap \

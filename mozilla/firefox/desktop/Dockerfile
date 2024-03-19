@@ -11,15 +11,26 @@ RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
     curl \
+    mercurial \
     python3 \
     python3-pip \
  #&& sudo apt-get install -y expect \
  #&& sudo expect /tmp/kb-config.exp \
  && mkdir -p /tmp/src && cd /tmp/src \
+# Get cinnabar first
+ && curl https://raw.githubusercontent.com/glandium/git-cinnabar/master/download.py -O \
+ && python3 download.py \
+ && sudo mv git-cinnabar git-remote-hg /usr/bin/ \
+# Now use the bootstrap for mozilla
  && curl https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py -O \
+# This makes the sourcees sit in /tmp/src/mozilla-unified
  && sudo python3 bootstrap.py --vcs=git --no-interactive \
+# Go into the sources and then mach bootstrap
+ && cd mozilla-unified \
+ && ./mach --no-interactive bootstrap \
 # Don't keep any of the sources in the container. Just the deps need installation
- && sudo find . -delete \
+ && cd /tmp \
+ && sudo find src -delete \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

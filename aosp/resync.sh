@@ -2,7 +2,7 @@
 
 main() {
     # Run repo sync command and capture the output
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags 2>&1 | tee /tmp/output.txt
+    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
     # Check if there are any failing repositories
     if grep -q "Failing repos:" /tmp/output.txt ; then
@@ -23,7 +23,7 @@ main() {
 
         # Re-sync all repositories after deletion
         echo "Re-syncing all repositories..."
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
     else
         echo "All repositories synchronized successfully."
     fi

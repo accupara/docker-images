@@ -24,6 +24,7 @@ main() {
 
         # Re-sync all repositories after deletion
         echo "Re-syncing all repositories..."
+        find .repo -name '*.lock' -delete
         repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
     else
         echo "All repositories synchronized successfully."

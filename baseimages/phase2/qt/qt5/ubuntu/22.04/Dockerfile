@@ -8,4 +8,8 @@ RUN set -x \
         libqt5webkit5-dev \
         libqt5xmlpatterns5-dev \
         libssl-dev \
-        qtmultimedia5-dev
+        qtmultimedia5-dev \
+# Clean up image
+ && echo ". /etc/bash_completion" | sudo tee -a /root/.bashrc \
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

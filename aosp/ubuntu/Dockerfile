@@ -107,6 +107,7 @@ RUN set -x \
  && sudo mkdir -p /opt/crave/ \
  && sudo chown admin:admin /opt/crave/ \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
+ && chmod +x /opt/crave/resync.sh \
 # Final cleanups
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

@@ -24,6 +24,11 @@ RUN set -x \
   && git config --global user.name Crave \
   && git config --global user.email aosp@crave.io \
   # Please stop asking what colors I want
-  && git config --global color.ui false
-
-RUN sudo chmod 777 /etc/mke2fs.conf
+  && git config --global color.ui false \
+# Save the resync.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/ \
+ && sudo chown admin:admin /opt/crave/ \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
+ && chmod +x /opt/crave/resync.sh \
+# For the DumperX script
+ && sudo chmod 777 /etc/mke2fs.conf

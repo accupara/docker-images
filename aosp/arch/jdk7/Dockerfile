@@ -42,6 +42,7 @@ RUN set -x \
 # Save the resync.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/ \
  && sudo chown admin:admin /opt/crave/ \
- && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh
-
-RUN sudo chmod 777 /etc/mke2fs.conf
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
+ && chmod +x /opt/crave/resync.sh \
+# For the DumperX script
+ && sudo chmod 777 /etc/mke2fs.conf

@@ -6,7 +6,7 @@ SUBDIRS=\
 	mobile cpython java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \
-	aosp agl \
+	arch-aosp-jdk7 arch-aosp-jdk8 aosp agl \
     golang-apps \
     tak
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc

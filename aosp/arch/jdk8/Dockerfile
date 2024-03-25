@@ -6,25 +6,29 @@ ENV REPO_NO_INTERACTIVE=1 \
     XDG_DOWNLOAD_DIR="/home/admin/Downloads"
 
 RUN set -x \
-  && sudo mkdir -p /opt/aosp \
-  && sudo chown admin:admin /opt/aosp \
-  && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
-  && sudo pacman -Syy \
+# Temporarily move aside the repo and let the distribution's package put it there
+ && sudo mv /usr/bin/repo /tmp/ \
+ && sudo mkdir -p /opt/aosp \
+ && sudo chown admin:admin /opt/aosp \
+ && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
+ && sudo pacman -Syy \
 # Multitlib needed to install and run jdk7
-  && wget https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
-  && sudo pacman -U ./*zst --noconfirm && rm *zst \
-  && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
+ && wget https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
+ && sudo pacman -U ./*zst --noconfirm && rm *zst \
+ && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Now lets fetch the jdk8 as well any thing ele that older aosp needs
-  && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk8-openjdk --noconfirm \
-  && sudo archlinux-java set java-8-openjdk \
-  && java -version \
-  && neofetch \
-  && sudo ln -sf /usr/bin/python2 /usr/bin/python \
-  # This is required for AOSP compilations
-  && git config --global user.name Crave \
-  && git config --global user.email aosp@crave.io \
-  # Please stop asking what colors I want
-  && git config --global color.ui false \
+ && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk8-openjdk --noconfirm \
+ && sudo archlinux-java set java-8-openjdk \
+ && java -version \
+ && neofetch \
+ && sudo ln -sf /usr/bin/python2 /usr/bin/python \
+# Put back repo
+ && sudo mv /tmp/repo /usr/bin/ \
+# This is required for AOSP compilations
+ && git config --global user.name Crave \
+ && git config --global user.email aosp@crave.io \
+# Please stop asking what colors I want
+ && git config --global color.ui false \
 # Save the resync.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/ \
  && sudo chown admin:admin /opt/crave/ \

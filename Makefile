@@ -6,7 +6,7 @@ SUBDIRS=\
 	mobile cpython java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
 	ti \
-	aosp agl \
+	arch-aosp-jdk7 arch-aosp-jdk8 aosp agl \
     golang-apps \
     tak
 # incomplete or untested: ffmpeg yocto dpdk gcc glibc
@@ -34,7 +34,7 @@ everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
-DIRS=linuxkernel tak db java cncf apache aosp yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow protocolbuffers golang-apps agl gcc chromium
+DIRS=linuxkernel tak db java cncf apache aosp arch-aosp-jdk7 arch-aosp-jdk8 yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow protocolbuffers golang-apps agl gcc chromium
 everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 
 everything:

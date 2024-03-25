@@ -6,6 +6,8 @@ ENV REPO_NO_INTERACTIVE=1 \
     XDG_DOWNLOAD_DIR="/home/admin/Downloads"
 
 RUN set -x \
+# Temporarily move aside the repo and let the distribution's package put it there
+ && sudo mv /usr/bin/repo /tmp/ \
 # Install packages
  && sudo pacman -Sy --noconfirm \
  && sudo pacman -Syu \
@@ -18,7 +20,7 @@ RUN set -x \
  && sudo chown admin:admin /opt/aosp \
  && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
  && sudo pacman -Syy \
- && wget https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
+ && wget -q https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
  && sudo pacman -U ./*zst --noconfirm && rm *zst \
  && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Now lets fetch the jdk7 and install it
@@ -30,6 +32,8 @@ RUN set -x \
  && java -version \
  && neofetch \
  && sudo ln -sf /usr/bin/python2 /usr/bin/python \
+# Put back repo
+ && sudo mv /tmp/repo /usr/bin/ \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \
@@ -38,6 +42,6 @@ RUN set -x \
 # Save the resync.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/ \
  && sudo chown admin:admin /opt/crave/ \
- && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh
 
 RUN sudo chmod 777 /etc/mke2fs.conf

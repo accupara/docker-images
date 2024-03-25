@@ -1,61 +1,52 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-# Chicken or egg : Which came first?
-FROM accupara/archlinux:latest as remake
-RUN set -x && \
-  # Install packages
-  pacman -Sy --noconfirm \
-  && pacman -Syu base-devel bash-completion binutils cargo curl emacs ffmpeg git git-lfs guile jq meson ninja popt xxhash github-cli lsb-release lsb-release ninja openssh openssl pacman-contrib psmisc remake rsync subversion sudo tmux vim neovim wget neofetch --noconfirm \
-  && pacman -Sc --noconfirm
+## Note: no remake compilation here because we're going to use the distro supplied remake
+FROM archlinux:latest
 
-################## The real container starts here ##################
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
 
 # Install the minimum tools
-RUN set -x && \
-  # Install packages
-  pacman -Sy --noconfirm \
-  && pacman -Syu base-devel \
-  bash-completion \
-  binutils \
-  cmake \
-  extra-cmake-modules \
-  cargo \
-  curl \
-  emacs \
-  ffmpeg \
-  git \
-  git-lfs \
-  guile \
-  jq \
-  meson \
-  ninja \
-  popt \
-  gradle \
-  xxhash \
-  github-cli \
-  lsb-release \
-  ninja \
-  openssh \
-  openssl \
-  pacman-contrib \
-  psmisc \
-  remake \
-  rsync \
-  subversion \
-  sudo \
-  tmux \
-  vim \
-  neovim \
-  wget \
-  neofetch --noconfirm \
-  && pacman -Sc --noconfirm \
+RUN set -x \
+# Install packages
+ && pacman -Sy --noconfirm \
+ && pacman -Syu \
+    --noconfirm \
+    base-devel \
+    bash-completion \
+    binutils \
+    cargo \
+    curl \
+    emacs \
+    ffmpeg \
+    git \
+    git-lfs \
+    github-cli \
+    guile \
+    jq \
+    lsb-release \
+    meson \
+    neofetch \
+    neovim \
+    ninja \
+    openssh \
+    openssl \
+    pacman-contrib \
+    popt \
+    psmisc \
+    remake \
+    rsync \
+    subversion \
+    sudo \
+    tmux \
+    vim \
+    wget \
+    xxhash \
+ && pacman -Sc --noconfirm \
 # Newest versions of openssh-server don't seem to create all the host keys
- && sudo sudo /usr/bin/ssh-keygen -A \
+ && sudo /usr/bin/ssh-keygen -A \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mv /tmp/repo /usr/bin/repo \
@@ -68,15 +59,16 @@ RUN set -x && \
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
  && sudo mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
-  && useradd -ms /bin/bash admin \
-  && echo "admin:admin" | chpasswd \
-  && usermod -aG wheel admin \
-  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && useradd -ms /bin/bash admin \
+ && echo "admin:admin" | chpasswd \
+ && usermod -aG wheel admin \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
 # Configure sshd
  && mkdir -p /var/run/sshd \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Clean up image
  && echo ". /etc/bash_completion" >>/root/.bashrc
+
 USER admin
 ENV HOME=/home/admin \
     USER=admin \
@@ -100,7 +92,5 @@ RUN set -x \
   && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
   && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
   && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
-
-COPY --from=remake /tmp/make /usr/bin/remake
 
 EXPOSE 22

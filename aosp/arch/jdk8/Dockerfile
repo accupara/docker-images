@@ -10,9 +10,11 @@ RUN set -x \
   && sudo chown admin:admin /opt/aosp \
   && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
   && sudo pacman -Syy \
+# Multitlib needed to install and run jdk7
   && wget https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
   && sudo pacman -U ./*zst --noconfirm && rm *zst \
   && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
+# Now lets fetch the jdk8 as well any thing ele that older aosp needs
   && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk8-openjdk --noconfirm \
   && sudo archlinux-java set java-8-openjdk \
   && java -version \

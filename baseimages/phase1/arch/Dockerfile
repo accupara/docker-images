@@ -24,6 +24,7 @@ RUN set -x \
     git \
     git-lfs \
     github-cli \
+    gradle \
     guile \
     jq \
     lsb-release \
@@ -87,10 +88,10 @@ RUN set -x \
  && touch /home/admin/.ssh/authorized_keys \
  && sudo chmod 0600 /etc/ssh/* \
 # locale setup
-  && echo 'en_US.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen \
-  && sudo locale-gen \
-  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
-  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
-  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+ && echo 'en_US.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen \
+ && sudo locale-gen \
+ && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
 
 EXPOSE 22

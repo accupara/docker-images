@@ -103,11 +103,13 @@ RUN set -x \
  && git config --global user.email aosp@crave.io \
 # Please stop asking what colors I want
  && git config --global color.ui false \
+# Save the resync.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/ \
+ && sudo chown admin:admin /opt/crave/ \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/ \
 # Final cleanups
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 ENV REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
-
-COPY resync.sh /opt/crave/

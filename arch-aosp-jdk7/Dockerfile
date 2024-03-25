@@ -1,10 +1,9 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM archlinux:latest 
+FROM accupara/archlinux:latest 
 #TODO: Add arch to baseimages
 
 ENV YQ_VER=4.40.3
 
-COPY sshd_config /tmp/
 RUN set -x && \
   # Install packages
   pacman -Sy --noconfirm \
@@ -16,12 +15,7 @@ RUN set -x && \
   && chmod +x /etc/crave/create_build_tools_json.sh \
   && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
   && mv crave /usr/local/bin/ \
-  && useradd -ms /bin/bash admin \
-  && echo "admin:admin" | chpasswd \
-  && usermod -aG wheel admin \
-  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-  && mkdir -p /var/run/sshd \
-  && mv /tmp/sshd_config /etc/ssh/sshd_config 
+
 USER admin
 ENV HOME=/home/admin \
     USER=admin \
@@ -30,18 +24,6 @@ ENV HOME=/home/admin \
 WORKDIR /home/admin
 CMD /bin/bash
 RUN set -x \
-  && sudo chown -R admin:admin /home/admin \
-  && echo ". /usr/share/bash-completion/bash_completion" >> /home/admin/.bashrc \
-  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
-  && mkdir /home/admin/.ssh \
-  && chmod 700 /home/admin/.ssh \
-  && touch /home/admin/.ssh/authorized_keys \
-  && sudo chmod 0600 /etc/ssh/* \
-  && echo 'en_US.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen \
-  && sudo locale-gen \
-  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
-  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
-  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
   && sudo mkdir -p /opt/aosp \
   && sudo chown admin:admin /opt/aosp \
   && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
@@ -57,12 +39,12 @@ RUN set -x \
   && sudo archlinux-java set java-7-jdk \
   && java -version \
   && neofetch \
-  && sudo ln -sf /usr/bin/python2 /usr/bin/python
+  && sudo ln -sf /usr/bin/python2 /usr/bin/python \
   # This is required for AOSP compilations
   && git config --global user.name Crave \
   && git config --global user.email aosp@crave.io \
   # Please stop asking what colors I want
-  && git config --global color.ui false \
+  && git config --global color.ui false
 
 
 RUN sudo chmod 777 /etc/mke2fs.conf

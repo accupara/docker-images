@@ -10,7 +10,6 @@ RUN set -x && \
   && pacman -Sc --noconfirm
 
 ################## The real container starts here ##################
-FROM archlinux:latest
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
@@ -77,10 +76,7 @@ RUN set -x && \
  && mkdir -p /var/run/sshd \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Clean up image
- && echo ". /etc/bash_completion" >>/root/.bashrc \
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
-
+ && echo ". /etc/bash_completion" >>/root/.bashrc
 USER admin
 ENV HOME=/home/admin \
     USER=admin \
@@ -99,12 +95,11 @@ RUN set -x \
  && touch /home/admin/.ssh/authorized_keys \
  && sudo chmod 0600 /etc/ssh/* \
 # locale setup
- && sudo locale-gen en_US.UTF-8 \
- && sudo update-locale LANG=en_US.UTF-8 \
-# Export env vars
- && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+  && echo 'en_US.UTF-8 UTF-8' | sudo tee -a /etc/locale.gen \
+  && sudo locale-gen \
+  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
+  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
+  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
 
 COPY --from=remake /tmp/make /usr/bin/remake
 

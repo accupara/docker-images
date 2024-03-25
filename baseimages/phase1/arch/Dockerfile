@@ -69,10 +69,10 @@ RUN set -x && \
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
  && sudo mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
- && useradd -ms /bin/bash admin \
- && echo "admin:admin" | chpasswd \
- && adduser admin sudo \
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+  && useradd -ms /bin/bash admin \
+  && echo "admin:admin" | chpasswd \
+  && usermod -aG wheel admin \
+  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
 # Configure sshd
  && mkdir -p /var/run/sshd \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \

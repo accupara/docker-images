@@ -1,10 +1,9 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/archlinux:latest 
-#TODO: Add arch to baseimages
 
-ENV YQ_VER=4.40.3
-
-CMD /bin/bash
+ENV REPO_NO_INTERACTIVE=1 \
+    GIT_TERMINAL_PROMPT=0 \
+    XDG_DOWNLOAD_DIR="/home/admin/Downloads"
 
 RUN set -x \
 # Install packages
@@ -21,7 +20,6 @@ RUN set -x \
  && wget https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
  && sudo pacman -U ./*zst --noconfirm && rm *zst \
  && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
- && export XDG_DOWNLOAD_DIR="/home/admin/Downloads" \
  && mkdir /home/admin/Downloads || true \
  && wget -P /home/admin/Downloads https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz \
  && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk7 --noconfirm \
@@ -41,8 +39,3 @@ RUN set -x \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/
 
 RUN sudo chmod 777 /etc/mke2fs.conf
-
-ENV REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0
-
-EXPOSE 22

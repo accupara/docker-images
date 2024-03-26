@@ -11,7 +11,7 @@ COPY build.mk /tmp/
 
 RUN set -x \
  && cd /tmp \
- && make -f build.mk CMAKE_VER=${CMAKE_VER} BOOST_VER=${BOOST_VER} clean_prep
+ && make -f build.mk CMAKE_VER=${CMAKE_VER} BOOST_VER=${BOOST_VER} prep clean_deps
 
 RUN set -x \
 # Sip headers from pyqt5

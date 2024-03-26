@@ -11,9 +11,8 @@ it:
 		accupara/qt5:ubuntu_2204 \
 		bash
 
-clean_prep:
+clean_deps:
 	-find ${ROOT_PATH}/deps -delete
-	${MAKE} -f build.mk prep
 
 prep:
 	${MAKE} -f build.mk prep1
@@ -80,7 +79,7 @@ prep2_boost:
 # Install faber for boost.python
 prep3:
 	mkdir -p ${ROOT_PATH}/deps
-	for i in immer zug lager faber ; do \
+	-for i in immer zug lager faber ; do \
 		sudo find ${ROOT_PATH}/deps/$${i} -delete ; \
 	done
 	git -C ${ROOT_PATH}/deps clone https://github.com/arximboldi/immer.git immer

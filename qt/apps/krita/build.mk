@@ -1,5 +1,8 @@
 ROOT_PATH=/tmp/src
 
+CMAKE_VER?=3.27.9
+BOOST_VER?=1_82_0
+
 it:
 	docker run \
 		--rm -it \
@@ -21,7 +24,7 @@ prep:
 prep1:
 	sudo apt-get update
 	sudo apt-get install -y \
-		catch2
+		catch2 \
 		cmake \
 		extra-cmake-modules \
 		libgsl-dev \
@@ -58,18 +61,17 @@ prep2:
 	${MAKE} -f build.mk prep2_boost
 
 prep2_cmake:
-	export CMAKE_VER=3.27.9 \
-	&& wget -q -O ${ROOT_PATH}/deps/cmake-$${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v$${CMAKE_VER}/cmake-$${CMAKE_VER}-Linux-x86_64.sh \
-	&& chmod +x ${ROOT_PATH}/deps/cmake-$${CMAKE_VER}-Linux-x86_64.sh \
-	&& sudo ${ROOT_PATH}/deps/cmake-$${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr
+	mkdir -p ${ROOT_PATH}/deps
+	wget -q -O ${ROOT_PATH}/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+	&& chmod +x ${ROOT_PATH}/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh \
+	&& sudo ${ROOT_PATH}/deps/cmake-${CMAKE_VER}-Linux-x86_64.sh --skip-license --prefix=/usr
 
 prep2_boost:
 	mkdir -p ${ROOT_PATH}/deps
-	export BOOST_VER=1_82_0 \
-	&& wget -q -O ${ROOT_PATH}/deps/boost_$${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$$(echo $${BOOST_VER} | sed 's/_/./g')/boost_$${BOOST_VER}.tar.gz >/dev/null \
-	&& sudo tar -C ${ROOT_PATH}/deps -xf ${ROOT_PATH}/deps/boost_$${BOOST_VER}.tar.gz \
-	&& sudo chown -R admin:admin ${ROOT_PATH}/deps/boost_$${BOOST_VER} \
-	&& cd ${ROOT_PATH}/deps/boost_$${BOOST_VER} \
+	wget -q -O ${ROOT_PATH}/deps/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
+	&& sudo tar -C ${ROOT_PATH}/deps -xf ${ROOT_PATH}/deps/boost_${BOOST_VER}.tar.gz \
+	&& sudo chown -R admin:admin ${ROOT_PATH}/deps/boost_${BOOST_VER} \
+	&& cd ${ROOT_PATH}/deps/boost_${BOOST_VER} \
 	&& ./bootstrap.sh --prefix=/usr \
 	&& ./b2 \
 	&& sudo ./b2 install

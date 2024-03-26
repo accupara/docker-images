@@ -3,7 +3,7 @@ FROM accupara/qt5:ubuntu_2204
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9 \
-    BOOST_VER=1_82_0
+    BOOST_VER=1_84_0
 
 SHELL [ "/bin/bash", "-c" ]
 
@@ -11,7 +11,7 @@ COPY build.mk /tmp/
 
 RUN set -x \
  && cd /tmp \
- && make -f build.mk clean_prep
+ && make -f build.mk CMAKE_VER=${CMAKE_VER} BOOST_VER=${BOOST_VER} clean_prep
 
 RUN set -x \
 # Sip headers from pyqt5

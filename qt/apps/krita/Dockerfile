@@ -7,7 +7,10 @@ ENV CMAKE_VER=3.27.9 \
 
 SHELL [ "/bin/bash", "-c" ]
 
+COPY build.mk /tmp/
+
 RUN set -x \
+ && cd /tmp \
  && make -f build.mk clean_prep
 
 RUN set -x \

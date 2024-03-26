@@ -9,14 +9,14 @@ it:
 		bash
 
 clean_prep:
-	find ${ROOT_PATH}/deps -delete
-	${MAKE} prep
+	-find ${ROOT_PATH}/deps -delete
+	${MAKE} -f build.mk prep
 
 prep:
-	${MAKE} prep1
-	${MAKE} prep2
-	${MAKE} prep3
-	${MAKE} prep4
+	${MAKE} -f build.mk prep1
+	${MAKE} -f build.mk prep2
+	${MAKE} -f build.mk prep3
+	${MAKE} -f build.mk prep4
 
 prep1:
 	sudo apt-get update
@@ -54,8 +54,8 @@ prep1:
 	&& sudo python3 -m pip install numpy
 
 prep2:
-	${MAKE} prep2_cmake
-	${MAKE} prep2_boost
+	${MAKE} -f build.mk prep2_cmake
+	${MAKE} -f build.mk prep2_boost
 
 prep2_cmake:
 	export CMAKE_VER=3.27.9 \

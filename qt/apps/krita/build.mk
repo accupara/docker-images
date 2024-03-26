@@ -28,6 +28,11 @@ prep1:
 		extra-cmake-modules \
 		libgsl-dev \
 		libkdecorations2-dev \
+		libeigen3-dev \
+		libexiv2-dev \
+		libfftw3-dev \
+		libharfbuzz-dev \
+		libjpeg-turbo8-dev \
 		libkf5completion-dev \
 		libkf5config-dev \
 		libkf5coreaddons-dev \
@@ -36,12 +41,17 @@ prep1:
 		libkf5i18n-dev \
 		libkf5itemmodels-dev \
 		libkf5itemviews-dev \
-		libqt5quick5 \
-		libqt5quickwidgets5 \
 		libkf5widgetsaddons-dev \
 		libkf5windowsystem-dev \
+		liblcms2-dev \
+		libmypaint-dev \
+		libopenexr-dev \
+		libopenjp2-7-dev \
+		libqt5quick5 \
+		libqt5quickwidgets5 \
 		libqt5svg5-dev \
 		libqt5x11extras5-dev \
+		libtiff-dev \
 		libwebp-dev \
 		ninja-build \
 		pyqt5-dev \

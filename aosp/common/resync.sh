@@ -3,7 +3,7 @@
 main() {
     # Run repo sync command and capture the output
     find .repo -name '*.lock' -delete
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
+    repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync 2>&1 | tee /tmp/output.txt
 
     # Check if there are any failing repositories
     if grep -q "Failing repos:" /tmp/output.txt ; then
@@ -25,7 +25,7 @@ main() {
         # Re-sync all repositories after deletion
         echo "Re-syncing all repositories..."
         find .repo -name '*.lock' -delete
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
+        repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync
     else
         echo "All repositories synchronized successfully."
     fi

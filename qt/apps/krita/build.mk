@@ -34,6 +34,7 @@ prep1:
 		libexiv2-dev \
 		libfftw3-dev \
 		libfreetype6-dev \
+		libfribidi-dev \
 		libglib2.0-dev \
 		libgsl-dev \
 		libharfbuzz-dev \

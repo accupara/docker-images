@@ -26,13 +26,20 @@ prep1:
 		catch2 \
 		cmake \
 		extra-cmake-modules \
-		libgsl-dev \
-		libkdecorations2-dev \
+		g++ \
+		gcc \
+		gtk-doc-tools \
+		libcairo2-dev \
 		libeigen3-dev \
 		libexiv2-dev \
 		libfftw3-dev \
+		libfreetype6-dev \
+		libglib2.0-dev \
+		libgsl-dev \
 		libharfbuzz-dev \
 		libjpeg-turbo8-dev \
+		libjpeg-turbo-progs \
+		libkdecorations2-dev \
 		libkf5completion-dev \
 		libkf5config-dev \
 		libkf5coreaddons-dev \
@@ -41,23 +48,29 @@ prep1:
 		libkf5i18n-dev \
 		libkf5itemmodels-dev \
 		libkf5itemviews-dev \
+		libkf5kdcraw-dev \
 		libkf5widgetsaddons-dev \
 		libkf5windowsystem-dev \
 		liblcms2-dev \
 		libmypaint-dev \
 		libopenexr-dev \
 		libopenjp2-7-dev \
+		libopenjp2-tools \
+		libquazip5-dev \
 		libqt5quick5 \
 		libqt5quickwidgets5 \
 		libqt5svg5-dev \
 		libqt5x11extras5-dev \
 		libtiff-dev \
 		libwebp-dev \
+		meson \
 		ninja-build \
+		pkg-config \
 		pyqt5-dev \
 		python3-pip \
 		python3-qtpy \
 		qtquickcontrols2-5-dev \
+		ragel \
 		sip-dev \
 		ruby-sass \
 		xorg-dev \
@@ -85,13 +98,12 @@ prep2_boost:
 	&& ./b2 \
 	&& sudo ./b2 install
 
-# Download and install immer, zug, lager
-# Install faber for boost.python
 prep3:
 	mkdir -p ${ROOT_PATH}/deps
 	-for i in immer zug lager faber ; do \
 		sudo find ${ROOT_PATH}/deps/$${i} -delete ; \
 	done
+# Download and install immer, zug, lager
 	git -C ${ROOT_PATH}/deps clone https://github.com/arximboldi/immer.git immer
 	git -C ${ROOT_PATH}/deps clone https://github.com/arximboldi/zug.git zug
 	git -C ${ROOT_PATH}/deps clone https://github.com/arximboldi/lager.git lager
@@ -99,9 +111,19 @@ prep3:
 	for i in immer zug lager ; do \
         cd ${ROOT_PATH}/deps/$${i} && mkdir build && cd build && cmake .. && sudo make install ; \
     done
+# Install faber for boost.python
 	git -C ${ROOT_PATH}/deps clone https://github.com/stefanseefeld/faber.git faber \
  	&& cd ${ROOT_PATH}/deps/faber \
 	&& sudo python3 setup.py install
+#  harfbuzz
+	git -C ${ROOT_PATH}/deps clone https://github.com/harfbuzz/harfbuzz.git harfbuzz
+	cd ${ROOT_PATH}/deps/harfbuzz ; meson build
+	cd ${ROOT_PATH}/deps/harfbuzz ; meson test -Cbuild
+	cd ${ROOT_PATH}/deps/harfbuzz ; meson install -Cbuild
 
 prep4:
-	echo "Nothing here yet"
+	mkdir -p ${ROOT_PATH}/deps
+	git -C ${ROOT_PATH}/deps clone https://github.com/adah1972/libunibreak.git libunibreak
+	cd ${ROOT_PATH}/deps/libunibreak ; ./autogen.sh
+	make -C ${ROOT_PATH}/deps/libunibreak -j `nproc`
+	sudo make -C ${ROOT_PATH}/deps/libunibreak install

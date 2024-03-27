@@ -119,7 +119,7 @@ prep3:
 	git -C ${ROOT_PATH}/deps clone https://github.com/harfbuzz/harfbuzz.git harfbuzz
 	cd ${ROOT_PATH}/deps/harfbuzz ; meson build
 	cd ${ROOT_PATH}/deps/harfbuzz ; meson test -Cbuild
-	cd ${ROOT_PATH}/deps/harfbuzz ; meson install -Cbuild
+	cd ${ROOT_PATH}/deps/harfbuzz ; sudo meson install -Cbuild
 # libunibreak
 	git -C ${ROOT_PATH}/deps clone https://github.com/adah1972/libunibreak.git libunibreak
 	cd ${ROOT_PATH}/deps/libunibreak ; ./autogen.sh

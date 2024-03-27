@@ -120,10 +120,12 @@ prep3:
 	cd ${ROOT_PATH}/deps/harfbuzz ; meson build
 	cd ${ROOT_PATH}/deps/harfbuzz ; meson test -Cbuild
 	cd ${ROOT_PATH}/deps/harfbuzz ; meson install -Cbuild
-
-prep4:
-	mkdir -p ${ROOT_PATH}/deps
+# libunibreak
 	git -C ${ROOT_PATH}/deps clone https://github.com/adah1972/libunibreak.git libunibreak
 	cd ${ROOT_PATH}/deps/libunibreak ; ./autogen.sh
 	make -C ${ROOT_PATH}/deps/libunibreak -j `nproc`
 	sudo make -C ${ROOT_PATH}/deps/libunibreak install
+
+prep4:
+	mkdir -p ${ROOT_PATH}/deps
+	echo "Nothing else remains to be built for deps"

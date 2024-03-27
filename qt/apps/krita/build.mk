@@ -12,7 +12,7 @@ it:
 		bash
 
 clean_deps:
-	-find ${ROOT_PATH}/deps -delete
+	-sudo find ${ROOT_PATH}/deps -delete
 
 prep:
 	${MAKE} -f build.mk prep1

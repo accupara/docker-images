@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
 main() {
     # Run repo sync command and capture the output

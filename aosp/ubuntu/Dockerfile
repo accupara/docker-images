@@ -108,6 +108,11 @@ RUN set -x \
  && sudo chown admin:admin /opt/crave/ \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
  && chmod +x /opt/crave/resync.sh \
+# Save the upload.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/github-actions \
+ && sudo chown admin:admin /opt/crave/github-actions \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
+ && chmod +x /opt/crave/github-actions/upload.sh \
 # Final cleanups
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

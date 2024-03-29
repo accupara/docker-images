@@ -34,6 +34,8 @@ else
 fi
 done
 echo "Image Files to be uploaded: $IMG_FILES"
+echo "Zip Files to be Uploaded: $(ls out/target/product/$DEVICE/*.zip)"
+
 
 # Create release	
 gh release create $RELEASETAG out/target/product/$DEVICE/*.zip $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes

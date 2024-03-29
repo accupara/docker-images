@@ -33,7 +33,7 @@ else
     echo "Skipping $img_file"
 fi
 done
-echo "IMG_FILES to be uploaded: $IMG_FILES"
+echo "Image Files to be uploaded: $IMG_FILES"
 
 # Create release	
 gh release create $RELEASETAG out/target/product/$DEVICE/*.zip $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes

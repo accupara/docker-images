@@ -24,4 +24,9 @@ fi
 gh auth login --with-token < token.txt
 
 # Create release	
-gh release create $RELEASETAG out/target/product/$DEVICE/*.zip out/target/product/$DEVICE/*.img --repo $REPONAME --title $RELEASETITLE --generate-notes
+gh release create $RELEASETAG \
+out/target/product/$DEVICE/*.zip \
+out/target/product/$DEVICE/recovery.img \
+out/target/product/$DEVICE/boot.img \
+out/target/product/$DEVICE/vendor_boot.img \
+--repo $REPONAME --title $RELEASETITLE --generate-notes

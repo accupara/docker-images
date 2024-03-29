@@ -5,6 +5,7 @@ RELEASETAG=$1
 DEVICE=$2
 REPONAME=$3
 RELEASETITLE=$4
+FILES=""
 
 # Check if token.txt exists
 if [ ! -f token.txt ]; then
@@ -23,10 +24,19 @@ fi
 # Authenticate against github.com by reading the token from a file
 gh auth login --with-token < token.txt
 
+# Scan Release Files
+for file in out/target/product/$DEVICE/*.img; do
+    if [[ -n $file && $(stat -c%s "$file") -le 2147483648 ]]; then
+    FILES+="$file "
+    echo "Adding $file to FILES"
+  else
+    echo "Skipping $file"
+    continue
+  fi
+done
+echo "Uploaded files: $FILES"
+
 # Create release	
-gh release create $RELEASETAG \
-out/target/product/$DEVICE/*.zip \
-out/target/product/$DEVICE/recovery.img \
-out/target/product/$DEVICE/boot.img \
-out/target/product/$DEVICE/vendor_boot.img \
+gh release create $RELEASETAG out/target/product/$DEVICE/*.zip \
+                             out/target/product/$DEVICE/$FILES \
 --repo $REPONAME --title $RELEASETITLE --generate-notes

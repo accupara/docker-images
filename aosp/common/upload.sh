@@ -34,8 +34,18 @@ else
 fi
 done
 echo "Image Files to be uploaded: $IMG_FILES"
-echo "Zip Files to be Uploaded: $(ls out/target/product/$DEVICE/*.zip)"
+
+# Now do the same for ZIP_FILES
+for zip_file in out/target/product/$DEVICE/*.zip; do
+if [[ -n $zip_file && $(stat -c%s "$zip_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    ZIP_FILES+="$zip_file "
+    echo "Selecting $zip_file for Upload"
+else
+    echo "Skipping $zip_file"
+fi
+done
+echo "Image Files to be uploaded: $ZIP_FILES"
 
 
 # Create release	
-gh release create $RELEASETAG out/target/product/$DEVICE/*.zip $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes

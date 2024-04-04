@@ -46,6 +46,10 @@ fi
 done
 echo "Image Files to be uploaded: $ZIP_FILES"
 
-
 # Create release	
-gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+if [ "${DCDEVSPACE}" == "1" ]; then
+    crave push token.txt -d $(crave ssh -- pwd | grep -v Select | sed -s 's/\r//g')/
+    crave ssh -- "bash /opt/crave/github-actions/upload.sh $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes"
+else
+    gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+fi

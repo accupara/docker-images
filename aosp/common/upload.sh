@@ -6,6 +6,7 @@ DEVICE=$2
 REPONAME=$3
 RELEASETITLE=$4
 IMG_FILES=""
+ZIP_FILES=""
 
 # Check if token.txt exists
 if [ ! -f token.txt ]; then

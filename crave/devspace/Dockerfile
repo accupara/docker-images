@@ -119,6 +119,11 @@ RUN set -x \
  && chmod +x /opt/crave/telegram/upload.sh \
 # Install the VS Code Server
  && curl -fsSL https://code-server.dev/install.sh | sh \
+# Save the upload.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/github-actions \
+ && sudo chown admin:admin /opt/crave/github-actions \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
+ && chmod +x /opt/crave/github-actions/upload.sh \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

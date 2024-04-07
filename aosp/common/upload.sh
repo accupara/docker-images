@@ -6,6 +6,7 @@ DEVICE=$2
 REPONAME=$3
 RELEASETITLE=$4
 IMG_FILES=""
+ZIP_FILES=""
 
 # Check if token.txt exists
 if [ ! -f token.txt ]; then
@@ -46,6 +47,10 @@ for zip_file in out/target/product/$DEVICE/*.zip; do
 done
 echo "Zip Files to be uploaded: $ZIP_FILES"
 
-
 # Create release	
-gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+if [ "${DCDEVSPACE}" == "1" ]; then
+    crave push token.txt -d $(crave ssh -- pwd | grep -v Select | sed -s 's/\r//g')/
+    crave ssh -- "bash /opt/crave/github-actions/upload.sh "$RELEASETAG" "$DEVICE" "$REPONAME" "$RELEASETITLE""
+else
+    gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+fi

@@ -1,28 +1,23 @@
 #!/bin/bash
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-RELEASETAG=$1
-DEVICE=$2
-REPONAME=$3
-RELEASETITLE=$4
-IMG_FILES=""
 
-# Check if token.txt exists
-if [ ! -f token.txt ]; then
-    echo "token.txt doesn't exist!"
+# Check if Credentials exists
+if [ ! -f ~/.config/telegram-upload.json ]; then
+    echo "~/.config/telegram-upload.json doesn't exist!"
+    exit 1
+fi
+if [ ! -f ~/.config/telegram-upload.session ]; then
+    echo "~/.config/telegram-upload.session doesn't exist!"
     exit 1
 fi
 
-# Check if gh is installed
-if ! command -v gh &> /dev/null; then
-    echo "gh could not be found. Installing gh..."
-    curl -sS https://webi.sh/gh | sh
-    source ~/.config/envman/PATH.env
-    echo "gh installed."
+# Check if telegram-upload is installed
+if ! command -v telegram-upload &> /dev/null; then
+    echo "telegram-upload could not be found. Installing it..."
+    sudo pip3 install -U telegram-upload
+    echo "telegram-upload installed."
 fi
-
-# Authenticate against github.com by reading the token from a img_file
-gh auth login --with-token < token.txt
 
 # Scan Release IMG_FILES
 for img_file in out/target/product/$DEVICE/*.img; do
@@ -48,4 +43,10 @@ echo "Zip Files to be uploaded: $ZIP_FILES"
 
 
 # Create release	
-gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
+if [ "${DCDEVSPACE}" == "1" ]; then
+    crave push ~/.config/telegram-upload.json -d /home/admin/.config/telegram-upload.json
+    crave push ~/.config/telegram-upload.session -d /home/admin/.config/telegram-upload.session
+    crave ssh -- "bash /opt/crave/telegram/upload.sh"
+else
+    telegram-upload $ZIP_FILES $IMG_FILES
+fi

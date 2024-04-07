@@ -112,6 +112,11 @@ RUN set -x \
  && register-python-argcomplete crave > /tmp/crave_bash_completion \
  && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
  && sudo chown -R admin:admin /home/admin/.bash_completion.d \
+# Save the telegram upload.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/telegram \
+ && sudo chown admin:admin /opt/crave/telegram \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
+ && chmod +x /opt/crave/telegram/upload.sh \
 # Install the VS Code Server
  && curl -fsSL https://code-server.dev/install.sh | sh \
 # The usual cleanup

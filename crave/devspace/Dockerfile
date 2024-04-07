@@ -59,9 +59,9 @@ RUN set -x \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir -p /opt/aosp \
- && sudo chown admin:admin /opt/aosp \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
+ && sudo chown -R admin:admin /opt/aosp \
 # Remove python 2 completely
  && sudo eatmydata apt-get purge -y python python2.7 \
  && sudo eatmydata apt-get -y autoremove \
@@ -117,13 +117,13 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
-# Install the VS Code Server
- && curl -fsSL https://code-server.dev/install.sh | sh \
 # Save the upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/github-actions \
- && sudo chown admin:admin /opt/crave/github-actions \
+ && sudo chown -R admin:admin /opt/crave \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
  && chmod +x /opt/crave/github-actions/upload.sh \
+# Install the VS Code Server
+ && curl -fsSL https://code-server.dev/install.sh | sh \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

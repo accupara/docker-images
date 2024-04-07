@@ -39,5 +39,10 @@ RUN set -x \
  && sudo chown admin:admin /opt/crave/github-actions \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
  && chmod +x /opt/crave/github-actions/upload.sh \
+# Save the telegram upload.sh script into the appropriate location
+ && sudo mkdir -p /opt/crave/telegram \
+ && sudo chown admin:admin /opt/crave/telegram \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
+ && chmod +x /opt/crave/telegram/upload.sh \
 # For the DumperX script
  && sudo chmod 777 /etc/mke2fs.conf

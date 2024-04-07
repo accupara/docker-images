@@ -26,23 +26,23 @@ gh auth login --with-token < token.txt
 
 # Scan Release IMG_FILES
 for img_file in out/target/product/$DEVICE/*.img; do
-if [[ -n $img_file && $(stat -c%s "$img_file") -le 2147483648 ]]; then # Try to match github releases per size limit
-    IMG_FILES+="$img_file "
-    echo "Selecting $img_file for Upload"
-else
-    echo "Skipping $img_file"
-fi
+    if [[ -n $img_file && $(stat -c%s "$img_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+        IMG_FILES+="$img_file "
+        echo "Selecting $img_file for Upload"
+    else
+        echo "Skipping $img_file"
+    fi
 done
 echo "Image Files to be uploaded: $IMG_FILES"
 
 # Now do the same for ZIP_FILES
 for zip_file in out/target/product/$DEVICE/*.zip; do
-if [[ -n $zip_file && $(stat -c%s "$zip_file") -le 2147483648 ]]; then # Try to match github releases per size limit
-    ZIP_FILES+="$zip_file "
-    echo "Selecting $zip_file for Upload"
-else
-    echo "Skipping $zip_file"
-fi
+    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+        ZIP_FILES+="$zip_file "
+        echo "Selecting $zip_file for Upload"
+    else
+        echo "Skipping $zip_file"
+    fi
 done
 echo "Zip Files to be uploaded: $ZIP_FILES"
 

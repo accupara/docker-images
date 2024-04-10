@@ -82,8 +82,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
- && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Install the latest version of gradle
  && cd /tmp \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \

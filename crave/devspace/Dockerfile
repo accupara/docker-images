@@ -129,7 +129,7 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf sshd_config init.sh /tmp/
+COPY vnc.conf tmux.conf sshd_config init.sh repo /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mv /tmp/vnc.conf /etc/supervisor/conf.d/ \
@@ -138,7 +138,11 @@ RUN set -x \
 # Put the sshd conf where it should be
  && sudo mv /tmp/sshd_config /etc/ssh/sshd_config \
 # Copy the init script to its intended location
- && sudo mv /tmp/init.sh /etc/crave/
+ && sudo mv /tmp/init.sh /etc/crave/ \
+# Move repo to repo.real and put the shim in its place
+ && sudo mv /usr/bin/repo /usr/bin/repo.real \
+ && sudo mv /tmp/repo /usr/bin/repo.shim \
+ && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo
 
 #COPY startup.sh /home/admin/
 #ENTRYPOINT [ "/home/admin/startup.sh" ]

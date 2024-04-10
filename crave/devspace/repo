@@ -1,0 +1,9 @@
+#!/bin/bash
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+
+if [ "$1" == "sync" ]; then
+    echo "syncing repo in the devspace is forbidden, please use crave clone"
+    exit 1
+fi
+
+exec /usr/bin/repo.real $@

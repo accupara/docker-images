@@ -80,6 +80,12 @@ RUN set -x \
     zip \
     zlib1g-dev \
     zstd \
+    iputils-arping \
+    iputils-clockdiff \
+    iputils-ping \
+    iputils-tracepath \
+    inetutils-tools \
+    xmlstarlet \
 # For the dumper
  && sudo eatmydata apt-get install -y \
     python3-venv \

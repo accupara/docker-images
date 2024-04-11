@@ -68,6 +68,8 @@ def parse_argv():
                         help='Number of threads to employ')
     parser.add_argument('--only-with-base', default=False, dest='only_with_base', action='store_true',
                         help='Compile only when there is an IMGVER_BASE variable')
+    parser.add_argument('--force-rebuild', default=False, dest='force_rebuild', action='store_true',
+                        help='Force a rebuild')
 
     return parser.parse_args()
 # end def
@@ -382,19 +384,19 @@ def recursivelyMarkStale(image):
 # end def
 
 
-def markImagesOlderThanParent(imageList):
+def markImagesOlderThanParent(imageList, force_rebuild=False):
     for i in imageList:
         if i.isStale:
             continue
         # end if
 
         if i.parentImage:
-            if i.parentImage.mtime > i.mtime:
+            if i.parentImage.mtime > i.mtime or force_rebuild:
                 recursivelyMarkStale(i)
             # end if
         else:
             mtime = getExternalImageMtime(i.parentName)
-            if not mtime or mtime > i.mtime:
+            if not mtime or mtime > i.mtime or force_rebuild:
                 recursivelyMarkStale(i)
             # end if
         # end if
@@ -593,7 +595,7 @@ def main():
     updateImageMtimes(imageList)
     updateDockerfileMtimes(imageList)
 
-    markImagesOlderThanParent(imageList)
+    markImagesOlderThanParent(imageList, args.force_rebuild)
 
     # printImages1(imageList)
     # printImages2(imageList)

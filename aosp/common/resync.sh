@@ -1,10 +1,17 @@
 #!/bin/bash
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
+if [ "${DCDEVSPACE}" == "1" ]; then
+    REPO_COMMAND="/usr/bin/repo.real"
+else
+    REPO_COMMAND="repo"
+fi
+
+
 main() {
     # Run repo sync command and capture the output
     find .repo -name '*.lock' -delete
-    /usr/bin/repo.real sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
+    $REPO_COMMAND sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
     # Check if there are any failing repositories
     if grep -q "Failing repos:" /tmp/output.txt ; then
@@ -26,7 +33,7 @@ main() {
         # Re-sync all repositories after deletion
         echo "Re-syncing all repositories..."
         find .repo -name '*.lock' -delete
-        /usr/bin/repo.real sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
+        $REPO_COMMAND sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
     else
         echo "All repositories synchronized successfully."
     fi

@@ -2,7 +2,9 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
 if [ "${DCDEVSPACE}" == "1" ]; then
-    REPO_COMMAND="/usr/bin/repo.real"
+    #REPO_COMMAND="/usr/bin/repo.real"
+    echo "syncing repo in the devspace is forbidden, please use crave clone"
+    exit 1
 else
     REPO_COMMAND="repo"
 fi

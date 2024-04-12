@@ -45,6 +45,9 @@ RUN set -x \
     vim \
     wget \
     xxhash \
+    iputils \
+    inteutils \
+    xmlstarlet \
  && pacman -Sc --noconfirm \
 # Newest versions of openssh-server don't seem to create all the host keys
  && sudo /usr/bin/ssh-keygen -A \

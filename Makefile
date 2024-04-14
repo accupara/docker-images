@@ -4,7 +4,7 @@ SUBDIRS=\
 	baseimages \
 	business-cards django-nginx qemu duperemove mozilla chromium sonic \
 	mobile cpython java cncf db \
-	jobserver stress certbot libdeploy gitstatic coreboot tensorflow libra samba \
+	jobserver stress certbot libdeploy gitstatic coreboot tensorflow diem samba \
 	ti \
 	aosp agl \
     golang-apps \

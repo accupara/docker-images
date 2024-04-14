@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-IMGTAG?=accupara/libra
-IMGVER_BASE?=debian_10
-IMGVER_TARGETS?=aarch64 x86_64
+IMGTAG?=accupara/diem
+IMGVER?=debian_10
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

@@ -35,7 +35,7 @@ echo "Image Files to be uploaded: $IMG_FILES"
 
 # Now do the same for ZIP_FILES
 for zip_file in out/target/product/$DEVICE/*.zip; do
-    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le ${{TG_UPLOAD_LIMIT}} ]]; then # Try to match github releases per size limit
         ZIP_FILES+="$zip_file "
         echo "Selecting $zip_file for Upload"
     else
@@ -48,7 +48,7 @@ echo "Zip Files to be uploaded: $ZIP_FILES"
 if [ "${DCDEVSPACE}" == "1" ]; then
     crave push ~/.config/telegram-upload.json -d /home/admin/.config/telegram-upload.json
     crave push ~/.config/telegram-upload.session -d /home/admin/.config/telegram-upload.session
-    crave ssh -- "bash /opt/crave/telegram/upload.sh"
+    crave ssh -- "export TG_UPLOAD_LIMIT="$TG_UPLOAD_LIMIT"; bash /opt/crave/telegram/upload.sh"
 else
     telegram-upload $ZIP_FILES $IMG_FILES
 fi

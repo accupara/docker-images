@@ -22,12 +22,16 @@ if ! command -v gh &> /dev/null; then
     echo "gh installed."
 fi
 
+# Set Upload Limit if not already set
+: ${GH_UPLOAD_LIMIT:=2147483648}
+echo "Upload Limit is set to $GH_UPLOAD_LIMIT"
+
 # Authenticate against github.com by reading the token from a img_file
 gh auth login --with-token < token.txt
 
 # Scan Release IMG_FILES
 for img_file in out/target/product/$DEVICE/*.img; do
-    if [[ -n $img_file && $(stat -c%s "$img_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    if [[ -n $img_file && $(stat -c%s "$img_file") -le ${{GH_UPLOAD_LIMIT}} ]]; then # Try to match github releases per size limit
         IMG_FILES+="$img_file "
         echo "Selecting $img_file for Upload"
     else

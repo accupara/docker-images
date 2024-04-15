@@ -11,6 +11,10 @@ if [ ! -f ~/.config/telegram-upload.session ]; then
     exit 1
 fi
 
+# Set Upload Limit if not already set
+: ${TG_UPLOAD_LIMIT:=2147483648}
+echo "Upload Limit is set to $TG_UPLOAD_LIMIT"
+
 # Check if telegram-upload is installed
 if ! command -v telegram-upload &> /dev/null; then
     echo "telegram-upload could not be found. Installing it..."
@@ -20,7 +24,7 @@ fi
 
 # Scan Release IMG_FILES
 for img_file in out/target/product/$DEVICE/*.img; do
-    if [[ -n $img_file && $(stat -c%s "$img_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    if [[ -n $img_file && $(stat -c%s "$img_file") -le ${{TG_UPLOAD_LIMIT}} ]]; then # Try to match github releases per size limit
         IMG_FILES+="$img_file "
         echo "Selecting $img_file for Upload"
     else

@@ -22,12 +22,16 @@ if ! command -v gh &> /dev/null; then
     echo "gh installed."
 fi
 
+# Set Upload Limit if not already set
+: ${GH_UPLOAD_LIMIT:=2147483648}
+echo "Upload Limit is set to $GH_UPLOAD_LIMIT"
+
 # Authenticate against github.com by reading the token from a img_file
 gh auth login --with-token < token.txt
 
 # Scan Release IMG_FILES
 for img_file in out/target/product/$DEVICE/*.img; do
-    if [[ -n $img_file && $(stat -c%s "$img_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    if [[ -n $img_file && $(stat -c%s "$img_file") -le ${{GH_UPLOAD_LIMIT}} ]]; then # Try to match github releases per size limit
         IMG_FILES+="$img_file "
         echo "Selecting $img_file for Upload"
     else
@@ -38,7 +42,7 @@ echo "Image Files to be uploaded: $IMG_FILES"
 
 # Now do the same for ZIP_FILES
 for zip_file in out/target/product/$DEVICE/*.zip; do
-    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le 2147483648 ]]; then # Try to match github releases per size limit
+    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le ${{GH_UPLOAD_LIMIT}} ]]; then # Try to match github releases per size limit
         ZIP_FILES+="$zip_file "
         echo "Selecting $zip_file for Upload"
     else
@@ -50,7 +54,7 @@ echo "Zip Files to be uploaded: $ZIP_FILES"
 # Create release	
 if [ "${DCDEVSPACE}" == "1" ]; then
     crave push token.txt -d $(crave ssh -- pwd | grep -v Select | sed -s 's/\r//g')/
-    crave ssh -- "bash /opt/crave/github-actions/upload.sh "$RELEASETAG" "$DEVICE" "$REPONAME" "$RELEASETITLE""
+    crave ssh -- "export GH_UPLOAD_LIMIT="$GH_UPLOAD_LIMIT"; bash /opt/crave/github-actions/upload.sh "$RELEASETAG" "$DEVICE" "$REPONAME" "$RELEASETITLE""
 else
     gh release create $RELEASETAG $ZIP_FILES $IMG_FILES --repo $REPONAME --title $RELEASETITLE --generate-notes
 fi

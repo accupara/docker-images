@@ -55,7 +55,7 @@ echo "Extra Files to be uploaded: $EXTRAFILES"
 if [ "${DCDEVSPACE}" == "1" ]; then
     crave push ~/.config/telegram-upload.json -d /home/admin/.config/telegram-upload.json
     crave push ~/.config/telegram-upload.session -d /home/admin/.config/telegram-upload.session
-    crave ssh -- "export TG_UPLOAD_LIMIT="$TG_UPLOAD_LIMIT"; bash /opt/crave/telegram/upload.sh "$DEVICE" "$EXTRAFILES" "FLAGS"
+    crave ssh -- "export TG_UPLOAD_LIMIT="$TG_UPLOAD_LIMIT"; bash /opt/crave/telegram/upload.sh "$DEVICE" "$EXTRAFILES" "FLAGS""
 else
     telegram-upload $ZIP_FILES $IMG_FILES $EXTRAFILES $FLAGS
 fi

@@ -46,7 +46,7 @@ RUN set -x \
     wget \
     xxhash \
     iputils \
-    inteutils \
+    inetutils \
     xmlstarlet \
  && pacman -Sc --noconfirm \
 # Newest versions of openssh-server don't seem to create all the host keys

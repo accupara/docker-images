@@ -51,6 +51,7 @@ for zip_file in out/target/product/$DEVICE/*.zip; do
     fi
 done
 echo "Zip Files to be uploaded: $ZIP_FILES"
+echo "Extra Files to be uploaded: $EXTRAFILES"
 
 # Create release	
 if [ "${DCDEVSPACE}" == "1" ]; then

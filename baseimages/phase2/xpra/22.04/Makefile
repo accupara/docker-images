@@ -2,6 +2,7 @@
 
 IMGTAG?=accupara/xpra
 IMGVER_BASE?=22.04
+IMGVER_TARGETS?=aarch64 x86_64 s390x
 
 CTR_NAME?=xpra
 

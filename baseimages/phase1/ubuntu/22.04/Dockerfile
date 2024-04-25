@@ -28,33 +28,35 @@ RUN set -x \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
-       bash-completion \
-       binutils \
-       build-essential \
-       curl \
-       debhelper \
-       devscripts \
-       dh-make \
-       eatmydata \
-       emacs \
-       git-lfs \
-       guile-3.0 \
-       jq \
-       libpopt0 \
-       libxxhash0 \
-       locales \
-       lsb-release \
-       multitail \
-       ninja-build \
-       openssh-server \
-       psmisc \
-       # install rsync because it allows the updated rsync to work correctly
-       rsync \
-       subversion \
-       sudo \
-       tmux \
-       vim-nox \
-       wget \
+      bash-completion \
+      binutils \
+      build-essential \
+      curl \
+      debhelper \
+      devscripts \
+      dh-make \
+      eatmydata \
+      emacs \
+      git-lfs \
+      guile-3.0 \
+      jq \
+      libpopt0 \
+      libxxhash0 \
+      locales \
+      lsb-release \
+      multitail \
+      ninja-build \
+      openssh-server \
+      psmisc \
+      # install rsync because it allows the updated rsync to work correctly
+      rsync \
+      subversion \
+      sudo \
+      tmux \
+      vim-nox \
+      wget \
+      # for lndir
+      xutils-dev \
 # Newest versions of openssh-server don't seem to create all the host keys
  && sudo sudo /usr/bin/ssh-keygen -A \
 # Compile and install the latest git

@@ -73,6 +73,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       sudo \
       tmux \
       vim-nox \
+      wget \
+      # for lndir
+      xutils-dev \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
  && eatmydata -- apt-get install -y git-lfs \

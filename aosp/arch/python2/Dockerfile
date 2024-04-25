@@ -17,7 +17,7 @@ RUN set -x \
  && sudo pacman -U ./*zst --noconfirm && rm *zst \
  && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Now lets fetch the jdk8 as well any thing ele that older aosp needs
- && paru -S multilib-devel aosp-devel lineageos-devel python2 --noconfirm \
+ && paru -S multilib-devel aosp-devel lineageos-devel python2 arm-none-eabi-gcc --noconfirm \
  && java -version \
  && neofetch \
  && sudo ln -sf /usr/bin/python2 /usr/bin/python \

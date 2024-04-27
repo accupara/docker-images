@@ -12,11 +12,12 @@ RUN set -x \
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
  && sudo /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh --skip-license --prefix=/usr \
-# Use clang!
+# Use clang, add the tools required for test data, according to https://clickhouse.com/docs/en/development/developer-instruction
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y \
     clang \
     clang-tidy \
+    xz-utils \
 # Cleanup
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

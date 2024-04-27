@@ -34,9 +34,9 @@ RUN set -x \
         xsltproc \
 # Latest version of cmake required for compilation
  && export ARCH=$(uname -m) \
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-${ARCH}.sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-${ARCH}.sh --skip-license --prefix=/usr \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh --skip-license --prefix=/usr \
 # Install PG 12
  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo eatmydata apt-key add - \
  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list \

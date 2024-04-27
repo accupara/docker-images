@@ -28,9 +28,9 @@ RUN set -x \
         zlib1g-dev \
 # Latest version of cmake required for compilation
  && ARCH=$(uname -m) \
- && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
- && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
- && sudo /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh --skip-license --prefix=/usr \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh --skip-license --prefix=/usr \
 # Download boost, but don't compile it
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
  && sudo tar -C /opt -xf /tmp/boost_${BOOST_VER}.tar.gz \

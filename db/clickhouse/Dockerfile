@@ -1,9 +1,20 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:22.04
 
+ENV CMAKE_VER=3.27.9 \
+    CC=clang \
+    CXX=clang++
+
 RUN set -x \
-# Download the FerretDB sources and compile the task tool
- && git clone https://github.com/FerretDB/FerretDB.git fdb \
- && cd fdb/tools \
- && go generate -x \
- && sudo mv ../bin/task /usr/bin
+# Latest version of cmake required for compilation
+ && ARCH=$(uname -m) \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-$(ARCH).sh --skip-license --prefix=/usr \
+# Use clang!
+ && sudo eatmydata apt-get install -y \
+    clang \
+    clang-tidy \
+# Cleanup
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

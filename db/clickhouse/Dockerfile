@@ -24,6 +24,7 @@ RUN set -x \
     software-properties-common \
     wget \
     xz-utils \
+    yasm \
 # Now actually install a newer version of clang over this
  && wget https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \

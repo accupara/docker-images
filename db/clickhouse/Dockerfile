@@ -20,6 +20,7 @@ RUN set -x \
     clang-tidy \
     gnupg \
     lsb-release \
+    nasm \
     software-properties-common \
     wget \
     xz-utils \

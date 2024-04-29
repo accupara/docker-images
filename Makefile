@@ -35,7 +35,32 @@ everything_dir_%:
 	./useme/build.py -C $* -j `nproc`
 	-$(MAKE) -C $* manifest -k -j `nproc`
 
-DIRS=linuxkernel tak db java cncf apache aosp arch-aosp-jdk7 arch-aosp-jdk8 arch-aosp-python2 yocto business-cards rsync remake libra duperemove glibc cpython ffmpeg verilator tensorflow protocolbuffers golang-apps agl gcc chromium dpdk
+DIRS=\
+	 agl \
+	 aosp \
+	 apache \
+	 certbot \
+	 chromium \
+	 cncf \
+	 cpython \
+	 db \
+	 diem \
+	 dpdk \
+	 duperemove \
+	 ffmpeg \
+	 gcc \
+	 glibc \
+	 godotengine \
+	 java \
+	 linuxkernel \
+	 protocolbuffers \
+	 remake \
+	 rsync \
+	 samba \
+	 tak \
+	 tensorflow \
+	 verilator \
+	 yocto
 everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 
 everything:

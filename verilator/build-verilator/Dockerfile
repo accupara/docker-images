@@ -17,7 +17,6 @@ RUN set -x \
        libbit-vector-perl \
        libfl2 \
        libfl-dev \
-       zlibc \
        zlib1g \
        zlib1g-dev \
 # Minimize image

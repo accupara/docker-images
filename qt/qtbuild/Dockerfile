@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+FROM accupara/ubuntu:22.04
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9

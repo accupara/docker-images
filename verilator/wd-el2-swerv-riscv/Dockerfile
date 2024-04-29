@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 # Stage 1
-FROM accupara/verilator_build:ubuntu_2004 AS stage1
+FROM accupara/verilator_build:ubuntu AS stage1
 # Get Crave, clone verilator stable branch, compile verilator using crave, download output
 RUN set -x \
 ### Get and compile verilator
@@ -25,13 +25,13 @@ RUN set -x \
     fi \
  && ls -lrt /tmp/
 
-FROM accupara/ubuntu:20.04
+FROM accupara/ubuntu:22.04
 COPY --from=stage1 /tmp/pack /tmp/
 
 RUN set -x \
  && ls -lrt /tmp/ \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
     libbit-vector-perl \
 ### Copy the contents of the pack from stage 1 into this container
  && sudo rsync -av /tmp/usr / \
@@ -44,6 +44,6 @@ RUN set -x \
  && cd /tmp && ls -l ; find riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14 -delete \
  && rm riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz \
 # Minimize image
- && sudo apt-get autoremove -y \
- && sudo apt-get clean -y \
+ && sudo eatmydata apt-get autoremove -y \
+ && sudo eatmydata apt-get clean -y \
  && sudo rm -rf /var/lib/apt/lists/*

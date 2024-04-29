@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:20.04
+FROM accupara/ubuntu:22.04
 
 RUN set -x \
  && sudo eatmydata apt-get update \
@@ -52,6 +52,7 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/boost_${BOOST} \
  && rm -f boost_${BOOST}.tar.bz2 \
 # Cleanup apt cache
- && sudo eatmydata apt-get clean
+ && sudo eatmydata apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 ENV BOOST=1_77_0

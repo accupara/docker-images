@@ -19,5 +19,5 @@ RUN set -x \
     clang-tidy \
     xz-utils \
 # Cleanup
- && sudo apt-get clean \
+ && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

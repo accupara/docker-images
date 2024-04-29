@@ -2,10 +2,12 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:24.04 as remake
+#FROM accupara/ubuntu:24.04 as remake
+FROM ubuntu:24.04 as remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && apt-get update \
+ && apt-get install -y \
+        git \
         guile-3.0-dev \
         texinfo \
  && git clone https://github.com/rocky/remake.git \

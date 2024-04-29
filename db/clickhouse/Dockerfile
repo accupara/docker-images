@@ -2,6 +2,7 @@
 FROM accupara/ubuntu:22.04
 
 ENV CMAKE_VER=3.27.9 \
+    LLVM_VER=18 \
     CC=clang \
     CXX=clang++
 
@@ -17,7 +18,15 @@ RUN set -x \
  && sudo eatmydata apt-get install -y \
     clang \
     clang-tidy \
+    gnupg \
+    lsb-release \
+    software-properties-common \
+    wget \
     xz-utils \
+# Now actually install a newer version of clang over this
+ && wget https://apt.llvm.org/llvm.sh \
+ && chmod +x llvm.sh \
+ && sudo ./llvm.sh ${LLVM_VER} \
 # Cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

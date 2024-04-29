@@ -27,6 +27,11 @@ RUN set -x \
  && wget https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \
  && sudo ./llvm.sh ${LLVM_VER} \
+# and update the links
+ && find ../lib/llvm-18/bin/ -name 'clang*' | \
+    while read line ; do \
+        sudo ln -sf $line $(basename $line) ; \
+    done \
 # Cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

@@ -30,7 +30,8 @@ RUN set -x \
  && chmod +x llvm.sh \
  && sudo ./llvm.sh ${LLVM_VER} \
 # and update the links
- && find ../lib/llvm-18/bin/ -name 'clang*' | \
+ && cd /usr/bin \
+ && find ../lib/llvm-${LLVM_VER}/bin/ -name 'clang*' | \
     while read line ; do \
         sudo ln -sf $line $(basename $line) ; \
     done \

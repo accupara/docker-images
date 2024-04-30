@@ -41,17 +41,13 @@ RUN set -x \
        perl \
        perl-modules \
        pkg-config \
-       python-all-dev \
-       python-crypto \
-       python-dbg \
-       python-dev \
-       python-dnspython \
-       python3-dnspython \
-       python-gpg \
-       python3-gpg \
-       python-markdown \
-       python3-markdown \
+       python3-all-dev \
+       python3-cryptography \
        python3-dev \
+       python3-dbg \
+       python3-dnspython \
+       python3-gpg \
+       python3-markdown \
        xsltproc \
        zlib1g-dev \
        liblmdb-dev \

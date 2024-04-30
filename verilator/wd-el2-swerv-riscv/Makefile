@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/wd-el2-swerv-riscv
-IMGVER_BASE?=ubuntu_2004
+IMGVER_BASE?=ubuntu
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

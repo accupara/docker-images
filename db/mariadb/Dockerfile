@@ -7,6 +7,7 @@ ENV CMAKE_VER=3.27.9
 COPY galera.list /etc/apt/sources.list.d/galera.list
 
 RUN set -x \
+ && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8DA84635 \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y software-properties-common \
  && sudo eatmydata apt-get update \
@@ -59,7 +60,6 @@ RUN set -x \
     uuid-dev \
     zlib1g-dev \
 # Install Galera
- && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8DA84635 \
  && sudo apt-get install -y \
     galera-4 \
     mysql-wsrep-8.0 \

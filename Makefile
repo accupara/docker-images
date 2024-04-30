@@ -54,6 +54,7 @@ DIRS=\
 	 java \
 	 linuxkernel \
 	 protocolbuffers \
+	 qemu \
 	 remake \
 	 rsync \
 	 samba \

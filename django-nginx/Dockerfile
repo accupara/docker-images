@@ -16,7 +16,7 @@ RUN set -x \
         sshpass \
         supervisor \
  && sudo pip3 install --upgrade \
-        pip==18.1 \
+        pip \
         setuptools \
  && sudo pip3 install --upgrade \
         django \

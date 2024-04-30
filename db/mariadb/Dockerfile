@@ -18,7 +18,6 @@ RUN set -x \
     debhelper \
     dh-apparmor \
     dh-exec \
-    dh-systemd \
     flex \
     gawk \
     gdb \
@@ -39,7 +38,7 @@ RUN set -x \
     libnuma-dev \
     libpam0g-dev \
     libpcre2-dev \
-    libreadline-gplv2-dev \
+    libreadline-dev \
     libsnappy-dev \
     libssl-dev \
     libsystemd-dev \

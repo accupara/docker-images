@@ -9,7 +9,7 @@ RUN set -x \
         automake \
         bc \
         bison \
-        clang-6.0 \
+        clang \
         cpio \
         flex \
         libelf-dev \

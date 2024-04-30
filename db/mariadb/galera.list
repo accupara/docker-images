@@ -1,0 +1,2 @@
+deb https://releases.galeracluster.com/galera-4.17/ubuntu jammy main
+deb https://releases.galeracluster.com/mysql-wsrep-8.0.35-26.16/ubuntu jammy main

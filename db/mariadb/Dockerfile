@@ -4,10 +4,11 @@ FROM accupara/ubuntu:22.04
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=3.27.9
 
+COPY galera.list /etc/apt/sources.list.d/galera.list
+
 RUN set -x \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y software-properties-common \
- && sudo add-apt-repository ppa:maria-captains/travis-ci-helper-repo \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y \
     bison \
@@ -18,7 +19,6 @@ RUN set -x \
     dh-exec \
     dh-systemd \
     flex \
-    galera-4 \
     gawk \
     gdb \
     gnutls-dev \
@@ -58,6 +58,11 @@ RUN set -x \
     unixodbc-dev \
     uuid-dev \
     zlib1g-dev \
+# Install Galera
+ && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8DA84635 \
+ && sudo apt-get install -y \
+    galera-4 \
+    mysql-wsrep-8.0 \
 # Latest version of cmake required for compilation
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \

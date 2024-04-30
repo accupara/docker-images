@@ -61,8 +61,7 @@ RUN set -x \
 # Install Galera
  && sudo apt-get install -y \
     galera-4 \
-    mysql-client \
-    mysql-wsrep-8.0 \
+    #mysql-wsrep-8.0 \
 # Latest version of cmake required for compilation
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \

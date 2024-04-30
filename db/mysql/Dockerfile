@@ -2,9 +2,9 @@
 FROM accupara/ubuntu:22.04
 
 RUN set -x \
+ && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 8DA84635 \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y software-properties-common \
- && sudo add-apt-repository ppa:maria-captains/travis-ci-helper-repo \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get install -y \
     bison \
@@ -14,8 +14,6 @@ RUN set -x \
     debhelper \
     dh-apparmor \
     dh-exec \
-    dh-systemd \
-    galera-4 \
     gdb \
     gnutls-dev \
     icu-devtools \
@@ -29,7 +27,7 @@ RUN set -x \
     libpam0g-dev \
     libpcre2-dev \
     libprotobuf-dev \
-    libreadline-gplv2-dev \
+    libreadline-dev \
     libssl-dev \
     libsystemd-dev \
     libxml2-dev \
@@ -41,6 +39,10 @@ RUN set -x \
     psmisc \
     unixodbc-dev \
     zlib1g-dev \
+# Install Galera
+ && sudo apt-get install -y \
+    galera-4 \
+    #mysql-wsrep-8.0 \
 # Manually download boost and save it
  && cd /tmp \
  && export BOOST=1_77_0 \

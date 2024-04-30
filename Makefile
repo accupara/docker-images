@@ -2,7 +2,7 @@
 
 SUBDIRS=\
 	baseimages \
-	business-cards django-nginx qemu duperemove mozilla chromium sonic \
+	business-cards django-nginx qemu duperemove mozilla chromium sonic mono \
 	mobile cpython java cncf db \
 	jobserver stress certbot libdeploy gitstatic coreboot tensorflow diem samba \
 	ti \
@@ -53,6 +53,7 @@ DIRS=\
 	 godotengine \
 	 java \
 	 linuxkernel \
+	 mono \
 	 protocolbuffers \
 	 qemu \
 	 remake \

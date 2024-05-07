@@ -38,7 +38,7 @@ RUN set -x \
     libxml2-utils \
     lzop \
     m4 \
-    openjdk-11-jdk \
+    openjdk-7-jdk \
     pngcrush \
     schedtool \
     squashfs-tools \

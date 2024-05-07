@@ -9,3 +9,7 @@ RUN set -x \
 	vim-nox \
 	postgresql-client \
 	jq
+
+COPY startup.sh /startup.sh
+RUN sudo chmod a+x /startup.sh
+ENTRYPOINT [ "/startup.sh" ]

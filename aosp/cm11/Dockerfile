@@ -9,7 +9,7 @@ RUN set -x \
  && sudo eatmydata apt-get -y install \
     bc \
     bison \
-    brotli \
+    # brotli \
     build-essential \
     curl \
     flex \

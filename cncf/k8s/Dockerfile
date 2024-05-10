@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM registry.k8s.io/build-image/kube-cross:v1.29.0-go1.21.3-bullseye.0
+FROM registry.k8s.io/build-image/kube-cross:v1.30.0-go1.22.2-bullseye.0
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 

@@ -2,19 +2,20 @@
 
 FROM ubuntu:12.04 as rsync
 RUN set -x \
- && apt-get install -y apt-transport-https ca-certificates \
- && sed -i 's|http://archive.ubuntu.com/ubuntu/ precise-security|https://old-releases.ubuntu.com/ubuntu precise-security|g' /etc/apt/sources.list \
+ && sed -i 's|http://archive.ubuntu.com/ubuntu/|http://insecure-1204.ubuntu.crave.io/ubuntu/|g' /etc/apt/sources.list \
  && apt-get update -y \
  && apt-get install -y \
+    build-essential \
+    curl \
     libpopt-dev \
+    libssl-dev \
     zlib1g-dev \
-    liblz4-dev \
+    liblz-dev \
  && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd --disable-lz4 \
-# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
  && make -j `nproc` \
  && make install \
  && strip /tmp/rsync/bin/rsync
@@ -26,8 +27,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 # Install the minimum tools
 RUN set -x \
- && apt-get install -y apt-transport-https ca-certificates \
- && sed -i 's|http://archive.ubuntu.com/ubuntu/ precise-security|https://old-releases.ubuntu.com/ubuntu precise-security|g' /etc/apt/sources.list \
+ && sed -i 's|http://archive.ubuntu.com/ubuntu/|http://insecure-1204.ubuntu.crave.io/ubuntu/|g' /etc/apt/sources.list \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
@@ -41,10 +41,11 @@ RUN set -x \
         emacs \
         gettext \
         guile-2.0 \
-        jq \
+        # jq \
         libcurl4-gnutls-dev \
         libexpat1-dev \
-        liblz4-1 \
+        #liblz4-1 \
+        liblz1 \
         libpopt0 \
         libssl-dev \
         locales \

@@ -4,9 +4,9 @@ FROM accupara/ubuntu:12.04
 ENV YQ_VER=4.40.3
 
 RUN set -x \
- && sudo eatmydata dpkg --add-architecture i386 \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y install \
+ && sudo dpkg --add-architecture i386 \
+ && sudo apt-get update \
+ && sudo apt-get -y install \
     bc \
     bison \
     # brotli \
@@ -72,7 +72,7 @@ RUN set -x \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
 # Final cleanups
- && sudo eatmydata apt-get clean \
+ && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 ENV REPO_NO_INTERACTIVE=1 \

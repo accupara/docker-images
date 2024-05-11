@@ -25,6 +25,9 @@ RUN set -x \
     libfreetype6 \
     brotli \
     openjdk-11-jdk \
+    meson \
+    ninja-build \
+    pkg-config \
 # For schedtool (sorted by name)
  && sudo eatmydata apt-get install -y \
     autoconf \

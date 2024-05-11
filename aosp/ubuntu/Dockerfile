@@ -7,27 +7,27 @@ RUN set -x \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get -y install \
     bison \
+    brotli \
     build-essential \
     curl \
     flex \
     gnupg \
     gperf \
+    libfreetype6 \
     libncurses5-dev \
     libncurses5 \
     libgl1-mesa-dev \
     libx11-dev \
     libxml2-utils \
+    meson \
+    ninja-build \
+    openjdk-11-jdk \
+    pkg-config \
     unzip \
     x11proto-core-dev \
     xsltproc \
     zip \
     zlib1g-dev \
-    libfreetype6 \
-    brotli \
-    openjdk-11-jdk \
-    meson \
-    ninja-build \
-    pkg-config \
 # For schedtool (sorted by name)
  && sudo eatmydata apt-get install -y \
     autoconf \

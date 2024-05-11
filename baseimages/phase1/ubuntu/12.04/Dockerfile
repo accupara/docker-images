@@ -81,6 +81,8 @@ RUN set -x \
 # Install the new git again, then fix git-lfs
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
  && apt-get install -fy \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && git --version \
 # Delete the git stuff
  && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle

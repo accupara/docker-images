@@ -1,10 +1,12 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:12.04
 
-ENV YQ_VER=4.40.3
+ENV YQ_VER=4.40.3 \
+    REPO_NO_INTERACTIVE=1 \
+    GIT_TERMINAL_PROMPT=0
 
 RUN set -x \
- && sudo dpkg --add-architecture i386 \
+ #&& sudo dpkg --add-architecture i386 \
  && sudo apt-get update \
  && sudo apt-get -y install \
     bc \
@@ -23,7 +25,7 @@ RUN set -x \
     lib32z1-dev \
     libc6:i386 \
     libelf-dev \
-    liblz4-tool \
+    liblz1 \
     libncurses5:i386 \
     libncurses5-dev \
     libncurses5 \
@@ -74,6 +76,3 @@ RUN set -x \
 # Final cleanups
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
-
-ENV REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0

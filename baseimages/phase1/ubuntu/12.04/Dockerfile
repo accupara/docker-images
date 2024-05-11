@@ -63,9 +63,6 @@ RUN set -x \
         vim-nox \
         wget \
         zlib1g \
-# Make sure to install git-lfs
- && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
- && apt-get install -y git-lfs \
 # Install the latest git
  && apt-get install -y \
         libcurl4-gnutls-dev \
@@ -78,6 +75,13 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+# Make sure to install git-lfs
+ && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
+ && apt-get install -y git-lfs ; echo "Swallow error" \
+# Install the new git again, then fix git-lfs
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && apt-get install -fy \
+# Delete the git stuff
  && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Install the latest version of gradle
  && cd /tmp \

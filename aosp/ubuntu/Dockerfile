@@ -1,7 +1,10 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:22.04
 
-ENV YQ_VER=4.40.3
+ENV YQ_VER=4.40.3 \
+    MESON_VER=1.4.0 \
+    REPO_NO_INTERACTIVE=1 \
+    GIT_TERMINAL_PROMPT=0
 
 RUN set -x \
  && sudo eatmydata apt-get update \
@@ -103,10 +106,19 @@ RUN set -x \
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
  && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
+# Create a download location to cleanup later
+ && mkdir -p /tmp/dl \
+ && cd /tmp/dl \
 # Add the yq tool from the releases at https://github.com/mikefarah/yq
  && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
  && chmod +x yq \
  && sudo mv yq /usr/bin/ \
+# Add the latest version of the meson build system
+ && wget -q https://github.com/mesonbuild/meson/releases/download/${MESON_VER}/meson-${MESON_VER}.tar.gz \
+ && tar -xf meson-${MESON_VER}.tar.gz \
+ && cd meson-${MESON_VER} \
+ && sudo python3 setup.py build \
+ && sudo python3 setup.py install \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \
@@ -128,8 +140,7 @@ RUN set -x \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
 # Final cleanups
+ && cd /tmp \
+ && sudo find dl -delete \
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
-
-ENV REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0

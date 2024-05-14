@@ -92,6 +92,26 @@ RUN set -x \
     iputils-tracepath \
     inetutils-tools \
     xmlstarlet \
+    pkg-config \
+    libudev1 \
+    zlib1g-dev \
+    python3-pkg-resources \
+    python3-ply \
+    python3-markupsafe \
+    python3-mako \
+    libtool \
+    libstd-rust-dev \
+    libstdc++-11-dev \
+    libyaml-0-2 \
+    llvm-spirv-15 \
+    m4 \
+    libstd-rust-1.75 \
+    libllvmspirvlib15 \
+    rustc \
+    libzstd1 \
+    libzstd-dev \
+    perl-modules-5.34 \
+    libvulkan \
 # For the dumper
  && sudo eatmydata apt-get install -y \
     python3-venv \

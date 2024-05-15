@@ -25,7 +25,7 @@ RUN set -x \
  && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Now lets fetch the jdk7 and install it
  && mkdir /home/admin/Downloads || true \
- && wget -P /home/admin/Downloads https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz \
+ && wget -q -P /home/admin/Downloads https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz \
  && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk7 --noconfirm \
  && sudo archlinux-java status \
  && sudo archlinux-java set java-7-jdk \
@@ -42,17 +42,17 @@ RUN set -x \
 # Save the resync.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/ \
  && sudo chown admin:admin /opt/crave/ \
- && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
  && chmod +x /opt/crave/resync.sh \
 # Save the upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/github-actions \
  && sudo chown admin:admin /opt/crave/github-actions \
- && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/upload.sh -O /opt/crave/github-actions/upload.sh \
  && chmod +x /opt/crave/github-actions/upload.sh \
 # Save the telegram upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/telegram \
  && sudo chown -R admin:admin /opt/crave \
- && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
 # For the DumperX script
  && sudo chmod 777 /etc/mke2fs.conf

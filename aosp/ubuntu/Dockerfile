@@ -113,6 +113,11 @@ RUN set -x \
  && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
  && chmod +x yq \
  && sudo mv yq /usr/bin/ \
+# This is required for build Mesa3D for aosp builds that wants or needs to use foss drivers
+ && sudo sed -i '/^#\sdeb-src /s/^#//' "/etc/apt/sources.list" \
+ && sudo eatmydata apt update \
+ && sudo eatmydata apt build-dep mesa -y \
+ && sudo eatmydata apt remove meson -y \
 # Add the latest version of the meson build system
  && wget -q https://github.com/mesonbuild/meson/releases/download/${MESON_VER}/meson-${MESON_VER}.tar.gz \
  && tar -xf meson-${MESON_VER}.tar.gz \

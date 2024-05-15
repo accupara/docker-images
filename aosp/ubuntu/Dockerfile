@@ -97,21 +97,42 @@ RUN set -x \
     zlib1g-dev \
     python3-pkg-resources \
     python3-ply \
+    python3-pygments \
     python3-markupsafe \
+    python3-setuptools \
+    python3-pkg-resources \
+    python3-distutils \
+    python3-markupsafe \
+    python3-lib2to3 \
+    python3-yaml \
     python3-mako \
     libtool \
+    make \
     libstd-rust-dev \
+    libstd-rust-1.75 \
     libstdc++-11-dev \
+    linux-libc-dev \
+    libncurses-dev \
+    libpthread-stubs0-dev \
+    libsigsegv2 \
     libyaml-0-2 \
+    lto-disabled-list \
     llvm-spirv-15 \
     m4 \
-    libstd-rust-1.75 \
+    patch \
     libllvmspirvlib15 \
     rustc \
     libzstd1 \
     libzstd-dev \
     perl-modules-5.34 \
+    libperl5.34 \
+    libset-scalar-perl \
     libvulkan \
+    libvulkan-dev \
+    spirv-tools \
+    libglvnd-core-dev \
+    gettext-base \
+    glslang-tools \
 # For the dumper
  && sudo eatmydata apt-get install -y \
     python3-venv \

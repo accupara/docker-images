@@ -49,6 +49,13 @@ FROM ubuntu:14.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
+# https://mirrors.edge.kernel.org/pub/software/scm/git/
+# https://gradle.org/releases/
+# https://github.com/ninja-build/ninja/releases
+ENV GIT_VER=2.45.1 \
+    GRADLE_VER=8.7 \
+    NINJA_VER=v1.12.1
+
 # Install the minimum tools
 RUN set -x \
  && apt-get update \
@@ -88,32 +95,38 @@ RUN set -x \
         zlib1g \
 # Make sure to install git-lfs
  && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
- && eatmydata -- apt-get install -y git-lfs \
+ && eatmydata apt-get install -y git-lfs \
+# Create a directory for all the compiled things
+ && mkdir -p /tmp/dl \
 # Install the latest git
- && eatmydata -- apt-get install -y \
+ && eatmydata apt-get install -y \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.42.1 \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
+ && cd /tmp/dl \
+ && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
- && eatmydata -- make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; eatmydata -- rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Install the latest version of gradle
- && cd /tmp \
- && export GRADLE_VER=8.4 \
+ && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
  && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
+ && cd /tmp/dl \
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
+# Add the latest version of the ninja-build
+ && cd /tmp/dl \
+ && wget https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
+ && unzip ninja-linux.zip \
+ && chmod +x ninja \
+ && sudo mv ninja /usr/bin/ \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
@@ -122,6 +135,8 @@ RUN set -x \
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
  && sudo mv crave /usr/local/bin/ \
 # Clean up image
+ && cd /tmp \
+ && find /tmp/dl -delete \
  && apt-get clean \
  && rm -f /var/lib/apt/lists/*_dists_* \
 # Bash completion and admin in sudoers

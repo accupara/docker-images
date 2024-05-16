@@ -3,6 +3,7 @@ FROM accupara/ubuntu:22.04
 
 ENV YQ_VER=4.40.3 \
     MESON_VER=1.4.0 \
+    NINJA_VER=v1.12.1 \
     REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
 
@@ -124,6 +125,12 @@ RUN set -x \
  && cd meson-${MESON_VER} \
  && sudo python3 setup.py build \
  && sudo python3 setup.py install \
+# Add the latest version of the ninja-build
+ && sudo eatmydata apt remove ninja-build -y \
+ && wget https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
+ && unzip ninja-linux.zip \
+ && chmod +x ninja \
+ && sudo mv ninja /usr/bin/ \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

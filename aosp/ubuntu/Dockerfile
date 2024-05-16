@@ -3,6 +3,7 @@ FROM accupara/ubuntu:22.04
 
 ENV YQ_VER=4.40.3 \
     MESON_VER=1.4.0 \
+    NINJA_VER=v1.12.1 \
     REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
 
@@ -113,12 +114,23 @@ RUN set -x \
  && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
  && chmod +x yq \
  && sudo mv yq /usr/bin/ \
+# This is required for build Mesa3D for aosp builds that wants or needs to use foss drivers
+ && sudo sed -i '/^#\sdeb-src /s/^#//' "/etc/apt/sources.list" \
+ && sudo eatmydata apt update \
+ && sudo eatmydata apt build-dep mesa -y \
+ && sudo eatmydata apt remove meson -y \
 # Add the latest version of the meson build system
  && wget -q https://github.com/mesonbuild/meson/releases/download/${MESON_VER}/meson-${MESON_VER}.tar.gz \
  && tar -xf meson-${MESON_VER}.tar.gz \
  && cd meson-${MESON_VER} \
  && sudo python3 setup.py build \
  && sudo python3 setup.py install \
+# Add the latest version of the ninja-build
+ && sudo eatmydata apt remove ninja-build -y \
+ && wget https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
+ && unzip ninja-linux.zip \
+ && chmod +x ninja \
+ && sudo mv ninja /usr/bin/ \
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

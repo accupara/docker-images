@@ -39,7 +39,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all \
+ && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Make sure to install git-lfs the direct way. no mucking around with apt
  && cd /tmp/dl \

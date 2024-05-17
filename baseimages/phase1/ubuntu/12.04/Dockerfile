@@ -29,6 +29,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
 ENV GIT_VER=2.45.1 \
+    GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1
 
@@ -84,21 +85,26 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
-# Make sure to install git-lfs
- && curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash \
- && apt-get install -y git-lfs ; echo "Swallow error" \
-# Install the new git again, then fix git-lfs
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && apt-get install -fy \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && git --version \
+# Make sure to install git-lfs the direct way. no mucking around with apt
+ && cd /tmp/dl \
+ && arch="$(uname -m)"; \
+       case "$arch" in \
+              x86_64)  lfsArch='amd64' ;; \
+              aarch64) lfsArch='arm64' ;; \
+              ppc64le) lfsArch='ppc64le' ;; \
+              s390x) lfsArch='s390x' ;; \
+              *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+       esac \
+ && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && tar -xf git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && cd git-lfs-${GIT_LFS_VER} \
+ && ./install.sh \
 # Install the latest version of gradle
  && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
  && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mv /tmp/repo /usr/bin/repo \

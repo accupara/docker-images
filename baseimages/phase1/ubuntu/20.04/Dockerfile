@@ -30,6 +30,7 @@ COPY sshd_config /tmp/
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
 ENV GIT_VER=2.45.1 \
+    GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1
 
@@ -48,7 +49,6 @@ RUN set -x \
       dh-make \
       eatmydata \
       emacs \
-      git-lfs \
       guile-3.0 \
       jq \
       libpopt0 \
@@ -83,6 +83,20 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+# Make sure to install git-lfs the direct way. no mucking around with apt
+ && cd /tmp/dl \
+ && arch="$(uname -m)"; \
+       case "$arch" in \
+              x86_64)  lfsArch='amd64' ;; \
+              aarch64) lfsArch='arm64' ;; \
+              ppc64le) lfsArch='ppc64le' ;; \
+              s390x) lfsArch='s390x' ;; \
+              *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+       esac \
+ && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && tar -xf git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && cd git-lfs-${GIT_LFS_VER} \
+ && ./install.sh \
 # Install the latest version of gradle
  && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \

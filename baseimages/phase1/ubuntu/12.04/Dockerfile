@@ -96,7 +96,7 @@ RUN set -x \
               *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
        esac \
  && wget -q --no-check-certificate https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
- && tar -xf git-lfs-$lfsArch-v${GIT_LFS_VER}.tar.gz \
+ && tar -xf git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
  && cd git-lfs-${GIT_LFS_VER} \
  && ./install.sh \
 # Install the latest version of gradle

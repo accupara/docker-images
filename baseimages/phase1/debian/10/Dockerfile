@@ -46,6 +46,7 @@ COPY sshd_config /tmp/
 # Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
 ENV GIT_VER=2.42.1 \
+    GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.4
 
 # Install the minimum tools
@@ -72,25 +73,40 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         sudo \
         vim-nox \
         wget \
+# Create a directory for all the compiled things
+ && mkdir -p /tmp/dl \
 # Install the latest git
- && eatmydata -- apt-get install -y \
+ && eatmydata apt-get install -y \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && mkdir -p /tmp/dl && cd /tmp/dl \
+ && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && eatmydata -- tar -xf git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+# Make sure to install git-lfs the direct way. no mucking around with apt
+ && cd /tmp/dl \
+ && arch="$(uname -m)"; \
+       case "$arch" in \
+              x86_64)  lfsArch='amd64' ;; \
+              aarch64) lfsArch='arm64' ;; \
+              ppc64le) lfsArch='ppc64le' ;; \
+              s390x) lfsArch='s390x' ;; \
+              *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+       esac \
+ && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
+ && tar -xf git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
+ && cd git-lfs-${GIT_LFS_VER} \
+ && ./install.sh \
 # Install the latest version of gradle
- && cd /tmp \
+ && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mv /tmp/repo /usr/bin/repo \

@@ -4,7 +4,7 @@ IMGVER?=latest
 GITROOT=$(shell git rev-parse --show-toplevel)
 GITBR=$(shell git rev-parse --abbrev-ref HEAD)
 
-CRAVE_CONFIG?=/home/uv/code/crave.internal.crave.conf
+CRAVE_CONFIG?=/home/uv/code/crave_confs/crave.internal.crave.conf
 
 ifndef CRAVE_BIN
 	# This code can not be part of Dockerfile as we need crave version to be used as docker image tag

@@ -62,8 +62,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
-ENV GIT_VER=2.42.1 \
-    GRADLE_VER=8.4 \
+ENV GIT_VER=2.45.1 \
+    GRADLE_VER=8.7 \
     TMUX_VERSION=3.3
 
 COPY sshd_config limits.conf /tmp/
@@ -97,13 +97,15 @@ RUN set -x \
       sudo \
       vim \
       wget \
+# Create a directory for all the compiled things
+ && mkdir -p /tmp/dl \
 # Download and install the latest tmux
- && cd /tmp && wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz \
+ && cd /tmp/dl \
+ && wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz \
  && tar -xf tmux-${TMUX_VERSION}.tar.gz && cd tmux-${TMUX_VERSION} \
  && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
  && make -j `nproc` \
  && make install \
- && cd .. && rm -rf tmux-${TMUX_VERSION}* \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
@@ -127,12 +129,12 @@ RUN set -x \
  && chmod 0600 /etc/ssh/* \
  && mv /tmp/limits.conf /etc/security/ \
 # Install the latest version of gradle
- && cd /tmp \
+ && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip
+ && cd /tmp && find /tmp/dl -delete
 
 USER admin
 ENV HOME=/home/admin \
@@ -154,11 +156,12 @@ RUN chown -R admin:admin /home/admin \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
-# Install git-lfs and jq separately
+# Install jq separately
  && sudo yum install -y \
-      git-lfs \
       libzstd \
       jq \
+# Create a directory for all the compiled things
+ && mkdir -p /tmp/dl \
 # Install the latest git
  && sudo yum install -y \
     eatmydata \
@@ -169,12 +172,28 @@ RUN chown -R admin:admin /home/admin \
     libzip-devel \
     openssl-devel \
     unzip \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && cd /tmp/dl \
+ && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
- && cd /tmp ; rm -rf git-${GIT_VER}*
+# Make sure to install git-lfs the direct way. no mucking around with apt
+ && cd /tmp/dl \
+ && arch="$(uname -m)"; \
+       case "$arch" in \
+              x86_64)  lfsArch='amd64' ;; \
+              aarch64) lfsArch='arm64' ;; \
+              ppc64le) lfsArch='ppc64le' ;; \
+              s390x) lfsArch='s390x' ;; \
+              *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+       esac \
+ && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
+ && tar -xf git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
+ && cd git-lfs-${GIT_LFS_VER} \
+ && sudo ./install.sh \
+# Cleanup
+ && cd /tmp && find /tmp/dl -delete
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

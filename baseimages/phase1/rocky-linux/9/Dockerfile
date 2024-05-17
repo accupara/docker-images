@@ -175,7 +175,7 @@ RUN chown -R admin:admin /home/admin \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" all 2>&1 | tee /tmp/git.build.log \
+ && make prefix=/usr CFLAGS="-std=gnu99" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" install 2>&1 | tee -a /tmp/git.build.log \
  && cd /tmp ; rm -rf git-${GIT_VER}*
 

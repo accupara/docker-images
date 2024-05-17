@@ -108,7 +108,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
               s390x) lfsArch='s390x' ;; \
               *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
        esac \
- && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
  && tar -xf git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
  && cd git-lfs-${GIT_LFS_VER} \
  && ./install.sh \

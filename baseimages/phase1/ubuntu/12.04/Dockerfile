@@ -95,13 +95,13 @@ RUN set -x \
               s390x) lfsArch='s390x' ;; \
               *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
        esac \
- && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
+ && wget -q --no-check-certificate https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
  && tar -xf git-lfs-linux-$arch-v${GIT_LFS_VER}.tar.gz \
  && cd git-lfs-${GIT_LFS_VER} \
  && ./install.sh \
 # Install the latest version of gradle
  && cd /tmp/dl \
- && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
+ && wget -q --no-check-certificate https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
  && unzip gradle-${GRADLE_VER}-bin.zip \
  && sudo mv gradle-${GRADLE_VER} /usr/lib/ \
  && sudo ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
@@ -111,7 +111,7 @@ RUN set -x \
  && sudo chmod +x /usr/bin/repo \
 # Add the latest version of the ninja-build
  && cd /tmp/dl \
- && wget https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
+ && wget -q --no-check-certificate https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
  && unzip ninja-linux.zip \
  && chmod +x ninja \
  && sudo mv ninja /usr/bin/ \

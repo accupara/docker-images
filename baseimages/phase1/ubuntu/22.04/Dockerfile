@@ -65,7 +65,7 @@ RUN set -x \
       # for lndir
       xutils-dev \
 # Newest versions of openssh-server don't seem to create all the host keys
- && sudo sudo /usr/bin/ssh-keygen -A \
+ && /usr/bin/ssh-keygen -A \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Compile and install the latest git
@@ -109,14 +109,14 @@ RUN set -x \
  && wget https://github.com/ninja-build/ninja/releases/download/${NINJA_VER}/ninja-linux.zip \
  && unzip ninja-linux.zip \
  && chmod +x ninja \
- && sudo mv ninja /usr/bin/ \
+ && mv ninja /usr/bin/ \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && sudo mv crave /usr/local/bin/ \
+ && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

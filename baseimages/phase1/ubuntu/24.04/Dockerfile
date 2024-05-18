@@ -69,7 +69,7 @@ RUN set -x \
       # for lndir
       xutils-dev \
 # Newest versions of openssh-server don't seem to create all the host keys
- && sudo sudo /usr/bin/ssh-keygen -A \
+ && /usr/bin/ssh-keygen -A \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Compile and install the latest git
@@ -106,16 +106,16 @@ RUN set -x \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
- && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
- && sudo mv /tmp/repo /usr/bin/repo \
- && sudo chmod +x /usr/bin/repo \
+ && curl https://storage.googleapis.com/git-repo-downloads/repo -o /tmp/repo \
+ && mv /tmp/repo /usr/bin/repo \
+ && chmod +x /usr/bin/repo \
 # Store the build tools script into a well known directory
  && mkdir -p /etc/crave \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && sudo mv crave /usr/local/bin/ \
+ && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

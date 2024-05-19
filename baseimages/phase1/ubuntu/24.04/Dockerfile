@@ -106,7 +106,7 @@ RUN set -x \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
- && curl https://storage.googleapis.com/git-repo-downloads/repo -o /tmp/repo \
+ && curl --keepalive-time 600 -iv --limit-rate 500K https://storage.googleapis.com/git-repo-downloads/repo -o /tmp/repo \
  && mv /tmp/repo /usr/bin/repo \
  && chmod +x /usr/bin/repo \
 # Store the build tools script into a well known directory

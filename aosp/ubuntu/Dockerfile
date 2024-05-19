@@ -17,6 +17,7 @@ RUN set -x \
     flex \
     gnupg \
     gperf \
+    imagemagick \
     libfreetype6 \
     libncurses5-dev \
     libncurses5 \

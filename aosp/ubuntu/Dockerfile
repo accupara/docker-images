@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 
 # https://github.com/mesonbuild/meson/releases
 ENV YQ_VER=4.40.3 \

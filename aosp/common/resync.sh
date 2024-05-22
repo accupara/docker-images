@@ -16,8 +16,6 @@ main() {
             repo_info=$(echo "$line" | awk -F': ' '{print $NF}')
             repo_path=$(dirname "$repo_info")
             repo_name=$(basename "$repo_info")
-            # Echo the deletion path
-            echo "Deleted repository: $repo_info"
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository

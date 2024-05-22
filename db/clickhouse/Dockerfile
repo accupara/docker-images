@@ -21,10 +21,14 @@ RUN set -x \
     gnupg \
     lsb-release \
     nasm \
+    python3-pip \
     software-properties-common \
     wget \
     xz-utils \
     yasm \
+# Make sure we have the latest version of pip and then install jinja
+ && sudo python3 -m pip install --upgrade pip \
+ && sudo python3 -m pip install --upgrade jinja2 \
 # Now actually install a newer version of clang over this
  && wget https://apt.llvm.org/llvm.sh \
  && chmod +x llvm.sh \

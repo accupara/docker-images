@@ -13,6 +13,8 @@ RUN set -x \
     build-essential \
     curl \
     flex \
+    gcc-arm-linux-gnueabi \
+    gcc-arm-linux-gnueabihf \
     g++-multilib \
     gcc-multilib \
     gnupg \

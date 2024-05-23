@@ -38,6 +38,7 @@ for img_file in out/target/product/$DEVICE/*.img; do
 done
 echo "Image Files to be uploaded: $IMG_FILES"
 
+if [ -n "$(find out/target/product/$DEVICE/ -maxdepth 1 -name "*.zip")" ]; then
 # Now do the same for ZIP_FILES
 for zip_file in out/target/product/$DEVICE/*.zip; do
     if [[ -n $zip_file && $(stat -c%s "$zip_file") -le $TG_UPLOAD_LIMIT ]]; then # Try to match github releases per size limit
@@ -47,6 +48,10 @@ for zip_file in out/target/product/$DEVICE/*.zip; do
         echo "Skipping $zip_file"
     fi
 done
+else
+    echo "No zip files found in out/target/product/$DEVICE/"
+fi
+
 echo "Zip Files to be uploaded: $ZIP_FILES"
 echo "Extra Files to be uploaded: $EXTRAFILES"
 

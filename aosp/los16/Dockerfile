@@ -13,6 +13,8 @@ RUN set -x \
     build-essential \
     curl \
     flex \
+    gcc-arm-linux-gnueabi \
+    gcc-arm-linux-gnueabihf \
     g++-multilib \
     gcc-multilib \
     gnupg \
@@ -45,8 +47,6 @@ RUN set -x \
     xsltproc \
     zip \
     zlib1g-dev \
-    gcc-arm-linux-gnueabi \
-    gcc-arm-linux-gnueabihf \
 # Use python2
  && sudo ln -s /bin/python2.7 /usr/bin/python \
 # This is required for AOSP compilations

@@ -56,6 +56,7 @@ RUN set -x \
     gcc-arm-linux-gnueabi \
     gcc-arm-linux-gnueabihf \
     git \
+    git-lfs \
     gperf \
     jq \
     liblz4-tool \

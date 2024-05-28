@@ -86,6 +86,8 @@ RUN set -x \
 # Create some default directories:
  && sudo mkdir -p $GOPATH/src/github.com \
 # change the ownership on the $GOPATH
- && sudo chown -R admin:admin $GOPATH
+ && sudo chown -R admin:admin $GOPATH \
+# Initialize LFS
+ && git lfs install
 
 EXPOSE 22

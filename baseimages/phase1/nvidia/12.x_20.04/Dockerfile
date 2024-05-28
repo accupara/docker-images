@@ -98,6 +98,8 @@ RUN set -x \
 # Export env vars
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+ && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
+# Initialize LFS
+ && git lfs install
 
 EXPOSE 22

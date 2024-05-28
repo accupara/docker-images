@@ -173,7 +173,9 @@ RUN set -x \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
- && sudo chmod 0600 /etc/ssh/*
+ && sudo chmod 0600 /etc/ssh/* \
+# Initialize LFS
+ && git lfs install
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

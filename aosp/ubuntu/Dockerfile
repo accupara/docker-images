@@ -127,6 +127,8 @@ RUN set -x \
  && cd meson-${MESON_VER} \
  && sudo python3 setup.py build \
  && sudo python3 setup.py install \
+# Install Rclone
+ && sudo -v ; curl https://rclone.org/install.sh | sudo bash -s beta 
 # This is required for AOSP compilations
  && git config --global user.name Crave \
  && git config --global user.email aosp@crave.io \

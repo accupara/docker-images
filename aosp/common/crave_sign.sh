@@ -3,7 +3,7 @@
 # Directory for storing certificates
 BUCKET_NAME="$BUCKET_NAME"
 KEY_ENCRYPTION_PASSWORD="$KEY_ENCRYPTION_PASSWORD"  # Set this environment variable securely
-CERT_DIR=/crave-devspace/.android-certs
+CERT_DIR=/tmp/src/android/.android-certs
 BUCKET_NAME="$BUCKET_NAME"
 KEY_ID="$BKEY_ID"
 APPLICATION_KEY="$BAPP_KEY"

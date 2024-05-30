@@ -114,8 +114,7 @@ RUN set -x \
  && wget -O /etc/crave/create_build_tools_json.sh https://raw.githubusercontent.com/accupara/docker-images/master/baseimages/shared/create_build_tools_json.sh \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
- && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && mv crave /usr/local/bin/ \
+ && (curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- && mv crave /usr/local/bin/) || true \
 # Add admin user and add it to sudoers
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

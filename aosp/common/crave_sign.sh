@@ -1,32 +1,31 @@
 #!/bin/bash
+set -euo pipefail
+
+# Ensure necessary environment variables are set
+: "${BUCKET_NAME:?}"
+: "${KEY_ENCRYPTION_PASSWORD:?}"
+: "${BKEY_ID:?}"
+: "${BAPP_KEY:?}"
 
 # Directory for storing certificates
-BUCKET_NAME="$BUCKET_NAME"
-KEY_ENCRYPTION_PASSWORD="$KEY_ENCRYPTION_PASSWORD"  # Set this environment variable securely
-CERT_DIR=/tmp/src/android/.android-certs
-BUCKET_NAME="$BUCKET_NAME"
-KEY_ID="$BKEY_ID"
-APPLICATION_KEY="$BAPP_KEY"
-
-#Create Dir
-mkdir $CERT_DIR
+CERT_DIR=$(mktemp -d /tmp/android-certs.XXXXXX)
 
 # Auth B2
-echo "B2 SDK Logging in.."
-b2 account authorize $KEY_ID $APPLICATION_KEY > /dev/null 2>&1
+echo "B2 SDK Logging in..."
+if ! b2 account authorize "$BKEY_ID" "$BAPP_KEY" > /dev/null 2>&1; then
+    echo "B2 authorization failed. Exiting."
+    exit 0
+fi
 
 # Retrieve keys and sign APKs
 echo "Retrieving keys from Backblaze B2..."
-b2 sync "b2://$BUCKET_NAME/android-certs" "$CERT_DIR"
-
-# Ensure KEY_ENCRYPTION_PASSWORD is set
-if [ -z "$KEY_ENCRYPTION_PASSWORD" ]; then
-    echo "KEY_ENCRYPTION_PASSWORD environment variable is not set. Exiting."
+if ! b2 sync "b2://$BUCKET_NAME/android-certs" "$CERT_DIR"; then
+    echo "Failed to retrieve keys from Backblaze B2. Exiting."
     exit 0
 fi
 
 # Decrypt the key password
-KEY_PASSWORD=$(openssl enc -aes-256-cbc -d -iter 256 -salt -in $CERT_DIR/password.enc -pass pass:$KEY_ENCRYPTION_PASSWORD)
+KEY_PASSWORD=$(openssl enc -aes-256-cbc -d -iter 256 -salt -in "$CERT_DIR/password.enc" -pass pass:"$KEY_ENCRYPTION_PASSWORD")
 
 if [ -z "$KEY_PASSWORD" ]; then
     echo "Failed to decrypt the key password. Exiting."
@@ -158,26 +157,24 @@ SIGN_CMD="sign_target_files_apks -o -d $CERT_DIR \
     signed-target_files.zip"
 
 # Execute the sign command with password prompt
-echo $KEY_PASSWORD | $SIGN_CMD
+echo "$KEY_PASSWORD" | $SIGN_CMD
 
 # Generate the OTA update package
-echo $KEY_PASSWORD | ota_from_target_files -k $CERT_DIR/releasekey \
+echo "$KEY_PASSWORD" | ota_from_target_files -k "$CERT_DIR/releasekey" \
     --block --backup=true \
     signed-target_files.zip \
     signed-ota_update.zip
 
 # Clean up: Remove the certificates
-rm -rf $CERT_DIR
+rm -rf "$CERT_DIR"
 echo "Certificates cleaned up from $CERT_DIR"
 
 echo "Cleaning up ENV Variables"
-export BUCKET_NAME=
-export KEY_ENCRYPTION_PASSWORD=
-export CERT_DIR=
-export BUCKET_NAME=
-export KEY_ID=
-export APPLICATION_KEY=
-export KEY_PASSWORD=
+unset BUCKET_NAME
+unset KEY_ENCRYPTION_PASSWORD
+unset BKEY_ID
+unset BAPP_KEY
+unset KEY_PASSWORD
 echo "Cleaned up ENV Variables"
 
 echo "Signing process completed successfully!"

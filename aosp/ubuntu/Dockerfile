@@ -147,6 +147,10 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
+# Save the crave_sign.sh script into the appropriate location
+ && sudo chown -R admin:admin /opt/crave \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \
+ && chmod +x /opt/crave/crave_sign.sh \
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \

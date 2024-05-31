@@ -13,6 +13,7 @@ RUN set -x \
     bison \
     brotli \
     build-essential \
+    ccache \
     curl \
     flex \
     gnupg \
@@ -33,6 +34,7 @@ RUN set -x \
     xsltproc \
     zip \
     zlib1g-dev \
+    zram-tools \
 # For schedtool (sorted by name)
  && sudo eatmydata apt-get install -y \
     autoconf \
@@ -147,6 +149,9 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
+ # Enable Zram 
+ && echo -e "ALGO=zstd\nPERCENT=60" | sudo tee -a /etc/default/zramswap
+ && sudo service zramswap reload
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \

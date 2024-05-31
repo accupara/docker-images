@@ -10,8 +10,6 @@ ENV YQ_VER=4.40.3 \
 RUN set -x \
 # Update the underlying base image
  && sudo eatmydata apt-get -y update \
-# Set NodeJS 20
- && curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \
@@ -38,7 +36,6 @@ RUN set -x \
       x11vnc \
       xvfb \
       yarnpkg \
-      nodejs \
 # Fix a problem in xfwm4
  && sudo eatmydata add-apt-repository ppa:xubuntu-dev/staging \
  && sudo eatmydata apt update \

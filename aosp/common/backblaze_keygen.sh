@@ -31,7 +31,7 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
 
     # Restrict file permissions
     umask 077
-
+    
     # Create certificate directory
     mkdir -p "$CERT_DIR"
 
@@ -69,7 +69,10 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
     echo
     
     # Authenticate B2
-    b2 account authorize "$BKEY_ID" "$BAPP_KEY"
+    if ! b2 account authorize "$BKEY_ID" "$BAPP_KEY" then
+        echo "B2 authorization failed. Exiting."
+        exit 1
+    fi
 
     # Upload keys to Backblaze B2
     b2 sync --replace-newer "$CERT_DIR" "b2://$BUCKET_NAME/android-certs"

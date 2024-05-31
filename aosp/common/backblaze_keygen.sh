@@ -69,7 +69,7 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
     echo
     
     # Authenticate B2
-    if ! b2 account authorize "$BKEY_ID" "$BAPP_KEY" then
+    if ! b2 account authorize "$BKEY_ID" "$BAPP_KEY"; then
         echo "B2 authorization failed. Exiting."
         exit 1
     fi

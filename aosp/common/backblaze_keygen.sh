@@ -12,11 +12,11 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
     read -p "Common Name : " CN
     read -p "Email - ID : " MAIL
     SUBJECT="/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$MAIL"
-    read -sp "Enter the password: " PASSWORD
+    read -sp "Enter the password: " PASS
     echo
     read -sp "Enter the Encryption Password: " PASS_ENCRYPT
     echo
-    if ! printf "$PASSWORD" | openssl enc -aes-256-cbc -iter 256 -salt -out "$CERT_DIR/password.enc" -pass pass:"$PASS_ENCRYPT"; then
+    if ! printf "$PASS" | openssl enc -aes-256-cbc -iter 256 -salt -out "$CERT_DIR/password.enc" -pass pass:"$PASS_ENCRYPT"; then
         echo "Failed to encrypt the password"
         exit 1
     fi

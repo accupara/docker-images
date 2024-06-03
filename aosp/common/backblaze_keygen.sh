@@ -1,9 +1,12 @@
+
 #!/bin/bash
 set -euo pipefail
 if [ "${DCDEVSPACE:-0}" == "1" ]; then
     # Create a temporary directory for certificates
     CERT_DIR=$(mktemp -d /tmp/android-certs.XXXXXX)
     # Define the subject details for the certificates
+    echo "Enter the following details for your Certificate subject"
+    echo
     read -p "Country : " C
     read -p "State : " ST
     read -p "Locality : " L
@@ -12,8 +15,11 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
     read -p "Common Name : " CN
     read -p "Email - ID : " MAIL
     SUBJECT="/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$MAIL"
+    echo
+    echo "This is the password which the certificates you generate will use."
     read -sp "Enter the password: " PASS
     echo
+    echo "Remember this password, this is the password which is used to encrypt your password. This will be used further used in crave_sign script."
     read -sp "Enter the Encryption Password: " PASS_ENCRYPT
     echo
     if ! printf "$PASS" | openssl enc -aes-256-cbc -iter 256 -salt -out "$CERT_DIR/password.enc" -pass pass:"$PASS_ENCRYPT"; then

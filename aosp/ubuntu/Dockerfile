@@ -95,6 +95,11 @@ RUN set -x \
     iputils-tracepath \
     inetutils-tools \
     xmlstarlet \
+# Requested by users
+ && sudo eatmydata apt-get install -y \
+    nano \
+    ripgrep \
+    tree \
 # For the dumper
  && sudo eatmydata apt-get install -y \
     python3-venv \

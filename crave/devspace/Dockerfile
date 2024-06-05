@@ -139,7 +139,7 @@ RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mkdir -p /etc/crave/supervisor/examples/ \
  && sudo mv vnc.conf shellinabox.conf vscode.conf /etc/crave/supervisor/examples/ \
- && sudo sed -i 's,\(files.*\),\1 /home/admin/supervisor/conf.d/\*.conf,g' /etc/supervisor/supervisord.conf
+ && sudo sed -i 's,\(files.*\),\1 /home/admin/supervisor/conf.d/\*.conf,g' /etc/supervisor/supervisord.conf \
 # && sudo mv /tmp/vnc.conf /etc/supervisor/conf.d/ \
 # Put the tmux conf where it should be
  && sudo mv /tmp/tmux.conf /home/admin/.tmux.conf \

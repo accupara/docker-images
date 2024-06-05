@@ -4,7 +4,7 @@
 main() {
     # Run repo sync command and capture the output
     find .repo -name '*.lock' -delete
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --fetch-submodules 2>&1 | tee /tmp/output.txt
+    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
     if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
          echo "All repositories synchronized successfully."
@@ -49,7 +49,7 @@ main() {
     # Re-sync all repositories after deletion
     echo "Re-syncing all repositories..."
     find .repo -name '*.lock' -delete
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --fetch-submodules
+    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune
 }
 
 main $*

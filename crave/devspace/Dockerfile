@@ -66,13 +66,13 @@ RUN set -x \
     libxi6 \
     python3-pip \
  && sudo python3 -m pip install projector-installer \
- && sudo projector --accept-license autoinstall \
+ && projector --accept-license autoinstall \
     --config-name "Idea" \
     --ide-name 'IntelliJ IDEA Community Edition 2024.1.2' \
     --hostname localhost \
     --port 5898 \
     --use-separate-config \
- && sudo projector --accept-license autoinstall \
+ && projector --accept-license autoinstall \
     --config-name "PyCharm" \
     --ide-name 'PyCharm Community Edition 2021.3' \
     --hostname localhost \
@@ -155,13 +155,13 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf vscode.conf shellinabox.conf sshd_config init.sh supervisord.conf repo /tmp/
+COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mkdir -p /etc/crave/supervisor/examples/ \
  && cd /tmp \
  && sudo mv supervisord.conf /etc/supervisor/ \
- && sudo mv vnc.conf shellinabox.conf vscode.conf /etc/supervisor/conf.d/ \
+ && sudo mv vnc.conf shellinabox.conf vscode.conf intellij.conf /etc/supervisor/conf.d/ \
 # Put the tmux conf where it should be
  && sudo mv /tmp/tmux.conf /home/admin/.tmux.conf \
 # Put the sshd conf where it should be

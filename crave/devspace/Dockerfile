@@ -61,11 +61,12 @@ RUN set -x \
  && rm -rf /tmp/grpcurl_download \
 # Install IntelliJ
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
+    libfontconfig1 \
+    libgtk-3-0 \
     libxtst6 \
     libxrender1 \
-    libfontconfig1 \
     libxi6 \
-    libgtk-3-0 \
+    python3-pip \
  && sudo python3 -m pip install projector-installer -y \
  && ${PROJECTOR_BINARY} --accept-license 2>&1 \
  && ${PROJECTOR_BINARY} ide autoinstall \

@@ -67,7 +67,7 @@ RUN set -x \
     libxrender1 \
     libxi6 \
     python3-pip \
- && sudo python3 -m pip install projector-installer -y \
+ && sudo python3 -m pip install projector-installer \
  && ${PROJECTOR_BINARY} --accept-license 2>&1 \
  && ${PROJECTOR_BINARY} ide autoinstall \
     --config-name "intellij" \

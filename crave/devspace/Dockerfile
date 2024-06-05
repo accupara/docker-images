@@ -28,6 +28,7 @@ RUN set -x \
       net-tools \
       npm \
       python3-meld3 \
+      shellinabox \
       software-properties-common \
       supervisor \
       task-lxde-desktop \

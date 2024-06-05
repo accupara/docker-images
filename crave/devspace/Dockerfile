@@ -4,7 +4,9 @@ FROM accupara/xpra:22.04
 # CI=true is to tell jfrog to be noninteractive
 ENV YQ_VER=4.40.3 \
     CRANE_VER=0.19.0 \
-    CI=true
+    CI=true \
+    PROJECTOR_BINARY=/home/admin/.local/bin/projector \
+    PROJECTOR_CONFIG_PATH=/home/admin/.projector/configs/intellij
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
@@ -39,8 +41,8 @@ RUN set -x \
       yarnpkg \
 # Fix a problem in xfwm4
  && sudo eatmydata add-apt-repository ppa:xubuntu-dev/staging \
- && sudo eatmydata apt update \
- && sudo eatmydata apt upgrade -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get upgrade -y \
 # Get rid of the firefox snap and install it from PPA so that it is a regular debian package
  && sudo eatmydata apt-get purge -y firefox \
  && sudo eatmydata add-apt-repository ppa:mozillateam/ppa \
@@ -57,6 +59,21 @@ RUN set -x \
  && curl -L $LOCATION | tar xvz -C /tmp/grpcurl_download \
  && sudo cp /tmp/grpcurl_download/grpcurl /usr/bin \
  && rm -rf /tmp/grpcurl_download \
+# Install IntelliJ
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
+    libxtst6 \
+    libxrender1 \
+    libfontconfig1 \
+    libxi6 \
+    libgtk-3-0 \
+ && sudo python3 -m pip install projector-installer -y \
+ && ${PROJECTOR_BINARY} --accept-license 2>&1 \
+ && ${PROJECTOR_BINARY} ide autoinstall \
+    --config-name "intellij" \
+    --ide-name "IntelliJ IDEA Community Edition 2022.1.4" \
+    --hostname localhost \
+    --port 5898 \
+    --use-separate-config \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir -p /opt/aosp \

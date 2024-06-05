@@ -4,9 +4,7 @@ FROM accupara/xpra:22.04
 # CI=true is to tell jfrog to be noninteractive
 ENV YQ_VER=4.40.3 \
     CRANE_VER=0.19.0 \
-    CI=true \
-    PROJECTOR_BINARY=/home/admin/.local/bin/projector \
-    PROJECTOR_CONFIG_PATH=/home/admin/.projector/configs/intellij
+    CI=true
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
@@ -68,12 +66,17 @@ RUN set -x \
     libxi6 \
     python3-pip \
  && sudo python3 -m pip install projector-installer \
- && ${PROJECTOR_BINARY} --accept-license 2>&1 \
- && ${PROJECTOR_BINARY} ide autoinstall \
-    --config-name "intellij" \
-    --ide-name "IntelliJ IDEA Community Edition 2022.1.4" \
+ && sudo projector --accept-license autoinstall \
+    --config-name "Idea" \
+    --ide-name 'IntelliJ IDEA Community Edition 2024.1.2' \
     --hostname localhost \
     --port 5898 \
+    --use-separate-config \
+ && sudo projector --accept-license autoinstall \
+    --config-name "PyCharm" \
+    --ide-name 'PyCharm Community Edition 2021.3' \
+    --hostname localhost \
+    --port 5897 \
     --use-separate-config \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \

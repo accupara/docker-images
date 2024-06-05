@@ -155,13 +155,13 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf vscode.conf shellinabox.conf sshd_config init.sh repo /tmp/
+COPY vnc.conf tmux.conf vscode.conf shellinabox.conf sshd_config init.sh supervisord.conf repo /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mkdir -p /etc/crave/supervisor/examples/ \
- && sudo mv vnc.conf shellinabox.conf vscode.conf /etc/crave/supervisor/examples/ \
- && sudo sed -i 's,\(files.*\),\1 /home/admin/supervisor/conf.d/\*.conf,g' /etc/supervisor/supervisord.conf \
-# && sudo mv /tmp/vnc.conf /etc/supervisor/conf.d/ \
+ && cd /tmp \
+ && sudo mv supervisord.conf /etc/supervisor/ \
+ && sudo mv vnc.conf shellinabox.conf vscode.conf /etc/supervisor/conf.d/ \
 # Put the tmux conf where it should be
  && sudo mv /tmp/tmux.conf /home/admin/.tmux.conf \
 # Put the sshd conf where it should be

@@ -155,10 +155,10 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo /tmp/
+COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo startup.sh /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
- && sudo mkdir -p /etc/crave/supervisor/examples/ \
+ && sudo mkdir -p /etc/crave/supervisor \
  && cd /tmp \
  && sudo mv supervisord.conf /etc/supervisor/ \
  && sudo mv vnc.conf shellinabox.conf vscode.conf intellij.conf /etc/supervisor/conf.d/ \
@@ -171,7 +171,8 @@ RUN set -x \
 # Move repo to repo.real and put the shim in its place
  && sudo mv /usr/bin/repo /usr/bin/repo.real \
  && sudo mv /tmp/repo /usr/bin/repo.shim \
- && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo
+ && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo \
+# Put the startup script somewhere useful
+ && sudo /tmp/startup.sh /etc/crave/supervisor
 
-COPY startup.sh /home/admin/
-#ENTRYPOINT [ "/home/admin/startup.sh" ]
+ENTRYPOINT [ "/etc/crave/supervisor/startup.sh" ]

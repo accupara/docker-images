@@ -174,4 +174,4 @@ RUN set -x \
  && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo
 
 COPY startup.sh /home/admin/
-ENTRYPOINT [ "/home/admin/startup.sh" ]
+#ENTRYPOINT [ "/home/admin/startup.sh" ]

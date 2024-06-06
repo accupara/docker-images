@@ -173,6 +173,6 @@ RUN set -x \
  && sudo mv /tmp/repo /usr/bin/repo.shim \
  && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo \
 # Put the startup script somewhere useful
- && sudo /tmp/startup.sh /etc/crave/supervisor
+ && sudo mv /tmp/startup.sh /etc/crave/supervisor
 
 ENTRYPOINT [ "/etc/crave/supervisor/startup.sh" ]

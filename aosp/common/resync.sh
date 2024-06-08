@@ -48,7 +48,7 @@ count=0
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository
-            rm -rf "$repo_path/$repo_name" .repo/project/"$repo_path/$repo_name"
+            rm -rf "$repo_path/$repo_name" ".repo/project/"$repo_path/$repo_name"
         done <<< "$(cat /tmp/output.txt | grep 'uncommitted changes are present')"
     fi
 done

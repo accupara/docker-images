@@ -51,6 +51,7 @@ count=0
             rm -rf "$repo_path/$repo_name" ".repo/project/"$repo_path/$repo_name"
         done <<< "$(cat /tmp/output.txt | grep 'uncommitted changes are present')"
     fi
+    count++;
 done
 
     # Re-sync all repositories after deletion

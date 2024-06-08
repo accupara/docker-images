@@ -1,17 +1,23 @@
 #!/bin/bash
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-main() {
-    # Run repo sync command and capture the output
-    find .repo -name '*.lock' -delete
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
+main() {  
+count=0
+    while true
+    do
+        # Run repo sync command and capture the output
+        find .repo -name '*.lock' -delete
+        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
-    if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
-         echo "All repositories synchronized successfully."
-         exit 0
-    else
-        rm -f deleted_repositories.txt
-    fi
+        if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
+            echo "All repositories synchronized successfully."
+            exit 0
+        else
+            rm -f deleted_repositories.txt
+            if [ $count -ge 3 ]; then
+                echo "Synced more than 3 times... Exiting due to errors"
+                exit 1
+            fi 
+        fi
 
     # Check if there are any failing repositories
     if grep -q "Failing repos:" /tmp/output.txt ; then
@@ -25,7 +31,7 @@ main() {
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository
-            rm -rf "$repo_path/$repo_name .repo/project/$repo_path/$repo_name"
+            rm -rf "$repo_path/$repo_name" ".repo/project/"$repo_path/$repo_name"
         done <<< "$(cat /tmp/output.txt | awk '/Failing repos:/ {flag=1; next} /Try/ {flag=0} flag')"
     fi
 
@@ -42,9 +48,10 @@ main() {
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository
-            rm -rf "$repo_path/$repo_name .repo/project/$repo_path/$repo_name"
+            rm -rf "$repo_path/$repo_name" .repo/project/"$repo_path/$repo_name"
         done <<< "$(cat /tmp/output.txt | grep 'uncommitted changes are present')"
     fi
+done
 
     # Re-sync all repositories after deletion
     echo "Re-syncing all repositories..."

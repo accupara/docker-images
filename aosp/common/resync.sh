@@ -10,10 +10,6 @@
                 exit 0
             else
                 rm -f deleted_repositories.txt
-                if [ $count -ge 3 ]; then
-                    echo "Synced more than 2 times... Exiting due to errors"
-                    exit 1
-                fi 
             fi
 
         # Check if there are any failing repositories

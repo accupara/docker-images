@@ -6,7 +6,7 @@ main() {
     find .repo -name '*.lock' -delete
     repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
-    if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
+ if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
          echo "All repositories synchronized successfully."
          exit 0
     else
@@ -25,7 +25,8 @@ main() {
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository
-            rm -rf "$repo_path/$repo_name .repo/project/$repo_path/$repo_name"
+            rm -rf "$repo_path/$repo_name"
+            rm -rf ".repo/project/$repo_path/$repo_name"/*.git
         done <<< "$(cat /tmp/output.txt | awk '/Failing repos:/ {flag=1; next} /Try/ {flag=0} flag')"
     fi
 
@@ -42,7 +43,8 @@ main() {
             # Save the deletion path to a text file
             echo "Deleted repository: $repo_info" | tee -a deleted_repositories.txt
             # Delete the repository
-            rm -rf "$repo_path/$repo_name .repo/project/$repo_path/$repo_name"
+            rm -rf "$repo_path/$repo_name"
+            rm -rf ".repo/project/$repo_path/$repo_name"/*.git
         done <<< "$(cat /tmp/output.txt | grep 'uncommitted changes are present')"
     fi
 

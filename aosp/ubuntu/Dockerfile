@@ -154,6 +154,12 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/tgup.sh -O /opt/crave/telegram/upload.sh \
  && chmod +x /opt/crave/telegram/upload.sh \
+# Just disable ccache by replacing the binary with a script that doesn't do anything
+ && sudo mkdir -p /opt/crave/ \
+ && sudo chown admin:admin /opt/crave/ \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/not_ccache.sh -O /opt/crave/not_ccache.sh \
+ && chmod +x /opt/crave/not_ccache.sh \
+ && sudo ln -s /usr/bin/ccache /opt/crave/not_ccache.sh \
 # Save the crave_sign.sh script into the appropriate location
  && sudo chown -R admin:admin /opt/crave \
  && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \

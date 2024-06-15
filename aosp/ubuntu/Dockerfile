@@ -159,7 +159,7 @@ RUN set -x \
  && sudo chown admin:admin /opt/crave/ \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/not_ccache.sh -O /opt/crave/not_ccache.sh \
  && chmod +x /opt/crave/not_ccache.sh \
- && sudo ln -s /opt/crave/not_ccache.sh /usr/bin/ccache \
+ #&& sudo ln -s /opt/crave/not_ccache.sh /usr/bin/ccache \
 # Save the crave_sign.sh script into the appropriate location
  && sudo chown -R admin:admin /opt/crave \
  && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \

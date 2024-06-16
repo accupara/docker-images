@@ -9,24 +9,19 @@ RUN set -x \
 # Temporarily move aside the repo and let the distribution's package put it there
  && sudo mv /usr/bin/repo /tmp/ \
 # Install packages
- && sudo pacman -Sy --noconfirm \
  && sudo pacman -Syu \
     --noconfirm \
     cmake \
     extra-cmake-modules \
- && sudo pacman -Sc --noconfirm \
 # Multitlib needed to install and run jdk7
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
- && echo -e "[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a /etc/pacman.conf \
- && sudo pacman -Syy \
  && wget -q https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
- && sudo pacman -U ./*zst --noconfirm && rm *zst \
- && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
+ && sudo pacman -U ./*zst --noconfirm && rm *zst 
 # Now lets fetch the jdk7 and install it
  && mkdir /home/admin/Downloads || true \
  && wget -q -P /home/admin/Downloads https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz \
- && paru -S multilib-devel aosp-devel lineageos-devel python2 jdk7 --noconfirm \
+ && paru -S aosp-devel lineageos-devel python2 jdk7 --noconfirm \
  && sudo archlinux-java status \
  && sudo archlinux-java set java-7-jdk \
  && java -version \
@@ -59,4 +54,6 @@ RUN set -x \
  && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \
  && chmod +x /opt/crave/crave_sign.sh \
 # For the DumperX script
- && sudo chmod 777 /etc/mke2fs.conf
+ && sudo chmod 777 /etc/mke2fs.conf \
+# CleanUP
+ && sudo rm -rf $HOME/.cache/paru $HOME/.cargo /var/cache/pacman/

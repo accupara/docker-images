@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
 ## Note: no remake compilation here because we're going to use the distro supplied remake
-FROM archlinux:latest
+FROM archlinux/archlinux:latest
 
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"

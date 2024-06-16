@@ -1,7 +1,7 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
 ## Note: no remake compilation here because we're going to use the distro supplied remake
-FROM archlinux/archlinux:latest
+FROM archlinux/archlinux:multilib-devel
 
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
@@ -11,7 +11,6 @@ COPY sshd_config /tmp/
 # Install the minimum tools
 RUN set -x \
 # Install packages
- && pacman -Sy --noconfirm \
  && pacman -Syu \
     --noconfirm \
     base-devel \
@@ -48,7 +47,8 @@ RUN set -x \
     iputils \
     inetutils \
     xmlstarlet \
- && pacman -Sc --noconfirm \
+# Install paru
+ && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Newest versions of openssh-server don't seem to create all the host keys
  && sudo /usr/bin/ssh-keygen -A \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
@@ -95,6 +95,8 @@ RUN set -x \
  && sudo locale-gen \
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc
+ && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
+# CleanUP
+ && pacman -Sc --noconfirm && sudo rm -rf $HOME/.cargo /var/cache/pacman/
 
 EXPOSE 22

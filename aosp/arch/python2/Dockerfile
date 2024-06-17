@@ -49,4 +49,5 @@ RUN set -x \
 # For the DumperX script
  && sudo chmod 777 /etc/mke2fs.conf \
 # CleanUP
- && pacman -Sc --noconfirm && sudo rm -rf $HOME/.cache/paru $HOME/.cargo /var/cache/pacman/
+ && sudo pacman -Sc --noconfirm \
+ && sudo rm -rf $HOME/.cache/paru $HOME/.cargo /var/cache/pacman/

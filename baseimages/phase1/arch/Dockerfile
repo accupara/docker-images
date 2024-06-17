@@ -101,6 +101,7 @@ RUN set -x \
  && cd .. \
  && rm -rf paru \
 # Cleanup
- && pacman -Sc --noconfirm && sudo rm -rf $HOME/.cargo /var/cache/pacman/
+ && sudo pacman -Sc --noconfirm \
+ && sudo rm -rf $HOME/.cargo /var/cache/pacman/
 
 EXPOSE 22

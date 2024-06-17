@@ -47,8 +47,6 @@ RUN set -x \
     iputils \
     inetutils \
     xmlstarlet \
-# Install paru
- && git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si --noconfirm && cd .. && rm -rf paru \
 # Newest versions of openssh-server don't seem to create all the host keys
  && sudo /usr/bin/ssh-keygen -A \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
@@ -96,7 +94,13 @@ RUN set -x \
  && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
-# CleanUP
+# Install paru
+ && git clone https://aur.archlinux.org/paru.git \
+ && cd paru \
+ && makepkg -si --noconfirm \
+ && cd .. \
+ && rm -rf paru \
+# Cleanup
  && pacman -Sc --noconfirm && sudo rm -rf $HOME/.cargo /var/cache/pacman/
 
 EXPOSE 22

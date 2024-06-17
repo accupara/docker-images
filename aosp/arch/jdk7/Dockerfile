@@ -17,7 +17,7 @@ RUN set -x \
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
  && wget -q https://omansh.vercel.app/api/raw/?path=/omansh/pkgs/lib32-ncurses5-compat-libs/lib32-ncurses5-compat-libs-6.4-1-x86_64.pkg.tar.zst \
- && sudo pacman -U ./*zst --noconfirm && rm *zst 
+ && sudo pacman -U ./*zst --noconfirm && rm *zst \
 # Now lets fetch the jdk7 and install it
  && mkdir /home/admin/Downloads || true \
  && wget -q -P /home/admin/Downloads https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz \

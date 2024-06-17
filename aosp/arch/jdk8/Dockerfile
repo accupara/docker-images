@@ -7,7 +7,7 @@ ENV REPO_NO_INTERACTIVE=1 \
 
 RUN set -x \
 # Update dbs
- && pacman -Sy --noconfirm \
+ && sudo pacman -Sy --noconfirm \
 # Temporarily move aside the repo and let the distribution's package put it there
  && sudo mv /usr/bin/repo /tmp/ \
  && sudo mkdir -p /opt/aosp \

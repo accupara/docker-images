@@ -32,9 +32,19 @@ if [ -z "$KEY_PASSWORD" ]; then
     exit 0
 fi
 
-echo "Signing APKs and APEX files..."
+if [ "$1" = "--inline" ]; then
+    if [ -n "$2" ]; then
+        folder_path="$2"
+        echo "Copying private keys to $folder_path..."
+        mv "$CERT_DIR"/* "$folder_path"/
+    else
+        echo "Error: folder path is required with --inline option"
+        exit 1
+    fi
+else
+    echo "Signing APKs and APEX files..."
 
-SIGN_CMD="sign_target_files_apks -o -d $CERT_DIR \
+    SIGN_CMD="sign_target_files_apks -o -d $CERT_DIR \
     --extra_apks AdServicesApk.apk=$CERT_DIR/releasekey \
     --extra_apks HalfSheetUX.apk=$CERT_DIR/releasekey \
     --extra_apks OsuLogin.apk=$CERT_DIR/releasekey \
@@ -164,6 +174,7 @@ echo "$KEY_PASSWORD" | ota_from_target_files -k "$CERT_DIR/releasekey" \
     --block --backup=true \
     signed-target_files.zip \
     signed-ota_update.zip
+fi
 
 # Clean up: Remove the certificates
 rm -rf "$CERT_DIR"

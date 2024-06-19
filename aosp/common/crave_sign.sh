@@ -28,8 +28,7 @@ fi
 KEY_PASSWORD=$(openssl enc -aes-256-cbc -d -iter 256 -salt -in "$CERT_DIR/password.enc" -pass pass:"$KEY_ENCRYPTION_PASSWORD")
 
 if [ -z "$KEY_PASSWORD" ]; then
-    echo "Failed to decrypt the key password. Exiting."
-    exit 0
+    echo "Failed to decrypt the key password. Skipping."
 fi
 
 if [ "$1" = "--inline" ]; then

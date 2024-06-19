@@ -37,6 +37,26 @@ if [ "$1" = "--inline" ]; then
         folder_path="$2"
         echo "Copying private keys to $folder_path..."
         mv "$CERT_DIR"/* "$folder_path"/
+
+        echo "Creating $folder_path/keys/keys.mk..."
+        echo "PRODUCT_DEFAULT_DEV_CERTIFICATE := "$folder_path"/releasekey" > "$folder_path"/keys.mk
+
+        echo "Creating $folder_path/BUILD.bazel..."
+
+cat <<EOF > "$folder_path"/BUILD.bazel
+filegroup(
+    name = "android_certificate_directory",
+    srcs = glob([
+        "*.pk8",
+        "*.pem",
+    ]),
+    visibility = ["//visibility:public"],
+)
+EOF
+
+    echo "Done! Now build as usual. If builds aren't being signed, add '-include $folder_path/keys.mk' to your device mk file"
+    echo "Remember to delete your keys from $folder_path afterwards!"
+    sleep 3
     else
         echo "Error: folder path is required with --inline option"
         exit 1

@@ -58,7 +58,8 @@ EOF
     echo "Remember to delete your keys from $folder_path afterwards!"
     sleep 3
     else
-        echo "Error: folder path is required with --inline option"
+        echo "Error: destination folder path is required with --inline option"
+        echo "Example: vendor/lineage-priv/keys"
         exit 1
     fi
 else

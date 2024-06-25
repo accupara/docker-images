@@ -63,6 +63,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
 ENV GIT_VER=2.45.1 \
+    GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
     TMUX_VERSION=3.3
 
@@ -91,12 +92,13 @@ RUN set -x \
       openssh-server \
       redhat-lsb \
       rpm-build \
-      # install rsync because it allows the updated rsync to work correctly
-      rsync \
       subversion \
       sudo \
       vim \
       wget \
+# install rsync because it allows the updated rsync to work correctly
+ && yum install -y \
+      rsync \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Download and install the latest tmux
@@ -112,10 +114,10 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && sudo mv crave /usr/local/bin/ \
+ && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers \
-  ; mv /tmp/sudoers /etc/sudoers \
+  ; mv -f /tmp/sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -aG wheel admin \
@@ -125,9 +127,9 @@ RUN set -x \
  && ssh-keygen -t rsa -N '' -f /etc/ssh/ssh_host_rsa_key \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/sshd \
  && echo "session    required     pam_limits.so" >> /etc/pam.d/login \
- && mv /tmp/sshd_config /etc/ssh/ \
+ && mv -f /tmp/sshd_config /etc/ssh/ \
  && chmod 0600 /etc/ssh/* \
- && mv /tmp/limits.conf /etc/security/ \
+ && mv -f /tmp/limits.conf /etc/security/ \
 # Install the latest version of gradle
  && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
@@ -145,7 +147,8 @@ ENV HOME=/home/admin \
     PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 WORKDIR /home/admin
 
-RUN chown -R admin:admin /home/admin \
+RUN set -x \
+ && sudo chown -R admin:admin /home/admin \
 # Helpful aliases
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
 # Let the vimrc have sane defaults

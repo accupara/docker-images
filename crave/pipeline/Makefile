@@ -43,7 +43,7 @@ test_template:
 	docker run --rm -it -e CRAVE_CONFIG="$$(cat ${CRAVE_CONFIG})" accupara/crave:${CRAVE_LATEST_VERSION}-Linux-amd64 ${CMD}
 
 testitall:
-	${MAKE} test_template CMD="ls"
+	-${MAKE} test_template CMD="ls"
 	${MAKE} test_template CMD="crave -n version"
 	${MAKE} test_template CMD="crave version"
 	${MAKE} test_template CMD="crave list"

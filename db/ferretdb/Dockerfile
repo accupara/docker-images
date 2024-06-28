@@ -3,6 +3,7 @@ FROM accupara/golang:1.22-bullseye
 
 RUN set -x \
 # Download the FerretDB sources and compile the task tool
+ && export GIT_CLONE_PROTECTION_ACTIVE=false \
  && git clone https://github.com/FerretDB/FerretDB.git fdb \
  && cd fdb/tools \
  && go generate -x \

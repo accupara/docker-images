@@ -23,12 +23,12 @@ RUN set -x \
         libcdio-dev \
         libchromaprint-dev \
         libcodec2-dev \
-        libdc1394-22-dev \
+        libdc1394-dev \
         libfdk-aac-dev \
         libfontconfig1-dev \
         libfreetype-dev \
         libfribidi-dev \
-        libghc-gnutls-dev \
+        libghc-tls-dev \
         libgcrypt20-dev \
         libmodplug-dev \
         libmp3lame-dev \
@@ -49,7 +49,8 @@ RUN set -x \
         libsoxr-dev \
         libspeex-dev \
         libspeexdsp-dev \
-        libsrt-dev \
+        libsrt-gnutls-dev \
+        libsrt-openssl-dev \
         libssh-dev \
         libtheora-dev \
         libtool \

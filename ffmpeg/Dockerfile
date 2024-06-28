@@ -49,7 +49,6 @@ RUN set -x \
         libsoxr-dev \
         libspeex-dev \
         libspeexdsp-dev \
-        libsrt-gnutls-dev \
         libsrt-openssl-dev \
         libssh-dev \
         libtheora-dev \

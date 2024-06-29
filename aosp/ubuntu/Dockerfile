@@ -14,6 +14,7 @@ RUN set -x \
     brotli \
     build-essential \
     curl \
+    elfutils \
     flex \
     gnupg \
     gperf \

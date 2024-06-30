@@ -168,9 +168,9 @@ RUN set -x \
  && chmod +x /opt/crave/crave_sign.sh \
 # Better android-tools: https://github.com/nmeum/android-tools#installation
  && cd /tmp/dl \
- && wget https://github.com/nmeum/android-tools/releases/download/${ANDROID_TOOLS_VER}/android-tools-${ANDROID_TOOLS_VER}.tar.xz -O android-tools.tar.xz \
+ && wget -q https://github.com/nmeum/android-tools/releases/download/${ANDROID_TOOLS_VER}/android-tools-${ANDROID_TOOLS_VER}.tar.xz -O android-tools.tar.xz \
  && tar -xf android-tools.tar.xz \
- && cd android-tools \
+ && cd android-tools-${ANDROID_TOOLS_VER} \
  && mkdir build && cd build \
  && cmake .. \
  && make -j `nproc` \

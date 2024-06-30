@@ -4,6 +4,7 @@ FROM accupara/ubuntu:22.04
 # https://github.com/mesonbuild/meson/releases
 ENV YQ_VER=4.40.3 \
     MESON_VER=1.4.0 \
+    ANDROID_TOOLS_VER=35.0.1 \
     REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
 
@@ -167,7 +168,8 @@ RUN set -x \
  && chmod +x /opt/crave/crave_sign.sh \
 # Better android-tools: https://github.com/nmeum/android-tools#installation
  && cd /tmp/dl \
- && git clone https://github.com/nmeum/android-tools.git android-tools \
+ && wget https://github.com/nmeum/android-tools/releases/download/${ANDROID_TOOLS_VER}/android-tools-${ANDROID_TOOLS_VER}.tar.xz -O android-tools.tar.xz \
+ && tar -xf android-tools.tar.xz \
  && cd android-tools \
  && mkdir build && cd build \
  && cmake .. \

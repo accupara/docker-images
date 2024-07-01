@@ -1,12 +1,7 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.22-bullseye as atools
+FROM accupara/golang:1.22-bullseye AS atools
 
-# https://github.com/mesonbuild/meson/releases
-ENV YQ_VER=4.40.3 \
-    MESON_VER=1.4.0 \
-    ANDROID_TOOLS_VER=35.0.1 \
-    REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0
+ENV ANDROID_TOOLS_VER=35.0.1
 
 RUN set -x \
  && sudo eatmydata apt-get update \
@@ -34,8 +29,11 @@ RUN set -x \
 
 FROM accupara/ubuntu:22.04
 
-COPY --from=atools /tmp/android-tools/install/bin/ /usr/bin/
-COPY --from=atools /tmp/android-tools/vendor/mkbootimg/mkbootimg.py /usr/local/share/android-tools/mkbootimg/
+# https://github.com/mesonbuild/meson/releases
+ENV YQ_VER=4.40.3 \
+    MESON_VER=1.4.0 \
+    REPO_NO_INTERACTIVE=1 \
+    GIT_TERMINAL_PROMPT=0
 
 RUN set -x \
  && sudo eatmydata apt-get update \
@@ -195,17 +193,11 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \
  && chmod +x /opt/crave/crave_sign.sh \
-# Better android-tools: https://github.com/nmeum/android-tools#installation
- && cd /tmp/dl \
- && wget -q https://github.com/nmeum/android-tools/releases/download/${ANDROID_TOOLS_VER}/android-tools-${ANDROID_TOOLS_VER}.tar.xz -O android-tools.tar.xz \
- && tar -xf android-tools.tar.xz \
- && cd android-tools-${ANDROID_TOOLS_VER} \
- && mkdir build && cd build \
- && cmake .. \
- && make -j `nproc` \
- && sudo make install \
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
+
+COPY --from=atools /tmp/android-tools/install/bin/ /usr/bin/
+COPY --from=atools /tmp/android-tools/vendor/mkbootimg/mkbootimg.py /usr/local/share/android-tools/mkbootimg/

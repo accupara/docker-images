@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:22.04
+FROM accupara/golang:1.22-bullseye as atools
 
 # https://github.com/mesonbuild/meson/releases
 ENV YQ_VER=4.40.3 \
@@ -7,6 +7,35 @@ ENV YQ_VER=4.40.3 \
     ANDROID_TOOLS_VER=35.0.1 \
     REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
+
+RUN set -x \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y install \
+    cmake \
+    golang-goprotobuf-dev \
+    libbrotli-dev \
+    libgtest-dev \
+    liblz4-dev \
+    libpcre2-dev \
+    libprotobuf-dev \
+    libunwind-dev \
+    libusb-1.0-0-dev \
+    libzstd-dev \
+# Better android-tools: https://github.com/nmeum/android-tools#installation
+ && cd /tmp/ \
+ && wget -q https://github.com/nmeum/android-tools/releases/download/${ANDROID_TOOLS_VER}/android-tools-${ANDROID_TOOLS_VER}.tar.xz -O android-tools.tar.xz \
+ && tar -xf android-tools.tar.xz \
+ && mv android-tools-${ANDROID_TOOLS_VER} android-tools \
+ && cd android-tools \
+ && mkdir build && cd build \
+ && cmake .. \
+ && make -j `nproc` \
+ && sudo make install
+
+FROM accupara/ubuntu:22.04
+
+COPY --from=atools /tmp/android-tools/install/bin/ /usr/bin/
+COPY --from=atools /tmp/android-tools/vendor/mkbootimg/mkbootimg.py /usr/local/share/android-tools/mkbootimg/
 
 RUN set -x \
  && sudo eatmydata apt-get update \

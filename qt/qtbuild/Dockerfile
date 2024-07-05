@@ -5,10 +5,10 @@ FROM accupara/ubuntu:22.04
 ENV CMAKE_VER=3.27.9
 
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y software-properties-common \
- && sudo apt-get update \
- && sudo apt-get -y install \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y software-properties-common \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get -y install \
         bison \
         clang \
         flex \
@@ -19,7 +19,7 @@ RUN set -x \
         ninja-build \
         nodejs \
         perl \
-        python \
+        python3 \
 # Install the newest cmake
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \

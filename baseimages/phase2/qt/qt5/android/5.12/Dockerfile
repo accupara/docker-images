@@ -3,10 +3,11 @@ FROM us.gcr.io/crave-228104/android:latest
 
 COPY installqt.qs /tmp/installqt.qs
 
-RUN sudo apt-get update
-
 # Download the last version of Qt that works for Android (5.9.1) from here: https://www.qt.io/download-open-source/#section-2
-RUN sudo eatmydata apt-get install -y \
+RUN set -x \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get install -y \
+    libxkbcommon-x11-0 \
     wget \
     unzip \
  && wget -q https://download.qt.io/archive/qt/5.12/5.12.12/qt-opensource-linux-x64-5.12.12.run \

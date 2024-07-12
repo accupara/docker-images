@@ -173,6 +173,8 @@ RUN set -x \
  && sudo chown admin:admin /opt/crave/ \
  && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resync.sh -O /opt/crave/resync.sh \
  && chmod +x /opt/crave/resync.sh \
+ && wget https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/resynctest.sh -O /opt/crave/resynctest.sh \
+ && chmod +x /opt/crave/resynctest.sh \
 # Save the upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/github-actions \
  && sudo chown admin:admin /opt/crave/github-actions \

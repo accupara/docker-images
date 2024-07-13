@@ -4,6 +4,7 @@
 
 repo --version
 cd .repo/repo
+ls
 git pull -r
 cd -
 repo --version;

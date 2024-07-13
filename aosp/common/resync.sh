@@ -1,6 +1,13 @@
 #!/bin/bash
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
+repo --version
+cd .repo/repo
+git pull -r
+cd -
+repo --version
+
+
 main() {
     # Run repo sync command and capture the output
     find .repo -name '*.lock' -delete

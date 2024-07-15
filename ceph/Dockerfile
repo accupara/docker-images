@@ -8,7 +8,7 @@ RUN set -x \
     autoconf \
     automake \
     autotools-dev \
-    cython \
+    cython3 \
     debhelper \
     libaio-dev \
     libatomic-ops-dev \

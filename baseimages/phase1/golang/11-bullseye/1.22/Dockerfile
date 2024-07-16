@@ -3,7 +3,7 @@ FROM golang:1.22-bullseye
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
-ENV GIT_VER=2.45.1 \
+ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
     lsb_release_env="bullseye"
 

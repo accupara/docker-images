@@ -35,7 +35,7 @@ ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm
 WORKDIR /home/admin
-CMD /bin/bash
+CMD ["/bin/bash"]
 
 RUN sudo chown -R admin:admin /home/admin \
  && echo ". /etc/bash_completion" >> /home/admin/.bashrc \

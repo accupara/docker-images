@@ -81,7 +81,7 @@ ENV HOME=/home/admin \
     TERM=xterm \
     LANG=en_US.utf8
 WORKDIR /home/admin
-CMD /bin/bash
+CMD ["/bin/bash"]
 
 RUN set -x \
 # bashrc, ssh directory, completions, etc.

@@ -54,7 +54,7 @@ RUN /usr/bin/ssh-keygen -A
 USER admin
 ENV HOME=/home/admin USER=admin TERM=xterm
 WORKDIR /home/admin
-CMD /bin/bash
+CMD ["/bin/bash"]
 
 RUN set -x \
  && echo "export PS1='\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\\$ '" >> /home/admin/.bashrc \

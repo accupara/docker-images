@@ -18,4 +18,4 @@ ENV HOME=/home/dcuser \
     TERM=xterm \
     LANG=en_US.utf8
 WORKDIR /home/dcuser
-CMD /bin/bash
+CMD ["/bin/bash"]

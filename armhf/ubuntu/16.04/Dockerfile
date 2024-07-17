@@ -21,7 +21,7 @@ RUN set -x \
  && rm -f /var/lib/apt/lists/*_dists_* \
  && echo ". /etc/bash_completion" >> /root/.bashrc
 
-CMD /bin/bash
+CMD ["/bin/bash"]
 
 RUN useradd -ms /bin/bash admin && \
     echo "admin:admin" | chpasswd && \

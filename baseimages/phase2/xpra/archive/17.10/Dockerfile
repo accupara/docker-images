@@ -17,5 +17,5 @@ RUN sudo apt-get install -y \
  && sudo mv /tmp/xpra.conf /etc/xpra/xpra.conf \
  && echo "alias xpra_start='xpra control :100 start'" >> ~/.bashrc
 
-CMD /tmp/startcmd.sh
+CMD ["/tmp/startcmd.sh"]
 EXPOSE 22

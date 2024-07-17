@@ -5,7 +5,7 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin
 WORKDIR /home/admin
-CMD /bin/bash
+CMD ["/bin/bash"]
 
 # Copied and modified from the open source IntelliJ-Community Dockerfile.
 # The Dind doesn't need to be separate: The base image accupara/ubuntu-dind is enough

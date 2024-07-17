@@ -15,5 +15,5 @@ RUN set -x \
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
-CMD /tmp/startcmd.sh
+CMD ["/tmp/startcmd.sh"]
 EXPOSE 22

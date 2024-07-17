@@ -184,4 +184,4 @@ RUN chown -R admin:admin /home/admin \
 COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22
-CMD /bin/bash
+CMD ["/bin/bash"]

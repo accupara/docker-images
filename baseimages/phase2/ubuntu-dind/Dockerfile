@@ -153,5 +153,5 @@ ENV HOME=/root \
     TERM=xterm \
     LANG=en_US.utf8
 WORKDIR /root
-CMD /bin/bash
+CMD ["/bin/bash"]
 VOLUME /var/lib/docker

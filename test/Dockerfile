@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-FROM eclipse-temurin:8-jdk-centos7 as jdk
+FROM eclipse-temurin:8-jdk-centos7 AS jdk
 FROM accupara/debian:10
 
 ENV JAVA_HOME=/opt/java/openjdk \

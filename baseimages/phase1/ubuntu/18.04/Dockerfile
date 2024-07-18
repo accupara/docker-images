@@ -2,7 +2,7 @@
 
 # Compile remake and rsync on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:18.04 as remake
+FROM accupara/ubuntu:18.04 AS remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -16,7 +16,7 @@ RUN set -x \
  && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-FROM accupara/ubuntu:18.04 as rsync
+FROM accupara/ubuntu:18.04 AS rsync
 RUN set -x \
  && sudo apt-get update -y \
  && sudo apt-get install -y \

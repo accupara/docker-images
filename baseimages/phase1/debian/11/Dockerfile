@@ -2,7 +2,7 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/debian:11 as remake
+FROM accupara/debian:11 AS remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
@@ -16,7 +16,7 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/debian:11 as rsync
+FROM accupara/debian:11 AS rsync
 RUN set -x \
  && sudo apt-get update -y \
  && sudo apt-get install -y \

@@ -2,7 +2,7 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/rockylinux:8 as remake
+FROM accupara/rockylinux:8 AS remake
 RUN set -x \
  && sudo yum update -y \
  && sudo yum install -y 'dnf-command(config-manager)' \
@@ -38,7 +38,7 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/rockylinux:8 as rsync
+FROM accupara/rockylinux:8 AS rsync
 RUN set -x \
  && sudo yum update -y \
  && sudo yum install -y 'dnf-command(config-manager)' \

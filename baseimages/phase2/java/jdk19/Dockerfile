@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM eclipse-temurin:19-jdk-centos7 as jdk
+FROM eclipse-temurin:19-jdk-centos7 AS jdk
 FROM accupara/debian:10
 
 # Maven: https://maven.apache.org/download.cgi

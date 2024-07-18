@@ -2,7 +2,7 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:22.04 as remake
+FROM accupara/ubuntu:22.04 AS remake
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \

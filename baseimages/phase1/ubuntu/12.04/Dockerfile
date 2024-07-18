@@ -1,6 +1,6 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-FROM ubuntu:12.04 as rsync
+FROM ubuntu:12.04 AS rsync
 RUN set -x \
  && sed -i 's|http://archive.ubuntu.com/ubuntu/|http://insecure-1204.ubuntu.crave.io/ubuntu/|g' /etc/apt/sources.list \
  && apt-get update -y \

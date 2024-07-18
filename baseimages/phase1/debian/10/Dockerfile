@@ -2,7 +2,7 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM debian:10 as remake
+FROM debian:10 AS remake
 RUN set -x \
  && apt-get update \
  && apt-get install -y \
@@ -20,7 +20,7 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM debian:10 as rsync
+FROM debian:10 AS rsync
 RUN set -x \
  && apt-get update -y \
  && apt-get install -y \

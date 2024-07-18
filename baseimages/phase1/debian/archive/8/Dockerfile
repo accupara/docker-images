@@ -2,7 +2,7 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/debian:8 as remake
+FROM accupara/debian:8 AS remake
 RUN set -x \
  && sudo sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list \
  && sudo apt-get -o Acquire::Check-Valid-Until=false update \
@@ -29,7 +29,7 @@ RUN set -x \
  && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-FROM accupara/centos:6 as rsync
+FROM accupara/centos:6 AS rsync
 RUN set -x \
  && sudo yum update -y \
  && sudo yum install -y \

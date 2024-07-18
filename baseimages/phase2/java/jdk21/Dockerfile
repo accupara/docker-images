@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM eclipse-temurin:21-jdk as jdk
+FROM eclipse-temurin:21-jdk AS jdk
 FROM accupara/debian:10
 
 # Maven: https://maven.apache.org/download.cgi

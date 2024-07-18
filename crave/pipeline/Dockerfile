@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM ubuntu:22.04 as crave
+FROM ubuntu:22.04 AS crave
 RUN set -x \
 # Install curl and wget: so that we can get crave
  && apt-get update \

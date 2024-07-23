@@ -39,15 +39,20 @@ done
 echo "Image Files to be uploaded: $IMG_FILES"
 
 # Now do the same for ZIP_FILES
-for zip_file in out/target/product/$DEVICE/*.zip; do
-    if [[ -n $zip_file && $(stat -c%s "$zip_file") -le $TG_UPLOAD_LIMIT ]]; then # Try to match github releases per size limit
-        ZIP_FILES+="$zip_file "
-        echo "Selecting $zip_file for Upload"
-    else
-        echo "Skipping $zip_file"
-    fi
-done
-echo "Zip Files to be uploaded: $ZIP_FILES"
+if [ -n "$(ls out/target/product/$DEVICE/*.zip)" ]; then
+    for zip_file in out/target/product/$DEVICE/*.zip; do
+        if [[ $(stat -c%s "$zip_file") -le $GH_UPLOAD_LIMIT ]]; then # Try to match github releases per size limit
+            ZIP_FILES+="$zip_file "
+            echo "Selecting $zip_file for Upload"
+        else
+            echo "Skipping $zip_file"
+        fi
+    done
+    echo "Zip Files to be uploaded: $ZIP_FILES"
+else
+    echo "No zip files found in out/target/product/$DEVICE/"
+fi
+
 echo "Extra Files to be uploaded: $EXTRAFILES"
 
 # Create release	

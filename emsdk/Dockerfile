@@ -6,7 +6,8 @@ ENV YQ_VER=4.40.3 \
     GIT_TERMINAL_PROMPT=0 \
     GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
-    GRADLE_VER=8.4
+    GRADLE_VER=8.4 \
+    DEBIAN_FRONTEND=noninteractive
 
 RUN set -x \
  #&& sudo dpkg --add-architecture i386 \
@@ -15,15 +16,21 @@ RUN set -x \
         binutils \
         build-essential \
         ca-certificates \
+        eatmydata \
         file \
         git \
+        locales \
         python3 \
         python3-pip \
+# Create a temp dir
+ && mkdir -p /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
+        gettext \
         libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
+        tcl-dev \
         zlib1g-dev \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
@@ -93,9 +100,5 @@ RUN set -x \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
 # Initialize LFS
  && git lfs install
-
-# Copy these at the very end
-COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

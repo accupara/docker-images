@@ -9,7 +9,8 @@ SUBDIRS=\
 	aosp yocto agl \
     golang-apps \
     tak \
-	dpdk gcc glibc
+	dpdk gcc glibc \
+	emsdk emscripten
 # incomplete or untested: ffmpeg
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
@@ -47,6 +48,7 @@ DIRS=\
 	 diem \
 	 dpdk \
 	 duperemove \
+	 emsdk \
 	 ffmpeg \
 	 gcc \
 	 glibc \

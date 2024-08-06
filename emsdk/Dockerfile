@@ -56,8 +56,46 @@ RUN set -x \
  && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
  && chmod +x yq \
  && sudo mv yq /usr/bin/ \
+# Add admin user and add it to sudoers
+ && useradd -ms /bin/bash admin \
+ && echo "admin:admin" | chpasswd \
+ && adduser admin sudo \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
 # Please stop asking what colors I want
  && git config --global color.ui false \
 # Final cleanups
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
+
+USER admin
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    LANG=en_US.utf8
+WORKDIR /home/admin
+CMD ["/bin/bash"]
+
+RUN set -x \
+# bashrc, ssh directory, completions, etc.
+ && sudo chown -R admin:admin /home/admin \
+ && echo ". /etc/bash_completion" >> /home/admin/.bashrc \
+ && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
+ && mkdir /home/admin/.ssh \
+ && chmod 700 /home/admin/.ssh \
+ && touch /home/admin/.ssh/authorized_keys \
+ && sudo chmod 0600 /etc/ssh/* \
+# locale setup
+ && sudo sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
+ && sudo locale-gen \
+# Export env vars
+ && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
+ && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
+# Initialize LFS
+ && git lfs install
+
+# Copy these at the very end
+COPY --from=remake /tmp/make /usr/bin/remake
+COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+
+EXPOSE 22

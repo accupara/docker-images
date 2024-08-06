@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+IMGTAG?=accupara/emsdk
+IMGVER_BASE?=latest
 
-SUBDIRS=emscripten
-
-include $(shell git rev-parse --show-toplevel)/Makefile.subdirs
+include $(shell git rev-parse --show-toplevel)/Makefile.build

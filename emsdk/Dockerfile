@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM emscripten/emsdk
+FROM emscripten/emsdk:latest
 
 ENV YQ_VER=4.40.3 \
     REPO_NO_INTERACTIVE=1 \
@@ -11,27 +11,33 @@ ENV YQ_VER=4.40.3 \
 
 RUN set -x \
  #&& sudo dpkg --add-architecture i386 \
- && sudo apt-get update \
- && sudo apt-get -y install \
-        binutils \
-        build-essential \
-        ca-certificates \
-        eatmydata \
-        file \
-        git \
-        locales \
-        python3 \
-        python3-pip \
+ && apt-get update \
+ && apt-get -y install \
+       bash-completion \
+       binutils \
+       build-essential \
+       ca-certificates \
+       eatmydata \
+       file \
+       git \
+       lsb-release \
+       locales \
+       openssh-server \
+       python3 \
+       python3-pip \
+       rsync \
+       subversion \
+       sudo \
 # Create a temp dir
  && mkdir -p /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
-        gettext \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        tcl-dev \
-        zlib1g-dev \
+       gettext \
+       libcurl4-gnutls-dev \
+       libexpat1-dev \
+       libssl-dev \
+       tcl-dev \
+       zlib1g-dev \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \

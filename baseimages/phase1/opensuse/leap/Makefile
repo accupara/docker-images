@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-SUBDIRS=ubuntu centos debian fedora rocky-linux golang nvidia arch opensuse
+SUBDIRS=15.3 15.6
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

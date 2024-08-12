@@ -1,30 +1,7 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-
-# Compile remake on the fly and keep it ready for the next stage
-# Chicken or egg : Which came first?
-#FROM accupara/ubuntu:24.04 AS remake
-FROM ubuntu:24.04 AS remake
-RUN set -x \
- && apt-get update \
- && apt-get install -y \
-        autopoint \
-        build-essential \
-        git \
-        guile-3.0-dev \
-        texinfo \
- && git clone https://github.com/rocky/remake.git \
- && cd remake \
- && ./autogen.sh \
- && ./configure \
- && make -j `nproc` \
- && mv ./make /tmp/
-
-################## The real container starts here ##################
-FROM ubuntu:24.04
+FROM opensuse/leap:15.3
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
-
-COPY sshd_config /tmp/
 
 # https://mirrors.edge.kernel.org/pub/software/scm/git/
 # https://gradle.org/releases/
@@ -34,50 +11,35 @@ ENV GIT_VER=2.45.2 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1
 
-# Install the minimum tools
+# Install the minimum set of tools
 RUN set -x \
- && export DEBIAN_FRONTEND=noninteractive \
- && apt-get update \
- && apt-get -y dist-upgrade \
- && apt-get install -y \
+ && zypper update -y \
+ && zypper install -y \
       bash-completion \
-      binutils \
-      build-essential \
       curl \
-      debhelper \
-      devscripts \
-      dh-make \
       eatmydata \
-      emacs \
-      guile-3.0 \
+      file \
+      git \
+      gcc-c++ \
       jq \
-      libpopt0 \
-      libxxhash0 \
-      locales \
       lsb-release \
-      multitail \
-      ninja-build \
+      make \
       openssh-server \
-      psmisc \
-      # install rsync because it allows the updated rsync to work correctly
-      rsync \
       subversion \
       sudo \
-      tmux \
-      vim-nox \
+      unzip \
+      vim-enhanced \
       wget \
-      # for lndir
-      xutils-dev \
-# Newest versions of openssh-server don't seem to create all the host keys
- && /usr/bin/ssh-keygen -A \
-# Create a directory for all the compiled things
+# Install compilation tools
+ && eatmydata zypper install -y -t pattern devel_basis \
+# Install the latest git
+ && eatmydata zypper install -y \
+      libcurl-devel \
+      libexpat-devel \
+      libgnutls-devel \
+      libopenssl-devel \
+      zlib-devel \
  && mkdir -p /tmp/dl \
-# Compile and install the latest git
- && eatmydata apt-get install -y \
-       libcurl4-gnutls-dev \
-       libexpat1-dev \
-       libssl-dev \
-       zlib1g-dev \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
@@ -101,7 +63,7 @@ RUN set -x \
 # Install the latest version of gradle
  && cd /tmp/dl \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
@@ -120,48 +82,28 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && (curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- && mv crave /usr/local/bin/) || true \
-# Add admin user and add it to sudoers
+# Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
- && adduser admin sudo \
+ && usermod -a -G wheel admin \
+# Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-# Configure sshd
  && mkdir -p /var/run/sshd \
- && mv /tmp/sshd_config /etc/ssh/sshd_config \
-# Clean up image
- && echo ". /etc/bash_completion" >>/root/.bashrc \
- && cd /tmp \
- && find /tmp/dl -delete \
- && apt-get clean \
- && rm -f /var/lib/apt/lists/*_dists_*
+ && echo ". /etc/bash_completion" >> /root/.bashrc
+
+COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin \
-    USER=admin \
-    TERM=xterm \
-    LANG=en_US.utf8
+ENV HOME=/home/admin USER=admin
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 
-RUN set -x \
-# bashrc, ssh directory, completions, etc.
- && sudo chown -R admin:admin /home/admin \
- && echo ". /etc/bash_completion" >> /home/admin/.bashrc \
- && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
+RUN sudo chown -R admin:admin /home/admin \
+ && echo ". /etc/bash_completion" >>/home/admin/.bashrc \
+ && echo "alias ls='ls --color' ; alias ll='ls -l'" >>/home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
- && sudo chmod 0600 /etc/ssh/* \
-# locale setup
- && sudo locale-gen en_US.UTF-8 \
- && sudo update-locale LANG=en_US.UTF-8 \
-# Export env vars
- && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
-# Initialize LFS
- && git lfs install
-
-COPY --from=remake /tmp/make /usr/bin/remake
+ && sudo chmod 0600 /etc/ssh/*
 
 EXPOSE 22

@@ -84,7 +84,8 @@ RUN set -x \
  && (curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- && mv crave /usr/local/bin/) || true \
 # Non root user
  && useradd -ms /bin/bash admin \
- && echo "admin:admin" | chpasswd \
+# Argh why does OpenSuse have to be so hard?
+ && echo "admin:abc1!2@3#" | chpasswd \
  && usermod -a -G wheel admin \
 # Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \

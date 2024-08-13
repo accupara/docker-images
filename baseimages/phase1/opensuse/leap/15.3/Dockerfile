@@ -82,8 +82,10 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && (curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- && mv crave /usr/local/bin/) || true \
-# Non root user
+# Non-root user
  && useradd -ms /bin/bash admin \
+ && groupadd admin \
+ && usermod -a -G admin admin \
 # Argh why does OpenSuse have to be so hard?
  && echo "admin:abc1!2@3#" | chpasswd \
 # Add to sudoers

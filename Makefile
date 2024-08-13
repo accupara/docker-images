@@ -10,7 +10,7 @@ SUBDIRS=\
     golang-apps \
     tak \
 	dpdk gcc glibc \
-	emsdk emscripten
+	emsdk emscripten cobol
 # incomplete or untested: ffmpeg
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

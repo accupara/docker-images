@@ -21,12 +21,14 @@ RUN set -x \
       file \
       git \
       gcc-c++ \
+      gzip \
       jq \
       lsb-release \
       make \
       openssh-server \
       subversion \
       sudo \
+      tar \
       unzip \
       vim-enhanced \
       wget \

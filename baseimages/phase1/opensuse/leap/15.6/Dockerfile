@@ -93,7 +93,9 @@ RUN set -x \
 # Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
  && mkdir -p /var/run/sshd \
- && echo ". /etc/bash_completion" >> /root/.bashrc
+ && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Create host keys
+ && ssh-keygen -A
 
 COPY sshd_config /etc/ssh/sshd_config
 

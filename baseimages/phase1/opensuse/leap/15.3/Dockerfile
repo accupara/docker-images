@@ -86,7 +86,6 @@ RUN set -x \
  && useradd -ms /bin/bash admin \
 # Argh why does OpenSuse have to be so hard?
  && echo "admin:abc1!2@3#" | chpasswd \
- && usermod -a -G wheel admin \
 # Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
  && mkdir -p /var/run/sshd \

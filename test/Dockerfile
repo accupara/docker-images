@@ -4,7 +4,7 @@ FROM accupara/opensuse:leap-5.13
 RUN set -x \
  && sudo zypper addrepo https://download.opensuse.org/repositories/openSUSE:Leap:15.3:Update/standard/openSUSE:Leap:15.3:Update.repo \
  && sudo zypper refresh \
- && zypper install -y \
+ && sudo zypper install -y \
         bc \
         bison \
         dos2unix \

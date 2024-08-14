@@ -1,110 +1,22 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM emscripten/emsdk:latest
+FROM accupara/ubuntu:22.04
 
-ENV YQ_VER=4.40.3 \
-    REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0 \
-    GIT_VER=2.45.2 \
-    GIT_LFS_VER=3.5.1 \
-    GRADLE_VER=8.4 \
-    DEBIAN_FRONTEND=noninteractive
+# https://github.com/emscripten-core/emsdk/tags
+ENV EMSCRIPTEN_VERSION=3.1.64 \
+    EMSDK=/emsdk
 
 RUN set -x \
- #&& sudo dpkg --add-architecture i386 \
- && apt-get update \
- && apt-get -y install \
-       bash-completion \
-       binutils \
-       build-essential \
-       ca-certificates \
-       eatmydata \
-       file \
-       git \
-       lsb-release \
-       locales \
-       openssh-server \
-       python3 \
-       python3-pip \
-       rsync \
-       subversion \
-       sudo \
-# Create a temp dir
- && mkdir -p /tmp/dl \
-# Install the latest git
- && eatmydata apt-get install -y \
-       gettext \
-       libcurl4-gnutls-dev \
-       libexpat1-dev \
-       libssl-dev \
-       tcl-dev \
-       zlib1g-dev \
- && cd /tmp/dl \
- && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && tar -xf git-${GIT_VER}.tar.gz \
- && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
-# Make sure to install git-lfs the direct way. no mucking around with apt
- && cd /tmp/dl \
- && arch="$(uname -m)"; \
-       case "$arch" in \
-              x86_64)  lfsArch='amd64' ;; \
-              aarch64) lfsArch='arm64' ;; \
-              ppc64le) lfsArch='ppc64le' ;; \
-              s390x) lfsArch='s390x' ;; \
-              *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-       esac \
- && wget -q https://github.com/git-lfs/git-lfs/releases/download/v${GIT_LFS_VER}/git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
- && tar -xf git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
- && cd git-lfs-${GIT_LFS_VER} \
- && ./install.sh \
-# Install the latest version of gradle
- && cd /tmp \
- && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
- && mv gradle-${GRADLE_VER} /usr/lib/ \
- && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
- && rm gradle-${GRADLE_VER}-bin.zip \
-# Add the yq tool from the releases at https://github.com/mikefarah/yq
- && wget -q -O yq https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
- && chmod +x yq \
- && sudo mv yq /usr/bin/ \
-# Add admin user and add it to sudoers
- && useradd -ms /bin/bash admin \
- && echo "admin:admin" | chpasswd \
- && adduser admin sudo \
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
-# Please stop asking what colors I want
- && git config --global color.ui false \
+# install the pre-reqs
+ && sudo apt-get update \
+ && sudo apt-get install -y \
+      python3 \
+      python3-pip \
+# clone the emsdk sources at the specific location in the environment
+ && git clone https://github.com/emscripten-core/emsdk.git emsdk \
+ && sudo mv emsdk ${EMSDK} \
+# Install using the script
+ && cd ${EMSDK} \
+ && ./emsdk install ${EMSCRIPTEN_VERSION} \
 # Final cleanups
  && sudo apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
-
-USER admin
-ENV HOME=/home/admin \
-    USER=admin \
-    TERM=xterm \
-    LANG=en_US.utf8
-WORKDIR /home/admin
-CMD ["/bin/bash"]
-
-RUN set -x \
-# bashrc, ssh directory, completions, etc.
- && sudo chown -R admin:admin /home/admin \
- && echo ". /etc/bash_completion" >> /home/admin/.bashrc \
- && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
- && mkdir /home/admin/.ssh \
- && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys \
- && sudo chmod 0600 /etc/ssh/* \
-# locale setup
- && sudo sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
- && sudo locale-gen \
-# Export env vars
- && echo "export LC_ALL=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
- && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
-# Initialize LFS
- && git lfs install
-
-EXPOSE 22

@@ -3,6 +3,7 @@ FROM accupara/ubuntu:22.04
 
 # https://github.com/emscripten-core/emsdk/tags
 ENV EMSCRIPTEN_VERSION=3.1.64 \
+    CMAKE_VER=3.27.9 \
     EMSDK=/emsdk
 
 RUN set -x \
@@ -15,6 +16,11 @@ RUN set -x \
       openjdk-11-jre-headless \
       python3 \
       python3-pip \
+# Latest version of cmake required for compilation
+ && ARCH=$(uname -m) \
+ && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh \
+ && sudo /tmp/cmake-${CMAKE_VER}-Linux-$ARCH.sh --skip-license --prefix=/usr \
 # clone the emsdk sources at the specific location in the environment
  && git clone https://github.com/emscripten-core/emsdk.git emsdk \
  && sudo mv emsdk ${EMSDK} \

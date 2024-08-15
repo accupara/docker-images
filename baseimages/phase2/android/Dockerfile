@@ -87,10 +87,10 @@ RUN set -x \
  "extras;android;m2repository" \
  "extras;google;m2repository" \
  "extras;google;google_play_services" \
- "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
  "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.1" \
- "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2" \
  "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.1" \
+# "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2" \
+ "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2" \
  && echo "Extras installed" \
  && yes | sdkmanager \
  "add-ons;addon-google_apis-google-24" \

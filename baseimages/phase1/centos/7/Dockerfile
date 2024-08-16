@@ -65,7 +65,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
-    TMUX_VERSION=3.3
+    TMUX_VERSION=3.3 \
+    GIT_TERMINAL_PROMPT=0
 
 COPY sshd_config limits.conf /tmp/
 
@@ -148,7 +149,8 @@ ENV HOME=/home/admin \
     TERM=xterm \
     LANG=en_US.utf8 \
     GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VER} \
-    PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 
 RUN set -x \

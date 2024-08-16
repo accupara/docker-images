@@ -75,7 +75,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

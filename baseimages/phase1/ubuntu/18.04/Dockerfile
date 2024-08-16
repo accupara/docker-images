@@ -48,7 +48,8 @@ COPY sshd_config /tmp/
 ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
-    NINJA_VER=v1.12.1
+    NINJA_VER=v1.12.1 \
+    GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -154,7 +155,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

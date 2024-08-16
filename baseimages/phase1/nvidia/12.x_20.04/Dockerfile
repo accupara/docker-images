@@ -6,7 +6,8 @@ COPY sshd_config /tmp/
 # For Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
-    GRADLE_VER=8.4
+    GRADLE_VER=8.4 \
+    GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
 RUN set -x \
@@ -79,7 +80,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

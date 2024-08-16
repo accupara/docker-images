@@ -5,7 +5,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 
 ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
-    lsb_release_env="bullseye"
+    lsb_release_env="bullseye" \
+    GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -71,7 +72,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

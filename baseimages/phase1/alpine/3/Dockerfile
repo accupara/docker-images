@@ -1,7 +1,8 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM alpine:3
 
-ENV LANG en_US.utf8
+ENV LANG en_US.utf8 \
+    GIT_TERMINAL_PROMPT=0
 
 RUN set -x \
  && apk update \
@@ -52,7 +53,9 @@ COPY sshd_config /etc/ssh/sshd_config
 RUN /usr/bin/ssh-keygen -A
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin TERM=xterm \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

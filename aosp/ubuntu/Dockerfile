@@ -32,8 +32,7 @@ FROM accupara/ubuntu:22.04
 # https://github.com/mesonbuild/meson/releases
 ENV YQ_VER=4.40.3 \
     MESON_VER=1.4.0 \
-    REPO_NO_INTERACTIVE=1 \
-    GIT_TERMINAL_PROMPT=0
+    REPO_NO_INTERACTIVE=1
 
 RUN set -x \
  && sudo eatmydata apt-get update \

@@ -3,7 +3,8 @@ FROM golang:1.21-bullseye
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
-ENV lsb_release_env="bullseye"
+ENV lsb_release_env="bullseye" \
+    GIT_TERMINAL_PROMPT=0
 # Install the minimum tools
 RUN export DEBIAN_FRONTEND=noninteractive \
  && set -x \
@@ -51,7 +52,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

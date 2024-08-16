@@ -31,7 +31,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 ENV GIT_VER=2.45.2 \
     GIT_LFS_VER=3.5.1 \
     GRADLE_VER=8.7 \
-    NINJA_VER=v1.12.1
+    NINJA_VER=v1.12.1 \
+    GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
 RUN set -x \
@@ -137,7 +138,10 @@ RUN set -x \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin TERM=xterm
+ENV HOME=/home/admin \
+    USER=admin \
+    TERM=xterm \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

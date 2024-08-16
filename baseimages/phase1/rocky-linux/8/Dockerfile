@@ -147,7 +147,8 @@ ENV HOME=/home/admin \
     TERM=xterm \
     LANG=en_US.utf8 \
     GRADLE_HOME=/opt/gradle/gradle-5.0 \
-    PATH=/opt/gradle/gradle-5.0/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/opt/gradle/gradle-5.0/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 
 RUN chown -R admin:admin /home/admin \

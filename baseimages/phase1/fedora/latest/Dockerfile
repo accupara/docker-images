@@ -48,7 +48,9 @@ RUN set -x \
 COPY sshd_config /etc/ssh/sshd_config
 
 USER admin
-ENV HOME=/home/admin USER=admin
+ENV HOME=/home/admin \
+    USER=admin \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

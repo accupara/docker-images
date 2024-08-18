@@ -150,6 +150,14 @@ RUN set -x \
  && chmod +x /opt/crave/backblaze_keygen.sh \
 # Install the VS Code Server
  && curl -fsSL https://code-server.dev/install.sh | sh \
+# Save the check-abuse-aosp.sh script into the appropriate location
+ && sudo chown -R admin:admin /opt/crave \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/crave/devspace/common/check-abuse-aosp.sh -O /opt/crave/check-abuse-aosp.sh \
+ && chmod +x /opt/crave/check-abuse-aosp.sh \
+# Save the replace-repo-shim.sh script into the appropriate location
+ && sudo chown -R admin:admin /opt/crave \
+ && wget -q https://raw.githubusercontent.com/accupara/docker-images/crave/devspace/common/replace-repo-shim.sh -O /opt/crave/replace-repo-shim.sh \
+ && chmod +x /opt/crave/replace-repo-shim.sh \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

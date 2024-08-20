@@ -1,7 +1,8 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 FROM accupara/openjdk:11
 
-ENV CASSANDRA_VER=4.1.3
+# https://cassandra.apache.org/_/download.html
+ENV CASSANDRA_VER=4.1.6
 
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 RUN set -x \

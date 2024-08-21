@@ -48,7 +48,7 @@ DIRS=\
 	 diem \
 	 dpdk \
 	 duperemove \
-	 emsdk \
+	 emscripten \
 	 ffmpeg \
 	 gcc \
 	 glibc \

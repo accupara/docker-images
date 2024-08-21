@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+
+echo "You have been reported to the team for breaking the rules and attempting to circumvent the repo restriction."
+
+if [ "$1" == "sync" ]; then
+    echo "syncing repo in the devspace is forbidden, please use crave clone"
+    exit 1
+fi
+
+exec /usr/bin/repo.real $@

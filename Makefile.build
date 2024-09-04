@@ -63,7 +63,7 @@ build: $(foreach var,$(IMGVER_TARGETS),build_$(var))
 else
 build:
 ifdef dockerfile_git
-	${DOCKER} build \
+	${DOCKER} buildx build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
 		--progress=plain \
@@ -74,7 +74,7 @@ ifdef dockerfile_git
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 else
-	${DOCKER} build \
+	${DOCKER} buildx build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
 		--progress=plain \

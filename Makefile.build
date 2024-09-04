@@ -29,8 +29,8 @@ ifdef USE_POWERSHELL
 endif
 
 ifndef WIN_NO_ISOLATION
-	DOCKER_BUILD_FLAGS+=--isolation=hyperv
-	DOCKER_RUN_FLAGS+=--isolation=hyperv
+	DOCKER_BUILD_FLAGS += --isolation=hyperv
+	DOCKER_RUN_FLAGS += --isolation=hyperv
 endif
 	DOCKER_RUN_CMD+=powershell.exe
 
@@ -39,6 +39,7 @@ else
 	DOCKER:=docker
 	DOCKER_RUN_FLAGS+=-v ~/:/tmp/home
 	DOCKER_RUN_CMD+=/bin/bash
+	DOCKER_BUILD_FLAGS += --progress=plain
 endif
 
 ifdef NOCACHE
@@ -51,7 +52,6 @@ build_%:
 	${DOCKER} buildx build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
-		--progress=plain \
 		-f $(DOCKERFILE) \
 		--platform $(call platform_for_uname,$*) \
 		${DOCKER_EXTRA_ARGS} \
@@ -63,10 +63,9 @@ build: $(foreach var,$(IMGVER_TARGETS),build_$(var))
 else
 build:
 ifdef dockerfile_git
-	${DOCKER} buildx build \
+	${DOCKER} build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
-		--progress=plain \
 		-f $(DOCKERFILE) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg VCS_REF=$(dockerfile_git) \
@@ -74,10 +73,9 @@ ifdef dockerfile_git
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 else
-	${DOCKER} buildx build \
+	${DOCKER} build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
-		--progress=plain \
 		-f $(DOCKERFILE) \
 		${DOCKER_EXTRA_ARGS} \
 		-t $(IMGTAG):$(IMGVER) \

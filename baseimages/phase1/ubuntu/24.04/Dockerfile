@@ -161,7 +161,19 @@ RUN set -x \
  && echo "export LANG=en_US.UTF-8" >> /home/admin/.bashrc \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
 # Initialize LFS
- && git lfs install
+ && git lfs install \
+# Install JFrog CLI only fo x84_64
+ && if [ $(uname -m) == "x86_64" ] ; then \
+       wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \
+    && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
+    && sudo apt-get update \
+    && sudo apt-get install -y \
+            jfrog-cli \
+            jfrog-cli-v2-jf \
+  ; fi \
+# Cleanup
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 COPY --from=remake /tmp/make /usr/bin/remake
 

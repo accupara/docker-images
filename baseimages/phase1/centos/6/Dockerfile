@@ -217,7 +217,17 @@ RUN chown -R admin:admin /home/admin \
 # User ssh directory
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \
- && touch /home/admin/.ssh/authorized_keys
+ && touch /home/admin/.ssh/authorized_keys \
+# Install JFrog CLI only fo x84_64
+ && if [ $(uname -m) == "x86_64" ] ; then \
+         echo "[jfrog-cli]" >jfrog-cli.repo \
+      && echo "name=jfrog-cli" >>jfrog-cli.repo \
+      && echo "baseurl=https://releases.jfrog.io/artifactory/jfrog-rpms" >>jfrog-cli.repo \
+      && echo "enabled=1" >> jfrog-cli.repo \
+      && sudo rpm --import https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key \
+      && sudo mv jfrog-cli.repo /etc/yum.repos.d/ \
+      && sudo yum install -y jfrog-cli jfrog-cli-v2-jf \
+  ; fi
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

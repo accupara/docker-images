@@ -1,10 +1,16 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+FROM eclipse-temurin:8-jdk-centos7 AS jdk
 FROM accupara/xpra:22.04
+
+# See https://hub.docker.com/_/eclipse-temurin
+COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
 
 # CI=true is to tell jfrog to be noninteractive
 ENV YQ_VER=4.40.3 \
     CRANE_VER=0.19.0 \
-    CI=true
+    CI=true \
+    JAVA_HOME=/opt/java/openjdk \
+    PATH=/opt/java/openjdk/bin:/opt/java/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
@@ -150,6 +156,17 @@ RUN set -x \
  && chmod +x /opt/crave/backblaze_keygen.sh \
 # Install the VS Code Server
  && curl -fsSL https://code-server.dev/install.sh | sh \
+# Then install some extensions by default
+ && code-server --install-extension \
+      bierner.markdown-mermaid \
+      eamodio.gitlens \
+      ms-vscode.cpptools \
+      ms-python.python \
+      ms-vscode.makefile-tools \
+      redhat.java \
+      vscodevim.vim \
+      yzhang.markdown-all-in-one \
+      yzane.markdown-pdf \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

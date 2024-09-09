@@ -8,18 +8,18 @@ COPY --from=payara /opt/payara/ /opt/payara/
 
 # From https://github.com/payara/Payara/blob/main/appserver/extras/docker-images/server-full/src/main/docker/Dockerfile
 # and https://hub.docker.com/r/payara/server-full/dockerfile/
-ENV HOME_DIR=/opt/payara
-ENV PAYARA_DIR=${HOME_DIR}/appserver \
-    SCRIPT_DIR=${HOME_DIR}/scripts \
-    CONFIG_DIR=${HOME_DIR}/config \
-    DEPLOY_DIR=${HOME_DIR}/deployments \
-    PASSWORD_FILE=${HOME_DIR}/passwordFile \
+ENV PAYARA_HOME_DIR=/opt/payara
+ENV PAYARA_DIR=${PAYARA_HOME_DIR}/appserver \
+    SCRIPT_DIR=${PAYARA_HOME_DIR}/scripts \
+    CONFIG_DIR=${PAYARA_HOME_DIR}/config \
+    DEPLOY_DIR=${PAYARA_HOME_DIR}/deployments \
+    PASSWORD_FILE=${PAYARA_HOME_DIR}/passwordFile \
     ADMIN_USER=admin \
     ADMIN_PASSWORD=admin \
     JVM_ARGS="" \
     MEM_MAX_RAM_PERCENTAGE="70.0" \
     MEM_XSS="512k" \
-    DOMAIN_NAME=production \
+    DOMAIN_NAME=domain1 \
     PAYARA_ARGS="" \
     DEPLOY_PROPS=""
 ENV PATH="${PATH}:${PAYARA_DIR}/bin" \

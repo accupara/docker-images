@@ -224,7 +224,10 @@ RUN chown -R admin:admin /home/admin \
       && echo "name=jfrog-cli" >>jfrog-cli.repo \
       && echo "baseurl=https://releases.jfrog.io/artifactory/jfrog-rpms" >>jfrog-cli.repo \
       && echo "enabled=1" >> jfrog-cli.repo \
-      && sudo rpm --import https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key \
+      && wget https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key \
+      && echo "" >>jfrog_public_gpg.key \
+      && sudo rpm --import jfrog_public_gpg.key \
+      && sudo rm jfrog_public_gpg.key \
       && sudo mv jfrog-cli.repo /etc/yum.repos.d/ \
       && sudo yum install -y jfrog-cli jfrog-cli-v2-jf \
   ; fi

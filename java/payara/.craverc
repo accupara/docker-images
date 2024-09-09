@@ -4,6 +4,6 @@ if [ -e /tmp/dcshim.conf ] ; then
     # /tmp/dcshim.conf is a json file that has "projectMountPath" pointing to the full directory where the VOSS sources are cloned
     export GITROOT=$(jq -r .projectMountPath /tmp/dcshim.conf)
 
-	# Start the foreground process in the background :D
-	/opt/payara/scripts/entrypoint.sh &
+    # Start the foreground process in the background :D
+    /opt/payara/scripts/entrypoint.sh &
 fi

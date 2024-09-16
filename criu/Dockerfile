@@ -5,6 +5,7 @@ FROM accupara/ubuntu:22.04
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
+    asciidoc \
 	bsdmainutils \
     gcc-multilib \
 	iproute2 \
@@ -27,6 +28,7 @@ RUN set -x \
 	protobuf-c-compiler \
 	protobuf-compiler \
 	python3-minimal \
+	python3-pip \
 	python3-protobuf \
 	python3-yaml \
 # Cleanup

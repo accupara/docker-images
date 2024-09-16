@@ -10,7 +10,7 @@ SUBDIRS=\
     golang-apps \
     tak \
 	dpdk gcc glibc \
-	cobol
+	cobol criu
 # incomplete or untested: ffmpeg
 
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

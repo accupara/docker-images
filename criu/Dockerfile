@@ -13,6 +13,7 @@ RUN set -x \
 	libaio-dev \
 	libbsd-dev \
 	libcap-dev \
+    libdrm-dev \
 	libgnutls28-dev \
 	libgnutls30 \
 	libprotobuf-c-dev \

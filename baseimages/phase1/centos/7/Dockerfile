@@ -201,6 +201,8 @@ RUN set -x \
  && tar -xf git-lfs-linux-$lfsArch-v${GIT_LFS_VER}.tar.gz \
  && cd git-lfs-${GIT_LFS_VER} \
  && sudo ./install.sh \
+# Initialize the Git LFS
+ && git lfs install \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
          echo "[jfrog-cli]" >jfrog-cli.repo \

@@ -204,6 +204,8 @@ RUN set -x \
  && sudo ./install.sh \
 # Initialize the Git LFS
  && git lfs install \
+# Prevent auto install of git
+ && echo "exclude=git*" | sudo tee -a /etc/yum.conf \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
          echo "[jfrog-cli]" >jfrog-cli.repo \

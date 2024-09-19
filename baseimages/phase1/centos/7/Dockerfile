@@ -86,6 +86,7 @@ RUN set -x \
       epel-release \
       gcc gcc-c++ \
       gettext \
+      git \
       guile \
       hardening-check \
       java-1.8.0-openjdk-devel \

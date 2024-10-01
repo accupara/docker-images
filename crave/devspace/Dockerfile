@@ -159,6 +159,7 @@ RUN set -x \
 # Then install some extensions by default
  && code-server --install-extension \
       bierner.markdown-mermaid \
+      crave-io.crave-devspaces \
       eamodio.gitlens \
       ms-vscode.cpptools \
       ms-python.python \

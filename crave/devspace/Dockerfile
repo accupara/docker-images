@@ -157,7 +157,7 @@ RUN set -x \
 # Install the VS Code Server
  && curl -fsSL https://code-server.dev/install.sh | sh \
 # Then install some extensions by default
- && code-server --install-extension \
+ && export PLUGIN_LIST = \
       bierner.markdown-mermaid \
       crave-io.crave-devspaces \
       eamodio.gitlens \
@@ -168,6 +168,9 @@ RUN set -x \
       vscodevim.vim \
       yzhang.markdown-all-in-one \
       yzane.markdown-pdf \
+ && for i in $PLUGIN_LIST ; do \
+      code-server --install-extension $i ; \
+    done \
 # The usual cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

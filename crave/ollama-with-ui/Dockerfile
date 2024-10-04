@@ -17,6 +17,8 @@ RUN set -x \
 && sudo apt-get -y install \
     cuda-toolkit-12-6 \
 # The usual cleanup
+&& cd /tmp \
+&& sudo find dl -delete \
 && sudo apt-get clean \
 && sudo rm -f /var/lib/apt/lists/*_dists_*
 

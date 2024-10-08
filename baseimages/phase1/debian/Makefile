@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-SUBDIRS=10 11
+SUBDIRS=10 11 12
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

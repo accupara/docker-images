@@ -1,15 +1,17 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-## Chicken or egg : Which came first?
 FROM debian:12 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        guile-2.2-dev \
-        pkg-config \
-        rsync \
-        texinfo \
+ && apt-get update \
+ && apt-get install -y \
+       autoconf \
+       autopoint \
+       build-essential \
+       git \
+       guile-2.2-dev \
+       pkg-config \
+       rsync \
+       texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
@@ -18,14 +20,15 @@ RUN set -x \
 
 FROM debian:12 AS rsync
 RUN set -x \
- && sudo apt-get update -y \
- && sudo apt-get install -y \
-    curl \
-    golang-github-pierrec-xxhash-dev \
-    libpopt-dev \
-    libssl-dev \
-    liblz4-dev \
-    zlib1g-dev \
+ && apt-get update -y \
+ && apt-get install -y \
+       build-essential \
+       curl \
+       golang-github-pierrec-xxhash-dev \
+       libpopt-dev \
+       libssl-dev \
+       liblz4-dev \
+       zlib1g-dev \
  && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \

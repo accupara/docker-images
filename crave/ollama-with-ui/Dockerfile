@@ -1,5 +1,9 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:24.04
+FROM ghcr.io/open-webui/open-webui:latest AS oui
+
+FROM accupara/debian:12
+
+COPY --from=oui /app/ /app/
 
 RUN set -x \
 && mkdir -p /tmp/dl && cd /tmp/dl \
@@ -16,6 +20,28 @@ RUN set -x \
 && sudo apt-get update \
 && sudo apt-get -y install \
     cuda-toolkit-12-6 \
+# From: https://github.com/open-webui/open-webui/blob/main/Dockerfile
+&& sudo apt-get update \
+&& sudo apt-get install -y python3-pip \
+# Install pandoc and netcat
+&& sudo apt-get install -y --no-install-recommends curl netcat-openbsd pandoc \
+&& sudo apt-get install -y --no-install-recommends python3-dev \
+# for RAG OCR
+&& sudo apt-get install -y --no-install-recommends ffmpeg libsm6 libxext6 \
+# install helper tools
+&& sudo apt-get install -y --no-install-recommends curl jq \
+# Python3 pip deps
+&& sudo python3 -m pip install uv \
+# If you use CUDA the whisper and embedding model will be downloaded on first use
+&& sudo python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir \
+&& sudo uv pip install --system -r requirements.txt --no-cache-dir \
+&& sudo python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+# If you don't use CUDA, install this stuff
+&& sudo python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir \
+&& sudo uv pip install --system -r requirements.txt --no-cache-dir \
+&& sudo python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # The usual cleanup
 && cd /tmp \
 && sudo find dl -delete \
@@ -23,5 +49,8 @@ RUN set -x \
 && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 WORKDIR /app/backend
+
+# just copy pasted
+HEALTHCHECK CMD curl --silent --fail http://localhost:${PORT:-8080}/health | jq -ne 'input.status == true' || exit 1
 
 CMD ["/bin/start.sh"]

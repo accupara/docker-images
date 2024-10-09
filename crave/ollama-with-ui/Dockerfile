@@ -6,6 +6,17 @@ FROM accupara/debian:12
 COPY --from=oui /app/ /app/
 WORKDIR /app/backend
 
+ENV ENV ENV=prod \
+    PORT=8080 \
+# pass build args to the build
+    USE_OLLAMA_DOCKER=false \
+    USE_CUDA_DOCKER=false \
+    USE_CUDA_DOCKER_VER=cu121 \
+    USE_EMBEDDING_MODEL_DOCKER=sentence-transformers/all-MiniLM-L6-v2 \
+    USE_RERANKING_MODEL_DOCKER= \
+    RAG_EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2" \
+    SENTENCE_TRANSFORMERS_HOME="/app/backend/data/cache/embedding/models"
+
 RUN set -x \
 && mkdir -p /tmp/dl && cd /tmp/dl \
 # install as if this is regular Linux: https://github.com/ollama/ollama/blob/main/docs/linux.md

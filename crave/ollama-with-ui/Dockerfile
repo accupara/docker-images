@@ -4,6 +4,7 @@ FROM ghcr.io/open-webui/open-webui:latest AS oui
 FROM accupara/debian:12
 
 COPY --from=oui /app/ /app/
+WORKDIR /app/backend
 
 RUN set -x \
 && mkdir -p /tmp/dl && cd /tmp/dl \
@@ -22,7 +23,11 @@ RUN set -x \
     cuda-toolkit-12-6 \
 # From: https://github.com/open-webui/open-webui/blob/main/Dockerfile
 && sudo apt-get update \
-&& sudo apt-get install -y python3-pip \
+# Prepare to use pip, and let pip break system packages because this is a docker container image
+&& sudo apt-get install -y \
+    python3-full \
+    python3-pip \
+&& sudo python3 -m pip config set global.break-system-packages true \
 # Install pandoc and netcat
 && sudo apt-get install -y --no-install-recommends curl netcat-openbsd pandoc \
 && sudo apt-get install -y --no-install-recommends python3-dev \
@@ -33,15 +38,17 @@ RUN set -x \
 # Python3 pip deps
 && sudo python3 -m pip install uv \
 # If you use CUDA the whisper and embedding model will be downloaded on first use
-&& sudo python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir \
-&& sudo uv pip install --system -r requirements.txt --no-cache-dir \
-&& sudo python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& sudo python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& sudo python3 -m pip install --break-system-packages \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir \
+&& sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
+&& sudo python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # If you don't use CUDA, install this stuff
-&& sudo python3 -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir \
-&& sudo uv pip install --system -r requirements.txt --no-cache-dir \
-&& sudo python -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& sudo python -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& sudo python3 -m pip install --break-system-packages \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir \
+&& sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
+&& sudo python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # The usual cleanup
 && cd /tmp \
 && sudo find dl -delete \

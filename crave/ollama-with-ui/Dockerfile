@@ -52,14 +52,15 @@ RUN set -x \
 && sudo python3 -m pip install --break-system-packages \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir \
 && sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
-&& sudo python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& sudo python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& export RAG_EMBEDDING_MODEL \
+&& python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # If you don't use CUDA, install this stuff
 && sudo python3 -m pip install --break-system-packages \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir \
 && sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
-&& sudo python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& sudo python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # The usual cleanup
 && cd /tmp \
 && sudo find dl -delete \

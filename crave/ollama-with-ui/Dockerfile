@@ -6,7 +6,7 @@ FROM accupara/debian:12
 COPY --from=oui /app/ /app/
 WORKDIR /app/backend
 
-ENV ENV ENV=prod \
+ENV ENV=prod \
     PORT=8080 \
 # pass build args to the build
     USE_OLLAMA_DOCKER=false \
@@ -14,8 +14,10 @@ ENV ENV ENV=prod \
     USE_CUDA_DOCKER_VER=cu121 \
     USE_EMBEDDING_MODEL_DOCKER=sentence-transformers/all-MiniLM-L6-v2 \
     USE_RERANKING_MODEL_DOCKER= \
-    RAG_EMBEDDING_MODEL="sentence-transformers/all-MiniLM-L6-v2" \
-    SENTENCE_TRANSFORMERS_HOME="/app/backend/data/cache/embedding/models"
+    RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2 \
+    SENTENCE_TRANSFORMERS_HOME=/app/backend/data/cache/embedding/models \
+    WHISPER_MODEL=base \
+    WHISPER_MODEL_DIR=/app/backend/data/cache/whisper/models
 
 RUN set -x \
 && mkdir -p /tmp/dl && cd /tmp/dl \
@@ -52,15 +54,14 @@ RUN set -x \
 && sudo python3 -m pip install --break-system-packages \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/$USE_CUDA_DOCKER_VER --no-cache-dir \
 && sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
-&& export RAG_EMBEDDING_MODEL \
-&& python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& sudo -E python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo -E python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # If you don't use CUDA, install this stuff
 && sudo python3 -m pip install --break-system-packages \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --no-cache-dir \
 && sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
-&& python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
-&& python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+&& sudo -E python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
+&& sudo -E python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
 # The usual cleanup
 && cd /tmp \
 && sudo find dl -delete \

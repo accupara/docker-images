@@ -27,7 +27,7 @@ RUN set -x \
  && make -j `nproc` \
  && sudo make install
 
-FROM accupara/ubuntu:22.04
+FROM accupara/debian:12
 
 # https://github.com/mesonbuild/meson/releases
 ENV YQ_VER=4.40.3 \

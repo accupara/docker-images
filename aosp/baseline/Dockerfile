@@ -35,8 +35,12 @@ ENV YQ_VER=4.40.3 \
     REPO_NO_INTERACTIVE=1
 
 RUN set -x \
+# Add non free so that openjdk-11 can be installed
+ && echo "deb http://deb.debian.org/debian unstable main non-free contrib" | sudo tee -a /etc/apt/sources.list \
+ && echo "deb-src http://deb.debian.org/debian unstable main non-free contrib" | sudo tee -a /etc/apt/sources.list \
+# Then do all the installing
  && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y install \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     bison \
     brotli \
     build-essential \
@@ -47,8 +51,7 @@ RUN set -x \
     gperf \
     imagemagick \
     libfreetype6 \
-    libncurses5-dev \
-    libncurses5 \
+    libncurses-dev \
     libgl1-mesa-dev \
     libx11-dev \
     libxml2-utils \
@@ -62,7 +65,7 @@ RUN set -x \
     zip \
     zlib1g-dev \
 # For schedtool (sorted by name)
- && sudo eatmydata apt-get install -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     autoconf \
     automake \
     bash \
@@ -89,12 +92,13 @@ RUN set -x \
     gperf \
     jq \
     liblz4-tool \
-    libncurses5-dev \
+    libncurses-dev \
     libsdl1.2-dev \
     libssl-dev \
     libstdc++6 \
     libxml2 \
     libxml2-utils \
+    lintian \
     lld \
     lldb \
     llvm \
@@ -104,7 +108,6 @@ RUN set -x \
     openssl \
     perl \
     pngcrush \
-    python2 \
     python3 \
     python3-mako \
     schedtool \
@@ -124,20 +127,17 @@ RUN set -x \
     inetutils-tools \
     xmlstarlet \
 # Requested by users
- && sudo eatmydata apt-get install -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     nano \
     ripgrep \
     tree \
 # For the dumper
- && sudo eatmydata apt-get install -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     python3-venv \
     virtualenv \
 # Create a directory for aosp
  && sudo mkdir -p /opt/aosp \
  && sudo chown admin:admin /opt/aosp \
-# Remove python 2 completely
- && sudo eatmydata apt-get purge -y python python2.7 \
- && sudo eatmydata apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
@@ -151,9 +151,9 @@ RUN set -x \
  && sudo mv yq /usr/bin/ \
 # This is required for build Mesa3D for aosp builds that wants or needs to use foss drivers
  && sudo sed -i '/^#\sdeb-src /s/^#//' "/etc/apt/sources.list" \
- && sudo eatmydata apt update \
- && sudo eatmydata apt build-dep mesa -y \
- && sudo eatmydata apt remove meson -y \
+ && sudo eatmydata apt-get update \
+ && sudo eatmydata apt-get build-dep mesa -y \
+ && sudo eatmydata apt-get remove meson -y \
 # Add the latest version of the meson build system
  && wget -q https://github.com/mesonbuild/meson/releases/download/${MESON_VER}/meson-${MESON_VER}.tar.gz \
  && tar -xf meson-${MESON_VER}.tar.gz \

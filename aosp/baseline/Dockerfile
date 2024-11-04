@@ -52,7 +52,9 @@ RUN set -x \
     imagemagick \
     libfreetype6 \
     libncurses-dev \
+    libncurses5 \
     libgl1-mesa-dev \
+    libtinfo5 \
     libx11-dev \
     libxml2-utils \
     meson \

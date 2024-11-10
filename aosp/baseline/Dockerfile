@@ -4,8 +4,8 @@ FROM accupara/golang:1.22-bullseye AS atools
 ENV ANDROID_TOOLS_VER=35.0.1
 
 RUN set -x \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get -y install \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     cmake \
     golang-goprotobuf-dev \
     libbrotli-dev \
@@ -39,7 +39,7 @@ RUN set -x \
  && echo "deb http://deb.debian.org/debian unstable main non-free contrib" | sudo tee -a /etc/apt/sources.list \
  && echo "deb-src http://deb.debian.org/debian unstable main non-free contrib" | sudo tee -a /etc/apt/sources.list \
 # Then do all the installing
- && sudo eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     bison \
     brotli \
@@ -153,9 +153,9 @@ RUN set -x \
  && sudo mv yq /usr/bin/ \
 # This is required for build Mesa3D for aosp builds that wants or needs to use foss drivers
  && sudo sed -i '/^#\sdeb-src /s/^#//' "/etc/apt/sources.list" \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get build-dep mesa -y \
- && sudo eatmydata apt-get remove meson -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get build-dep mesa -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get remove meson -y \
 # Add the latest version of the meson build system
  && wget -q https://github.com/mesonbuild/meson/releases/download/${MESON_VER}/meson-${MESON_VER}.tar.gz \
  && tar -xf meson-${MESON_VER}.tar.gz \

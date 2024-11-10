@@ -15,7 +15,7 @@ ENV YQ_VER=4.40.3 \
 # Keep the update separate so that Docker build system can cache it.
 RUN set -x \
 # Update the underlying base image
- && sudo eatmydata apt-get -y update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y update \
 # Install LXDE + a bunch of x utilities for VNC and a browser, a decent ide, some monitoring tools
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \
@@ -44,17 +44,17 @@ RUN set -x \
       xvfb \
       yarnpkg \
 # Fix a problem in xfwm4
- && sudo eatmydata add-apt-repository ppa:xubuntu-dev/staging \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get upgrade -y \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata add-apt-repository ppa:xubuntu-dev/staging \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get upgrade -y \
 # Get rid of the firefox snap and install it from PPA so that it is a regular debian package
- && sudo eatmydata apt-get purge -y firefox \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get purge -y firefox \
  && sudo eatmydata add-apt-repository ppa:mozillateam/ppa \
  && echo 'Package: *' | sudo tee /etc/apt/preferences.d/mozilla-firefox \
  && echo 'Pin: release o=LP-PPA-mozillateam' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
  && echo 'Pin-Priority: 1001' | sudo tee -a /etc/apt/preferences.d/mozilla-firefox \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get install -y --allow-downgrades firefox \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y --allow-downgrades firefox \
 # Install the GRPC tool for crave clone
  && mkdir -p /tmp/grpcurl_download \
  && LOCATION=$(curl -s https://api.github.com/repos/fullstorydev/grpcurl/releases/latest \
@@ -91,8 +91,8 @@ RUN set -x \
  && sudo chmod +x /usr/bin/repo \
  && sudo chown -R admin:admin /opt/aosp \
 # Remove python 2 completely
- && sudo eatmydata apt-get purge -y python python2.7 \
- && sudo eatmydata apt-get -y autoremove \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get purge -y python python2.7 \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
@@ -112,8 +112,8 @@ RUN set -x \
 # Add the GCloud tools
  && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
  && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - \
- && sudo eatmydata apt-get update \
- && sudo eatmydata apt-get install -y google-cloud-cli \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y google-cloud-cli \
 # Add the AWS tools
  && mkdir -p /tmp/awscli \
  && cd /tmp/awscli \
@@ -129,12 +129,12 @@ RUN set -x \
 # Install the jfrog tool: https://docs.jfrog-applications.jfrog.io/jfrog-applications/jfrog-cli/install
  && wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog\_public\_gpg.key | sudo apt-key add - \
  && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
- && sudo apt-get update \
- && sudo apt-get install -y jfrog-cli-v2 \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y jfrog-cli-v2 \
 # Install the deps for autocompletions for the crave client binary inside devspace sessions
  && sudo eatmydata add-apt-repository -y universe \
- && sudo eatmydata apt-get -y update \
- && sudo eatmydata apt install -y python3-pip \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y update \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y python3-pip \
  && sudo python -m pip -v install argcomplete \
  && mkdir -p /home/admin/.bash_completion.d \
  && register-python-argcomplete crave > /tmp/crave_bash_completion \
@@ -173,7 +173,7 @@ RUN set -x \
       code-server --install-extension $i ; \
     done \
 # The usual cleanup
- && sudo eatmydata apt-get clean \
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location

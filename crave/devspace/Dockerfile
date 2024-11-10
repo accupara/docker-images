@@ -172,6 +172,8 @@ RUN set -x \
  && for i in $PLUGIN_LIST ; do \
       code-server --install-extension $i ; \
     done \
+# What a load of croc
+ && curl https://getcroc.schollz.com | bash \
 # The usual cleanup
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

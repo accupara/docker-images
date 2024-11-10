@@ -196,6 +196,8 @@ RUN set -x \
  && sudo chown -R admin:admin /opt/crave \
  && wget -q https://raw.githubusercontent.com/accupara/docker-images/master/aosp/common/crave_sign.sh -O /opt/crave/crave_sign.sh \
  && chmod +x /opt/crave/crave_sign.sh \
+# What a load of croc
+ && curl https://getcroc.schollz.com | bash \
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \

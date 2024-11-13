@@ -45,6 +45,7 @@ RUN set -x \
     brotli \
     build-essential \
     curl \
+    e2fsprogs \
     elfutils \
     flex \
     gnupg \
@@ -66,7 +67,6 @@ RUN set -x \
     xsltproc \
     zip \
     zlib1g-dev \
-    e2fsprogs \
 # For schedtool (sorted by name)
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     autoconf \

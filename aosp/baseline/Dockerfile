@@ -66,6 +66,7 @@ RUN set -x \
     xsltproc \
     zip \
     zlib1g-dev \
+    e2fsprogs \
 # For schedtool (sorted by name)
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     autoconf \

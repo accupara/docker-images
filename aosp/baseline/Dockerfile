@@ -199,13 +199,13 @@ RUN set -x \
  && chmod +x /opt/crave/crave_sign.sh \
 # What a load of croc
  && curl https://getcroc.schollz.com | bash \
+# Fix permissions on the mke2fx script
+ && sudo chmod 777 /etc/mke2fs.conf \
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
-
-RUN sudo chmod 777 /etc/mke2fs.conf
 
 COPY --from=atools /tmp/android-tools/install/bin/ /usr/bin/
 COPY --from=atools /tmp/android-tools/vendor/mkbootimg/mkbootimg.py /usr/local/share/android-tools/mkbootimg/

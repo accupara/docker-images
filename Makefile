@@ -43,7 +43,9 @@ DIRS=\
 	 certbot \
 	 chromium \
 	 cncf \
+	 cobol \
 	 cpython \
+	 criu \
 	 db \
 	 diem \
 	 dpdk \

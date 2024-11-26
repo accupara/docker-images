@@ -62,6 +62,12 @@ RUN set -x \
 && sudo uv pip install --break-system-packages --system -r /app/backend/requirements.txt --no-cache-dir \
 && sudo -E python3 -c "import os; from sentence_transformers import SentenceTransformer; SentenceTransformer(os.environ['RAG_EMBEDDING_MODEL'], device='cpu')" \
 && sudo -E python3 -c "import os; from faster_whisper import WhisperModel; WhisperModel(os.environ['WHISPER_MODEL'], device='cpu', compute_type='int8', download_root=os.environ['WHISPER_MODEL_DIR'])" \
+
+# for gpu support?
+&& sudo pip install unsloth "xformers==0.0.28.post2" --break-system-packages \
+&& sudo pip uninstall unsloth -y --break-system-packages \
+&& sudo pip install --upgrade --no-cache-dir "unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git" --break-system-packages \
+&& sudo apt install libnccl2 libnccl-dev cudnn9-cuda-12 -y \
 # The usual cleanup
 && cd /tmp \
 && sudo find dl -delete \

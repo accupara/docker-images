@@ -47,8 +47,8 @@ COPY sshd_config /tmp/
 # https://mirrors.edge.kernel.org/pub/software/scm/git/
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
-ENV GIT_VER=2.45.2 \
-    GIT_LFS_VER=3.5.1 \
+ENV GIT_VER=2.47.1 \
+    GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
     GIT_TERMINAL_PROMPT=0

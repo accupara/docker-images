@@ -48,8 +48,8 @@ COPY sshd_config /tmp/
 
 # For Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
-ENV GIT_VER=2.45.2 \
-    GIT_LFS_VER=3.5.1 \
+ENV GIT_VER=2.47.1 \
+    GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.4 \
     GIT_TERMINAL_PROMPT=0
 

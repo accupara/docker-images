@@ -31,7 +31,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
- && export GIT_VER=2.45.2 \
+ && export GIT_VER=2.47.1 \
  && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && eatmydata tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \

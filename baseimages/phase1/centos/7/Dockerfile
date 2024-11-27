@@ -62,8 +62,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
-ENV GIT_VER=2.45.2 \
-    GIT_LFS_VER=3.5.1 \
+ENV GIT_VER=2.47.1 \
+    GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     TMUX_VERSION=3.3 \
     GIT_TERMINAL_PROMPT=0

@@ -18,26 +18,27 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM debian:12 AS rsync
-RUN set -x \
- && apt-get update -y \
- && apt-get install -y \
-       build-essential \
-       curl \
-       golang-github-pierrec-xxhash-dev \
-       libpopt-dev \
-       libssl-dev \
-       liblz4-dev \
-       zlib1g-dev \
- && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
- && tar -xf rsync-${RSYNC_VER}.tar.gz \
- && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
+# Debian 12 already has rsync 3.2.7, this isn't required
+#FROM debian:12 AS rsync
+#RUN set -x \
+# && apt-get update -y \
+# && apt-get install -y \
+#       build-essential \
+#       curl \
+#       golang-github-pierrec-xxhash-dev \
+#       libpopt-dev \
+#       libssl-dev \
+#       liblz4-dev \
+#       zlib1g-dev \
+# && export RSYNC_VER=3.2.7 \
+# && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+# && tar -xf rsync-${RSYNC_VER}.tar.gz \
+# && cd rsync-${RSYNC_VER} \
+# && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
 # This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- && make -j `nproc` \
- && make install \
- && strip /tmp/rsync/bin/rsync
+# && make -j `nproc` \
+# && make install \
+# && strip /tmp/rsync/bin/rsync
 
 ################## The real container starts here ##################
 FROM debian:12
@@ -179,6 +180,6 @@ RUN set -x \
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

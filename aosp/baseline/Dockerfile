@@ -62,6 +62,7 @@ RUN set -x \
     ninja-build \
     openjdk-11-jdk \
     pkg-config \
+    rsync \
     unzip \
     x11proto-core-dev \
     xsltproc \

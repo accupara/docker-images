@@ -2,24 +2,29 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/debian:11 AS remake
+FROM debian:11 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        guile-2.2-dev \
-        pkg-config \
-        rsync \
-        texinfo \
+ && apt-get update \
+ && apt-get install -y \
+       autoconf \
+       autopoint \
+       build-essential \
+       git \
+       guile-2.2-dev \
+       pkg-config \
+       rsync \
+       texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/debian:11 AS rsync
+FROM debian:11 AS rsync
 RUN set -x \
- && sudo apt-get update -y \
- && sudo apt-get install -y \
+ && apt-get update -y \
+ && apt-get install -y \
+    build-essential \
     curl \
     golang-github-pierrec-xxhash-dev \
     libpopt-dev \

@@ -3,6 +3,7 @@
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
 RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \
        autoconf \
@@ -13,6 +14,7 @@ RUN set -x \
        pkg-config \
        rsync \
        texinfo \
+ && git config --global http.version HTTP/1.1 \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \

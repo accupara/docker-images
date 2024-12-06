@@ -202,6 +202,7 @@ RUN set -x \
  && curl https://getcroc.schollz.com | bash \
 # Fix permissions on the mke2fx script
  && sudo chmod 777 /etc/mke2fs.conf \
+ sed -s 's/,metadata_csum_seed//g' /etc/mke2fs.conf | sed -s 's/,orphan_file//g' > /tmp/mke2fs.conf ; sudo mv /tmp/mke2fs.conf /etc/mke2fs.conf
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \

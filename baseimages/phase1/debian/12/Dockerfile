@@ -33,7 +33,8 @@ ENV GIT_VER=2.47.1 \
     GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y eatmydata \
  && eatmydata apt-get -y dist-upgrade \
@@ -87,7 +88,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 # Install the latest version of gradle
  && cd /tmp \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
  && rm gradle-${GRADLE_VER}-bin.zip \

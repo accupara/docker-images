@@ -1,5 +1,6 @@
 # Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
 
+# Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
 RUN set -x \
  && apt-get update \

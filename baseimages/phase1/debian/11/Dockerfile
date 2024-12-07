@@ -55,7 +55,9 @@ ENV GIT_VER=2.47.1 \
     GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
+SHELL ["/bin/bash", "-c"]
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y eatmydata \
  && eatmydata apt-get -y dist-upgrade \

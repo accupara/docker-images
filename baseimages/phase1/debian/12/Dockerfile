@@ -36,6 +36,7 @@ ENV GIT_VER=2.47.1 \
     GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
+SHELL ["/bin/bash", "-c"]
 RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \

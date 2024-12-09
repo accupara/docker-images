@@ -48,7 +48,10 @@ else
 	CACHE_FLAG:=
 endif
 
-build_%:
+chk_prep:
+	${MAKE} -n --no-print-directory prep 1>/dev/null 2>/dev/null ; if [ "$$?" = "0" ] ; then ${MAKE} prep ; fi
+
+build_%: chk_prep
 	${DOCKER} buildx build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \
@@ -61,7 +64,7 @@ build_%:
 ifdef IMGVER_BASE
 build: $(foreach var,$(IMGVER_TARGETS),build_$(var))
 else
-build:
+build: chk_prep
 ifdef dockerfile_git
 	${DOCKER} build \
 		${CACHE_FLAG} \

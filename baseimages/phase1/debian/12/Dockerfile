@@ -2,7 +2,9 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
+COPY id_rsa id_rsa.pub /root/.ssh/
 RUN set -x \
+ && chmod 400 /root/.ssh/id_rsa* \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \
@@ -14,9 +16,8 @@ RUN set -x \
        pkg-config \
        rsync \
        texinfo \
- && git config --global http.version HTTP/1.1 \
- && git config --global http.postBuffer 524288000 \
- && git clone https://github.com/rocky/remake.git \
+ && ssh-keyscan github.com >> /root/.ssh/known_hosts \
+ && git clone git@github.com:Trepan-Debuggers/remake.git \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \

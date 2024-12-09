@@ -9,3 +9,7 @@ useme/dist
 # One place to record that "runme" is the place to test out container images for that project
 runme
 .vscode
+
+# Don't ever save the private or public keys
+id_rsa
+id_rsa.pub

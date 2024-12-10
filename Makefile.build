@@ -48,10 +48,10 @@ else
 	CACHE_FLAG:=
 endif
 
-chk_prep:
-	${MAKE} -n --no-print-directory prep 1>/dev/null 2>/dev/null ; if [ "$$?" = "0" ] ; then ${MAKE} prep ; fi
+chk_pre_build:
+	${MAKE} -n --no-print-directory pre_build 1>/dev/null 2>/dev/null ; if [ "$$?" = "0" ] ; then ${MAKE} pre_build ; fi
 
-build_%: chk_prep
+build_%: chk_pre_build
 	${DOCKER} buildx build \
 		${CACHE_FLAG} \
 		${DOCKER_BUILD_FLAGS} \

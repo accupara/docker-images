@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:22.04
 
 # According to https://github.com/mongodb/mongo/blob/master/docs/building.md:

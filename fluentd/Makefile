@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2019-2025 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/fluentd
 IMGVER?=v1.8-1
 

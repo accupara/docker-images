@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
@@ -16,7 +16,7 @@ RUN set -x \
        pkg-config \
        rsync \
        texinfo \
- && ssh-keyscan github.com >> /root/.ssh/known_hosts \
+ && ssh-keyscan github.com >>/root/.ssh/known_hosts \
  && git clone git@github.com:Trepan-Debuggers/remake.git \
  && cd remake \
  && ./autogen.sh \

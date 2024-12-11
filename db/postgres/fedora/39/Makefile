@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/postgres
 IMGVER_BASE?=fedora_39
 #Rocky linux 8 is not available for ppc64le or s390x

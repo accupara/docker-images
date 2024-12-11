@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 # Compile remake and rsync on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?

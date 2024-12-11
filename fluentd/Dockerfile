@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2019-2025 Crave.io Inc. All rights reserved
 FROM fluent/fluentd:v1.8-1
 USER root
 RUN apk add --no-cach --update --virtual .build-deps \

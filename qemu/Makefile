@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/qemu
 IMGVER_BASE?=latest
 IMGVER_TARGETS?=aarch64 x86_64

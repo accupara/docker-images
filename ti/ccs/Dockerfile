@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:18.04
 
 # Downloaded from https://www.ti.com/tool/download/CCSTUDIO

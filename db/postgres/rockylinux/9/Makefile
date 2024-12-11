@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/postgres
 IMGVER_BASE?=rockylinux_9
 # Rockylinux 9 is avaialable for s390x, but not building it rt now

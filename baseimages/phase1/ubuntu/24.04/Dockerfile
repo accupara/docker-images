@@ -1,8 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-# Chicken or egg : Which came first?
-#FROM accupara/ubuntu:24.04 AS remake
 FROM ubuntu:24.04 AS remake
 RUN set -x \
  && apt-get update \
@@ -33,11 +30,11 @@ ENV GIT_VER=2.47.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
+    DEBIAN_FRONTEND=noninteractive \
     GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
 RUN set -x \
- && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \
@@ -140,7 +137,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    LANG=en_US.utf8
+    LANG=en_US.utf8 \
+    GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

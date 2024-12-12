@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.22-bullseye AS atools
+FROM accupara/golang:1.23-bullseye AS atools
 
 ENV ANDROID_TOOLS_VER=35.0.1
 

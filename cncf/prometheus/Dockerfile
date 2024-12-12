@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.22-bullseye
+FROM accupara/golang:1.23-bullseye
 
 RUN set -x \
  && sudo apt-get update \

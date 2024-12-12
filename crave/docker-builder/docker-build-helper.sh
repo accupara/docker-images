@@ -12,6 +12,13 @@ push_finished() {
             docker push $line && docker rmi $line
         done
     wait
+
+    echo "**** Images remaining"
+
+    docker images
+
+    echo "****"
+
     docker buildx prune -a -f
 }
 

@@ -2,23 +2,27 @@
 
 # Compile remake and rsync on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:14.04 AS remake
+FROM ubuntu:14.04 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        autoconf \
-        autopoint \
-        build-essential \
-        git \
-        guile-2.0-dev \
-        texinfo \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get install -y \
+       autoconf \
+       autopoint \
+       build-essential \
+       git \
+       guile-2.0-dev \
+       pkg-config \
+       rsync \
+       texinfo \
+       wget \
 # Fetch gettext sources and compile them
  && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
  && tar -xf gettext-0.21.tar.gz \
  && cd gettext-0.21 \
  && ./configure \
  && make -j `nproc` \
- && sudo make install \
+ && make install \
 # Get the remake sources for 4.3 and compile them
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
@@ -27,15 +31,18 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/ubuntu:14.04 AS rsync
+FROM ubuntu:14.04 AS rsync
 RUN set -x \
- && sudo apt-get update -y \
- && sudo apt-get install -y \
-    libpopt-dev \
-    zlib1g-dev \
-    liblz4-dev \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && export GNUTLS_CPUID_OVERRIDE=0x1 \
+ && apt-get update -y \
+ && apt-get install -y \
+       libpopt-dev \
+       zlib1g-dev \
+       liblz4-dev \
+       wget \
  && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd --disable-lz4 \
@@ -60,6 +67,8 @@ ENV GIT_VER=2.47.1 \
 
 # Install the minimum tools
 RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && export GNUTLS_CPUID_OVERRIDE=0x1 \
  && apt-get update \
  && apt-get -y dist-upgrade \
  && apt-get install -y \

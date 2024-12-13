@@ -7,15 +7,15 @@ RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \
-       autoconf \
-       autopoint \
-       build-essential \
-       git \
-       guile-2.0-dev \
-       pkg-config \
-       rsync \
-       texinfo \
-       wget \
+      autoconf \
+      autopoint \
+      build-essential \
+      git \
+      guile-2.0-dev \
+      pkg-config \
+      rsync \
+      texinfo \
+      wget \
 # Fetch gettext sources and compile them
  && wget -q --no-check-certificate https://ftp.gnu.org/pub/gnu/gettext/gettext-0.21.tar.gz \
  && tar -xf gettext-0.21.tar.gz \
@@ -37,10 +37,12 @@ RUN set -x \
  && export GNUTLS_CPUID_OVERRIDE=0x1 \
  && apt-get update -y \
  && apt-get install -y \
-       libpopt-dev \
-       zlib1g-dev \
-       liblz4-dev \
-       wget \
+      build-essential \
+      libpopt-dev \
+      libssh-dev \
+      liblz4-dev \
+      wget \
+      zlib1g-dev \
  && export RSYNC_VER=3.2.7 \
  && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \

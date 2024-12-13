@@ -2,15 +2,19 @@
 
 # Compile remake and rsync on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:16.04 AS remake
+FROM ubuntu:16.04 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        autoconf \
-        autopoint \
-        git \
-        guile-2.0-dev \
-        texinfo \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && apt-get update \
+ && apt-get install -y \
+      autoconf \
+      autopoint \
+      build-essential \
+      git \
+      guile-2.0-dev \
+      pkg-config \
+      rsync \
+      texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
@@ -18,15 +22,18 @@ RUN set -x \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/ubuntu:16.04 AS rsync
+FROM ubuntu:16.04 AS rsync
 RUN set -x \
- && sudo apt-get update -y \
- && sudo apt-get install -y \
-    golang-github-pierrec-xxhash-dev \
-    libpopt-dev \
-    libssh-dev \
-    liblz4-dev \
-    zlib1g-dev \
+ && export DEBIAN_FRONTEND=noninteractive \
+ && export GNUTLS_CPUID_OVERRIDE=0x1 \
+ && apt-get update -y \
+ && apt-get install -y \
+      build-essential \
+      libpopt-dev \
+      libssh-dev \
+      liblz4-dev \
+      wget \
+      zlib1g-dev \
  && export RSYNC_VER=3.2.7 \
  && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \

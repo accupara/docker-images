@@ -8,14 +8,14 @@ RUN set -x \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \
-       autoconf \
-       autopoint \
-       build-essential \
-       git \
-       guile-2.2-dev \
-       pkg-config \
-       rsync \
-       texinfo \
+      autoconf \
+      autopoint \
+      build-essential \
+      git \
+      guile-2.2-dev \
+      pkg-config \
+      rsync \
+      texinfo \
  && ssh-keyscan github.com >>/root/.ssh/known_hosts \
  && git clone git@github.com:Trepan-Debuggers/remake.git \
  && cd remake \
@@ -45,32 +45,32 @@ RUN set -x \
  && apt-get install -y eatmydata \
  && eatmydata apt-get -y dist-upgrade \
  && eatmydata apt-get install -y \
-        bash-completion \
-        binutils \
-        build-essential \
-        curl \
-        debhelper \
-        devscripts \
-        dh-make \
-        guile-2.2 \
-        jq \
-        libpopt0 \
-        locales \
-        lsb-release \
-        ninja-build \
-        openssh-server \
-        subversion \
-        sudo \
-        vim-nox \
-        wget \
+      bash-completion \
+      binutils \
+      build-essential \
+      curl \
+      debhelper \
+      devscripts \
+      dh-make \
+      guile-2.2 \
+      jq \
+      libpopt0 \
+      locales \
+      lsb-release \
+      ninja-build \
+      openssh-server \
+      subversion \
+      sudo \
+      vim-nox \
+      wget \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        zlib1g-dev \
+      libcurl4-gnutls-dev \
+      libexpat1-dev \
+      libssl-dev \
+      zlib1g-dev \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \

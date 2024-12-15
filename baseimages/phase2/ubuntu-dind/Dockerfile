@@ -8,14 +8,15 @@ FROM accupara/ubuntu:24.04
 # https://github.com/helm/helm/releases
 # https://go.dev/doc/devel/release
 # https://github.com/kubernetes-sigs/kind/releases
+# https://github.com/hashicorp/packer/releases
 ENV DOCKER_CHANNEL=stable \
-    DOCKER_VERSION=24.0.7 \
-    DOCKER_COMPOSE_VERSION=v2.23.0 \
-    BUILDX_VERSION=v0.11.2 \
-    HELM_VER=3.12.1 \
-    GOLANG_VER=1.20.6 \
-    KIND_VER=0.20.0 \
-    PACKER_VER=1.10.0 \
+    DOCKER_VERSION=27.4.0 \
+    DOCKER_COMPOSE_VERSION=v2.31.0 \
+    BUILDX_VERSION=v0.19.1 \
+    HELM_VER=3.16.3 \
+    GOLANG_VER=1.23.0 \
+    KIND_VER=0.25.0 \
+    PACKER_VER=1.11.2 \
     DEBUG=false
 
 COPY modprobe startup.sh /usr/local/bin/

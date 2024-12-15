@@ -25,7 +25,7 @@ RUN set -x \
     fi \
  && ls -lrt /tmp/
 
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 COPY --from=stage1 /tmp/pack /tmp/
 
 RUN set -x \

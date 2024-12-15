@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 
 # According to https://github.com/mongodb/mongo/blob/master/docs/building.md:
 # gcc (>= 11.3), libcurl4-openssl-dev, liblzma-dev, python-dev-is-python3, libssl-dev, python (3.9+), and python modules poetry==1.5.1

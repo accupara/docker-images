@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 
 # 1. Android Studio download page: https://developer.android.com/studio/index.html#downloads
 #    "Just get the nd line tools"

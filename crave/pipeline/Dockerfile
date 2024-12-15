@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM ubuntu:22.04 AS crave
+FROM ubuntu:24.04 AS crave
 RUN set -x \
 # Install curl and wget: so that we can get crave
  && apt-get update \
@@ -8,7 +8,7 @@ RUN set -x \
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
  && mv crave /tmp/
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 

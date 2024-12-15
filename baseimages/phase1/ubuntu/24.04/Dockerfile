@@ -4,11 +4,11 @@ FROM ubuntu:24.04 AS remake
 RUN set -x \
  && apt-get update \
  && apt-get install -y \
-        autopoint \
-        build-essential \
-        git \
-        guile-3.0-dev \
-        texinfo \
+      autopoint \
+      build-essential \
+      git \
+      guile-3.0-dev \
+      texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 
 ENV LIBFUN_VER=0.3.95
 

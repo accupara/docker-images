@@ -2,7 +2,7 @@
 
 # The old deps were specified at https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
 # New information is at https://firefox-source-docs.mozilla.org/setup/linux_build.html#building-firefox-on-linux
-FROM accupara/ubuntu:22.04
+FROM accupara/ubuntu:24.04
 
 COPY kb-config.exp /tmp/
 

@@ -1,13 +1,14 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-# Chicken or egg : Which came first?
-FROM accupara/ubuntu:22.04 AS remake
+FROM ubuntu:22.04 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        guile-3.0-dev \
-        texinfo \
+ && apt-get update \
+ && apt-get install -y \
+      autopoint \
+      build-essential \
+      git \
+      guile-3.0-dev \
+      texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \

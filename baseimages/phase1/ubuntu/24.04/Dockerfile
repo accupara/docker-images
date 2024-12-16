@@ -9,6 +9,7 @@ RUN set -x \
       git \
       guile-3.0-dev \
       texinfo \
+ && mkdir -p /root/.ssh \
  && ssh-keyscan github.com >>/root/.ssh/known_hosts \
  && git clone git@github.com:Trepan-Debuggers/remake.git \
  && cd remake \

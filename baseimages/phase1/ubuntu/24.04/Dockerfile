@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 FROM ubuntu:24.04 AS remake
+COPY id_rsa id_rsa.pub /root/.ssh/
 RUN set -x \
  && apt-get update \
  && apt-get install -y \

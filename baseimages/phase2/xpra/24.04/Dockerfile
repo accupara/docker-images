@@ -10,7 +10,7 @@ RUN set -x \
         binutils \
         expect \
         openssh-server \
-        python-pip \
+        python3-pip \
 # No longer required?
  && sudo expect /tmp/kb-config.exp \
  && sudo eatmydata apt-get install -y xpra \

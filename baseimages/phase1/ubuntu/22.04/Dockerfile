@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 FROM ubuntu:22.04 AS remake
+COPY id_rsa id_rsa.pub /root/.ssh/
 RUN set -x \
  && apt-get update \
  && apt-get install -y \
@@ -9,7 +10,9 @@ RUN set -x \
       git \
       guile-3.0-dev \
       texinfo \
- && git clone https://github.com/rocky/remake.git \
+ && mkdir -p /root/.ssh \
+ && ssh-keyscan github.com >>/root/.ssh/known_hosts \
+ && git clone git@github.com:Trepan-Debuggers/remake.git \
  && cd remake \
  && ./autogen.sh \
  && ./configure \

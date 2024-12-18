@@ -96,20 +96,20 @@ RUN set -x \
  && mkdir -p /tmp/deps && cd /tmp/deps \
  && sudo -E chmod +x /usr/local/bin/startup.sh /usr/local/bin/modprobe \
 # Docker compose installation
- && sudo -E curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -o /usr/local/bin/docker-compose \
- && sudo -E chmod +x /usr/local/bin/docker-compose \
+ && wget -q "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(arch)" -O docker-compose \
+ && sudo install -o root -g root -m 0755 docker-compose /usr/local/bin/docker-compose \
  && docker-compose version \
 # Create a symlink to the docker binary in /usr/local/lib/docker/cli-plugins
 # for users which uses 'docker compose' instead of 'docker-compose'
  && sudo -E ln -s /usr/local/bin/docker-compose /usr/local/lib/docker/cli-plugins/docker-compose \
 # AWS CLI
- && curl "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -o "awscliv2.zip"\
+ && wget -q "https://awscli.amazonaws.com/awscli-exe-linux-$(arch).zip" -O "awscliv2.zip"\
  && unzip awscliv2.zip \
  && sudo ./aws/install \
 # kubectl and minikube
- && curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
+ && wget -q https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
  && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
- && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
+ && wget -q "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
  && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
  && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \

@@ -23,7 +23,7 @@ RUN set -x \
       cscope \
       exuberant-ctags \
       fish \
-      gnome-themes-standard \
+      gnome-themes-ubuntu \
       gtk2-engines-murrine \
       gtk2-engines-pixbuf \
       htop \
@@ -71,7 +71,7 @@ RUN set -x \
     libxrender1 \
     libxi6 \
     python3-pip \
- && sudo python3 -m pip install projector-installer \
+ && sudo python3 -m pip install --break-system-packages projector-installer \
  && projector --accept-license autoinstall \
     --config-name "Idea" \
     --ide-name 'IntelliJ IDEA Community Edition 2024.1.2' \
@@ -135,7 +135,7 @@ RUN set -x \
  && sudo eatmydata add-apt-repository -y universe \
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y update \
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y python3-pip \
- && sudo python -m pip -v install argcomplete \
+ && sudo python -m pip -v install --break-system-packages argcomplete \
  && mkdir -p /home/admin/.bash_completion.d \
  && register-python-argcomplete crave > /tmp/crave_bash_completion \
  && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \

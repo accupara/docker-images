@@ -109,7 +109,7 @@ RUN set -x \
 # kubectl and minikube
  && wget -q https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${altArch} \
  && sudo install minikube-linux-${altArch} /usr/local/bin/minikube \
- && wget -q "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
+ && wget -q "https://dl.k8s.io/release/$(wget -q -O - https://dl.k8s.io/release/stable.txt)/bin/linux/${altArch}/kubectl" \
  && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl \
 # helm
  && wget -q https://get.helm.sh/helm-v${HELM_VER}-linux-${altArch}.tar.gz \

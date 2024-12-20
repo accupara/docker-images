@@ -39,6 +39,8 @@ RUN set -x \
       supervisor \
       task-lxde-desktop \
       telnet \
+      tmate \
+      unminimize \
       vim-gtk3 \
       x11vnc \
       xvfb \
@@ -63,43 +65,40 @@ RUN set -x \
  && curl -L $LOCATION | tar xvz -C /tmp/grpcurl_download \
  && sudo cp /tmp/grpcurl_download/grpcurl /usr/bin \
  && rm -rf /tmp/grpcurl_download \
-# Install IntelliJ
- && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
-    libfontconfig1 \
-    libgtk-3-0 \
-    libxtst6 \
-    libxrender1 \
-    libxi6 \
-    python3-pip \
- && sudo python3 -m pip install --break-system-packages projector-installer \
- && projector --accept-license autoinstall \
-    --config-name "Idea" \
-    --ide-name 'IntelliJ IDEA Community Edition 2024.1.2' \
-    --hostname localhost \
-    --port 5898 \
-    --use-separate-config \
- && projector --accept-license autoinstall \
-    --config-name "PyCharm" \
-    --ide-name 'PyCharm Community Edition 2021.3' \
-    --hostname localhost \
-    --port 5897 \
-    --use-separate-config \
+# Install IntelliJ: Disabled until we find a use for it inside devspace
+# && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
+#    libfontconfig1 \
+#    libgtk-3-0 \
+#    libxtst6 \
+#    libxrender1 \
+#    libxi6 \
+#    python3-pip \
+# && sudo python3 -m pip install --break-system-packages projector-installer \
+# && projector --accept-license autoinstall \
+#    --config-name "Idea" \
+#    --ide-name 'IntelliJ IDEA Community Edition 2024.3.1' \
+#    --hostname localhost \
+#    --port 5898 \
+#    --use-separate-config \
+# && projector --accept-license autoinstall \
+#    --config-name "PyCharm" \
+#    --ide-name 'PyCharm Community Edition 2024.3.1' \
+#    --hostname localhost \
+#    --port 5897 \
+#    --use-separate-config \
 # Get the latest version of repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mkdir -p /opt/aosp \
  && sudo mv /tmp/repo /usr/bin/repo \
  && sudo chmod +x /usr/bin/repo \
  && sudo chown -R admin:admin /opt/aosp \
-# Remove python 2 completely
- && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get purge -y python python2.7 \
- && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y autoremove \
 # Use python3 as the default python
  && sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 # Make sure that the default version of python is 3
  && if [ $(python --version | grep -c 'Python 3') -eq "0" ] ; then exit 1 ; fi \
 # LXDE tweaks
  && mkdir -p /home/admin/.config/pcmanfm/LXDE/ \
-# Unminimize so that man pages are present
+# Unminimize so that man pages are present: not available for 24.04??
  && yes | sudo unminimize \
 # Make git statuses faster
  && git config --global feature.manyFiles true \

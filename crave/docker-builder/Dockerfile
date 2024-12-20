@@ -21,7 +21,7 @@ RUN set -x \
  && sudo eatmydata apt-get install -y \
  	bmon \
  	htop \
- && sudo python3 -m pip install \
+ && sudo python3 -m pip install --break-system-packages \
   	pick \
  	python-dateutil \
 	ratelimiter \

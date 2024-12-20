@@ -121,11 +121,13 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && (curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- && mv crave /usr/local/bin/) || true \
-# Add admin user and add it to sudoers
+# Add admin user and add it to sudoers. But first remove any default ubuntu user
+ && userdel --remove ubuntu || true \
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && adduser admin sudo \
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && if [ $(grep -c 'admin.*1000' /etc/group) == "0" ] ; then echo "Admin user does not have UID 1000" ; exit 1 ; fi \
 # Configure sshd
  && mkdir -p /var/run/sshd \
  && mv /tmp/sshd_config /etc/ssh/sshd_config \

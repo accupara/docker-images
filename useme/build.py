@@ -16,10 +16,11 @@ import glob
 import subprocess
 
 import concurrent.futures as cf
-from throttler import throttle
+from limiter import Limiter
 
 externalMtimes = {}
-
+# Replenish: 10/sec, consume 1 per function call, max capacity 10
+throttle = Limiter(rate=10, capacity=10, consume=1)
 
 def printf(str):
     f = inspect.currentframe()
@@ -253,7 +254,7 @@ def generateImageLinks(imageList):
 # end def
 
 
-@RateLimiter(rate_limit=10, period=1.0)
+@throttle
 def getImageMtime(imageName):
     #printf('imageName = {}'.format(imageName))
 
@@ -293,7 +294,8 @@ def getImageMtime(imageName):
 # end def
 
 
-def updateImageMtime(image):
+@throttle
+async def updateImageMtime(image):
     mtime = getImageMtime(image.imageName)
     #printf('Updating mtime for {} to {}\n'.format(image, mtime))
     printf('Updating mtime for {} to {}\n'.format(image.imageName, mtime))
@@ -303,7 +305,8 @@ def updateImageMtime(image):
 # end def
 
 
-def getExternalImageMtime(imageName):
+@throttle
+async def getExternalImageMtime(imageName):
     if imageName not in externalMtimes:
         externalMtimes[imageName] = getImageMtime(imageName)
     # end if

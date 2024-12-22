@@ -24,7 +24,7 @@ RUN set -x \
  && sudo python3 -m pip install --break-system-packages \
   	pick \
  	python-dateutil \
-	throttler \
+	limiter \
 	tzlocal \
 # Cleanup
  && sudo eatmydata apt-get clean \

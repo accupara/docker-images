@@ -16,7 +16,7 @@ import glob
 import subprocess
 
 import concurrent.futures as cf
-from ratelimiter import RateLimiter
+from throttler import throttle
 
 externalMtimes = {}
 
@@ -253,7 +253,7 @@ def generateImageLinks(imageList):
 # end def
 
 
-@RateLimiter(max_calls=10, period=1)
+@RateLimiter(rate_limit=10, period=1.0)
 def getImageMtime(imageName):
     #printf('imageName = {}'.format(imageName))
 

@@ -295,7 +295,7 @@ def getImageMtime(imageName):
 
 
 @throttle
-async def updateImageMtime(image):
+def updateImageMtime(image):
     mtime = getImageMtime(image.imageName)
     #printf('Updating mtime for {} to {}\n'.format(image, mtime))
     printf('Updating mtime for {} to {}\n'.format(image.imageName, mtime))
@@ -306,7 +306,7 @@ async def updateImageMtime(image):
 
 
 @throttle
-async def getExternalImageMtime(imageName):
+def getExternalImageMtime(imageName):
     if imageName not in externalMtimes:
         externalMtimes[imageName] = getImageMtime(imageName)
     # end if

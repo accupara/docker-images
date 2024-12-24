@@ -2,12 +2,17 @@
 
 # Compile remake and rsync on the fly and keep it ready for the next stage
 # Chicken or egg : Which came first?
-FROM accupara/ubuntu:18.04 AS remake
+FROM ubuntu:18.04 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
-        guile-2.2-dev \
-        texinfo \
+ && apt-get update \
+ && apt-get install -y \
+      autoconf \
+      autopoint \
+      binutils \
+      build-essential \
+      git \
+      guile-2.2-dev \
+      texinfo \
  && git clone https://github.com/rocky/remake.git \
  && cd remake \
  && ./autogen.sh \
@@ -16,21 +21,23 @@ RUN set -x \
  && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-FROM accupara/ubuntu:18.04 AS rsync
+FROM ubuntu:18.04 AS rsync
 RUN set -x \
- && sudo apt-get update -y \
- && sudo apt-get install -y \
-    golang-github-pierrec-xxhash-dev \
-    libpopt-dev \
-    libssl-dev \
-    liblz4-dev \
-    zlib1g-dev \
+ && apt-get update -y \
+ && apt-get install -y \
+      binutils \
+      build-essential \
+      golang-github-pierrec-xxhash-dev \
+      libpopt-dev \
+      libssl-dev \
+      liblz4-dev \
+      wget \
+      zlib1g-dev \
  && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
+ && wget -q https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
-# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
  && make -j `nproc` \
  && make install \
  && strip /tmp/rsync/bin/rsync

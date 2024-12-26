@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:24.04
+FROM accupara/ubuntu:22.04
 
 COPY kb-config.exp startcmd.sh /tmp/
 
@@ -10,7 +10,7 @@ RUN set -x \
         binutils \
         expect \
         openssh-server \
-        python-pip \
+        python3-pip \
 # No longer required?
  && sudo expect /tmp/kb-config.exp \
  && sudo eatmydata apt-get install -y xpra \

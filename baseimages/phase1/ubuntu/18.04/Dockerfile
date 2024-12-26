@@ -10,10 +10,11 @@ RUN set -x \
       autopoint \
       binutils \
       build-essential \
-      git \
       guile-2.2-dev \
+      wget \
       texinfo \
- && git clone https://github.com/rocky/remake.git \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
  && cd remake \
  && ./autogen.sh \
  && ./configure \

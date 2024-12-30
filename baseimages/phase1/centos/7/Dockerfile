@@ -2,57 +2,76 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/centos:7 AS remake
+FROM centos:7 AS remake
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y \
+ && sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
+ && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
+ && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
+ && yum update -y \
+ && yum install -y \
+    autoconf \
+    automake \
+    binutils \
     flex \
-    glibc-devel.i686 \
+    gcc gcc-c++ \
+    glibc-devel \
     gettext-devel \
     guile-devel \
-    libgcc.i686 \
+    make \
+    patch \
     perl \
     readline-devel \
     svn \
     texinfo \
     texinfo-tex \
+    wget \
     zip \
 # Download and install automake
- && cd /home/admin \
  && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
  && tar -xf automake-1.16.5.tar.gz \
  && cd automake-1.16.5 \
  && ./configure --prefix=/usr \
  && make -j `nproc` \
- && sudo make install \
+ && make install \
+ && cd .. \
 # Get the remake sources for 4.3 and compile them
- && cd /home/admin \
- && git clone https://github.com/rocky/remake.git remake \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \
  && mv ./make /tmp/
 
 # The binary generated from this step works in centos 6 and 7, and ubuntu 14.04,16.04,18.04,20.04. It does not work in 22.04
-FROM accupara/centos:7 AS rsync
+FROM centos:7 AS rsync
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y \
+ && sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
+ && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
+ && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
+ && yum update -y \
+ && yum install -y \
+    autoconf \
+    automake \
+    binutils \
+    gcc gcc-c++ \
     glibc-static \
     popt-static \
     libzstd-devel \
     libzstd-static \
     lz4-devel \
     lz4-static \
+    make \
     openssl-static \
+    wget \
  && export RSYNC_VER=3.2.7 \
  && wget https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync --disable-xxhash \
+ && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
  && make -j `nproc` \
- && sudo make install
+ && make install
 
 ################## The real container starts here ##################
 FROM centos:7

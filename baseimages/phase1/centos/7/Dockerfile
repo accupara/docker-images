@@ -141,7 +141,7 @@ RUN set -x \
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
  && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
- && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers \
+ && sed '/Defaults.*requiretty/,+1 d' /etc/sudoers >/tmp/sudoers \
   ; mv -f /tmp/sudoers /etc/sudoers \
  && useradd -u 1000 -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \

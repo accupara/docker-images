@@ -24,12 +24,13 @@ ENV SDK_TOOLS_VER=7583922 \
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-    libasound2 \
+    libasound2t64 \
     libc6 \
     libdbus-1-3 \
     libfontconfig1 \
-    libgl1-mesa-glx \
-    libglu1 \
+    libgl1-mesa-dev \
+    libglu1-mesa \
+    libglx-dev \
     libnss3 \
     libpulse-dev \
     libstdc++6 \

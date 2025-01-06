@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 FROM accupara/yocto:ubuntu_2204
 
+SHELL ["/bin/bash", "-c"]
 RUN set -x \
  && sudo eatmydata apt-get update \
  && sudo eatmydata apt-get -y install \

@@ -31,7 +31,7 @@ RUN set -x \
  "platforms;android-29" \
  "cmake;3.18.1" \
 # Install conan and self detect
- && sudo python3 -m pip install conan \
+ && sudo python3 -m pip install --break-system-packages conan \
  && conan profile detect \
 # Minimize image
  && sudo eatmydata apt-get autoremove -y \

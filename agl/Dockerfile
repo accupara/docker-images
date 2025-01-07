@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/yocto:ubuntu_2204
+FROM accupara/yocto:ubuntu_2404
 
 SHELL ["/bin/bash", "-c"]
 RUN set -x \

@@ -13,7 +13,7 @@ RUN set -x \
         libzstd-dev \
         perl \
         python3-pip \
- && sudo python3 -m pip install commonmark \
+ && sudo python3 -m pip install --break-system-packages commonmark \
 # Clean up image
  && sudo eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

@@ -15,11 +15,9 @@ RUN set -x \
         sqlite3 \
         sshpass \
         supervisor \
- && sudo pip3 install --upgrade \
-        pip \
-        setuptools \
- && sudo pip3 install --upgrade \
+ && sudo pip3 install --break-system-packages --upgrade \
         django \
+        setuptools \
         uwsgi \
  && sudo rm /etc/nginx/sites-enabled/*
 

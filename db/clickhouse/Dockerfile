@@ -26,8 +26,7 @@ RUN set -x \
     wget \
     xz-utils \
     yasm \
-# Make sure we have the latest version of pip and then install jinja
- && sudo python3 -m pip install --break-system-packages --upgrade pip \
+# Cannot install the latest version of pip because pip is installed using apt. But: install jinja
  && sudo python3 -m pip install --break-system-packages --upgrade jinja2 \
 # Now actually install a newer version of clang over this
  && wget https://apt.llvm.org/llvm.sh \

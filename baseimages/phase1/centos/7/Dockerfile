@@ -21,15 +21,15 @@ RUN set -x \
     patch \
     perl \
     readline-devel \
-    svn \
     texinfo \
     texinfo-tex \
     wget \
     zip \
 # Download and install automake
- && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
- && tar -xf automake-1.16.5.tar.gz \
- && cd automake-1.16.5 \
+ && export AUTOMAKE_VER=1.17 \
+ && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-${AUTOMAKE_VER}.tar.gz \
+ && tar -xf automake-${AUTOMAKE_VER}.tar.gz \
+ && cd automake-${AUTOMAKE_VER} \
  && ./configure --prefix=/usr \
  && make -j `nproc` \
  && make install \

@@ -3,7 +3,6 @@
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
 RUN set -x \
- && chmod 400 /root/.ssh/id_rsa* \
  && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \

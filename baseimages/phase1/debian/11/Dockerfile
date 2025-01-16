@@ -26,7 +26,6 @@ RUN set -x \
  && apt-get update -y \
  && apt-get install -y \
     build-essential \
-    golang-github-pierrec-xxhash-dev \
     libpopt-dev \
     libssl-dev \
     liblz4-dev \

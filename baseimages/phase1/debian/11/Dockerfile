@@ -8,12 +8,14 @@ RUN set -x \
        autoconf \
        autopoint \
        build-essential \
-       git \
        guile-2.2-dev \
        pkg-config \
        rsync \
        texinfo \
- && git clone https://github.com/rocky/remake.git \
+       wget \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \

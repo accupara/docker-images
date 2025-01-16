@@ -2,7 +2,6 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake
-COPY id_rsa id_rsa.pub /root/.ssh/
 RUN set -x \
  && chmod 400 /root/.ssh/id_rsa* \
  && export DEBIAN_FRONTEND=noninteractive \
@@ -11,13 +10,14 @@ RUN set -x \
       autoconf \
       autopoint \
       build-essential \
-      git \
       guile-2.2-dev \
       pkg-config \
       rsync \
       texinfo \
- && ssh-keyscan github.com >>/root/.ssh/known_hosts \
- && git clone git@github.com:Trepan-Debuggers/remake.git \
+      wget \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \

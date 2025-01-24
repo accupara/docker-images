@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-SUBDIRS=qt4 qt5
+SUBDIRS=qt6
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

@@ -1,3 +1,3 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-SUBDIRS=qtbuild apps libraries
+SUBDIRS=qt5 qt6
 include $(shell git rev-parse --show-toplevel)/Makefile.subdirs

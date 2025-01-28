@@ -5,6 +5,11 @@ FROM accupara/qt5:ubuntu_2404
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-       libdbusextended-qt5-dev \
-       libqt5xmlpatterns5-dev \
-       libtelepathy-glib-dev
+      cmake \
+      doxygen \
+      libdbusextended-qt5-dev \
+      libfarstream-0.2-dev \
+      libqt5xmlpatterns5-dev \
+      libtelepathy-glib-dev \
+      libtelepathy-farstream-dev \
+      ninja-build

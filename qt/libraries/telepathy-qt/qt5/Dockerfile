@@ -5,8 +5,6 @@ FROM accupara/qt5:ubuntu_2404
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
-        libqt6webview6 \
-        libqt6webviewquick6 \
-        qt6-webengine-dev \
-        qt6-webview-dev \
-        perl
+       libdbusextended-qt5-dev \
+       libqt5xmlpatterns5-dev \
+       libtelepathy-glib-dev

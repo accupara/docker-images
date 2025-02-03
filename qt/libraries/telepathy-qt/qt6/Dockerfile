@@ -7,6 +7,7 @@ RUN set -x \
  && sudo apt-get install -y \
       cmake \
       doxygen \
+      graphviz \
       qt6-tools-dev-tools \
       libfarstream-0.2-dev \
       libqt6xml6t64 \

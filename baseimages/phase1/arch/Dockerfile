@@ -47,6 +47,7 @@ RUN set -x \
     iputils \
     inetutils \
     xmlstarlet \
+    less \
 # Newest versions of openssh-server don't seem to create all the host keys
  && sudo /usr/bin/ssh-keygen -A \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo

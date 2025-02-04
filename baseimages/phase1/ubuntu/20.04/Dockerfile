@@ -11,6 +11,7 @@ RUN set -x \
       gettext \
       guile-3.0-dev \
       texinfo \
+      wget \
  && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
  && tar -xf remake.tar.gz \
  && mv remake-remake-4.3-dbg-1.6 remake \

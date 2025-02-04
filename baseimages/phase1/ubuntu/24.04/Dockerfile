@@ -1,18 +1,19 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 FROM ubuntu:24.04 AS remake
-COPY id_rsa id_rsa.pub /root/.ssh/
 RUN set -x \
  && apt-get update \
  && apt-get install -y \
+      autoconf \
       autopoint \
+      binutils \
       build-essential \
       git \
       guile-3.0-dev \
       texinfo \
- && mkdir -p /root/.ssh \
- && ssh-keyscan github.com >>/root/.ssh/known_hosts \
- && git clone git@github.com:Trepan-Debuggers/remake.git \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && ./configure \

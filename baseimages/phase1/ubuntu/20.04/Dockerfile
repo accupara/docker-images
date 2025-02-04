@@ -1,18 +1,19 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-# Chicken or egg : Which came first?
-FROM accupara/ubuntu:20.04 AS remake
+FROM ubuntu:20.04 AS remake
 RUN set -x \
- && sudo apt-get update \
- && sudo apt-get install -y \
+ && apt-get update \
+ && apt-get install -y \
+      autoconf \
       autopoint \
+      binutils \
       build-essential \
       gettext \
       guile-3.0-dev \
-      rsync \
       texinfo \
- && git clone https://github.com/rocky/remake.git \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && ./configure \

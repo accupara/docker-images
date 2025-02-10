@@ -62,6 +62,7 @@ RUN set -x \
       ninja-build \
       openssh-server \
       psmisc \
+      python2 \
       # install rsync because it allows the updated rsync to work correctly
       rsync \
       subversion \

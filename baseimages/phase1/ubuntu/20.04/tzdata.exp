@@ -1,0 +1,10 @@
+#!/usr/bin/env expect
+# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+
+set timeout -1
+spawn apt-get install -y tzdata
+expect {
+    "\\\[More\\\]" { send "\n"; exp_continue; }
+    "Geographic area: " { send "2\n"; exp_continue; }
+    "Time zone: " { send "86\n"; exp_continue; }
+}

@@ -1,8 +1,11 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 FROM ubuntu:20.04 AS remake
+COPY tzdata.exp /tmp/
 RUN set -x \
  && apt-get update \
+ && apt-get install -y expect \
+ && expect /tmp/tzdata.exp \
  && apt-get install -y \
       autoconf \
       autopoint \

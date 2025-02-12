@@ -21,6 +21,8 @@ RUN set -x \
  && cd remake \
  && ./autogen.sh \
  && ./configure \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
  && make -j `nproc` \
  && mv ./make /tmp/
 

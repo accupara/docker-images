@@ -6,6 +6,7 @@ RUN set -x \
  && sudo apt-get -y install \
        libqt6websockets6-dev \
        libssl-dev \
+       qmake6 \
        qt6-base-dev \
        qt6-declarative-dev \
        qt6-multimedia-dev \

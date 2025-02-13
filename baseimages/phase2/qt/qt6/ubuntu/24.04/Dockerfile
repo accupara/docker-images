@@ -13,9 +13,13 @@ RUN set -x \
        qt6-base-dev \
        qt6-declarative-dev \
        qt6-multimedia-dev \
-       qt6-quick3d-dev \
+       qt6-pdf-dev \
+       qt6-positioning-dev \
+       qt6-quick3d-dev \ 
        qt6-tools-dev \
+       qt6-webchannel-dev \
        qt6-webengine-dev \
+       qt6-websockets-dev \
        qt6-webview-dev \
        qtchooser \
 # Choose QT6: From https://askubuntu.com/questions/1460242/ubuntu-22-04-with-qt6-qmake-could-not-find-a-qt-installation-of

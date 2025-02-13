@@ -7,6 +7,7 @@ RUN set -x \
  && sudo apt-get install -y \
       cmake \
       doxygen \
+      graphviz \
       libdbusextended-qt5-dev \
       libfarstream-0.2-dev \
       libqt5xmlpatterns5-dev \

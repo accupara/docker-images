@@ -4,6 +4,9 @@ FROM accupara/ubuntu:24.04
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get -y install \
+       libqt6statemachine6 \
+       libqt6webview6 \
+       libqt6webviewquick6 \
        libqt6websockets6-dev \
        libssl-dev \
        qmake6 \

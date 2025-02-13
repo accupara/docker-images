@@ -5,6 +5,7 @@ FROM accupara/qt6:ubuntu_2404
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
+        libqt6statemachine6 \
         libqt6webview6 \
         libqt6webviewquick6 \
         qt6-webengine-dev \

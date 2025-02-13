@@ -9,4 +9,7 @@ RUN set -x \
         libqt6webviewquick6 \
         qt6-webengine-dev \
         qt6-webview-dev \
-        perl
+        perl \
+# Clean up image
+ && sudo apt-get clean \
+ && sudo rm -f /var/lib/apt/lists/*_dists_*

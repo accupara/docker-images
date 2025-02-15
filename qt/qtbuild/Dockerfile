@@ -20,6 +20,7 @@ RUN set -x \
         nodejs \
         perl \
         python3 \
+        python3-html5lib \
 # Install the newest cmake
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \

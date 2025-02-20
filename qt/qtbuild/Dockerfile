@@ -44,6 +44,8 @@ RUN set -x \
         libxcursor-dev \
         libxcomposite-dev \
         libxdamage-dev \
+        libxkbcommon-dev \
+        libxkbcommon-x11-dev \
         libxrandr-dev \
         libxss-dev \
         protobuf-compiler \

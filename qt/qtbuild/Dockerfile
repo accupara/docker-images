@@ -21,6 +21,28 @@ RUN set -x \
         perl \
         python3 \
         python3-html5lib \
+# for webengine:
+        libavcodec-dev \
+        libavformat-dev \
+        libavutil-dev \
+        libevent-dev \
+        libfontconfig1-dev \
+        libjsoncpp-dev \
+        libminizip-dev \
+        libopus-dev \
+        libprotobuf-dev \
+        libre2-dev \
+        libsnappy-dev \
+        libsrtp0-dev \
+        libssl-dev \
+        libvpx-dev \
+        libwebp-dev \
+        libxcursor-dev \
+        libxcomposite-dev \
+        libxdamage-dev \
+        libxrandr-dev \
+        libxss-dev \
+        protobuf-compiler \
 # Install the newest cmake
  && wget -q -O /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VER}/cmake-${CMAKE_VER}-Linux-x86_64.sh \
  && chmod +x /tmp/cmake-${CMAKE_VER}-Linux-x86_64.sh \

@@ -25,6 +25,7 @@ RUN set -x \
         libavcodec-dev \
         libavformat-dev \
         libavutil-dev \
+        libdbus-1-dev \
         libevent-dev \
         libfontconfig1-dev \
         libjsoncpp-dev \

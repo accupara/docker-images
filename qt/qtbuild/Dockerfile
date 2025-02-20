@@ -33,7 +33,7 @@ RUN set -x \
         libprotobuf-dev \
         libre2-dev \
         libsnappy-dev \
-        libsrtp0-dev \
+        libsrtp2-dev \
         libssl-dev \
         libvpx-dev \
         libwebp-dev \

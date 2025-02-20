@@ -28,6 +28,7 @@ RUN set -x \
         libavformat-dev \
         libavutil-dev \
         libdbus-1-dev \
+        libdrm-dev \
         libevent-dev \
         libfontconfig1-dev \
         libjsoncpp-dev \

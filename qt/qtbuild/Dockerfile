@@ -22,7 +22,9 @@ RUN set -x \
         python3 \
         python3-html5lib \
 # for webengine:
+        libavcodec60 \
         libavcodec-dev \
+        libavformat60 \
         libavformat-dev \
         libavutil-dev \
         libdbus-1-dev \

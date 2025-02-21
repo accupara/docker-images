@@ -31,6 +31,9 @@ RUN set -x \
         libdrm-dev \
         libevent-dev \
         libfontconfig1-dev \
+        libglib2.0-dev \
+        libghc-gi-gmodule-dev \
+        libghc-gi-gobject-dev \
         libjsoncpp-dev \
         libminizip-dev \
         libopus-dev \

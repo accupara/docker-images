@@ -6,6 +6,7 @@ ENV QT_VER=6.8.2
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get -y install \
+       libpcre2-16-0 \
        qtchooser \
 # Download Qt6 from the place we uploaded it
  && wget -q https://storage.googleapis.com/accupara_images/qt${QT_VER}.tar.gz \

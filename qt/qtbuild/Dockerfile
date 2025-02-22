@@ -29,6 +29,7 @@ RUN set -x \
         libavutil-dev \
         libdbus-1-dev \
         libdrm-dev \
+        libegl-dev \
         libevent-dev \
         libfontconfig1-dev \
         libglib2.0-dev \

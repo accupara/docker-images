@@ -5,6 +5,8 @@ FROM accupara/qt6:ubuntu_2404
 RUN set -x \
  && sudo apt-get update \
  && sudo apt-get install -y \
+        libgl-dev \
+        libopengl-dev \
         perl \
 # Clean up image
  && sudo apt-get clean \

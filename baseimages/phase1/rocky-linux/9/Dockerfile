@@ -34,19 +34,22 @@
 # && make -j `nproc` \
 # && mv ./make /tmp/
 
-FROM accupara/rockylinux:9 AS rsync
+FROM rockylinux:9 AS rsync
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
+ && yum update -y \
+ && yum install -y 'dnf-command(config-manager)' \
+ && yum config-manager --enable devel \
+ && yum config-manager --enable extras \
+ && yum config-manager --enable plus \
+ && yum update -y \
+ && yum install -y \
+    perl \
     popt-devel \
     libzstd-devel \
     lz4-devel \
     openssl-devel \
+    texinfo \
+    texinfo-tex \
     wget \
  && export RSYNC_VER=3.2.7 \
  && wget https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
@@ -112,7 +115,7 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && sudo mv crave /usr/local/bin/ \
+ && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers \
   ; mv /tmp/sudoers /etc/sudoers \

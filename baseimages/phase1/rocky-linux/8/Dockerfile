@@ -2,15 +2,15 @@
 
 # Compile remake on the fly and keep it ready for the next stage
 ## Chicken or egg : Which came first?
-FROM accupara/rockylinux:8 AS remake
+FROM rockylinux:8 AS remake
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
+ && yum update -y \
+ && yum install -y 'dnf-command(config-manager)' \
+ && yum config-manager --enable devel \
+ && yum config-manager --enable extras \
+ && yum config-manager --enable plus \
+ && yum update -y \
+ && yum install -y \
     flex \
     glibc-devel \
     gettext-devel \
@@ -21,32 +21,33 @@ RUN set -x \
     svn \
     texinfo \
     texinfo-tex \
+    wget \
     zip \
 # Download and install automake
- && cd /home/admin \
+ && cd /tmp \
  && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
  && tar -xf automake-1.16.5.tar.gz \
  && cd automake-1.16.5 \
  && ./configure --prefix=/usr \
  && make -j `nproc` \
- && sudo make install \
+ && make install \
 # Get the remake sources for 4.3 and compile them
- && cd /home/admin \
+ && cd /tmp \
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM accupara/rockylinux:8 AS rsync
+FROM rockylinux:8 AS rsync
 RUN set -x \
- && sudo yum update -y \
- && sudo yum install -y 'dnf-command(config-manager)' \
- && sudo yum config-manager --enable devel \
- && sudo yum config-manager --enable extras \
- && sudo yum config-manager --enable plus \
- && sudo yum update -y \
- && sudo yum install -y \
+ && yum update -y \
+ && yum install -y 'dnf-command(config-manager)' \
+ && yum config-manager --enable devel \
+ && yum config-manager --enable extras \
+ && yum config-manager --enable plus \
+ && yum update -y \
+ && yum install -y \
     glibc-static \
     popt-static \
     libzstd-devel \
@@ -116,7 +117,7 @@ RUN set -x \
  && chmod +x /etc/crave/create_build_tools_json.sh \
 # Add the crave binary into the base image
  && curl -s https://raw.githubusercontent.com/accupara/crave/master/get_crave.sh | bash -s -- \
- && sudo mv crave /usr/local/bin/ \
+ && mv crave /usr/local/bin/ \
 # Add admin user and add it to sudoers
  && cat /etc/sudoers | sed '/Defaults.*requiretty/,+1 d' >/tmp/sudoers \
   ; mv /tmp/sudoers /etc/sudoers \

@@ -4,13 +4,14 @@
 ## Chicken or egg : Which came first?
 FROM rockylinux:8 AS remake
 RUN set -x \
- && yum update -y \
- && yum install -y 'dnf-command(config-manager)' \
- && yum config-manager --enable devel \
- && yum config-manager --enable extras \
- && yum config-manager --enable plus \
- && yum update -y \
- && yum install -y \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf group install -y "Development Tools" \
+ && dnf install -y \
     flex \
     glibc-devel \
     gettext-devel \
@@ -18,6 +19,7 @@ RUN set -x \
     libgcc \
     perl \
     readline-devel \
+    rsync \
     svn \
     texinfo \
     texinfo-tex \
@@ -36,30 +38,35 @@ RUN set -x \
  && git clone https://github.com/rocky/remake.git remake \
  && cd remake \
  && ./autogen.sh \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
  && make -j `nproc` \
  && mv ./make /tmp/
 
 FROM rockylinux:8 AS rsync
 RUN set -x \
- && yum update -y \
- && yum install -y 'dnf-command(config-manager)' \
- && yum config-manager --enable devel \
- && yum config-manager --enable extras \
- && yum config-manager --enable plus \
- && yum update -y \
- && yum install -y \
-    glibc-static \
-    popt-static \
-    libzstd-devel \
-    lz4-devel \
-    lz4-static \
-    openssl-static \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf group install -y "Development Tools" \
+ && dnf install -y \
+   glibc-static \
+   popt-static \
+   libzstd-devel \
+   lz4-devel \
+   lz4-static \
+   openssl-static \
  && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
  && make -j `nproc` \
  && make install
 
@@ -72,13 +79,14 @@ COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
- && yum update -y \
- && yum install -y 'dnf-command(config-manager)' \
- && yum config-manager --enable devel \
- && yum config-manager --enable extras \
- && yum config-manager --enable plus \
- && yum update -y \
- && yum install -y \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf group install -y "Development Tools" \
+ && dnf install -y \
       autoconf \
       automake \
       binutils \
@@ -164,13 +172,13 @@ RUN chown -R admin:admin /home/admin \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
 # Install git-lfs and jq separately
- && sudo yum install -y \
+ && sudo dnf install -y \
       git-lfs \
       libzstd \
       jq \
 # Install the latest git
  && export GIT_VER=2.47.1 \
- && sudo yum install -y \
+ && sudo dnf install -y \
     expat-devel \
     gettext \
     gnutls-devel \

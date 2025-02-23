@@ -57,6 +57,8 @@ RUN set -x \
  && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
  && make -j `nproc` \
  && make install
 

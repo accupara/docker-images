@@ -1,12 +1,12 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/ubuntu:12.04
+FROM accupara/ubuntu:14.04
 
 ENV YQ_VER=4.40.3 \
     REPO_NO_INTERACTIVE=1 \
     GIT_TERMINAL_PROMPT=0
 
 RUN set -x \
- #&& sudo dpkg --add-architecture i386 \
+ && sudo dpkg --add-architecture i386 \
  && sudo apt-get update \
  && sudo apt-get -y install \
     bc \

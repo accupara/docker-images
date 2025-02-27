@@ -61,7 +61,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # https://mirrors.edge.kernel.org/pub/software/scm/git/
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
-ENV GIT_VER=2.47.1 \
+ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
@@ -177,7 +177,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    GIT_TERMINAL_PROMPT=0
+    GIT_TERMINAL_PROMPT=0 \
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/libexec/git-core
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

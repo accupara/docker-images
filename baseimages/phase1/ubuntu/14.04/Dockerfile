@@ -118,7 +118,7 @@ RUN set -x \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && ./configure --with-curl=/usr/bin/curl \
+ && ./configure --with-curl=/usr/bin/curl --libexecdir=/usr/lib \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Make sure to install git-lfs the direct way. no mucking around with apt
@@ -178,7 +178,7 @@ ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
     GIT_TERMINAL_PROMPT=0 \
-    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/libexec/git-core
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/git-core
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 

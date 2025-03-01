@@ -97,6 +97,7 @@ RUN set -x \
       guile \
       #hardening-check \
       java-1.8.0-openjdk-devel \
+      jq \
       libevent-devel \
       make \
       ncurses-devel \

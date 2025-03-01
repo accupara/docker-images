@@ -56,7 +56,7 @@ RUN set -x \
    libzstd-devel \
    lz4-devel \
    lz4-static \
-   openssl-static \
+   openssl-devel \
  && export RSYNC_VER=3.2.7 \
  && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \

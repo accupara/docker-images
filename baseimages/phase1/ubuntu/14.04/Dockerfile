@@ -192,6 +192,7 @@ RUN set -x \
  && sudo chmod 0600 /etc/ssh/* \
 # Initialize LFS
  && git lfs install \
+ && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
        wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \

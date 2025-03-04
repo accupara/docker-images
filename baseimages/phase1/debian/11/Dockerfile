@@ -169,6 +169,7 @@ RUN set -x \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
 # Initialize LFS
  && git lfs install \
+ && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
        wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \

@@ -98,11 +98,24 @@ RUN set -x \
  && mkdir -p /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
+      autoconf \
+      git \
       libcurl4-gnutls-dev \
       libexpat1-dev \
+      libpsl-dev \
       libssl-dev \
+      libtool \
       zlib1g-dev \
  && cd /tmp/dl \
+# compile libcurl first
+ && git clone https://github.com/curl/curl.git curl \
+ && cd curl \
+ && autoreconf -fi \
+ && ./configure --with-openssl --prefix /usr --libdir /usr/lib/x86_64-linux-gnu \
+ && make -j `nproc` \
+ && sudo make install \
+ && cd .. \
+# Then compile git with this libcurl
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \

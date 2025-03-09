@@ -58,8 +58,7 @@ RUN set -x \
 # Install Swift
  && sudo eatmydata apt-get install -y \
     clang \
-    libpython2.7 \
-    libpython2.7-dev \
+    libpython3-all-dev \
  && wget -q -O /tmp/swift.tar.gz https://download.swift.org/swift-${SWIFT_VER}-release/ubuntu2004/swift-${SWIFT_VER}-RELEASE/swift-${SWIFT_VER}-RELEASE-ubuntu20.04.tar.gz \
  && sudo tar -C /tmp/ -xf /tmp/swift.tar.gz \
  && sudo rsync -a /tmp/swift-${SWIFT_VER}-RELEASE-ubuntu20.04/usr/ /usr/ \

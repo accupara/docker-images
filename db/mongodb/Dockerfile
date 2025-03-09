@@ -21,7 +21,7 @@ RUN set -x \
     lld \
     python3-pip \
     python-dev-is-python3 \
- && sudo python3 -m pip install \
+ && sudo python3 -m pip install --break-system-packages \
     Cheetah3 \
     'poetry==1.5.1' \
     mongo_tooling_metrics \

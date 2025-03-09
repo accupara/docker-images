@@ -1,6 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-IMGTAG?=accupara/orioledb
-IMGVER_BASE?=ubuntu
-IMGVER_TARGETS?=aarch64 x86_64
+IMGTAG?=accupara/postgres
+IMGVER_BASE?=ubuntu_2404
 
 include $(shell git rev-parse --show-toplevel)/Makefile.build

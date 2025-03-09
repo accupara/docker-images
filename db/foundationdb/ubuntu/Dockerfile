@@ -40,7 +40,7 @@ RUN set -x \
     ninja-build \
     openjdk-11-jdk \
     pkg-config \
-    python3-lldb-12 \
+    python3-lldb \
     python3-pip \
     python3-venv \
     software-properties-common \

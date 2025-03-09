@@ -48,7 +48,7 @@ RUN set -x \
     unzip \
     zlib1g-dev \
 # python modules
- && sudo python3 -m pip install \
+ && sudo python3 -m pip install --break-system-packages \
     Jinja2 \
 # Download boost, but don't compile it
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \

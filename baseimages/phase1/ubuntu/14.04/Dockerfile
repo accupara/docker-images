@@ -63,6 +63,8 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # https://github.com/ninja-build/ninja/releases
 ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
+    CURL_VER=8.12.1 \
+    PY3_VER=3.8.20 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
     GIT_TERMINAL_PROMPT=0
@@ -77,7 +79,6 @@ RUN set -x \
         bash-completion \
         binutils \
         build-essential \
-        curl \
         debhelper \
         devscripts \
         dh-make \
@@ -86,11 +87,9 @@ RUN set -x \
         gettext \
         guile-2.0 \
         jq \
-        libcurl4-gnutls-dev \
         libexpat1-dev \
         liblz4-1 \
         libpopt0 \
-        libssl-dev \
         locales \
         lsb-release \
         multitail \
@@ -108,9 +107,53 @@ RUN set -x \
         zlib1g \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
+ && cd /tmp/dl \
+# Install OpenSSL 1.1, for curl and py3.8
+ && wget -q https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-1.1.1w.tar.gz \
+ && tar -xf openssl-1.1.1w.tar.gz \
+ && cd openssl-1.1.1w \
+ && ./config shared --prefix=/usr/local --libdir=lib --openssldir=/etc/ssl \
+ && make all -j`nproc` \
+ && make install \
+ && cd /tmp/dl \
+# Install nghttp2, HTTP/2 dependency of curl
+ && wget -q https://github.com/nghttp2/nghttp2/releases/download/v1.64.0/nghttp2-1.64.0.tar.gz \
+ && tar -xf nghttp2-1.64.0.tar.gz \
+ && cd nghttp2-1.64.0 \
+ && ./configure --prefix=/usr --enable-lib-only \
+ && make all -j`nproc` \
+ && make install \
+ && cd /tmp/dl \
+# Install libpsl, another dependency of curl
+ && eatmydata apt-get install -y libunistring-dev \
+ && wget -q https://github.com/rockdaboot/libpsl/releases/download/0.21.5/libpsl-0.21.5.tar.gz \
+ && tar -xf libpsl-0.21.5.tar.gz \
+ && cd libpsl-0.21.5 \
+ && ./configure --prefix=/usr \
+ && make all -j`nproc` \
+ && make install \
+ && cd /tmp/dl \
+# Install curl, a dependency of git
+ && wget -q https://curl.se/download/curl-${CURL_VER}.tar.gz \
+ && tar -xf curl-${CURL_VER}.tar.gz \
+ && cd curl-${CURL_VER} \
+ && ./configure --prefix=/usr/local --with-openssl=/usr/local \
+ && make all -j`nproc` \
+ && make install \
+ && cd /tmp/dl \
+# Install the last python3.8 (tk module disabled)
+ && eatmydata apt-get install -y gdb lcov pkg-config libbz2-dev libffi-dev libgdbm-dev liblzma-dev libncurses5-dev libreadline6-dev libsqlite3-dev lzma lzma-dev uuid-dev zlib1g-dev libmpdec-dev systemtap-sdt-dev \
+ && wget -q https://www.python.org/ftp/python/${PY3_VER}/Python-${PY3_VER}.tgz \
+ && tar xzf Python-${PY3_VER}.tgz \
+ && cd Python-${PY3_VER} \
+ && sed -i "s/#SSL=/SSL=/" Modules/Setup \
+ && ./configure --prefix=/usr/local --enable-shared --with-openssl=/usr/local --enable-ipv6 --enable-loadable-sqlite-extensions --with-dbmliborder=bdb:gdbm --with-computed-gotos --with-system-expat --with-dtrace --with-system-libmpdec --with-system-ffi --with-fpectl --with-wheel-pkg-dir=/usr/share/python-wheels/ \
+ && make all -j`nproc` \
+ && make altinstall \
+ && ln -sf /usr/local/bin/python3.8 /usr/bin/python3 \
+ && cd /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
-        libcurl4-gnutls-dev \
         libexpat1-dev \
         libssl-dev \
         zlib1g-dev \
@@ -118,7 +161,7 @@ RUN set -x \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && ./configure --with-curl=/usr/bin/curl --libexecdir=/usr/lib \
+ && OPENSSLDIR=/usr/local ./configure --with-openssl --libexecdir=/usr/lib \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Make sure to install git-lfs the direct way. no mucking around with apt

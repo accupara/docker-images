@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # https://mirrors.edge.kernel.org/pub/software/scm/git/
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
-ENV GIT_VER=2.47.1 \
+ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
@@ -84,7 +84,7 @@ RUN set -x \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && ./configure --with-curl=/usr/bin/curl \
+ && ./configure --with-curl=/usr/bin/curl --libexecdir=/usr/lib \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
 # Make sure to install git-lfs the direct way. no mucking around with apt
@@ -142,7 +142,8 @@ USER admin
 ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
-    GIT_TERMINAL_PROMPT=0
+    GIT_TERMINAL_PROMPT=0 \
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/git-core
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 
@@ -156,6 +157,7 @@ RUN set -x \
  && sudo chmod 0600 /etc/ssh/* \
 # Initialize LFS
  && git lfs install \
+ && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
        wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \

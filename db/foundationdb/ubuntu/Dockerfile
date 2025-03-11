@@ -40,7 +40,7 @@ RUN set -x \
     ninja-build \
     openjdk-11-jdk \
     pkg-config \
-    python3-lldb-12 \
+    python3-lldb \
     python3-pip \
     python3-venv \
     software-properties-common \
@@ -48,7 +48,7 @@ RUN set -x \
     unzip \
     zlib1g-dev \
 # python modules
- && sudo python3 -m pip install \
+ && sudo python3 -m pip install --break-system-packages \
     Jinja2 \
 # Download boost, but don't compile it
  && wget -q -O /tmp/boost_${BOOST_VER}.tar.gz https://downloads.sourceforge.net/project/boost/boost/$(echo ${BOOST_VER} | sed 's/_/./g')/boost_${BOOST_VER}.tar.gz >/dev/null \
@@ -58,8 +58,7 @@ RUN set -x \
 # Install Swift
  && sudo eatmydata apt-get install -y \
     clang \
-    libpython2.7 \
-    libpython2.7-dev \
+    libpython3-all-dev \
  && wget -q -O /tmp/swift.tar.gz https://download.swift.org/swift-${SWIFT_VER}-release/ubuntu2004/swift-${SWIFT_VER}-RELEASE/swift-${SWIFT_VER}-RELEASE-ubuntu20.04.tar.gz \
  && sudo tar -C /tmp/ -xf /tmp/swift.tar.gz \
  && sudo rsync -a /tmp/swift-${SWIFT_VER}-RELEASE-ubuntu20.04/usr/ /usr/ \

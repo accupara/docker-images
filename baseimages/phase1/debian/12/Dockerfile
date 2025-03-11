@@ -31,7 +31,7 @@ COPY sshd_config /tmp/
 
 # For Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
-ENV GIT_VER=2.47.1 \
+ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.4 \
     GIT_TERMINAL_PROMPT=0
@@ -127,7 +127,8 @@ ENV HOME=/home/admin \
     USER=admin \
     TERM=xterm \
     LANG=en_US.utf8 \
-    GIT_TERMINAL_PROMPT=0
+    GIT_TERMINAL_PROMPT=0 \
+    PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/git-core
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 
@@ -149,6 +150,7 @@ RUN set -x \
  && echo "export LANGUAGE=en_US.UTF-8" >> /home/admin/.bashrc \
 # Initialize LFS
  && git lfs install \
+ && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
        wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \

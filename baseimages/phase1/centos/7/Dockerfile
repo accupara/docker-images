@@ -81,7 +81,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
-ENV GIT_VER=2.47.1 \
+ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     TMUX_VERSION=3.3 \
@@ -169,7 +169,7 @@ ENV HOME=/home/admin \
     TERM=xterm \
     LANG=en_US.utf8 \
     GRADLE_HOME=/opt/gradle/gradle-${GRADLE_VER} \
-    PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    PATH=/opt/gradle/gradle-${GRADLE_VER}/bin/:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/libexec/git-core \
     GIT_TERMINAL_PROMPT=0
 WORKDIR /home/admin
 
@@ -192,16 +192,28 @@ RUN set -x \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Install the latest git
+ && sudo yum update -y \
  && sudo yum install -y \
     eatmydata \
     expat-devel \
     gettext \
     gnutls-devel \
     libcurl-devel \
+    libpsl-devel \
+    libtool \
     libzip-devel \
     openssl-devel \
     unzip \
  && cd /tmp/dl \
+# compile libcurl first
+ && git clone https://github.com/curl/curl.git curl \
+ && cd curl \
+ && autoreconf -fi \
+ && ./configure --with-openssl --prefix /usr --libdir /usr/lib64 \
+ && make -j `nproc` \
+ && sudo make install \
+ && cd .. \
+# Then compile git with this libcurl
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \

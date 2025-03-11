@@ -1,62 +1,69 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
-# Compile remake on the fly and keep it ready for the next stage
-## Chicken or egg : Which came first?
-#FROM accupara/rockylinux:9 AS remake
-#RUN set -x \
-# && sudo yum update -y \
-# && sudo yum install -y 'dnf-command(config-manager)' \
-# && sudo yum config-manager --enable devel \
-# && sudo yum config-manager --enable extras \
-# && sudo yum config-manager --enable plus \
-# && sudo yum install -y epel-release \
-# && sudo yum update -y \
-# && sudo yum install -y \
-#    autoconf \
-#    flex \
-#    git \
-#    glibc-devel \
-#    gettext-devel \
-#    guile30-devel \
-#    libgcc \
-#    patchutils \
-#    perl \
-#    readline-devel \
-#    svn \
-#    texinfo \
-#    texinfo-tex \
-#    zip \
-## Get the remake sources for 4.3 and compile them
-# && cd /tmp \
-# && git clone https://github.com/rocky/remake.git remake \
-# && cd remake \
-# && ./autogen.sh \
-# && make -j `nproc` \
-# && mv ./make /tmp/
-
-FROM rockylinux:9 AS rsync
+FROM accupara/rockylinux:9 AS remake
 RUN set -x \
- && yum update -y \
- && yum install -y 'dnf-command(config-manager)' \
- && yum config-manager --enable devel \
- && yum config-manager --enable extras \
- && yum config-manager --enable plus \
- && yum update -y \
- && yum install -y \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf group install -y "Development Tools" \
+ && dnf install -y \
+    flex \
+    glibc-devel \
+    gettext-devel \
+    guile-devel \
+    libgcc \
     perl \
-    popt-devel \
-    libzstd-devel \
-    lz4-devel \
-    openssl-devel \
+    readline-devel \
+    rsync \
+    svn \
     texinfo \
     texinfo-tex \
     wget \
+    zip \
+# Download and install automake
+ && cd /tmp \
+ && wget -q --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-1.16.5.tar.gz \
+ && tar -xf automake-1.16.5.tar.gz \
+ && cd automake-1.16.5 \
+ && ./configure --prefix=/usr \
+ && make -j `nproc` \
+ && make install \
+# Get the remake sources for 4.3 and compile them
+ && cd /tmp \
+ && git clone https://github.com/rocky/remake.git remake \
+ && cd remake \
+ && ./autogen.sh \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
+ && make -j `nproc` \
+ && mv ./make /tmp/
+
+FROM rockylinux:9 AS rsync
+RUN set -x \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf group install -y "Development Tools" \
+ && dnf install -y \
+   glibc-static \
+   popt-static \
+   libzstd-devel \
+   lz4-devel \
+   lz4-static \
+   openssl-devel \
  && export RSYNC_VER=3.2.7 \
- && wget https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -O rsync-${RSYNC_VER}.tar.gz \
+ && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
  && tar -xf rsync-${RSYNC_VER}.tar.gz \
- && ls -l \
  && cd rsync-${RSYNC_VER} \
  && ./configure --prefix=/tmp/rsync --disable-xxhash \
+# Get rid of the pot files
+ && sed -i -s 's/SUBDIRS\(.*\) po \(.*\)/SUBDIRS\1 \2/g' Makefile \
  && make -j `nproc` \
  && make install
 
@@ -69,13 +76,13 @@ COPY sshd_config limits.conf /tmp/
 
 # Install the minimum tools
 RUN set -x \
- && yum update -y \
- && yum install -y 'dnf-command(config-manager)' \
- && yum config-manager --enable devel \
- && yum config-manager --enable extras \
- && yum config-manager --enable plus \
- && yum update -y \
- && yum install -y \
+ && dnf update -y \
+ && dnf install -y 'dnf-command(config-manager)' \
+ && dnf config-manager --enable devel \
+ && dnf config-manager --enable extras \
+ && dnf config-manager --enable plus \
+ && dnf update -y \
+ && dnf install -y \
       autoconf \
       automake \
       binutils \
@@ -87,6 +94,7 @@ RUN set -x \
       #guile \
       #hardening-check \
       java-1.8.0-openjdk-devel \
+      jq \
       libevent-devel \
       make \
       ncurses-devel \
@@ -162,13 +170,13 @@ RUN chown -R admin:admin /home/admin \
  && chmod 700 /home/admin/.ssh \
  && touch /home/admin/.ssh/authorized_keys \
 # Install git-lfs and jq separately
- && sudo yum install -y \
+ && sudo dnf install -y \
       git-lfs \
       libzstd \
       jq \
 # Install the latest git
  && export GIT_VER=2.47.1 \
- && sudo yum install -y \
+ && sudo dnf install -y \
     expat-devel \
     gettext \
     gnutls-devel \

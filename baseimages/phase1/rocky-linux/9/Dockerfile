@@ -140,7 +140,7 @@ RUN set -x \
  && chmod 0600 /etc/ssh/* \
  && mv /tmp/limits.conf /etc/security/ \
 # Just in case: Remove the nologin file that prevents the user from ssh-ing into this container
- && sudo rm -f /run/nologin \
+ && rm -f /run/nologin \
 # Install the latest version of gradle
  && cd /tmp \
  && export GRADLE_VER=7.4.2 \

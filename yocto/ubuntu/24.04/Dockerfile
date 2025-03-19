@@ -12,7 +12,7 @@ RUN set -x \
         gawk \
         git-core \
         iputils-ping \
-        libegl1-mesa \
+        libegl-mesa0 \
         libelf-dev \
         liblz4-tool \
         libsdl1.2-dev \

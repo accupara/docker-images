@@ -19,7 +19,8 @@ RUN set -x \
     iproute2 \
     iputils-ping \
     libboost-dev \
-    libegl1-mesa \
+    libegl-mesa0 \
+    libegl1-mesa-dev \
     libsdl1.2-dev \
     libz-dev \
     pylint \

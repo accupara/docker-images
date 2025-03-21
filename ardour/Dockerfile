@@ -10,8 +10,7 @@ RUN set -x \
         flex \
         gnupg \
         gperf \
-        libncurses5-dev \
-        libncurses5 \
+        libncurses-dev \
         libgl1-mesa-dev \
         libx11-dev \
         libxml2-utils \

@@ -5,7 +5,7 @@ RUN set -x \
  && sudo apt-get update -y \
  && sudo apt-get install -y \
     python3-pip \
- && sudo python3 -m pip install \
+ && sudo python3 -m pip install --break-system-packages \
     tensorflow \
 # Clean up image
  && sudo eatmydata apt-get clean \

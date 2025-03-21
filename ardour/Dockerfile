@@ -40,7 +40,6 @@ RUN set -x \
         ocaml-nox \
         gperf \
         meson \
-        python2 \
         python3 \
         python3-pip \
         build-essential \

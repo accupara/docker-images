@@ -30,7 +30,8 @@ RUN set -x \
  "build-tools;30.0.2" \
  "platforms;android-29" \
  "cmake;3.18.1" \
-# Install conan and self detect
+# Install conan and self detect (this requires removing the system installed distro package)
+ && sudo apt-get purge -y python3-distro \
  && sudo python3 -m pip install --break-system-packages conan \
  && conan profile detect \
 # Minimize image

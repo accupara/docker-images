@@ -2,8 +2,9 @@
 FROM accupara/ubuntu:24.04
 
 # https://github.com/emscripten-core/emsdk/tags
+# Cmake: https://cmake.org/download/
 ENV EMSCRIPTEN_VERSION=3.1.64 \
-    CMAKE_VER=3.27.9 \
+    CMAKE_VER=4.0.0 \
     EMSDK=/emsdk
 
 RUN set -x \

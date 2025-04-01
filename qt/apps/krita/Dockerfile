@@ -2,7 +2,7 @@
 FROM accupara/qt5:ubuntu_2204
 
 # Cmake: https://cmake.org/download/
-ENV CMAKE_VER=3.27.9 \
+ENV CMAKE_VER=4.0.0 \
     BOOST_VER=1_84_0
 
 SHELL [ "/bin/bash", "-c" ]

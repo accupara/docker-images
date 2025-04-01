@@ -2,7 +2,7 @@
 FROM accupara/ubuntu:24.04
 
 # Cmake: https://cmake.org/download/
-ENV CMAKE_VER=3.27.9
+ENV CMAKE_VER=4.0.0
 
 RUN set -x \
  && sudo eatmydata apt-get update \

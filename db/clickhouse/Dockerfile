@@ -1,7 +1,8 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:24.04
 
-ENV CMAKE_VER=3.27.9 \
+# Cmake: https://cmake.org/download/
+ENV CMAKE_VER=4.0.0 \
     LLVM_VER=18 \
     CC=clang \
     CXX=clang++

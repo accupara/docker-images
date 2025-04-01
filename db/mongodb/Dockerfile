@@ -8,7 +8,7 @@ FROM accupara/ubuntu:24.04
 # Also: lld, gdb
 
 # Cmake: https://cmake.org/download/
-ENV CMAKE_VER=3.27.9 \
+ENV CMAKE_VER=4.0.0 \
     SRC_ROOT=/tmp/src/mongo
 
 RUN set -x \

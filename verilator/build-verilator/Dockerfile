@@ -8,7 +8,7 @@ RUN set -x \
 # Info from: https://verilator.org/guide/latest/install.html
        autoconf \
        bison \
-       clang-format-11 \
+       clang-format \
        cmake \
        flex \
        graphviz \

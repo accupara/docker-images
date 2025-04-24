@@ -2,7 +2,7 @@
 FROM accupara/openjdk:11
 
 # https://cassandra.apache.org/_/download.html
-ENV CASSANDRA_VER=4.1.6
+ENV CASSANDRA_VER=5.0.4
 
 # Instructions copied from https://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html
 RUN set -x \

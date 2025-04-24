@@ -14,7 +14,8 @@ RUN set -x \
  && sudo eatmydata apt-get install -y \
     fontconfig \
     libfreetype6 \
-    libgl1-mesa-glx \
+    libgl1-mesa-dev \
+    libglx-mesa0 \
     p7zip-full \
     squashfs-tools \
     tar \

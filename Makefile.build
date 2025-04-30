@@ -89,7 +89,7 @@ ifdef WINDOWS
 	${DOCKER} run -i \
 		--name ${DOCKER_INT_CTR_NAME} \
 		$(IMGTAG):$(IMGVER) \
-		sfc /scannow
+		cmd.exe /c "sc config trustedinstaller start= auto; net start trustedinstaller; sfc /scannow"
 	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
 endif

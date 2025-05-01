@@ -84,6 +84,11 @@ else
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 endif
+	${MAKE} build_windows_scannow
+endif
+
+.PHONY: build_windows_scannow
+build_windows_scannow:
 ifdef WINDOWS
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME}
 	${DOCKER} run -i \
@@ -92,7 +97,6 @@ ifdef WINDOWS
 		cmd.exe /c "sc config trustedinstaller start= auto; net start trustedinstaller; sfc /scannow"
 	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
-endif
 endif
 
 include $(shell git rev-parse --show-toplevel)/Makefile.cleanpushpull

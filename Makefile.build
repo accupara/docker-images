@@ -94,7 +94,7 @@ ifdef WINDOWS
 	${DOCKER} run -i \
 		--name ${DOCKER_INT_CTR_NAME} \
 		$(IMGTAG):$(IMGVER) \
-		cmd.exe /c "sc.exe config trustedinstaller start= auto; net start trustedinstaller; sfc.exe /scannow"
+		powershell.exe /c "Set-Service -Name "TrustedInstaller" -StartupType Automatic ; Start-Service -Name "TrustedInstaller" ; sc.exe config trustedinstaller start= auto; net start trustedinstaller; sfc.exe /scannow"
 	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
 endif

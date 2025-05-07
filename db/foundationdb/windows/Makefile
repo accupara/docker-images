@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-IMGTAG?=us.gcr.io/crave-228104/foundationdb
+IMGTAG?=us-west1-docker.pkg.dev/crave-228104/docker/foundationdb
 IMGVER?=win_2019
 
 WINDOWS=yes

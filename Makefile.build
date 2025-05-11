@@ -84,7 +84,8 @@ else
 		-t $(IMGTAG):$(IMGVER) \
 		$(CONTEXT_DIR)
 endif
-	${MAKE} build_windows_scannow
+	# This causes all Windows containers to have MAJOR problems starting April 2025. Grrr
+	#${MAKE} build_windows_scannow
 endif
 
 .PHONY: build_windows_scannow
@@ -94,7 +95,7 @@ ifdef WINDOWS
 	${DOCKER} run -i \
 		--name ${DOCKER_INT_CTR_NAME} \
 		$(IMGTAG):$(IMGVER) \
-		powershell.exe /c "net start trustedinstaller; sfc.exe /scannow"
+		powershell.exe /c "net start trustedinstaller ; sfc.exe /scannow ; net stop trustedinstaller ; exit 0"
 	${DOCKER} commit ${DOCKER_INT_CTR_NAME} $(IMGTAG):$(IMGVER)
 	${DOCKER} rm -f ${DOCKER_INT_CTR_NAME} 
 endif

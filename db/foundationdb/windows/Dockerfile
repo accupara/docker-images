@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM us.gcr.io/crave-228104/vstools2022:2019
+FROM us-west1-docker.pkg.dev/crave-228104/docker/vstools2022:2019
 
 ADD install.ps1 /
 

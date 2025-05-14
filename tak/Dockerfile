@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM us.gcr.io/crave-228104/android:latest
+FROM us-west1-docker.pkg.dev/crave-228104/docker/android:latest
 
 RUN set -x \
  && sudo eatmydata apt-get update \

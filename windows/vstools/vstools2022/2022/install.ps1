@@ -8,4 +8,7 @@ if (Test-Path C:\ProgramData\chocolatey\logs\chocolatey.log) {
 #choco install -y visualstudio2022buildtools --execution-timeout 7200 --package-parameters "--allWorkloads --includeRecommended --includeOptional"
 choco install -y visualstudio2022community --execution-timeout 10800 --package-parameters "--allWorkloads --includeRecommended --includeOptional"
 
+# Install the .NET SDK
+choco install dotnet-sdk
+
 Write-Output "VSTools 2022 installed"

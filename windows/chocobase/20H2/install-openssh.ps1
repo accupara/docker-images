@@ -6,10 +6,10 @@ Write-Output "Downloading OpenSSH"
 Invoke-WebRequest "https://github.com/PowerShell/Win32-OpenSSH/releases/download/v8.0.0.0p1-Beta/OpenSSH-Win64.zip" -OutFile OpenSSH-Win64.zip -UseBasicParsing
 
 Write-Output "Expanding OpenSSH"
-Expand-Archive OpenSSH-Win64.zip C:\\
+Expand-Archive OpenSSH-Win64.zip "C:\\Program Files\\"
 Remove-Item -Force OpenSSH-Win64.zip
 
-Push-Location C:\\OpenSSH-Win64
+Push-Location "C:\\Program Files\\OpenSSH-Win64"
 Write-Output "Enable logfile"
 ((Get-Content -path sshd_config_default -Raw) -replace '#SyslogFacility AUTH','SyslogFacility LOCAL0') | Set-Content -Path sshd_config_default
 # Write-Output "Disabling password authentication"
@@ -34,7 +34,7 @@ Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `
     -Value ((Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
-         + ";C:\\OpenSSH-Win64")
+         + ";C:\\Program Files\\OpenSSH-Win64")
 
 Write-Output "Adding public key to authorized_keys"
 $keyPath = "~\\.ssh\\authorized_keys"
@@ -42,7 +42,7 @@ New-Item -Type Directory ~\\.ssh > $null
 $sshKey | Out-File $keyPath -Encoding Ascii
 
 # Setup openssh server config
-Set-Content -Path "C:\ProgramData\ssh\sshd_config" -Value (get-content -Path "C:\OpenSSH-Win64\sshd_config_default" | Select-String -Pattern 'Match Group administrators' -NotMatch)
+Set-Content -Path "C:\ProgramData\ssh\sshd_config" -Value (get-content -Path "C:\Program Files\OpenSSH-Win64\sshd_config_default" | Select-String -Pattern 'Match Group administrators' -NotMatch)
 Set-Content -Path "C:\ProgramData\ssh\sshd_config" -Value (get-content -Path "C:\ProgramData\ssh\sshd_config" | Select-String -Pattern 'AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys' -NotMatch)
 
 Write-Output "Setting sshd service startup type to 'Manual'"

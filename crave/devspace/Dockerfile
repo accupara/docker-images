@@ -139,6 +139,8 @@ RUN set -x \
  && register-python-argcomplete crave > /tmp/crave_bash_completion \
  && cp /tmp/crave_bash_completion /home/admin/.bash_completion.d/crave \
  && sudo chown -R admin:admin /home/admin/.bash_completion.d \
+# Install Rclone
+ && curl https://rclone.org/install.sh | sudo bash -s beta \
 # Save the telegram upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/telegram \
  && sudo chown -R admin:admin /opt/crave \

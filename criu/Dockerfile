@@ -31,6 +31,7 @@ RUN set -x \
 	python3-pip \
 	python3-protobuf \
 	python3-yaml \
+    uuid-dev \
 # Cleanup
  && sudo eatmydata apt-get clean \
  && sudo rm -rf /var/lib/apt/lists/*

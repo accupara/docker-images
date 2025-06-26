@@ -10,6 +10,7 @@ ENV YQ_VER=4.40.3 \
     CRANE_VER=0.19.0 \
     CI=true \
     JAVA_HOME=/opt/java/openjdk \
+    CRAVETUN=1 \
     PATH=/opt/java/openjdk/bin:/opt/java/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Keep the update separate so that Docker build system can cache it.

@@ -1,6 +1,8 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:24.04
 
+# Information collected from https://docs.ubports.com/en/latest/porting/introduction/Setting_up.html
+
 RUN set -x \
 # Enable i386 architecture
  && sudo dpkg --add-architecture i386 \

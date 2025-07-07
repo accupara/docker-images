@@ -13,7 +13,7 @@ main() {
     find .repo -name '*.lock' -delete
     repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune 2>&1 | tee /tmp/output.txt
 
- if ! grep -qe "Failing repos:\|uncommitted changes are present" /tmp/output.txt ; then
+ if ! grep -qe "Failing repos\|uncommitted changes are present" /tmp/output.txt ; then
          echo "All repositories synchronized successfully."
          exit 0
     else
@@ -21,7 +21,7 @@ main() {
     fi
 
     # Check if there are any failing repositories
-    if grep -q "Failing repos:" /tmp/output.txt ; then
+    if grep -q "Failing repos" /tmp/output.txt ; then
         echo "Deleting failing repositories..."
         # Extract failing repositories from the error message and echo the deletion path
         while IFS= read -r line; do

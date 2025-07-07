@@ -36,13 +36,13 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
+ && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -a -G wheel admin \
 # Add to sudoers
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/admin \
  && mkdir -p /var/run/sshd
 
 COPY sshd_config /etc/ssh/sshd_config

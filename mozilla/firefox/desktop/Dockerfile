@@ -22,10 +22,10 @@ RUN set -x \
  && python3 download.py \
  && sudo mv git-cinnabar git-remote-hg /usr/bin/ \
 # Clone the sources into /tmp/src/mozilla-unified
- && git clone https://github.com/mozilla/gecko-dev.git mozilla-unified \
+ && git clone --depth=1 https://github.com/mozilla-firefox/firefox mozilla-unified \
 # Go into the sources and then mach bootstrap
  && cd mozilla-unified \
- && ./mach --no-interactive bootstrap \
+ && ./mach --no-interactive bootstrap --application-choice browser \
 # Don't keep any of the sources in the container. Just the deps need installation
  && cd /tmp \
  && sudo find src -delete \

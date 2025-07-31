@@ -72,3 +72,10 @@ everything_dirs: $(foreach dir,${DIRS},everything_dir_${dir})
 everything:
 	$(MAKE) -j4 everything_phase2
 	$(MAKE) -j4 everything_dirs
+
+everything_manifests:
+	${MAKE} -C baseimages/phase1 manifest -k
+	${MAKE} -C baseimages/phase2 manifest -k
+	for i in $(foreach dir,${DIRS},everything_dir_${dir}) ; do \
+		make -C $$i manifest -k ; \
+	done

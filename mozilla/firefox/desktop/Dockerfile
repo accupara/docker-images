@@ -34,4 +34,5 @@ RUN set -x \
  && sudo rm -rf /var/lib/apt/lists/*
 
 ENV SHELL=/bin/bash \
-    PATH=/home/admin/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/home/admin/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    MOZBUILD_STATE_PATH=/home/admin/.mozbuild

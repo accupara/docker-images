@@ -61,7 +61,7 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # https://mirrors.edge.kernel.org/pub/software/scm/git/
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
-ENV GIT_VER=2.48.1 \
+ENV GIT_VER=2.50.1 \
     GIT_LFS_VER=3.6.0 \
     CURL_VER=8.12.1 \
     PY3_VER=3.8.20 \

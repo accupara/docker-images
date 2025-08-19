@@ -177,7 +177,7 @@ RUN chown -R admin:admin /home/admin \
       libzstd \
       jq \
 # Install the latest git
- && export GIT_VER=2.47.1 \
+ && export GIT_VER=2.50.1 \
  && sudo dnf install -y \
     expat-devel \
     gettext \

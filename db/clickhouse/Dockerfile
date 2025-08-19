@@ -3,7 +3,7 @@ FROM accupara/ubuntu:24.04
 
 # Cmake: https://cmake.org/download/
 ENV CMAKE_VER=4.0.0 \
-    LLVM_VER=18 \
+    LLVM_VER=20 \
     CC=clang \
     CXX=clang++
 

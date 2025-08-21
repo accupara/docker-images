@@ -1,58 +1,35 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
 
 # Compile remake on the fly and keep it ready for the next stage
-## Chicken or egg : Which came first?
-FROM debian:10 AS remake
+FROM debian:13 AS remake
 RUN set -x \
- && sed -s 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' </etc/apt/sources.list >/tmp/sources.list \
- && mv /tmp/sources.list /etc/apt/sources.list \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y \
-       autoconf \
-       autopoint \
-       build-essential \
-       git \
-       guile-2.2-dev \
-       pkg-config \
-       rsync \
-       texinfo \
- && git clone https://github.com/rocky/remake.git \
+      autoconf \
+      autopoint \
+      build-essential \
+      guile-2.2-dev \
+      pkg-config \
+      rsync \
+      texinfo \
+      wget \
+ && wget -q https://github.com/Trepan-Debuggers/remake/archive/refs/tags/remake-4.3+dbg-1.6.tar.gz -O remake.tar.gz \
+ && tar -xf remake.tar.gz \
+ && mv remake-remake-4.3-dbg-1.6 remake \
  && cd remake \
  && ./autogen.sh \
  && make -j `nproc` \
  && mv ./make /tmp/
 
-FROM debian:10 AS rsync
-RUN set -x \
- && sed -s 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' </etc/apt/sources.list >/tmp/sources.list \
- && mv /tmp/sources.list /etc/apt/sources.list \
- && apt-get update -y \
- && apt-get install -y \
-       build-essential \
-       curl \
-       golang-github-pierrec-xxhash-dev \
-       libpopt-dev \
-       libssl-dev \
-       liblz4-dev \
-       zlib1g-dev \
- && export RSYNC_VER=3.2.7 \
- && curl https://download.samba.org/pub/rsync/src/rsync-${RSYNC_VER}.tar.gz -o rsync-${RSYNC_VER}.tar.gz \
- && tar -xf rsync-${RSYNC_VER}.tar.gz \
- && cd rsync-${RSYNC_VER} \
- && ./configure --prefix=/tmp/rsync --disable-xxhash --disable-zstd \
-# This command fails because of the stupid way the linker needs the correct order, but the Makefile isn't written in a way to support that.
- && make -j `nproc` \
- && make install \
- && strip /tmp/rsync/bin/rsync
-
 ################## The real container starts here ##################
-FROM debian:10
+FROM debian:13
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
 COPY sshd_config /tmp/
 
-# Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
+# For Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
 # Gradle: https://gradle.org/releases/
 ENV GIT_VER=2.50.1 \
     GIT_LFS_VER=3.6.0 \
@@ -60,40 +37,39 @@ ENV GIT_VER=2.50.1 \
     GIT_TERMINAL_PROMPT=0
 
 # Install the minimum tools
-RUN export DEBIAN_FRONTEND=noninteractive \
- && set -x \
- && sed -s 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' </etc/apt/sources.list >/tmp/sources.list \
- && mv /tmp/sources.list /etc/apt/sources.list \
+SHELL ["/bin/bash", "-c"]
+RUN set -x \
+ && export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y eatmydata \
  && eatmydata apt-get -y dist-upgrade \
  && eatmydata apt-get install -y \
-        bash-completion \
-        binutils \
-        build-essential \
-        curl \
-        debhelper \
-        devscripts \
-        dh-make \
-        guile-2.2 \
-        jq \
-        libpopt0 \
-        locales \
-        lsb-release \
-        ninja-build \
-        openssh-server \
-        subversion \
-        sudo \
-        vim-nox \
-        wget \
+      bash-completion \
+      binutils \
+      build-essential \
+      curl \
+      debhelper \
+      devscripts \
+      dh-make \
+      guile-2.2 \
+      jq \
+      libpopt0 \
+      locales \
+      lsb-release \
+      ninja-build \
+      openssh-server \
+      subversion \
+      sudo \
+      vim-nox \
+      wget \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
 # Install the latest git
  && eatmydata apt-get install -y \
-        libcurl4-gnutls-dev \
-        libexpat1-dev \
-        libssl-dev \
-        zlib1g-dev \
+      libcurl4-gnutls-dev \
+      libexpat1-dev \
+      libssl-dev \
+      zlib1g-dev \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
@@ -115,11 +91,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && cd git-lfs-${GIT_LFS_VER} \
  && ./install.sh \
 # Install the latest version of gradle
- && cd /tmp/dl \
+ && cd /tmp \
  && wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VER}-bin.zip \
- && eatmydata -- unzip gradle-${GRADLE_VER}-bin.zip \
+ && unzip gradle-${GRADLE_VER}-bin.zip \
  && mv gradle-${GRADLE_VER} /usr/lib/ \
  && ln -sf /usr/lib/gradle-${GRADLE_VER}/bin/gradle /usr/bin/gradle \
+ && rm gradle-${GRADLE_VER}-bin.zip \
 # Install the latest version of repo, as described in https://gerrit.googlesource.com/git-repo
  && curl https://storage.googleapis.com/git-repo-downloads/repo >/tmp/repo \
  && sudo mv /tmp/repo /usr/bin/repo \
@@ -189,6 +166,6 @@ RUN set -x \
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake
-COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
+#COPY --from=rsync  /tmp/rsync/bin/rsync /tmp/rsync/bin/rsync-ssl /usr/bin/
 
 EXPOSE 22

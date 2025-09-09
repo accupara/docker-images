@@ -5,7 +5,7 @@ FROM accupara/debian:10
 # Maven: https://maven.apache.org/download.cgi
 ENV JAVA_HOME=/opt/java/openjdk \
     PATH=/opt/java/openjdk/bin:/opt/java/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-    MAVEN_VER=3.9.5
+    MAVEN_VER=3.9.11
 
 # See https://hub.docker.com/_/eclipse-temurin
 COPY --from=jdk /opt/java/openjdk /opt/java/openjdk

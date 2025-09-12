@@ -2,7 +2,7 @@
 FROM accupara/openjdk:19
 
 # Cmake: https://cmake.org/download/
-ENV CMAKE_VER=4.0.0 \
+ENV CMAKE_VER=4.1.1 \
     PROTOBUF_VER=3.7.1 \
     BOOST_VER=1_82_0
 

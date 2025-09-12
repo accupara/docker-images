@@ -3,7 +3,7 @@ FROM accupara/ubuntu:24.04
 
 # Cmake: https://cmake.org/download/
 ENV BOOST_VER=1_83_0 \
-    CMAKE_VER=4.0.0 \
+    CMAKE_VER=4.1.1 \
     SWIFT_VER=5.8.1
 # On a separate line so that it can pick up values from the previous ENV
 ENV BOOST_ROOT=/opt/boost_${BOOST_VER}

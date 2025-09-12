@@ -4,7 +4,7 @@ FROM accupara/ubuntu:24.04
 # https://github.com/emscripten-core/emsdk/tags
 # Cmake: https://cmake.org/download/
 ENV EMSCRIPTEN_VERSION=3.1.64 \
-    CMAKE_VER=4.0.0 \
+    CMAKE_VER=4.1.1 \
     EMSDK=/emsdk
 
 RUN set -x \

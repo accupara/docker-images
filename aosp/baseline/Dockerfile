@@ -114,6 +114,7 @@ RUN set -x \
     pngcrush \
     python3 \
     python3-mako \
+    python3-pil \
     schedtool \
     sed \
     squashfs-tools \

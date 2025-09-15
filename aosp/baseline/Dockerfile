@@ -1,6 +1,7 @@
 # Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
-FROM accupara/golang:1.23-bullseye AS atools
+FROM accupara/golang:1.25-bookworm AS atools
 
+# https://github.com/nmeum/android-tools#installation
 ENV ANDROID_TOOLS_VER=35.0.1
 
 RUN set -x \
@@ -9,6 +10,7 @@ RUN set -x \
     cmake \
     golang-goprotobuf-dev \
     libbrotli-dev \
+    libfmt-dev \
     libgtest-dev \
     liblz4-dev \
     libpcre2-dev \
@@ -27,11 +29,12 @@ RUN set -x \
  && make -j `nproc` \
  && sudo make install
 
-FROM accupara/debian:12
+FROM accupara/debian:13
 
+# https://github.com/mikefarah/yq
 # https://github.com/mesonbuild/meson/releases
-ENV YQ_VER=4.40.3 \
-    MESON_VER=1.4.0 \
+ENV YQ_VER=4.47.2 \
+    MESON_VER=1.9.0 \
     REPO_NO_INTERACTIVE=1
 
 RUN set -x \
@@ -53,11 +56,12 @@ RUN set -x \
     imagemagick \
     libfreetype6 \
     libncurses-dev \
-    libncurses5 \
+    libncurses6 \
     libgl1-mesa-dev \
-    libtinfo5 \
+    libtinfo6 \
     libx11-dev \
     libxml2-utils \
+    lintian \
     meson \
     ninja-build \
     openjdk-11-jdk \
@@ -85,6 +89,7 @@ RUN set -x \
     dialog \
     dos2unix \
     expect \
+    fastfetch \
     flex \
     g++ \
     gawk \
@@ -95,26 +100,24 @@ RUN set -x \
     git \
     gperf \
     jq \
-    liblz4-tool \
     libncurses-dev \
     libsdl1.2-dev \
     libssl-dev \
     libstdc++6 \
     libxml2 \
     libxml2-utils \
-    lintian \
     lld \
     lldb \
     llvm \
+    lz4 \
     lzop \
     make \
-    neofetch \
     openssl \
     perl \
     pngcrush \
     python3 \
     python3-mako \
-    python3-pil \
+    #python3-pil \
     schedtool \
     sed \
     squashfs-tools \
@@ -131,6 +134,9 @@ RUN set -x \
     iputils-tracepath \
     inetutils-tools \
     xmlstarlet \
+# Broken packages if these arent installed separately with version lockdown
+# && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
+#    libyaml-libyaml-perl=2.119.0 \
 # Requested by users
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get -y install \
     nano \

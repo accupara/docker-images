@@ -142,6 +142,8 @@ RUN set -x \
  && sudo chown -R admin:admin /home/admin/.bash_completion.d \
 # Install Rclone
  && curl https://rclone.org/install.sh | sudo bash -s beta \
+# Get kitty-terminfo for proper kitty terminal support
+ && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y kitty-terminfo \
 # Save the telegram upload.sh script into the appropriate location
  && sudo mkdir -p /opt/crave/telegram \
  && sudo chown -R admin:admin /opt/crave \

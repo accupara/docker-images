@@ -29,7 +29,7 @@ del C:\ProgramData\chocolatey\logs\chocolatey.log
 Set-ItemProperty `
     -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' `
     -Name PATH `
-    -Value ("C:\OpenSSH-Win64;" `
+    -Value ("C:\Program Files\OpenSSH-Win64;" `
          + (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path `
          + ";C:\Program Files\Git\bin\" `
          + ";C:\ProgramData\chocolatey\lib\Emacs\tools\emacs\bin" `

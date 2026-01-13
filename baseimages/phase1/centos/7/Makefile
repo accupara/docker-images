@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/centos
 IMGVER_BASE?=7
 # I'm dropping ppc64le because I dont want to deal with binfmt

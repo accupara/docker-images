@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 FROM eclipse-temurin:8-jdk-centos7 AS jdk
 FROM accupara/xpra:24.04
 

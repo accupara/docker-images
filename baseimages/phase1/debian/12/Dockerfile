@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 
 # Compile remake on the fly and keep it ready for the next stage
 FROM debian:12 AS remake

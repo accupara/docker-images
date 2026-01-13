@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 
 ## Note: no remake compilation here because we're going to use the distro supplied remake
 FROM archlinux/archlinux:multilib-devel

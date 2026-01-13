@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 IMGTAG?=accupara/drpacker
 IMGVER_BASE?=golang-1.25-bookworm
 IMGVER_TARGETS?=aarch64 x86_64 ppc64le

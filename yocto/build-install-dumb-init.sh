@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 
 # This script is a simplification of https://github.com/crops/yocto-dockerfiles/blob/master/build-install-dumb-init.sh
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 FROM accupara/ubuntu:24.04
 
 # Dependencies captured in the readme.md at https://github.com/apache/guacamole-server

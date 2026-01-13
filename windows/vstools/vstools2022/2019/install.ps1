@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 # Remove any previous choco logs so that its easier to read logs later
 if (Test-Path C:\ProgramData\chocolatey\logs\chocolatey.log) {
     Remove-Item C:\ProgramData\chocolatey\logs\chocolatey.log

@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 FROM accupara/yocto:ubuntu_2404
 
 SHELL ["/bin/bash", "-c"]

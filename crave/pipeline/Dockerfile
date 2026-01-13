@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2025 Crave.io Inc. All rights reserved
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 FROM ubuntu:24.04 AS crave
 RUN set -x \
 # Install curl and wget: so that we can get crave

@@ -53,6 +53,12 @@ else
     echo "No zip files found in out/target/product/$DEVICE/"
 fi
 
+# Check if device json file exists
+if [ -f "out/target/product/$DEVICE/$DEVICE.json" ]; then
+    EXTRAFILES+=" out/target/product/$DEVICE/$DEVICE.json"
+    echo "Adding $DEVICE.json to extra files"
+fi
+
 echo "Extra Files to be uploaded: $EXTRAFILES"
 
 # Create release	

@@ -16,15 +16,19 @@ if [ "${DCDEVSPACE:-0}" == "1" ]; then
     read -p "Email - ID : " MAIL
     SUBJECT="/C=$C/ST=$ST/L=$L/O=$O/OU=$OU/CN=$CN/emailAddress=$MAIL"
     echo
-    echo "This is the password which the certificates you generate will use."
+    echo "This is the password which the certificates you generate will use. Leave this blank if building inline."
     read -sp "Enter the password: " PASS
     echo
-    echo "Remember this password, this is the password which is used to encrypt your password. This will be used further used in crave_sign script."
-    read -sp "Enter the Encryption Password: " PASS_ENCRYPT
-    echo
-    if ! printf "$PASS" | openssl enc -aes-256-cbc -iter 256 -salt -out "$CERT_DIR/password.enc" -pass pass:"$PASS_ENCRYPT"; then
-        echo "Failed to encrypt the password"
-        exit 1
+    if [ -n "$PASS" ]; then
+        echo "Remember this password, this is the password which is used to encrypt your password. This will be used further used in crave_sign script."
+        read -sp "Enter the Encryption Password: " PASS_ENCRYPT
+        echo
+        if ! printf "$PASS" | openssl enc -aes-256-cbc -iter 256 -salt -out "$CERT_DIR/password.enc" -pass pass:"$PASS_ENCRYPT"; then
+            echo "Failed to encrypt the password"
+            exit 1
+        fi
+    else
+        echo "Password not entered, Skipping Password Encryption!"
     fi
     # Copy the make_key tool to the temporary directory
     cp ./development/tools/make_key "$CERT_DIR/"

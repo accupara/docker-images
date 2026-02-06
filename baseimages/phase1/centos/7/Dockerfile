@@ -78,10 +78,10 @@ FROM centos:7
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
-# Git: https://mirrors.edge.kernel.org/pub/software/scm/git/
+# Git: https://mirrors.edge.kernel.org/pub/software/scm/git/ ## No version beyond 2.48.1 compiles in Centos 7
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
-ENV GIT_VER=2.50.1 \
+ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     TMUX_VERSION=3.3 \
@@ -219,6 +219,12 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
  && sudo make prefix=/usr CFLAGS="-std=gnu99" install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
+ && if [ $(git --version | grep -c $GIT_VER) == "1" ] ; then \
+        echo Correct ; \
+    else \
+        echo Incorrect ; \
+        exit 1 ; \
+    fi \
 # Make sure to install git-lfs the direct way. no mucking around with apt
  && cd /tmp/dl \
  && arch="$(uname -m)"; \

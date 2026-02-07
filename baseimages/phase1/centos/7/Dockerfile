@@ -81,10 +81,12 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 # Git: https://mirrors.edge.kernel.org/pub/software/scm/git/ ## No version beyond 2.48.1 compiles in Centos 7
 # Gradle: https://gradle.org/releases/
 # Tmux: https://github.com/tmux/tmux/releases
+# OpenSSL: https://openssl-library.org/source/
 ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     GRADLE_VER=8.7 \
     TMUX_VERSION=3.3 \
+    OPENSSL_VER=3.0.19 \
     GIT_TERMINAL_PROMPT=0
 
 COPY sshd_config limits.conf /tmp/
@@ -121,6 +123,8 @@ RUN set -x \
       sudo \
       vim \
       wget \
+# Forcibly set the mode for the sudo binary
+ && chmod 4755 /usr/bin/sudo \
 # install rsync because it allows the updated rsync to work correctly
  && yum install -y \
       rsync \
@@ -176,7 +180,7 @@ WORKDIR /home/admin
 RUN set -x \
  && sudo chown -R admin:admin /home/admin \
 # Helpful aliases
- && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
+ && echo "alias ls='ls --color' && alias ll='ls -l'" >> /home/admin/.bashrc \
 # Let the vimrc have sane defaults
  && echo ":color desert" >> /home/admin/.vimrc \
  && echo "set softtabstop=4 shiftwidth=4 tabstop=4 expandtab" >> /home/admin/.vimrc \
@@ -191,7 +195,7 @@ RUN set -x \
       jq \
 # Create a directory for all the compiled things
  && mkdir -p /tmp/dl \
-# Install the latest git
+# Install the deps for git
  && sudo yum update -y \
  && sudo yum install -y \
     eatmydata \
@@ -204,21 +208,53 @@ RUN set -x \
     libzip-devel \
     openssl-devel \
     unzip \
+# install deps for openssl 3.x
+ && sudo yum install -y \
+    perl-CPAN \
+    perl-Data-Dumper \
+    perl-ExtUtils-MakeMaker \
+    perl-IPC-Cmd \
+    perl-Test-Simple \
+    perl-Time-Piece \
+# Download, build and install OpenSSL >= 3, because curl and git needs it
  && cd /tmp/dl \
+ && wget https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz \
+ && tar -xf openssl-${OPENSSL_VER}.tar.gz \
+ && cd openssl-${OPENSSL_VER} \
+ && ./config --prefix=/opt/openssl3 --openssldir=/opt/openssl3 shared zlib \
+ && make -j $(nproc) \
+ && make test \
+ && sudo make install \
+ && echo "/opt/openssl3/lib64" | sudo tee /etc/ld.so.conf.d/openssl3.conf \
+ && sudo ldconfig \
+ && /opt/openssl3/bin/openssl version | grep ${OPENSSL_VER} \
+ && if [ $(/opt/openssl3/bin/openssl version | grep -c ${OPENSSL_VER}) == "1" ] ; then \
+        echo found ; \
+    else \
+        echo "Incorrect OpenSSL version" ; \
+        exit 1 ; \
+    fi \
 # compile libcurl first
+ && cd /tmp/dl \
  && git clone https://github.com/curl/curl.git curl \
  && cd curl \
  && autoreconf -fi \
- && ./configure --with-openssl --prefix /usr --libdir /usr/lib64 \
+ && ./configure --with-openssl=/opt/openssl3 --prefix /usr --libdir /opt/openssl3/lib64 \
  && make -j `nproc` \
  && sudo make install \
- && cd .. \
-# Then compile git with this libcurl
+# Then compile git with this libcurl and openssl
+ && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && make prefix=/usr CFLAGS="-std=gnu99" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
- && sudo make prefix=/usr CFLAGS="-std=gnu99" install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
+ && ./configure --prefix=/usr \
+        CFLAGS="-I/opt/openssl3/include -DNO_GETRANDOM" \
+        LDFLAGS="-L/opt/openssl3/lib64" \
+        --with-openssl=/opt/openssl3 \
+# && make prefix=/usr CFLAGS="-std=gnu99 -I/opt/openssl3/include" LDFLAGS="-L/opt/openssl3/lib64" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
+ && make all -j `nproc` 2>&1 | tee /tmp/git.build.log \
+# && sudo make prefix=/usr CFLAGS="-std=gnu99" install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
+ && sudo make install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
  && if [ $(git --version | grep -c $GIT_VER) == "1" ] ; then \
         echo Correct ; \
     else \

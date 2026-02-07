@@ -256,9 +256,9 @@ RUN set -x \
 # && sudo make prefix=/usr CFLAGS="-std=gnu99" install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
  && sudo make install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
  && if [ $(git --version | grep -c $GIT_VER) == "1" ] ; then \
-        echo Correct ; \
+        echo "Correct git version" ; \
     else \
-        echo Incorrect ; \
+        echo "Incorrect git version" ; \
         exit 1 ; \
     fi \
 # Make sure to install git-lfs the direct way. no mucking around with apt
@@ -281,16 +281,26 @@ RUN set -x \
  && echo "exclude=git*" | sudo tee -a /etc/yum.conf \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) == "x86_64" ] ; then \
-         echo "[jfrog-cli]" >jfrog-cli.repo \
-      && echo "name=jfrog-cli" >>jfrog-cli.repo \
-      && echo "baseurl=https://releases.jfrog.io/artifactory/jfrog-rpms" >>jfrog-cli.repo \
-      && echo "enabled=1" >> jfrog-cli.repo \
-      && sudo rpm --import https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key \
-      && sudo mv jfrog-cli.repo /etc/yum.repos.d/ \
-      && sudo yum install -y jfrog-cli jfrog-cli-v2-jf \
-  ; fi \
+# Create and configure the JFrog CLI YUM repository
+        echo "[jfrog-cli]" >jfrog-cli.repo ; \
+        echo "name=JFrog CLI" >>jfrog-cli.repo ; \
+        echo "baseurl=https://releases.jfrog.io/artifactory/jfrog-rpms" >>jfrog-cli.repo ; \
+        echo "enabled=1" >>jfrog-cli.repo ; \
+        echo "gpgcheck=1" >>jfrog-cli.repo ; \
+# Import GPG keys for verifying packages
+# Note: Two keys are imported for backward compatibility with older versions
+        sudo rpm --import https://releases.jfrog.io/artifactory/api/v2/repositories/jfrog-rpms/keyPairs/primary/public ; \
+        sudo rpm --import https://releases.jfrog.io/artifactory/api/v2/repositories/jfrog-rpms/keyPairs/secondary/public ; \
+# Move the repository file to the YUM configuration directory
+        sudo mv jfrog-cli.repo /etc/yum.repos.d/ ; \
+# Install the JFrog CLI package
+        sudo yum update -y ; \
+        sudo yum install -y jfrog-cli jfrog-cli-v2-jf ; \
+        true ; \
+    fi \
 # Cleanup
- && cd /tmp && find /tmp/dl -delete
+ && echo "Its cleanup time!!" \
+ && cd /tmp && sudo find /tmp/dl -delete
 
 # Copy these at the very end
 COPY --from=remake /tmp/make /usr/bin/remake

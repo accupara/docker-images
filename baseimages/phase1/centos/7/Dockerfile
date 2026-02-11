@@ -123,8 +123,6 @@ RUN set -x \
       sudo \
       vim \
       wget \
-# Forcibly set the mode for the sudo binary
- && chmod 4755 /usr/bin/sudo \
 # install rsync because it allows the updated rsync to work correctly
  && yum install -y \
       rsync \

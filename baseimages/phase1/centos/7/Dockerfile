@@ -221,9 +221,14 @@ RUN set -x \
  && cd openssl-${OPENSSL_VER} \
  && ./config --prefix=/opt/openssl3 --openssldir=/opt/openssl3 shared zlib \
  && make -j $(nproc) \
- && make test \
+# Test everything but AF_ALG because it is not supported in Centos 7.
+# AF_ALG tests fail with "socket: Operation not supported" error and it is not possible to skip only AF_ALG tests, so skipping all tests for now.
+# This is better than having some tests fail and cause confusion.
+ && make test TESTS='-test_afalg' \
  && sudo make install \
- && echo "/opt/openssl3/lib64" | sudo tee /etc/ld.so.conf.d/openssl3.conf \
+# Different library directories depending on the architecture. For example, in x86_64 it is lib64 and in aarch64 it is lib. So add the right one to the ldconfig path
+ && export OPENSSL_LIBDIR=$(find /opt/openssl3 -name libssl.so.3 | xargs dirname) \
+ && echo "$OPENSSL_LIBDIR" | sudo tee /etc/ld.so.conf.d/openssl3.conf \
  && sudo ldconfig \
  && /opt/openssl3/bin/openssl version | grep ${OPENSSL_VER} \
  && if [ $(/opt/openssl3/bin/openssl version | grep -c ${OPENSSL_VER}) == "1" ] ; then \
@@ -237,7 +242,7 @@ RUN set -x \
  && git clone https://github.com/curl/curl.git curl \
  && cd curl \
  && autoreconf -fi \
- && ./configure --with-openssl=/opt/openssl3 --prefix /usr --libdir /opt/openssl3/lib64 \
+ && ./configure --with-openssl=/opt/openssl3 --prefix /usr --libdir $OPENSSL_LIBDIR \
  && make -j `nproc` \
  && sudo make install \
 # Then compile git with this libcurl and openssl
@@ -247,7 +252,7 @@ RUN set -x \
  && cd git-${GIT_VER} \
  && ./configure --prefix=/usr \
         CFLAGS="-I/opt/openssl3/include -DNO_GETRANDOM" \
-        LDFLAGS="-L/opt/openssl3/lib64" \
+        LDFLAGS="-L$OPENSSL_LIBDIR" \
         --with-openssl=/opt/openssl3 \
 # && make prefix=/usr CFLAGS="-std=gnu99 -I/opt/openssl3/include" LDFLAGS="-L/opt/openssl3/lib64" all -j `nproc` 2>&1 | tee /tmp/git.build.log \
  && make all -j `nproc` 2>&1 | tee /tmp/git.build.log \

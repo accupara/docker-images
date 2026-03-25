@@ -175,8 +175,12 @@ RUN set -x \
       yzhang.markdown-all-in-one \
       yzane.markdown-pdf \
       " \
+# We force install the extension into the built-in extensions location.
+# Rules of precedence: Extension in user dir supercedes built-in dir: This is what we want.
  && for i in $PLUGIN_LIST ; do \
-      code-server --install-extension $i ; \
+      sudo code-server \
+        --extensions-dir /usr/lib/code-server/lib/vscode/extensions/ \
+        --install-extension $i ; \
     done \
 # What a load of croc
  && curl https://getcroc.schollz.com | bash \

@@ -165,6 +165,8 @@ RUN set -x \
       bierner.markdown-mermaid \
       crave-io.crave-devspaces \
       eamodio.gitlens \
+      google.gemini-cli-vscode-ide-companion \
+      google.geminicodeassist \
       ms-vscode.cpptools \
       ms-python.python \
       ms-vscode.makefile-tools \

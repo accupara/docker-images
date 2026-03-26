@@ -56,6 +56,7 @@ COPY sshd_config /tmp/
 # https://github.com/ninja-build/ninja/releases
 ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
+    OPENSSL_VER=3.0.19 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
     GIT_TERMINAL_PROMPT=0
@@ -106,22 +107,62 @@ RUN set -x \
       libssl-dev \
       libtool \
       zlib1g-dev \
+# Download, build and install OpenSSL >= 3, because curl and git needs it
  && cd /tmp/dl \
-# compile libcurl first
+ && wget https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz \
+ && tar -xf openssl-${OPENSSL_VER}.tar.gz \
+ && cd openssl-${OPENSSL_VER} \
+ && ./config --prefix=/opt/openssl3 --openssldir=/opt/openssl3 shared zlib \
+ && make -j $(nproc) \
+# Test everything but AF_ALG because it is not supported in Centos 7.
+# AF_ALG tests fail with "socket: Operation not supported" error and it is not possible to skip only AF_ALG tests, so skipping all tests for now.
+# This is better than having some tests fail and cause confusion.
+ && make test TESTS='-test_afalg' \
+ && sudo make install \
+# Different library directories depending on the architecture. For example, in x86_64 it is lib64 and in aarch64 it is lib. So add the right one to the ldconfig path
+ && export OPENSSL_LIBDIR=$(find /opt/openssl3 -name libssl.so.3 | xargs dirname) \
+ && echo "$OPENSSL_LIBDIR" | sudo tee /etc/ld.so.conf.d/openssl3.conf \
+ && sudo ldconfig \
+ && /opt/openssl3/bin/openssl version | grep ${OPENSSL_VER} \
+ && if [ $(/opt/openssl3/bin/openssl version | grep -c ${OPENSSL_VER}) = "1" ] ; then \
+        echo found ; \
+    else \
+        /opt/openssl3/bin/openssl version \
+        /opt/openssl3/bin/openssl version | grep -c ${OPENSSL_VER} \
+        echo "Incorrect OpenSSL version" ; \
+        exit 1 ; \
+    fi \
+# Purge the system libcurl dev package so the linker doesn't pick up the old 
+# version (7.47.0) from the multiarch directory during git compilation.
+ && sudo apt-get purge -y libcurl4-gnutls-dev \
+# compile libcurl
+ && cd /tmp/dl \
  && git clone https://github.com/curl/curl.git curl \
  && cd curl \
  && autoreconf -fi \
- && ./configure --with-openssl --prefix /usr --libdir /usr/lib/x86_64-linux-gnu \
+ && ./configure \
+    --with-openssl=/opt/openssl3 \
+    --prefix /usr \
+    LDFLAGS="-L$OPENSSL_LIBDIR" \
  && make -j `nproc` \
  && sudo make install \
- && cd .. \
 # Then compile git with this libcurl
+ && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
- && ./configure --libexecdir=/usr/lib \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
- && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
+ && ./configure --prefix=/usr \
+        CFLAGS="-I/opt/openssl3/include -DNO_GETRANDOM" \
+        LDFLAGS="-L/usr/lib -L$OPENSSL_LIBDIR" \
+        --with-openssl=/opt/openssl3 \
+ && make all -j `nproc` 2>&1 | tee /tmp/git.build.log \
+ && sudo make install -j `nproc` 2>&1 | tee -a /tmp/git.build.log \
+ && if [ $(git --version | grep -c $GIT_VER) = "1" ] ; then \
+        echo "Correct git version" ; \
+    else \
+        echo "Incorrect git version" ; \
+        exit 1 ; \
+    fi \
 # Make sure to install git-lfs the direct way. no mucking around with apt
  && cd /tmp/dl \
  && arch="$(uname -m)"; \
@@ -204,7 +245,7 @@ RUN set -x \
  && git lfs install \
  && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
- && if [ $(uname -m) == "x86_64" ] ; then \
+ && if [ $(uname -m) = "x86_64" ] ; then \
        wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \
     && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
     && sudo apt-get update \

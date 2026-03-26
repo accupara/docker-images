@@ -67,15 +67,18 @@ RUN set -x \
  && apt-get install -y eatmydata \
  && eatmydata apt-get -y dist-upgrade \
  && eatmydata apt-get install -y \
+      apt-transport-https \
       bash-completion \
       binutils \
       build-essential \
+      ca-certificates \
       curl \
       debhelper \
       devscripts \
       dh-make \
       eatmydata \
       emacs \
+      gnupg2 \
       guile-2.0 \
       jq \
       liblz4-1 \
@@ -246,10 +249,16 @@ RUN set -x \
  && git config --global filter.lfs.smudge "git-lfs smudge -- %f" \
 # Install JFrog CLI only fo x84_64
  && if [ $(uname -m) = "x86_64" ] ; then \
-       wget -qO - https://releases.jfrog.io/artifactory/jfrog-gpg-public/jfrog_public_gpg.key | sudo apt-key add - \
-    && echo "deb https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee -a /etc/apt/sources.list \
-    && sudo apt-get update \
-    && sudo apt-get install -y \
+        # Create the keyrings directory if it doesn't exist 
+        sudo mkdir -p /usr/share/keyrings ; \
+        # Download and save the JFrog GPG key to a keyring file 
+        curl -fsSL https://releases.jfrog.io/artifactory/api/v2/repositories/jfrog-debs/keyPairs/primary/public | sudo gpg --dearmor -o /usr/share/keyrings/jfrog.gpg ; \
+        # Add the JFrog repository to your APT sources with the signed-by option
+        echo "deb [signed-by=/usr/share/keyrings/jfrog.gpg] https://releases.jfrog.io/artifactory/jfrog-debs xenial contrib" | sudo tee /etc/apt/sources.list.d/jfrog.list ; \
+        # Update the package list 
+        sudo apt-get update ; \
+        # Install the JFrog CLI
+        sudo apt-get install -y \
             jfrog-cli \
             jfrog-cli-v2-jf \
   ; fi \

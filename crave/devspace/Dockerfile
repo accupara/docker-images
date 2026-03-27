@@ -185,7 +185,7 @@ RUN set -x \
 # What a load of croc
  && curl https://getcroc.schollz.com | bash \
 # Some python modules worth including in the base devspace image
- && sudo python -m pip -v install --break-system-packages pudb \
+ && sudo python -m pip -v install --break-system-packages --ignore-installed pudb \
 # The usual cleanup
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

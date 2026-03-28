@@ -1,4 +1,5 @@
 #!/bin/bash
+# Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
 
 set -x
 

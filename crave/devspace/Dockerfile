@@ -176,10 +176,11 @@ RUN set -x \
       yzane.markdown-pdf \
       " \
 # We force install the extension into the built-in extensions location.
+ && mkdir -p /opt/crave/code-server/extensions/ \
 # Rules of precedence: Extension in user dir supercedes built-in dir: This is what we want.
  && for i in $PLUGIN_LIST ; do \
       sudo code-server \
-        --extensions-dir /usr/lib/code-server/lib/vscode/extensions/ \
+        --extensions-dir /opt/crave/code-server/extensions/ \
         --install-extension $i ; \
     done \
 # What a load of croc
@@ -191,7 +192,7 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo startup.sh /tmp/
+COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo startup.sh reset_code_server.sh /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mkdir -p /etc/crave/supervisor \
@@ -209,6 +210,8 @@ RUN set -x \
  && sudo mv /tmp/repo /usr/bin/repo.shim \
  && sudo ln -sf /usr/bin/repo.shim /usr/bin/repo \
 # Put the startup script somewhere useful
- && sudo mv /tmp/startup.sh /etc/crave/supervisor
+ && sudo mv /tmp/startup.sh /etc/crave/supervisor \
+# Put the codeserver script in the correct location
+ && sudo mv /tmp/reset_code_server.sh /opt/crave/code-server/extensions/
 
 ENTRYPOINT [ "/etc/crave/supervisor/startup.sh" ]

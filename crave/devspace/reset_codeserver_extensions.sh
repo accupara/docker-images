@@ -3,6 +3,7 @@
 
 #set -x
 
+mkdir -p ~/.local/share/code-server/extensions/
 pushd ~/.local/share/code-server/extensions/ 
 jq -s 'add | unique_by(.identifier.id)' /opt/crave/code-server/extensions/extensions.json ./extensions.json >./merged_extensions.json
 mv ./merged_extensions.json ./extensions.json

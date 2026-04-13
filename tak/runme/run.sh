@@ -9,7 +9,7 @@ docker_win_cmd() {
         --isolation=hyperv \
         -v $MNT \
         -w C:/code/$SUBDIR \
-        us.gcr.io/crave-228104/qtbuild:2019 \
+        us-west1-docker.pkg.dev/crave-228104/docker/qtbuild:2019 \
         $*
 }
 

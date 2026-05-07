@@ -193,7 +193,11 @@ RUN set -x \
  && sudo rm -f /var/lib/apt/lists/*_dists_*
 
 # Copy everything in one shot and then move each file to its appropriate location
-COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf sshd_config init.sh supervisord.conf repo startup.sh reset_codeserver_extensions.sh /tmp/
+COPY vnc.conf tmux.conf vscode.conf intellij.conf shellinabox.conf cron.conf \
+     sshd_config crontab \
+     init.sh supervisord.conf repo startup.sh \
+     reset_codeserver_extensions.sh \
+     /tmp/
 RUN set -x \
 # Put the supervisor conf where it needs to be
  && sudo mkdir -p /etc/crave/supervisor \
@@ -213,6 +217,10 @@ RUN set -x \
 # Put the startup script somewhere useful
  && sudo mv /tmp/startup.sh /etc/crave/supervisor \
 # Put the codeserver script in the correct location
- && sudo mv reset_codeserver_extensions.sh /opt/crave/code-server/extensions/
+ && sudo mv reset_codeserver_extensions.sh /opt/crave/code-server/extensions/ \
+# Put the crontab and its supervisor conf file in its location
+ && sudo mkdir -p /etc/cron.d/ \
+ && sudo mv /tmp/crontab /etc/cron.d/default \
+ && sudo mv /tmp/cron.conf /etc/supervisor/conf.d/
 
 ENTRYPOINT [ "/etc/crave/supervisor/startup.sh" ]

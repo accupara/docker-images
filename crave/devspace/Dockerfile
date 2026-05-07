@@ -21,6 +21,7 @@ RUN set -x \
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \
       bmon \
+      cron \
       cscope \
       exuberant-ctags \
       fish \

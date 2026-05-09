@@ -8,6 +8,7 @@ COPY --from=jdk /opt/java/openjdk /opt/java/openjdk
 # CI=true is to tell jfrog to be noninteractive
 ENV YQ_VER=4.40.3 \
     CRANE_VER=0.19.0 \
+    SUPERCRONIC_VER=0.2.44 \
     CI=true \
     JAVA_HOME=/opt/java/openjdk \
     CRAVETUN=1 \
@@ -21,7 +22,6 @@ RUN set -x \
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get install -y \
       arc-theme \
       bmon \
-      cron \
       cscope \
       exuberant-ctags \
       fish \
@@ -188,6 +188,10 @@ RUN set -x \
  && curl https://getcroc.schollz.com | bash \
 # Some python modules worth including in the base devspace image
  && sudo python -m pip -v install --break-system-packages --ignore-installed pudb \
+# Add supercronic because cron inside a container is a nightmare
+ && curl -fsSLO https://github.com/aptible/supercronic/releases/download/v${SUPERCRONIC_VER}/supercronic-linux-amd64 \
+ && sudo chmod +x supercronic-linux-amd64 \
+ && sudo mv supercronic-linux-amd64 /usr/bin/supercronic \
 # The usual cleanup
  && sudo DEBIAN_FRONTEND=noninteractive eatmydata apt-get clean \
  && sudo rm -f /var/lib/apt/lists/*_dists_*

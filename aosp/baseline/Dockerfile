@@ -211,6 +211,9 @@ RUN set -x \
  && sudo chmod 777 /etc/mke2fs.conf \
  && sed -s 's/,metadata_csum_seed//g' /etc/mke2fs.conf | sed -s 's/,orphan_file//g' > /tmp/mke2fs.conf \
  && sudo mv /tmp/mke2fs.conf /etc/mke2fs.conf \
+# A couple of additions to the bashrc script
+ && echo "alias patch='patch --force'" | tee -a /home/admin/.bashrc \
+ && echo "alias repo-init='repo init --depth=1'" | tee -a /home/admin/.bashrc \
 # Final cleanups
  && cd /tmp \
  && sudo find dl -delete \

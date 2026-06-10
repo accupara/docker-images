@@ -1,7 +1,9 @@
 # Copyright (c) 2016-2026 Crave.io Inc. All rights reserved
-FROM fedora:latest
+FROM fedora:43
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
+
+ENV GIT_VER=2.50.1
 
 # Install the minimum set of tools
 RUN set -x \
@@ -23,6 +25,8 @@ RUN set -x \
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Create a temporary workspace
+ && mkdir -p /tmp/dl \
 # Install the latest git
  && dnf -y install \ 
     expat-devel \
@@ -30,20 +34,25 @@ RUN set -x \
     libcurl-devel \
     openssl-devel \
     zlib-devel \
- && export GIT_VER=2.50.1 \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && cd /tmp/dl \
+ && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
- && usermod -a -G wheel admin \
-# Add to sudoers
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/admin \
- && mkdir -p /var/run/sshd
+ && usermod -aG wheel admin \
+# Add to sudoers the standard way so it overrides wheel defaults
+ && mkdir -p /etc/sudoers.d \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/admin \
+ && chmod 0440 /etc/sudoers.d/admin \
+ && chmod 0640 /etc/shadow \
+ && mkdir -p /var/run/sshd \
+# Cleanup at the end
+ && cd /tmp \
+ && rm -rf /tmp/dl
 
 COPY sshd_config /etc/ssh/sshd_config
 
@@ -54,7 +63,9 @@ ENV HOME=/home/admin \
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 
-RUN sudo chown -R admin:admin /home/admin \
+RUN set -x \
+ && ls -l /etc/shadow \
+ && sudo chown -R admin:admin /home/admin \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \

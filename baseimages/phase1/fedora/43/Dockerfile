@@ -22,7 +22,6 @@ RUN set -x \
     wget \
 # Install compilation tools
  && dnf -y install @development-tools \
- && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
 # Create a temporary workspace
  && mkdir -p /tmp/dl \

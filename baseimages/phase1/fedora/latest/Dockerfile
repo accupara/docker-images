@@ -14,7 +14,6 @@ RUN set -x \
     jq \
     make \
     openssh-server \
-    redhat-lsb-core \
     subversion \
     sudo \
     vim-enhanced \

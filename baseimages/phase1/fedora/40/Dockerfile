@@ -43,9 +43,12 @@ RUN set -x \
 # Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
- && usermod -a -G wheel admin \
-# Add to sudoers
- && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
+ && usermod -aG wheel admin \
+# Add to sudoers the standard way so it overrides wheel defaults
+ && mkdir -p /etc/sudoers.d \
+ && echo "admin ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/admin \
+ && chmod 0440 /etc/sudoers.d/admin \
+ && chmod 0640 /etc/shadow \
  && mkdir -p /var/run/sshd \
 # Cleanup at the end
  && cd /tmp \
@@ -60,7 +63,9 @@ ENV HOME=/home/admin \
 WORKDIR /home/admin
 CMD ["/bin/bash"]
 
-RUN sudo chown -R admin:admin /home/admin \
+RUN set -x \
+ && ls -l /etc/shadow \
+ && sudo chown -R admin:admin /home/admin \
  && echo "alias ls='ls --color' ; alias ll='ls -l'" >> /home/admin/.bashrc \
  && mkdir /home/admin/.ssh \
  && chmod 700 /home/admin/.ssh \

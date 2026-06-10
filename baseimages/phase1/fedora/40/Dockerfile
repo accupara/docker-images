@@ -3,6 +3,8 @@ FROM fedora:40
 LABEL org.opencontainers.image.author.name="Crave.io Inc." \
       org.opencontainers.image.author.email="contact@crave.io"
 
+ENV GIT_VER=2.50.1
+
 # Install the minimum set of tools
 RUN set -x \
  && dnf update -y \
@@ -23,6 +25,8 @@ RUN set -x \
  && dnf -y install @development-tools \
  && dnf -y group install "C Development Tools and Libraries" \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Create a temporary workspace
+ && mkdir -p /tmp/dl \
 # Install the latest git
  && dnf -y install \ 
     expat-devel \
@@ -30,20 +34,22 @@ RUN set -x \
     libcurl-devel \
     openssl-devel \
     zlib-devel \
- && export GIT_VER=2.50.1 \
- && cd /tmp && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
+ && cd /tmp/dl \
+ && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
  && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \
- && cd /tmp ; sudo rm -rf v${GIT_VER}.tar.gz git-${GIT_VER}* \
 # Non root user
  && useradd -ms /bin/bash admin \
  && echo "admin:admin" | chpasswd \
  && usermod -a -G wheel admin \
 # Add to sudoers
  && echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
- && mkdir -p /var/run/sshd
+ && mkdir -p /var/run/sshd \
+# Cleanup at the end
+ && cd /tmp \
+ && rm -rf /tmp/dl
 
 COPY sshd_config /etc/ssh/sshd_config
 

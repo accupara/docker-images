@@ -103,7 +103,10 @@ RUN set -x \
  && mkdir -p /var/run/sshd \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
 # Create host keys
- && ssh-keygen -A
+ && ssh-keygen -A \
+# Cleanup at the end
+ && cd /tmp \
+ && rm -rf /tmp/dl
 
 COPY sshd_config /etc/ssh/sshd_config
 

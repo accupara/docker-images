@@ -34,7 +34,7 @@ RUN set -x \
     zlib-devel \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && tar -xf git-${GIT_VER}.tar.gz \
+ && tar --no-same-owner -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \

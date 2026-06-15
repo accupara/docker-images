@@ -10,6 +10,7 @@ RUN set -x \
  && dnf update -y \
  && dnf -y install \
     bash-completion \
+    bsdtar \
     file \
     git \
     gcc-c++ \
@@ -23,10 +24,14 @@ RUN set -x \
 # Install compilation tools
  && dnf -y install @development-tools \
  && echo ". /etc/bash_completion" >> /root/.bashrc \
+# Create a wrapper for tar using bsdtar to bypass openat2 emulation issue
+ && mv /usr/bin/tar /usr/bin/tar.original \
+ && printf '#!/bin/bash\nargs=()\nfor arg in "$@"; do\n  if [ "$arg" != "--no-selinux" ]; then args+=("$arg"); fi\ndone\nexec bsdtar "${args[@]}"\n' > /usr/bin/tar \
+ && chmod +x /usr/bin/tar \
 # Create a temporary workspace
  && mkdir -p /tmp/dl \
 # Install the latest git
- && dnf -y install \ 
+ && dnf -y install \
     expat-devel \
     gnutls-devel \
     libcurl-devel \
@@ -34,7 +39,7 @@ RUN set -x \
     zlib-devel \
  && cd /tmp/dl \
  && wget -q --no-check-certificate https://mirrors.edge.kernel.org/pub/software/scm/git/git-${GIT_VER}.tar.gz \
- && tar --no-same-owner --no-same-permissions --no-xattrs --no-selinux --no-acls -m -xf git-${GIT_VER}.tar.gz \
+ && tar -xf git-${GIT_VER}.tar.gz \
  && cd git-${GIT_VER} \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true all -j `nproc` \
  && make prefix=/usr CFLAGS="-std=gnu99" NO_UNCOMPRESS2=true install \

@@ -63,6 +63,6 @@ if [ "${DCDEVSPACE}" == "1" ]; then
     crave push token.txt -d $(crave ssh -- pwd | grep -v Select | sed -s 's/\r//g')/
     crave ssh -- "export GH_UPLOAD_LIMIT="$GH_UPLOAD_LIMIT"; bash /opt/crave/github-actions/upload.sh "$RELEASETAG" "$DEVICE" "$REPONAME" "$RELEASETITLE""
 else
-    gh release create $RELEASETAG $EXTRAFILES --repo $REPONAME --title $RELEASETITLE --generate-notes
-    gh release upload $RELEASETAG --repo $REPONAME $ZIP_FILES $IMG_FILES
+    gh release create "$RELEASETAG" $EXTRAFILES --repo "$REPONAME" --title "$RELEASETITLE" --generate-notes
+    gh release upload "$RELEASETAG" --repo "$REPONAME" $ZIP_FILES $IMG_FILES
 fi

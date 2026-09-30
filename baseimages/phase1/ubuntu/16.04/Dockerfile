@@ -30,11 +30,13 @@ LABEL org.opencontainers.image.author.name="Crave.io Inc." \
 COPY sshd_config /tmp/
 
 # https://mirrors.edge.kernel.org/pub/software/scm/git/ ### 2.48.1 is the last one that will compile
+# https://github.com/rockdaboot/libpsl/releases
 # https://gradle.org/releases/
 # https://github.com/ninja-build/ninja/releases
 ENV GIT_VER=2.48.1 \
     GIT_LFS_VER=3.6.0 \
     OPENSSL_VER=3.0.19 \
+    LIBPSL_VER=0.21.5 \
     GRADLE_VER=8.7 \
     NINJA_VER=v1.12.1 \
     GIT_TERMINAL_PROMPT=0
@@ -84,7 +86,7 @@ RUN set -x \
       git \
       libcurl4-gnutls-dev \
       libexpat1-dev \
-      libpsl-dev \
+      libunistring-dev \
       libssl-dev \
       libtool \
       zlib1g-dev \
@@ -116,6 +118,14 @@ RUN set -x \
 # Purge the system libcurl dev package so the linker doesn't pick up the old 
 # version (7.47.0) from the multiarch directory during git compilation.
  && sudo apt-get purge -y libcurl4-gnutls-dev \
+# Install libpsl, a dependency of curl
+ && cd /tmp/dl \
+ && wget -q https://github.com/rockdaboot/libpsl/releases/download/${LIBPSL_VER}/libpsl-${LIBPSL_VER}.tar.gz \
+ && tar -xf libpsl-${LIBPSL_VER}.tar.gz \
+ && cd libpsl-${LIBPSL_VER} \
+ && ./configure --prefix=/usr \
+ && make all -j`nproc` \
+ && sudo make install \
 # compile libcurl
  && cd /tmp/dl \
  && git clone https://github.com/curl/curl.git curl \

@@ -11,8 +11,8 @@ repo --version
 main() {
     # Run repo sync command and capture the output
     find .repo -name '*.lock' -delete
-    grep -q "android-17" .repo/manifests/default.xml && rm -rf prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 || true
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --optimized-fetch 2>&1 | tee /tmp/output.txt
+    grep -q "android-17" .repo/manifests/default.xml && rm -rf prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 || true
+    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --optimized-fetch --force-remove-dirty 2>&1 | tee /tmp/output.txt
 
  if ! grep -qe "Failing repos\|uncommitted changes are present" /tmp/output.txt ; then
          echo "All repositories synchronized successfully."
@@ -59,7 +59,7 @@ main() {
     # Re-sync all repositories after deletion
     echo "Re-syncing all repositories..."
     find .repo -name '*.lock' -delete
-    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --optimized-fetch
+    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags --prune --optimized-fetch --force-remove-dirty
 }
 
 main $*

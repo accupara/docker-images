@@ -6,4 +6,10 @@ if [ "$1" == "sync" ]; then
     exit 1
 fi
 
+if [[ "$@" == *"/usr/local/bin/repo"* ]]; then
+    echo -e "Installing repo directly is forbidden in devspace. \n Read the information here for proper sending your command in buildnode \n https://opendroid.pugzarecute.com/wiki/Crave_Devspace"
+   exit 1
+fi
+
+
 exec /usr/bin/repo.real $@

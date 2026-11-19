@@ -28,13 +28,43 @@ fi
 KEY_PASSWORD=$(openssl enc -aes-256-cbc -d -iter 256 -salt -in "$CERT_DIR/password.enc" -pass pass:"$KEY_ENCRYPTION_PASSWORD")
 
 if [ -z "$KEY_PASSWORD" ]; then
-    echo "Failed to decrypt the key password. Exiting."
-    exit 0
+    echo "Failed to decrypt the key password. Skipping."
 fi
 
-echo "Signing APKs and APEX files..."
+if [ "$1" = "--inline" ]; then
+    if [ -n "$2" ]; then
+        folder_path="$2"
+        echo "Copying private keys to $folder_path..."
+        mv "$CERT_DIR"/* "$folder_path"/
 
-SIGN_CMD="sign_target_files_apks -o -d $CERT_DIR \
+        echo "Creating $folder_path/keys/keys.mk..."
+        echo "PRODUCT_DEFAULT_DEV_CERTIFICATE := "$folder_path"/releasekey" > "$folder_path"/keys.mk
+
+        echo "Creating $folder_path/BUILD.bazel..."
+
+cat <<EOF > "$folder_path"/BUILD.bazel
+filegroup(
+    name = "android_certificate_directory",
+    srcs = glob([
+        "*.pk8",
+        "*.pem",
+    ]),
+    visibility = ["//visibility:public"],
+)
+EOF
+
+    echo "Done! Now build as usual. If builds aren't being signed, add '-include $folder_path/keys.mk' to your device mk file"
+    echo "Remember to delete your keys from $folder_path afterwards!"
+    sleep 3
+    else
+        echo "Error: destination folder path is required with --inline option"
+        echo "Example: vendor/lineage-priv/keys"
+        exit 1
+    fi
+else
+    echo "Signing APKs and APEX files..."
+
+    SIGN_CMD="sign_target_files_apks -o -d $CERT_DIR \
     --extra_apks AdServicesApk.apk=$CERT_DIR/releasekey \
     --extra_apks HalfSheetUX.apk=$CERT_DIR/releasekey \
     --extra_apks OsuLogin.apk=$CERT_DIR/releasekey \
@@ -164,6 +194,7 @@ echo "$KEY_PASSWORD" | ota_from_target_files -k "$CERT_DIR/releasekey" \
     --block --backup=true \
     signed-target_files.zip \
     signed-ota_update.zip
+fi
 
 # Clean up: Remove the certificates
 rm -rf "$CERT_DIR"
